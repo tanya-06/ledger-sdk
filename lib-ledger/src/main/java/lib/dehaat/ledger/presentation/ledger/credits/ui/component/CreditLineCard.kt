@@ -1,0 +1,95 @@
+package lib.dehaat.ledger.presentation.ledger.credits.ui.component
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import lib.dehaat.ledger.R
+import lib.dehaat.ledger.initializer.getAmountInRupees
+import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.presentation.common.uicomponent.SanctionedCreditLimitView
+import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
+import lib.dehaat.ledger.resources.text12Sp
+import lib.dehaat.ledger.resources.textBold14Sp
+
+@Composable
+fun CreditLineCard(
+    ledgerColors: LedgerColors,
+    data: CreditLineViewData,
+    onOutstandingInfoIconClick: (CreditLineViewData) -> Unit,
+    onSanctionedInfoClick: () -> Unit,
+) {
+
+    Column(
+        modifier = Modifier
+            .shadow(10.dp, shape = RoundedCornerShape(9.dp))
+            .background(
+                shape = RoundedCornerShape(9.dp),
+                color = ledgerColors.CreditLineCardBG
+            )
+            .padding(16.dp)
+    ) {
+
+        Text(
+            modifier = Modifier,
+            style = textBold14Sp(textColor = ledgerColors.LenderNameColor),
+            text = data.lenderViewName,
+            maxLines = 1
+        )
+
+        Row(
+            modifier = Modifier.padding(top = 27.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Outstanding",
+                style = text12Sp(textColor = ledgerColors.TransactionDateColor),
+                maxLines = 1
+            )
+
+            Image(
+                modifier = Modifier
+                    .padding(start = 7.dp)
+                    .clickable { onOutstandingInfoIconClick(data) },
+                painter = painterResource(id = R.drawable.ic_info_icon),
+                contentDescription = "info"
+            )
+        }
+
+        Text(
+            modifier = Modifier.padding(top = 8.dp),
+            text = data.totalOutstandingAmount.getAmountInRupees(),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = ledgerColors.LenderNameColor,
+            maxLines = 1
+        )
+
+        Divider(
+            Modifier
+                .padding(vertical = 15.dp)
+                .background(ledgerColors.CreditLineCardDividerColor),
+            thickness = 1.dp
+        )
+
+        SanctionedCreditLimitView(
+            data.creditLimit.getAmountInRupees(),
+            ledgerColors,
+            onInfoIconClick = onSanctionedInfoClick
+        )
+
+    }
+}

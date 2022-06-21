@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dehaat.ledger">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name=".SampleApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,16 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ledgersdksample">
         <activity
-            android:name="lib.dehaat.ledger.detail.ui.LedgerInfoTabActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Ledgersdksample">
+            android:name=".AppChooserActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--Ledger Config-->
+        <activity
+            android:name="lib.dehaat.ledger.presentation.ledger.LedgerDetailActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
