@@ -1,19 +1,54 @@
 package lib.dehaat.ledger.presentation.ledger.ui.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import lib.dehaat.ledger.datasource.DummyDataSource
+import lib.dehaat.ledger.initializer.LedgerSDK
+import lib.dehaat.ledger.initializer.themes.AIMSColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.MinimumAmountPaymentWarning
+import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.PayNowButton
+import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.PaymentOptionsButton
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
-import lib.dehaat.ledger.resources.textMedium16Sp
+
+@Preview(
+    name = "Credit Summary AIMS",
+    showBackground = true
+)
+@Composable
+private fun CreditSummaryAIMS() {
+    DummyDataSource.initAIMS(LocalContext.current)
+    CreditSummaryView(
+        creditSummaryData = DummyDataSource.creditSummaryViewData,
+        ledgerColors = AIMSColors(),
+        onClickTotalOutstandingInfo = { },
+        onPayNowClick = { }
+    )
+}
+
+@Preview(
+    name = "Credit Summary DBA",
+    showBackground = true
+)
+@Composable
+private fun CreditSummaryDBA() {
+    DummyDataSource.initDBA(LocalContext.current)
+    CreditSummaryView(
+        creditSummaryData = DummyDataSource.creditSummaryViewData,
+        ledgerColors = AIMSColors(),
+        onClickTotalOutstandingInfo = { },
+        onPayNowClick = { }
+    )
+}
 
 @Composable
 fun CreditSummaryView(
@@ -23,7 +58,7 @@ fun CreditSummaryView(
     onPayNowClick: () -> Unit
 ) {
     Column(
-        Modifier
+        modifier = Modifier
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
@@ -34,39 +69,34 @@ fun CreditSummaryView(
             )
             .fillMaxWidth()
     ) {
-        InfoOrderBlockPayImmediate(ledgerColors = ledgerColors)
+        creditSummaryData?.overdue?.minPaymentAmount?.let {
+            InfoOrderBlockPayImmediate(ledgerColors = ledgerColors)
+        }
+
         HeaderTotalOutstanding(
             creditSummaryData = creditSummaryData,
             ledgerColors = ledgerColors,
             onClickTotalOutstandingInfo = onClickTotalOutstandingInfo
         )
-        PayNowButton(
-            modifier = Modifier.padding(bottom = 12.dp, end = 18.dp),
-            ledgerColors = ledgerColors,
-            onPayNowClick = onPayNowClick
-        )
+
+        if (LedgerSDK.isDBA) {
+            Divider(modifier = Modifier, thickness = 1.dp)
+
+            MinimumAmountPaymentWarning(
+                creditSummaryData = creditSummaryData,
+                ledgerColors = ledgerColors
+            )
+
+            PayNowButton(
+                ledgerColors = ledgerColors,
+                onPayNowClick = onPayNowClick
+            )
+        }
+
         Divider(thickness = 4.dp, color = ledgerColors.CreditViewHeaderDividerBColor)
-    }
-}
 
-@Composable
-fun PayNowButton(
-    modifier: Modifier = Modifier,
-    ledgerColors: LedgerColors,
-    onPayNowClick: () -> Unit
-) {
-
-    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-        Text(
-            modifier = Modifier
-                .clickable { onPayNowClick() }
-                .background(
-                    color = ledgerColors.DownloadInvoiceColor,
-                    shape = RoundedCornerShape(24.dp)
-                )
-                .padding(vertical = 12.dp, horizontal = 20.dp),
-            text = "Pay Now",
-            style = textMedium16Sp(textColor = Color.White)
-        )
+        if (LedgerSDK.isDBA) {
+            PaymentOptionsButton(ledgerColors)
+        }
     }
 }

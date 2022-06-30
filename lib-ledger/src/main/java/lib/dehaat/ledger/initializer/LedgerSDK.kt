@@ -23,4 +23,10 @@ object LedgerSDK {
             }
         )
     }
+
+    val isDBA: Boolean
+        get() = currentApp is LedgerParentApp.DBA
+
+    val isAIMS: Boolean
+        get() = currentApp is LedgerParentApp.AIMS
 }

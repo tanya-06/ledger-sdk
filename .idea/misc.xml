@@ -3,17 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../../../../layout/compose-model-1649232495404.xml" value="0.24746621621621623" />
-        <entry key="../../../../../../../layout/compose-model-1649316868481.xml" value="0.24746621621621623" />
-        <entry key="../../../../../../../layout/compose-model-1649405394041.xml" value="0.1" />
-        <entry key="../../../../../../../layout/compose-model-1649405985250.xml" value="0.21574074074074073" />
-        <entry key="../../../../../../../layout/compose-model-1649696622187.xml" value="0.21574074074074073" />
-        <entry key="../../../../../../../layout/compose-model-1650430726703.xml" value="0.2601851851851852" />
-        <entry key="../../../../../../../layout/compose-model-1650432966503.xml" value="0.2601851851851852" />
+        <entry key="../../../../layout/compose-model-1656580054062.xml" value="0.40185185185185185" />
+        <entry key="../../../../layout/compose-model-1656581554639.xml" value="0.46944444444444444" />
+        <entry key="../../../../layout/compose-model-1656582114712.xml" value="0.46944444444444444" />
+        <entry key="../../../../layout/compose-model-1656911009669.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1656911038200.xml" value="0.2814814814814815" />
+        <entry key="../../../../layout/compose-model-1656911176743.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1656911659066.xml" value="0.2814814814814815" />
+        <entry key="../../../../layout/compose-model-1656912082493.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1656913056703.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1656914704050.xml" value="0.1" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_back_black.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_calender_filter.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_credt_coin.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_days_filter.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_green_tick.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_info_icon.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_ledger_invoice.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_payment.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_transaction_arrow_right.xml" value="0.152" />
+        <entry key="lib-ledger/src/main/res/drawable/ic_transaction_credit_note.xml" value="0.152" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

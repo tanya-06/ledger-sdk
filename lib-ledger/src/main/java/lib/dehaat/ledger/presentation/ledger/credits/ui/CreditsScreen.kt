@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import lib.dehaat.ledger.initializer.getAmountInRupees
 import lib.dehaat.ledger.initializer.getAmountInRupeesWithoutDecimal
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
