@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'maven-publish'
 }
 
 android {
@@ -98,4 +99,17 @@ dependencies {
     implementation "com.github.Tlaster:NestedScrollView:0.7.0"
 
 
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.dehaat'
+                artifactId = 'Ledger-Library'
+                version = '0.1-alpha'
+            }
+        }
+    }
 }
