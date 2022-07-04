@@ -41,7 +41,8 @@ fun LedgerDetailScreen2(
     onBackPress: () -> Unit,
     detailPageNavigationCallback: DetailPageNavigationCallback,
     isLmsActivated: () -> Boolean,
-    onPayNowClick: () -> Unit
+    onPayNowClick: () -> Unit,
+    onPaymentOptionsClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -104,7 +105,8 @@ fun LedgerDetailScreen2(
                                 viewModel.openAllOutstandingModal()
                                 sheetState.animateTo(ModalBottomSheetValue.Expanded)
                             }
-                        }
+                        },
+                        onPaymentOptionsClick = onPaymentOptionsClick
                     )
                 },
                 content = {

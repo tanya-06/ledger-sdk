@@ -31,7 +31,8 @@ private fun CreditSummaryAIMS() {
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = AIMSColors(),
         onClickTotalOutstandingInfo = { },
-        onPayNowClick = { }
+        onPayNowClick = { },
+        onPaymentOptionsClick = { }
     )
 }
 
@@ -46,7 +47,8 @@ private fun CreditSummaryDBA() {
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = AIMSColors(),
         onClickTotalOutstandingInfo = { },
-        onPayNowClick = { }
+        onPayNowClick = { },
+        onPaymentOptionsClick = { }
     )
 }
 
@@ -55,7 +57,8 @@ fun CreditSummaryView(
     creditSummaryData: CreditSummaryViewData?,
     ledgerColors: LedgerColors,
     onClickTotalOutstandingInfo: () -> Unit,
-    onPayNowClick: () -> Unit
+    onPayNowClick: () -> Unit,
+    onPaymentOptionsClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -96,7 +99,7 @@ fun CreditSummaryView(
         Divider(thickness = 4.dp, color = ledgerColors.CreditViewHeaderDividerBColor)
 
         if (LedgerSDK.isDBA) {
-            PaymentOptionsButton(ledgerColors)
+            PaymentOptionsButton(ledgerColors, onPaymentOptionsClick)
         }
     }
 }

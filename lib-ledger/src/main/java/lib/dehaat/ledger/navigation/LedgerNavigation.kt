@@ -58,6 +58,9 @@ fun LedgerNavigation(
                 },
                 onPayNowClick = {
                     ledgerCallbacks?.onClickPayNow(viewModel.uiState.value.creditSummaryViewData)
+                },
+                onPaymentOptionsClick = {
+                    ledgerCallbacks?.onPaymentOptionsClick(viewModel.uiState.value.creditSummaryViewData)
                 }
             )
         }

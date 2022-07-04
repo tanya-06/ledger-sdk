@@ -6,7 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,15 +31,22 @@ class AppChooserActivity : AppCompatActivity() {
         setContent {
             Dummy(
                 onClickDBAButton = {
-                    LedgerSDK.init(applicationContext, LedgerParentApp.DBA(ledgerCallBack = object : LedgerCallbacks{
-                        override fun onClickPayNow(creditSummaryViewData: CreditSummaryViewData?) {
-                            showToast(creditSummaryViewData.toString())
-                        }
+                    LedgerSDK.init(
+                        applicationContext,
+                        LedgerParentApp.DBA(ledgerCallBack = object : LedgerCallbacks {
+                            override fun onClickPayNow(creditSummaryViewData: CreditSummaryViewData?) {
+                                showToast(creditSummaryViewData.toString())
+                            }
 
-                        override fun onClickDownloadInvoice(invoiceDetailDataViewData: InvoiceDetailDataViewData?) {
-                            showToast(invoiceDetailDataViewData.toString())
-                        }
-                    }))
+                            override fun onClickDownloadInvoice(invoiceDetailDataViewData: InvoiceDetailDataViewData?) {
+                                showToast(invoiceDetailDataViewData.toString())
+                            }
+
+                            override fun onPaymentOptionsClick(creditSummaryViewData: CreditSummaryViewData?) {
+                                showToast(creditSummaryViewData.toString())
+                            }
+                        })
+                    )
                     LedgerSDK.openLedger(this, "123456", dcName = "DC DBA")
                 },
                 onClickAIMSButton = {

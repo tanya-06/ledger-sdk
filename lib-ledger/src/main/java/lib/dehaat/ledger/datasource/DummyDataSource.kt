@@ -51,6 +51,10 @@ object DummyDataSource {
             override fun onClickDownloadInvoice(
                 invoiceDetailDataViewData: InvoiceDetailDataViewData?
             ) = Unit
+
+            override fun onPaymentOptionsClick(
+                creditSummaryViewData: CreditSummaryViewData?
+            ) = Unit
         }
     )
 

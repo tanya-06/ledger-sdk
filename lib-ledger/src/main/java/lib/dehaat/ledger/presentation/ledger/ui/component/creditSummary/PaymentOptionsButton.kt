@@ -2,6 +2,7 @@ package lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,12 +26,13 @@ import lib.dehaat.ledger.initializer.themes.LedgerColors
 )
 @Composable
 private fun PaymentOptionsPreview() {
-    PaymentOptionsButton(DBAColors())
+    PaymentOptionsButton(DBAColors()) { }
 }
 
 @Composable
 fun PaymentOptionsButton(
-    ledgerColors: LedgerColors
+    ledgerColors: LedgerColors,
+    paymentOptionsButtonClick: () -> Unit
 ) = Row(
     modifier = Modifier
         .fillMaxWidth()
@@ -38,7 +40,8 @@ fun PaymentOptionsButton(
         .border(
             BorderStroke(1.dp, ledgerColors.DownloadInvoiceColor),
             shape = RoundedCornerShape(9.dp)
-        ),
+        )
+        .clickable { paymentOptionsButtonClick() },
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically
 ) {

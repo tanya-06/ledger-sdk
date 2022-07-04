@@ -6,4 +6,5 @@ import lib.dehaat.ledger.presentation.model.detail.invoice.InvoiceDetailDataView
 interface LedgerCallbacks {
     fun onClickPayNow(creditSummaryViewData: CreditSummaryViewData?)
     fun onClickDownloadInvoice(invoiceDetailDataViewData: InvoiceDetailDataViewData?)
+    fun onPaymentOptionsClick(creditSummaryViewData: CreditSummaryViewData?)
 }

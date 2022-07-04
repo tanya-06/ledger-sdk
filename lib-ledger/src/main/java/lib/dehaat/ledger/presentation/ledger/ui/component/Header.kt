@@ -9,12 +9,14 @@ fun Header(
     creditSummaryData: CreditSummaryViewData?,
     ledgerColors: LedgerColors,
     onClickTotalOutstandingInfo: () -> Unit,
-    onPayNowClick: () -> Unit
+    onPayNowClick: () -> Unit,
+    onPaymentOptionsClick: () -> Unit
 ) {
     CreditSummaryView(
         creditSummaryData = creditSummaryData,
         ledgerColors = ledgerColors,
         onClickTotalOutstandingInfo = onClickTotalOutstandingInfo,
-        onPayNowClick = onPayNowClick
+        onPayNowClick = onPayNowClick,
+        onPaymentOptionsClick = onPaymentOptionsClick
     )
 }
