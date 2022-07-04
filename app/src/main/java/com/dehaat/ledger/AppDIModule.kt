@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.text.TextUtils
+import com.dehaat.androidbase.coroutine.Dispatchers
+import com.dehaat.androidbase.coroutine.IDispatchers
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -11,7 +13,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.*
+import okhttp3.Dispatcher
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -145,4 +153,7 @@ class AppDIModule {
         .client(okHttpClient)
         .addConverterFactory(moshiConverterFactory)
         .build()
+
+    @Provides
+    fun provideDispatchers(): IDispatchers = Dispatchers()
 }

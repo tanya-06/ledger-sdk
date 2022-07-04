@@ -41,9 +41,5 @@ abstract class LedgerModule {
         fun provideLedgerAPIService(
             retrofit: Retrofit
         ): LedgerAPIService = retrofit.create(LedgerAPIService::class.java)
-
-        @Provides
-        fun provideDispatchers(): IDispatchers = Dispatchers()
     }
-
 }
