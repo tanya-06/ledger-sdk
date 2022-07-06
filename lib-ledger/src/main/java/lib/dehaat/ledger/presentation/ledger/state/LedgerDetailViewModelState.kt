@@ -29,12 +29,14 @@ data class LedgerDetailViewModelState(
     val bottomSheetType: BottomSheetType = BottomSheetType.OverAllOutStanding(
         data = overAllOutStandingDetailViewData
     ),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val showFilterRangeDialog: Boolean = false
 ) {
     fun toUiState() = LedgerDetailUIState(
         creditSummaryViewData = creditSummaryViewData,
         isLoading = isLoading,
-        bottomSheetType = bottomSheetType
+        bottomSheetType = bottomSheetType,
+        isFilteringWithRange = showFilterRangeDialog
     )
 }
 
@@ -42,6 +44,7 @@ data class LedgerDetailUIState(
     val creditSummaryViewData: CreditSummaryViewData?,
     val isLoading: Boolean,
     val bottomSheetType: BottomSheetType,
+    val isFilteringWithRange: Boolean
 )
 
 sealed class BottomSheetType {

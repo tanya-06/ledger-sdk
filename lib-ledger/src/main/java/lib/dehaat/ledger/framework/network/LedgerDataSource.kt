@@ -74,11 +74,9 @@ class LedgerDataSource @Inject constructor(
     ) = callAPI(
         dispatcher,
         {
+            // TODO remove unused params above
             apiService.getPaymentDetail(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId,
-                mode = mode
+                ledgerId = ledgerId
             )
         }) {
         it?.paymentDetailData?.let { data -> mapper.toPaymentDetailDataEntity(data) }

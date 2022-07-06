@@ -187,6 +187,10 @@ class LedgerDetailViewModel @Inject constructor(
         }
     }
 
+    fun showDaysRangeFilterDialog(show: Boolean) = viewModelState.update {
+        it.copy(showFilterRangeDialog = show)
+    }
+
     fun updateSelectedFilter(selectedFilter: DaysToFilter) {
         viewModelState.update {
             it.copy(selectedDaysFilter = selectedFilter)

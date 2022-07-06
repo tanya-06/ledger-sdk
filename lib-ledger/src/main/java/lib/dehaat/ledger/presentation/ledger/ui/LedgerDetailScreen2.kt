@@ -54,6 +54,9 @@ fun LedgerDetailScreen2(
             }
             true
         })
+    if (uiState.isFilteringWithRange) {
+        RangeFilterDialog(startRange = {}, endRange = {})
+    }
 
     CommonContainer(
         title = viewModel.dcName,
@@ -136,11 +139,15 @@ fun LedgerDetailScreen2(
                                 else -> TransactionsListScreen(
                                     ledgerColors = ledgerColors,
                                     detailPageNavigationCallback = detailPageNavigationCallback,
-                                    ledgerDetailViewModel = viewModel
-                                ) {
-                                    viewModel.showDaysFilterBottomSheet()
-                                    scope.launch { sheetState.animateTo(ModalBottomSheetValue.Expanded) }
-                                }
+                                    ledgerDetailViewModel = viewModel,
+                                    openDaysFilter = {
+                                        viewModel.showDaysFilterBottomSheet()
+                                        scope.launch { sheetState.animateTo(ModalBottomSheetValue.Expanded) }
+                                    },
+                                    openRangeFilter = {
+                                        viewModel.showDaysRangeFilterDialog(true)
+                                    }
+                                )
                             }
                         }
                     }

@@ -15,15 +15,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
+import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.getAmountInRupees
+import lib.dehaat.ledger.initializer.themes.AIMSColors
+import lib.dehaat.ledger.initializer.themes.DBAColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.presentation.common.uicomponent.SanctionedCreditLimitView
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textBold14Sp
+
+@Preview(
+    name = "available credit limit AIMS",
+    showBackground = true
+)
+@Composable
+fun CreditLineCardPreviewAIMS() {
+    CreditLineCard(
+        ledgerColors = AIMSColors(),
+        data = DummyDataSource.creditLineViewData,
+        onOutstandingInfoIconClick = {},
+        onSanctionedInfoClick = {}
+    )
+}
+
+@Preview(
+    name = "available credit limit DBA",
+    showBackground = true
+)
+@Composable
+fun CreditLineCardPreviewDBA() {
+    CreditLineCard(
+        ledgerColors = DBAColors(),
+        data = DummyDataSource.creditLineViewData,
+        onOutstandingInfoIconClick = {},
+        onSanctionedInfoClick = {}
+    )
+}
 
 @Composable
 fun CreditLineCard(

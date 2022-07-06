@@ -4,6 +4,7 @@ import android.content.Context
 import lib.dehaat.ledger.initializer.LedgerParentApp
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallbacks
+import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.InfoViewData
@@ -40,6 +41,19 @@ object DummyDataSource {
         creditViewData,
         overdueViewData,
         infoViewData
+    )
+
+    val creditLineViewData = CreditLineViewData(
+        belongsToGapl = true,
+        lenderViewName = "lenderViewName",
+        creditLimit = "creditLimit",
+        availableCreditLimit = "availableCreditLimit",
+        totalOutstandingAmount = "totalOutstandingAmount",
+        principalOutstandingAmount = "principalOutstandingAmount",
+        interestOutstandingAmount = "interestOutstandingAmount",
+        overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
+        penaltyOutstandingAmount = "penaltyOutstandingAmount",
+        advanceAmount = "advanceAmount"
     )
 
     private val dbaApp = LedgerParentApp.DBA(

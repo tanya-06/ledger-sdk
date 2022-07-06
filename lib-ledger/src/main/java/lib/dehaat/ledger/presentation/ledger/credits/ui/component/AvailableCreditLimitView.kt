@@ -1,4 +1,4 @@
-package lib.dehaat.ledger.presentation.common.uicomponent
+package lib.dehaat.ledger.presentation.ledger.credits.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -11,11 +11,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
+import lib.dehaat.ledger.initializer.themes.AIMSColors
+import lib.dehaat.ledger.initializer.themes.DBAColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textBold14Sp
+
+@Preview(
+    name = "available credit limit DBA",
+    showBackground = true
+)
+@Composable
+fun AvailableCreditLimitViewScreenDBA() {
+    AvailableCreditLimitView(
+        limitInRupees = "10000",
+        ledgerColors = DBAColors(),
+        onInfoIconClick = { },
+        Modifier.padding(horizontal = 16.dp)
+    )
+}
+
+@Preview(
+    name = "available credit limit AIMS",
+    showBackground = true
+)
+@Composable
+fun AvailableCreditLimitViewScreenAIMS() {
+    AvailableCreditLimitView(
+        limitInRupees = "10000",
+        ledgerColors = AIMSColors(),
+        onInfoIconClick = { },
+        Modifier.padding(horizontal = 16.dp)
+    )
+}
 
 @Composable
 fun AvailableCreditLimitView(
