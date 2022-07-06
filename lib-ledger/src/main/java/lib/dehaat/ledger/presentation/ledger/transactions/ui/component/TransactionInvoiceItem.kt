@@ -3,7 +3,11 @@ package lib.dehaat.ledger.presentation.ledger.transactions.ui.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,16 +15,46 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dehaat.androidbase.helper.isNotNull
+import lib.dehaat.ledger.R
+import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.getAmountInRupees
+import lib.dehaat.ledger.initializer.themes.AIMSColors
+import lib.dehaat.ledger.initializer.themes.DBAColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
-import lib.dehaat.ledger.resources.textMedium14Sp
-import lib.dehaat.ledger.R
 import lib.dehaat.ledger.resources.textBold14Sp
+import lib.dehaat.ledger.resources.textMedium14Sp
+
+@Preview(
+    name = "TransactionInvoiceItem Preview AIMS",
+    showBackground = true
+)
+@Composable
+fun TransactionInvoiceItemPreviewAIMS() {
+    TransactionInvoiceItem(
+        ledgerColors = AIMSColors(),
+        data = DummyDataSource.transactionViewData,
+        onClick = {}
+    )
+}
+
+@Preview(
+    name = "TransactionInvoiceItem Preview DBA",
+    showBackground = true
+)
+@Composable
+fun TransactionInvoiceItemPreviewDBA() {
+    TransactionInvoiceItem(
+        ledgerColors = DBAColors(),
+        data = DummyDataSource.transactionViewData,
+        onClick = {}
+    )
+}
 
 @Composable
 fun TransactionInvoiceItem(

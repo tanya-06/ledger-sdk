@@ -8,9 +8,30 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import lib.dehaat.ledger.initializer.themes.AIMSColors
+import lib.dehaat.ledger.initializer.themes.DBAColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.resources.textMedium14Sp
+
+@Preview(
+    name = "Tag Preview AIMS",
+    showBackground = true
+)
+@Composable
+fun TagPreviewAIMS() {
+    Tag(value = "value", ledgerColors = AIMSColors())
+}
+
+@Preview(
+    name = "Tag Preview DBA",
+    showBackground = true
+)
+@Composable
+fun TagPreviewDBA() {
+    Tag(value = "value", ledgerColors = DBAColors())
+}
 
 @Composable
 fun Tag(value: String, modifier: Modifier = Modifier, ledgerColors: LedgerColors) {

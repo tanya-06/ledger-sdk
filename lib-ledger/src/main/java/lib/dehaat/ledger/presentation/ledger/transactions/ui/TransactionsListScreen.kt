@@ -77,7 +77,7 @@ fun TransactionsListScreen(
                                 erpId = data.erpId,
                                 locusId = data.locusId,
                             )
-                            else -> null
+                            else -> Unit
                         }
                     }
                     Divider(color = Color.Transparent, thickness = 8.dp)
@@ -118,5 +118,3 @@ fun TransactionsListScreen(
             }
     }
 }
-
-

@@ -10,6 +10,7 @@ import lib.dehaat.ledger.presentation.model.creditsummary.CreditViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.InfoViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.OverdueViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.InvoiceDetailDataViewData
+import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 
 object DummyDataSource {
 
@@ -54,6 +55,17 @@ object DummyDataSource {
         overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
         penaltyOutstandingAmount = "penaltyOutstandingAmount",
         advanceAmount = "advanceAmount"
+    )
+
+    val transactionViewData = TransactionViewData(
+        ledgerId = "ledgerId",
+        type = "type",
+        date = 67384543,
+        amount = "amount",
+        erpId = "erpId",
+        locusId = "locusId",
+        creditNoteReason = "creditNoteReason",
+        paymentMode = "paymentMode"
     )
 
     private val dbaApp = LedgerParentApp.DBA(
