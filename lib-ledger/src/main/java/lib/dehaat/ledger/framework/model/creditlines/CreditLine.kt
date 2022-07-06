@@ -23,6 +23,6 @@ data class CreditLine(
     val overdueInterestOutstandingAmount: String,
     @Json(name = "penalty_outstanding_amount")
     val penaltyOutstandingAmount: String,
-    @Json(name = "advance_amount")
-    val advanceAmount: String
+    @Json(name = "total_advance_amount")
+    val totalAdvanceAmount: String
 )

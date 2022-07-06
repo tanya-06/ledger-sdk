@@ -201,7 +201,7 @@ class LedgerFrameworkMapper @Inject constructor() {
             interestOutstandingAmount = interestOutstandingAmount,
             overdueInterestOutstandingAmount = overdueInterestOutstandingAmount,
             penaltyOutstandingAmount = penaltyOutstandingAmount,
-            advanceAmount = advanceAmount
+            advanceAmount = totalAdvanceAmount
         )
     }
 
