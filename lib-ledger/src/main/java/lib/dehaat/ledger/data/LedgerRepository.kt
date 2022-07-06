@@ -10,6 +10,10 @@ class LedgerRepository @Inject constructor(private val networkSource: ILedgerDat
     override suspend fun getCreditSummary(partnerId: String) =
         networkSource.getCreditSummary(partnerId)
 
+    override suspend fun getTransactionSummary(
+        partnerId: String
+    ) = networkSource.getTransactionSummary(partnerId)
+
     override suspend fun getTransactions(
         partnerId: String,
         limit: Int,

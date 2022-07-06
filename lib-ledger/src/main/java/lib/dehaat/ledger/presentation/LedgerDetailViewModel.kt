@@ -5,12 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetCreditLinesUseCase
 import lib.dehaat.ledger.domain.usecases.GetCreditSummaryUseCase
+import lib.dehaat.ledger.domain.usecases.GetTransactionSummaryUseCase
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
+import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PARTNER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -26,6 +35,7 @@ import javax.inject.Inject
 class LedgerDetailViewModel @Inject constructor(
     private val getCreditSummaryUseCase: GetCreditSummaryUseCase,
     private val getCreditLinesUseCase: GetCreditLinesUseCase,
+    private val getTransactionSummaryUseCase: GetTransactionSummaryUseCase,
     private val mapper: LedgerViewDataMapper,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
@@ -57,10 +67,8 @@ class LedgerDetailViewModel @Inject constructor(
 
     init {
         getCreditSummaryFromServer()
-    }
-
-    init {
         getCreditLinesFromServer()
+        getTransactionSummaryFromServer()
     }
 
     private fun getCreditLinesFromServer() {
@@ -111,6 +119,27 @@ class LedgerDetailViewModel @Inject constructor(
                         )
                     )
                 }
+            }
+        }
+    }
+
+    private fun getTransactionSummaryFromServer() = callInViewModelScope {
+        callingAPI()
+        val response = getTransactionSummaryUseCase.invoke(partnerId)
+        calledAPI()
+        processTransactionSummaryResponse(response)
+    }
+
+    private fun processTransactionSummaryResponse(
+        result: APIResultEntity<TransactionSummaryEntity?>
+    ) = result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
+        it?.let { entity ->
+            val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
+            viewModelState.update { ledgerDetailViewModelState ->
+                ledgerDetailViewModelState.copy(
+                    isLoading = true,
+                    transactionSummaryViewData = transactionSummaryViewData
+                )
             }
         }
     }

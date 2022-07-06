@@ -14,77 +14,85 @@ import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 
 object DummyDataSource {
 
-    private val creditViewData = CreditViewData(
-        externalFinancierSupported = true,
-        totalCreditLimit = "totalCreditLimit",
-        totalAvailableCreditLimit = "totalAvailableCreditLimit",
-        totalOutstandingAmount = "totalOutstandingAmount",
-        principalOutstandingAmount = "principalOutstandingAmount",
-        interestOutstandingAmount = "interestOutstandingAmount",
-        overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
-        penaltyOutstandingAmount = "penaltyOutstandingAmount"
-    )
+    private val creditViewData by lazy {
+        CreditViewData(
+            externalFinancierSupported = true,
+            totalCreditLimit = "totalCreditLimit",
+            totalAvailableCreditLimit = "totalAvailableCreditLimit",
+            totalOutstandingAmount = "totalOutstandingAmount",
+            principalOutstandingAmount = "principalOutstandingAmount",
+            interestOutstandingAmount = "interestOutstandingAmount",
+            overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
+            penaltyOutstandingAmount = "penaltyOutstandingAmount"
+        )
+    }
 
-    private val infoViewData = InfoViewData(
-        totalPurchaseAmount = "totalPurchaseAmount",
-        totalPaymentAmount = "totalPaymentAmount",
-        undeliveredInvoiceAmount = "undeliveredInvoiceAmount"
-    )
+    private val infoViewData by lazy {
+        InfoViewData(
+            totalPurchaseAmount = "totalPurchaseAmount",
+            totalPaymentAmount = "totalPaymentAmount",
+            undeliveredInvoiceAmount = "undeliveredInvoiceAmount"
+        )
+    }
+    private val overdueViewData by lazy {
+        OverdueViewData(
+            totalOverdueLimit = "totalOverdueLimit",
+            totalOverdueAmount = "totalOverdueAmount",
+            minPaymentAmount = "minPaymentAmount",
+            minPaymentDueDate = 78
+        )
+    }
+    val creditSummaryViewData by lazy {
+        CreditSummaryViewData(
+            creditViewData,
+            overdueViewData,
+            infoViewData
+        )
+    }
+    val creditLineViewData by lazy {
+        CreditLineViewData(
+            belongsToGapl = true,
+            lenderViewName = "lenderViewName",
+            creditLimit = "creditLimit",
+            availableCreditLimit = "availableCreditLimit",
+            totalOutstandingAmount = "totalOutstandingAmount",
+            principalOutstandingAmount = "principalOutstandingAmount",
+            interestOutstandingAmount = "interestOutstandingAmount",
+            overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
+            penaltyOutstandingAmount = "penaltyOutstandingAmount",
+            advanceAmount = "advanceAmount"
+        )
+    }
+    val transactionViewData by lazy {
+        TransactionViewData(
+            ledgerId = "ledgerId",
+            type = "type",
+            date = 67384543,
+            amount = "amount",
+            erpId = "erpId",
+            locusId = "locusId",
+            creditNoteReason = "creditNoteReason",
+            paymentMode = "paymentMode"
+        )
+    }
+    private val dbaApp by lazy {
+        LedgerParentApp.DBA(
+            ledgerCallBack = object : LedgerCallbacks {
+                override fun onClickPayNow(
+                    creditSummaryViewData: CreditSummaryViewData?
+                ) = Unit
 
-    private val overdueViewData = OverdueViewData(
-        totalOverdueLimit = "totalOverdueLimit",
-        totalOverdueAmount = "totalOverdueAmount",
-        minPaymentAmount = "minPaymentAmount",
-        minPaymentDueDate = 78
-    )
+                override fun onClickDownloadInvoice(
+                    invoiceDetailDataViewData: InvoiceDetailDataViewData?
+                ) = Unit
 
-    val creditSummaryViewData = CreditSummaryViewData(
-        creditViewData,
-        overdueViewData,
-        infoViewData
-    )
-
-    val creditLineViewData = CreditLineViewData(
-        belongsToGapl = true,
-        lenderViewName = "lenderViewName",
-        creditLimit = "creditLimit",
-        availableCreditLimit = "availableCreditLimit",
-        totalOutstandingAmount = "totalOutstandingAmount",
-        principalOutstandingAmount = "principalOutstandingAmount",
-        interestOutstandingAmount = "interestOutstandingAmount",
-        overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
-        penaltyOutstandingAmount = "penaltyOutstandingAmount",
-        advanceAmount = "advanceAmount"
-    )
-
-    val transactionViewData = TransactionViewData(
-        ledgerId = "ledgerId",
-        type = "type",
-        date = 67384543,
-        amount = "amount",
-        erpId = "erpId",
-        locusId = "locusId",
-        creditNoteReason = "creditNoteReason",
-        paymentMode = "paymentMode"
-    )
-
-    private val dbaApp = LedgerParentApp.DBA(
-        ledgerCallBack = object : LedgerCallbacks {
-            override fun onClickPayNow(
-                creditSummaryViewData: CreditSummaryViewData?
-            ) = Unit
-
-            override fun onClickDownloadInvoice(
-                invoiceDetailDataViewData: InvoiceDetailDataViewData?
-            ) = Unit
-
-            override fun onPaymentOptionsClick(
-                creditSummaryViewData: CreditSummaryViewData?
-            ) = Unit
-        }
-    )
-
-    private val aimsApp = LedgerParentApp.AIMS()
+                override fun onPaymentOptionsClick(
+                    creditSummaryViewData: CreditSummaryViewData?
+                ) = Unit
+            }
+        )
+    }
+    private val aimsApp by lazy { LedgerParentApp.AIMS() }
 
     fun initDBA(context: Context) = LedgerSDK.init(
         context,

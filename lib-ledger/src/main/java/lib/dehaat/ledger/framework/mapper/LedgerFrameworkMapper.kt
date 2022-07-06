@@ -13,6 +13,7 @@ import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
+import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.framework.model.creditlines.CreditLine
 import lib.dehaat.ledger.framework.model.creditlines.CreditLineData
 import lib.dehaat.ledger.framework.model.creditsummary.Credit
@@ -28,6 +29,7 @@ import lib.dehaat.ledger.framework.model.detail.invoice.Loan
 import lib.dehaat.ledger.framework.model.detail.payment.PaymentDetailData
 import lib.dehaat.ledger.framework.model.transactions.Transaction
 import lib.dehaat.ledger.framework.model.transactions.TransactionsData
+import lib.dehaat.ledger.framework.model.transactionsummary.TransactionDetailData
 import javax.inject.Inject
 
 typealias NetworkPaymentDetailSummary = lib.dehaat.ledger.framework.model.detail.payment.Summary
@@ -46,6 +48,15 @@ class LedgerFrameworkMapper @Inject constructor() {
             credit = toCreditSummaryCreditEntity(credit),
             overdue = toCreditSummaryOverDueEntity(overdue),
             info = toCreditSummaryInfoEntity(info),
+        )
+    }
+
+    fun toTransactionSummaryDataEntity(
+        transactionDetailData: TransactionDetailData
+    ) = with(transactionDetailData) {
+        TransactionSummaryEntity(
+            purchaseAmount = purchaseAmount,
+            paymentAmount = paymentAmount
         )
     }
 

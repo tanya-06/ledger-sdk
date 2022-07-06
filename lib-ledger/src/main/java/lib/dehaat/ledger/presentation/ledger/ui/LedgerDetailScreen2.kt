@@ -5,7 +5,11 @@ package lib.dehaat.ledger.presentation.ledger.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,6 +34,7 @@ import lib.dehaat.ledger.presentation.ledger.state.BottomSheetType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.TransactionsListScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.Header
 import lib.dehaat.ledger.presentation.ledger.ui.component.Tabs
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionSummary
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
 import moe.tlaster.nestedscrollview.rememberNestedScrollViewState
 
@@ -61,7 +66,8 @@ fun LedgerDetailScreen2(
     CommonContainer(
         title = viewModel.dcName,
         onBackPress = onBackPress,
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        bottomBar = { TransactionSummary(viewModel, ledgerColors) }
     ) {
 
         ModalBottomSheetLayout(

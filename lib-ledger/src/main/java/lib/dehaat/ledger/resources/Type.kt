@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
@@ -176,12 +177,14 @@ fun textMedium20Sp(textColor: Color = TextBlack) =
 fun text14Sp(
     textColor: Color = TextBlack,
     fontWeight: FontWeight = FontWeight.Normal,
-    lineHeight: TextUnit = 14.sp
+    lineHeight: TextUnit = 14.sp,
+    textAlign: TextAlign? = null
 ) = TextStyle(
     fontSize = 14.sp,
     lineHeight = lineHeight,
     fontWeight = fontWeight,
     color = textColor,
+    textAlign = textAlign
 )
 
 @Composable
