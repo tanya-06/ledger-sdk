@@ -113,6 +113,7 @@ fun LedgerDetailScreen2(
                     Header(
                         creditSummaryData = uiState.creditSummaryViewData,
                         ledgerColors = ledgerColors,
+                        isLmsActivated = isLmsActivated,
                         onPayNowClick = onPayNowClick,
                         onClickTotalOutstandingInfo = {
                             scope.launch {

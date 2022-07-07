@@ -36,7 +36,8 @@ import lib.dehaat.ledger.resources.textBold14Sp
 private fun TotalOutstandingAIMSPreview() {
     HeaderTotalOutstanding(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
-        ledgerColors = AIMSColors()
+        ledgerColors = AIMSColors(),
+        isLmsActivated = { true }
     ) {}
 }
 
@@ -48,7 +49,8 @@ private fun TotalOutstandingAIMSPreview() {
 private fun TotalOutstandingDBAPreview() {
     HeaderTotalOutstanding(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
-        ledgerColors = DBAColors()
+        ledgerColors = DBAColors(),
+        isLmsActivated = { true }
     ) {}
 }
 
@@ -56,6 +58,7 @@ private fun TotalOutstandingDBAPreview() {
 fun HeaderTotalOutstanding(
     creditSummaryData: CreditSummaryViewData?,
     ledgerColors: LedgerColors,
+    isLmsActivated: () -> Boolean,
     onClickTotalOutstandingInfo: () -> Unit
 ) {
     Column(
@@ -90,8 +93,10 @@ fun HeaderTotalOutstanding(
                 text = creditSummaryData?.credit?.totalOutstandingAmount.getAmountInRupees(),
                 style = textBold14Sp(textColor = ledgerColors.CtaColor)
             )
-            if (creditSummaryData?.credit?.totalAvailableCreditLimit != null && creditSummaryData.credit.totalAvailableCreditLimit <= "0.0") {
-                //TODO & lmsActivated == false
+            if (creditSummaryData?.credit?.totalAvailableCreditLimit != null &&
+                creditSummaryData.credit.totalAvailableCreditLimit <= "0.0" &&
+                !isLmsActivated()
+            ) {
                 Text(
                     modifier = Modifier
                         .padding(top = 8.dp)
@@ -101,35 +106,39 @@ fun HeaderTotalOutstanding(
                     style = text14Sp(textColor = ledgerColors.ErrorColor)
                 )
             }
-            //TODO lmsActivated == false && dcFinanced == false
-            Text(modifier = Modifier.padding(top = 12.dp),
-                text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            fontSize = 14.sp,
-                            color = ledgerColors.SummaryColor,
-                        )
-                    ) {
-                        append("Includes overdue amount of ")
-                    }
+            //TODO dcFinanced == false
+            if (!isLmsActivated()) {
+                Text(
+                    modifier = Modifier.padding(top = 12.dp),
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 14.sp,
+                                color = ledgerColors.SummaryColor,
+                            )
+                        ) {
+                            append("Includes overdue amount of ")
+                        }
 
-                    withStyle(
-                        style = SpanStyle(
-                            fontSize = 14.sp,
-                            color = ledgerColors.ErrorColor,
-                        )
-                    ) {
-                        append(creditSummaryData?.overdue?.totalOverdueAmount.getAmountInRupees())
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 14.sp,
+                                color = ledgerColors.ErrorColor,
+                            )
+                        ) {
+                            append(creditSummaryData?.overdue?.totalOverdueAmount.getAmountInRupees())
+                        }
                     }
-                })
-            Text(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .background(color = ledgerColors.ErrorLightColor)
-                    .padding(2.dp),
-                text = "Overdue limit exhausted",
-                style = text14Sp(textColor = ledgerColors.ErrorColor)
-            )
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .background(color = ledgerColors.ErrorLightColor)
+                        .padding(2.dp),
+                    text = "Overdue limit exhausted",
+                    style = text14Sp(textColor = ledgerColors.ErrorColor)
+                )
+            }
         }
     }
 }
