@@ -60,7 +60,12 @@ fun LedgerDetailScreen2(
             true
         })
     if (uiState.isFilteringWithRange) {
-        RangeFilterDialog(startRange = {}, endRange = {})
+        RangeFilterDialog(
+            ledgerColors = ledgerColors,
+            filterRange = { startDate, endDate ->
+                viewModel.showDaysRangeFilterDialog(false)
+            }
+        )
     }
 
     CommonContainer(
