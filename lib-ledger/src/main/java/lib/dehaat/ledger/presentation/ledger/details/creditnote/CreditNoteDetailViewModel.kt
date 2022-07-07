@@ -56,11 +56,7 @@ class CreditNoteDetailViewModel @Inject constructor(
     private fun getCreditNoteDetailFromServer() {
         callInViewModelScope {
             callingAPI()
-            val response = getCreditNoteDetailUseCase.invoke(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId
-            )
+            val response = getCreditNoteDetailUseCase.invoke(ledgerId)
             calledAPI()
             processCreditNoteDetailResponse(response)
         }

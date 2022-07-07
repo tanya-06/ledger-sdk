@@ -31,22 +31,15 @@ interface ILedgerRepository {
     ): APIResultEntity<List<CreditLineEntity>>
 
     suspend fun getInvoiceDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ): APIResultEntity<InvoiceDetailDataEntity?>
 
     suspend fun getPaymentDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?,
-        mode: String?
+        ledgerId: String
     ): APIResultEntity<PaymentDetailEntity?>
 
     suspend fun getCreditNoteDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ): APIResultEntity<CreditNoteDetailEntity?>
 
 }

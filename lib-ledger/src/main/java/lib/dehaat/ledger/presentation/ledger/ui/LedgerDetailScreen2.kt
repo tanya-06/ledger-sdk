@@ -4,6 +4,7 @@ package lib.dehaat.ledger.presentation.ledger.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -63,6 +64,7 @@ fun LedgerDetailScreen2(
         RangeFilterDialog(
             ledgerColors = ledgerColors,
             filtered = {
+                viewModel.getTransactionSummaryFromServer()
                 viewModel.showDaysRangeFilterDialog(false)
             }
         )
@@ -74,9 +76,8 @@ fun LedgerDetailScreen2(
         scaffoldState = scaffoldState,
         bottomBar = { TransactionSummary(viewModel, ledgerColors) }
     ) {
-
         ModalBottomSheetLayout(
-            modifier = Modifier,
+            modifier = Modifier.padding(it),
             sheetContent = {
 
                 when (val bottomSheetType = uiState.bottomSheetType) {
@@ -92,8 +93,9 @@ fun LedgerDetailScreen2(
                     is BottomSheetType.DaysFilterTypeSheet -> DaysToFilterContent(
                         selectedFilter = bottomSheetType.selectedFilter,
                         ledgerColors = ledgerColors,
-                        onFilterSelected = {
-                            viewModel.updateSelectedFilter(it)
+                        onFilterSelected = { daysToFilter ->
+                            viewModel.updateSelectedFilter(daysToFilter)
+                            viewModel.getTransactionSummaryFromServer()
                             scope.launch {
                                 sheetState.animateTo(ModalBottomSheetValue.Hidden)
                             }

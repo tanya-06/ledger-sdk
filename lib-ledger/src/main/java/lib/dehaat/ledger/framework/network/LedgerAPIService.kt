@@ -40,9 +40,7 @@ interface LedgerAPIService {
 
     @GET("/finance/invoice")
     suspend fun getInvoiceDetail(
-        @Query("ledger_id") ledgerId: String,
-        @Query("locus_id") locusId: String?,
-        @Query("erp_id") erpId: String?
+        @Query("ledger_id") ledgerId: String
     ): Response<ResponseInvoiceDetail>
 
     @GET("/finance/payment")
@@ -52,8 +50,6 @@ interface LedgerAPIService {
 
     @GET("/finance/credit-note")
     suspend fun getCreditNoteDetail(
-        @Query("ledger_id") ledgerId: String,
-        @Query("locus_id") locusId: String?,
-        @Query("erp_id") erpId: String?
+        @Query("ledger_id") ledgerId: String
     ): Response<ResponseCreditNoteDetail>
 }

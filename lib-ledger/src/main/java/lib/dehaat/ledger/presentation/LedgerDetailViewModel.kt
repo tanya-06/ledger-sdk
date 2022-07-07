@@ -123,7 +123,7 @@ class LedgerDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getTransactionSummaryFromServer() = callInViewModelScope {
+    fun getTransactionSummaryFromServer() = callInViewModelScope {
         callingAPI()
         val response = getTransactionSummaryUseCase.invoke(partnerId)
         calledAPI()

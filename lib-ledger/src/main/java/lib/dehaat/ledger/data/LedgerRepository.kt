@@ -37,35 +37,21 @@ class LedgerRepository @Inject constructor(private val networkSource: ILedgerDat
     )
 
     override suspend fun getInvoiceDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ) = networkSource.getInvoiceDetail(
-        ledgerId,
-        locusId,
-        erpId
+        ledgerId
     )
 
     override suspend fun getPaymentDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?,
-        mode: String?
+        ledgerId: String
     ) = networkSource.getPaymentDetail(
-        ledgerId,
-        locusId,
-        erpId,
-        mode
+        ledgerId
     )
 
     override suspend fun getCreditNoteDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ) = networkSource.getCreditNoteDetail(
-        ledgerId,
-        locusId,
-        erpId
+        ledgerId
     )
 
 }

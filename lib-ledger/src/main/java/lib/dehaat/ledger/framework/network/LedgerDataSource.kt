@@ -61,54 +61,33 @@ class LedgerDataSource @Inject constructor(
     }
 
     override suspend fun getInvoiceDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ) = callAPI(
         dispatcher,
-        {
-            apiService.getInvoiceDetail(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId
-            )
-        }) {
+        { apiService.getInvoiceDetail(ledgerId) }
+    ) {
         it?.invoiceDetailData?.let { data -> mapper.toInvoiceDetailDataEntity(data) }
     }
 
     override suspend fun getPaymentDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?,
-        mode: String?
+        ledgerId: String
     ) = callAPI(
         dispatcher,
-        {
-            // TODO remove unused params above
-            apiService.getPaymentDetail(
-                ledgerId = ledgerId
-            )
-        }) {
+        { apiService.getPaymentDetail(ledgerId) }
+    ) {
         it?.paymentDetailData?.let { data -> mapper.toPaymentDetailDataEntity(data) }
     }
 
     override suspend fun getCreditNoteDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ) = callAPI(
         dispatcher,
-        {
-            apiService.getCreditNoteDetail(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId
-            )
-        }) {
+        { apiService.getCreditNoteDetail(ledgerId) }
+    ) {
         it?.creditNoteDetailData?.let { data -> mapper.toCreditNoteDetailDataEntity(data) }
     }
 
-    suspend fun <D, C> callAPI(
+    private suspend fun <D, C> callAPI(
         dispatchers: IDispatchers,
         apiCall: suspend () -> Response<D>,
         parse: (D?) -> C

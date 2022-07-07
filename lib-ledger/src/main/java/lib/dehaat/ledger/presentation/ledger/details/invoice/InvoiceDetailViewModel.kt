@@ -32,10 +32,6 @@ class InvoiceDetailViewModel @Inject constructor(
         )
     }
 
-    private val locusId by lazy { savedStateHandle.get<String>(KEY_LOCUS_ID) }
-
-    private val erpId by lazy { savedStateHandle.get<String>(KEY_ERP_ID) }
-
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> get() = _uiEvent
 
@@ -55,11 +51,7 @@ class InvoiceDetailViewModel @Inject constructor(
     private fun getInvoiceDetailFromServer() {
         callInViewModelScope {
             callingAPI()
-            val response = getInvoiceDetailUseCase.invoke(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId
-            )
+            val response = getInvoiceDetailUseCase.invoke(ledgerId)
             calledAPI()
             processInvoiceDetailResponse(response)
         }
@@ -93,5 +85,4 @@ class InvoiceDetailViewModel @Inject constructor(
             it.copy(isLoading = true)
         }
     }
-
 }

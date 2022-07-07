@@ -76,6 +76,7 @@ class LedgerTransactionViewModel @Inject constructor(
         viewModelState.update {
             it.copy(daysToFilter = dayFilter)
         }
+        getTransactionPaging()
         refresh()
     }
 

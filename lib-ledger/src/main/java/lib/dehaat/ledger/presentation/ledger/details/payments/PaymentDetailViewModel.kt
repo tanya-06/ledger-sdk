@@ -58,12 +58,7 @@ class PaymentDetailViewModel @Inject constructor(
     private fun getPaymentDetailFromServer() {
         callInViewModelScope {
             callingAPI()
-            val response = getPaymentDetailUseCase.invoke(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId,
-                mode = paymentMode
-            )
+            val response = getPaymentDetailUseCase.invoke(ledgerId)
             calledAPI()
             processPaymentDetailResponse(response)
         }
