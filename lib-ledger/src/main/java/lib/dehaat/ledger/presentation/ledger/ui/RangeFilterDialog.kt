@@ -29,11 +29,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import lib.dehaat.ledger.initializer.Utils
 import lib.dehaat.ledger.initializer.sdf
 import lib.dehaat.ledger.initializer.themes.AIMSColors
 import lib.dehaat.ledger.initializer.themes.DBAColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewModel
+import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.resources.TextWhite
 import lib.dehaat.ledger.resources.text16Sp
 import lib.dehaat.ledger.resources.textMedium20Sp
@@ -45,7 +48,7 @@ import java.util.*
 )
 @Composable
 fun PreviewAIMS() {
-    RangeFilterDialog(ledgerColors = AIMSColors(), filterRange = { _, _ -> })
+    RangeFilterDialog(ledgerColors = AIMSColors(), filtered = { })
 }
 
 @Preview(
@@ -54,13 +57,13 @@ fun PreviewAIMS() {
 )
 @Composable
 fun PreviewDBA() {
-    RangeFilterDialog(ledgerColors = DBAColors(), filterRange = { _, _ -> })
+    RangeFilterDialog(ledgerColors = DBAColors(), filtered = { })
 }
 
 @Composable
 fun RangeFilterDialog(
     ledgerColors: LedgerColors,
-    filterRange: (startRange: String, endRange: String) -> Unit
+    filtered: () -> Unit
 ) {
     val currentDate = Calendar.getInstance().time
     val date = sdf.format(currentDate)
@@ -68,6 +71,8 @@ fun RangeFilterDialog(
     var startRange by remember { mutableStateOf(date) }
     var endRange by remember { mutableStateOf(date) }
     val context = LocalContext.current
+
+    val ledgerTransactionViewModel = viewModel<LedgerTransactionViewModel>()
     if (showDialog) {
         Dialog(
             onDismissRequest = { showDialog = false }
@@ -138,6 +143,7 @@ fun RangeFilterDialog(
                             modifier = Modifier
                                 .clickable {
                                     showDialog = false
+                                    filtered()
                                 }
                                 .padding(16.dp),
                             text = "Cancel",
@@ -152,7 +158,12 @@ fun RangeFilterDialog(
                             modifier = Modifier
                                 .clickable {
                                     showDialog = false
-                                    filterRange(startRange, endRange)
+                                    val from = sdf.parse(startRange)?.time ?: 0
+                                    val to = sdf.parse(endRange)?.time ?: 0
+                                    ledgerTransactionViewModel.applyDaysFilter(
+                                        DaysToFilter.CustomDays(from, to)
+                                    )
+                                    filtered()
                                 }
                                 .padding(16.dp),
                             text = "Ok",

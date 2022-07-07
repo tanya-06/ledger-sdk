@@ -12,7 +12,14 @@ import com.dehaat.androidbase.helper.tryCatchWithReturn
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
@@ -150,9 +157,12 @@ class LedgerTransactionViewModel @Inject constructor(
     }
 }
 
-fun APIResultEntity.Failure.getFailureError() = when(this){
+fun APIResultEntity.Failure.getFailureError() = when (this) {
     is APIResultEntity.Failure.ErrorException -> this.exceptionError.message.nullToValue("API Exception")
-    is APIResultEntity.Failure.ErrorFailure -> parseAPIErrorBody(this.responseErrorBody, this.responseMessage)
+    is APIResultEntity.Failure.ErrorFailure -> parseAPIErrorBody(
+        this.responseErrorBody,
+        this.responseMessage
+    )
 }
 
 fun String?.nullToValue(value: String = "--") = this ?: value
