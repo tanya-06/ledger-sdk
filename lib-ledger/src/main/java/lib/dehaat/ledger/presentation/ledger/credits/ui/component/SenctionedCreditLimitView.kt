@@ -67,7 +67,7 @@ fun SanctionedCreditLimitView(
         Text(
             modifier = Modifier
                 .padding(start = 9.dp),
-            text = "Sanctioned Credit Limit",
+            text = "Available Credit Limit",
             style = text12Sp(textColor = ledgerColors.LenderNameColor),
             maxLines = 1
         )
