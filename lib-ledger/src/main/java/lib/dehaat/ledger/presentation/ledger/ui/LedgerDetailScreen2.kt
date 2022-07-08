@@ -2,6 +2,7 @@
 
 package lib.dehaat.ledger.presentation.ledger.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -14,7 +15,9 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,6 +63,8 @@ fun LedgerDetailScreen2(
             }
             true
         })
+
+    val bottomBarVisibility = rememberSaveable { mutableStateOf(true) }
     if (uiState.isFilteringWithRange) {
         RangeFilterDialog(
             ledgerColors = ledgerColors,
@@ -74,7 +79,11 @@ fun LedgerDetailScreen2(
         title = viewModel.dcName,
         onBackPress = onBackPress,
         scaffoldState = scaffoldState,
-        bottomBar = { TransactionSummary(viewModel, ledgerColors) }
+        bottomBar = {
+            AnimatedVisibility(bottomBarVisibility.value) {
+                TransactionSummary(viewModel, ledgerColors)
+            }
+        }
     ) {
         ModalBottomSheetLayout(
             modifier = Modifier.padding(it),
@@ -130,6 +139,7 @@ fun LedgerDetailScreen2(
                     val pagerState = rememberPagerState(pageCount = 2)
                     Column(modifier = Modifier.background(ledgerColors.TransactionAndCreditScreenBGColor)) {
                         Tabs(pagerState, ledgerColors) { currentPage ->
+                            bottomBarVisibility.value = currentPage == 0
                             scope.launch {
                                 pagerState.animateScrollToPage(page = currentPage)
                             }
