@@ -30,7 +30,7 @@ private fun CreditSummaryAIMS() {
     CreditSummaryView(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = AIMSColors(),
-        isLmsActivated = { true },
+        isLmsActivated = { false },
         onClickTotalOutstandingInfo = { },
         onPayNowClick = { },
         onPaymentOptionsClick = { }
@@ -47,7 +47,7 @@ private fun CreditSummaryDBA() {
     CreditSummaryView(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = AIMSColors(),
-        isLmsActivated = { true },
+        isLmsActivated = { false },
         onClickTotalOutstandingInfo = { },
         onPayNowClick = { },
         onPaymentOptionsClick = { }

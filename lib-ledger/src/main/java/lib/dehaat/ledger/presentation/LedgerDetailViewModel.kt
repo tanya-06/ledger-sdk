@@ -66,6 +66,10 @@ class LedgerDetailViewModel @Inject constructor(
         )
 
     init {
+        getLedgerData()
+    }
+
+    fun getLedgerData() {
         getCreditSummaryFromServer()
         getCreditLinesFromServer()
         getTransactionSummaryFromServer()

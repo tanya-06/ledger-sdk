@@ -1,6 +1,8 @@
 package lib.dehaat.ledger.datasource
 
 import android.content.Context
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import lib.dehaat.ledger.initializer.LedgerParentApp
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallbacks
@@ -18,8 +20,8 @@ object DummyDataSource {
         CreditViewData(
             externalFinancierSupported = true,
             totalCreditLimit = "totalCreditLimit",
-            totalAvailableCreditLimit = "totalAvailableCreditLimit",
-            totalOutstandingAmount = "totalOutstandingAmount",
+            totalAvailableCreditLimit = "-50000",
+            totalOutstandingAmount = "10000",
             principalOutstandingAmount = "principalOutstandingAmount",
             interestOutstandingAmount = "interestOutstandingAmount",
             overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
@@ -87,7 +89,8 @@ object DummyDataSource {
                 ) = Unit
 
                 override fun onPaymentOptionsClick(
-                    creditSummaryViewData: CreditSummaryViewData?
+                    creditSummaryViewData: CreditSummaryViewData?,
+                    resultLauncher: ActivityResultLauncher<Intent?>
                 ) = Unit
             }
         )

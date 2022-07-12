@@ -1,5 +1,7 @@
 package lib.dehaat.ledger.navigation
 
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -26,6 +28,8 @@ fun LedgerNavigation(
     partnerId: String,
     ledgerColors: LedgerColors,
     ledgerCallbacks: LedgerCallbacks?,
+    resultLauncher: ActivityResultLauncher<Intent?>,
+    viewModel: LedgerDetailViewModel,
     finishActivity: () -> Unit
 ) {
 
@@ -46,7 +50,6 @@ fun LedgerNavigation(
                 defaultValue = partnerId
             })
         ) {
-            val viewModel = hiltViewModel<LedgerDetailViewModel>()
             viewModel.dcName = dcName
             LedgerDetailScreen2(
                 viewModel = viewModel,
@@ -60,7 +63,10 @@ fun LedgerNavigation(
                     ledgerCallbacks?.onClickPayNow(viewModel.uiState.value.creditSummaryViewData)
                 },
                 onPaymentOptionsClick = {
-                    ledgerCallbacks?.onPaymentOptionsClick(viewModel.uiState.value.creditSummaryViewData)
+                    ledgerCallbacks?.onPaymentOptionsClick(
+                        viewModel.uiState.value.creditSummaryViewData,
+                        resultLauncher
+                    )
                 }
             )
         }

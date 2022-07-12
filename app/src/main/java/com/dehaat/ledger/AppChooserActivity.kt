@@ -1,8 +1,10 @@
 package com.dehaat.ledger
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,7 +44,10 @@ class AppChooserActivity : AppCompatActivity() {
                                 showToast(invoiceDetailDataViewData.toString())
                             }
 
-                            override fun onPaymentOptionsClick(creditSummaryViewData: CreditSummaryViewData?) {
+                            override fun onPaymentOptionsClick(
+                                creditSummaryViewData: CreditSummaryViewData?,
+                                resultLauncher: ActivityResultLauncher<Intent?>
+                            ) {
                                 showToast(creditSummaryViewData.toString())
                             }
                         })

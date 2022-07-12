@@ -37,7 +37,7 @@ private fun TotalOutstandingAIMSPreview() {
     HeaderTotalOutstanding(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = AIMSColors(),
-        isLmsActivated = { true }
+        isLmsActivated = { false }
     ) {}
 }
 
@@ -50,7 +50,7 @@ private fun TotalOutstandingDBAPreview() {
     HeaderTotalOutstanding(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = DBAColors(),
-        isLmsActivated = { true }
+        isLmsActivated = { false }
     ) {}
 }
 
