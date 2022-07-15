@@ -29,7 +29,8 @@ fun SanctionedCreditLimitViewPreviewAIMS() {
     SanctionedCreditLimitView(
         limitInRupees = "10000",
         ledgerColors = AIMSColors(),
-        onInfoIconClick = { }
+        onInfoIconClick = { },
+        isLmsActivated = { true }
     )
 }
 
@@ -42,7 +43,8 @@ fun SanctionedCreditLimitViewPreviewDBA() {
     SanctionedCreditLimitView(
         limitInRupees = "10000",
         ledgerColors = DBAColors(),
-        onInfoIconClick = { }
+        onInfoIconClick = { },
+        isLmsActivated = { true }
     )
 }
 
@@ -51,10 +53,10 @@ fun SanctionedCreditLimitView(
     limitInRupees: String,
     ledgerColors: LedgerColors,
     onInfoIconClick: () -> Unit,
-    modifier: Modifier = Modifier
+    isLmsActivated: () -> Boolean
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -72,13 +74,15 @@ fun SanctionedCreditLimitView(
             maxLines = 1
         )
 
-        Image(
-            modifier = Modifier
-                .padding(start = 7.dp)
-                .clickable { onInfoIconClick() },
-            painter = painterResource(id = R.drawable.ic_info_icon),
-            contentDescription = "info"
-        )
+        if (isLmsActivated()) {
+            Image(
+                modifier = Modifier
+                    .padding(start = 7.dp)
+                    .clickable { onInfoIconClick() },
+                painter = painterResource(id = R.drawable.ic_info_icon),
+                contentDescription = "info"
+            )
+        }
 
         Text(
             modifier = Modifier

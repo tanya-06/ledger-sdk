@@ -38,7 +38,8 @@ fun CreditLineCardPreviewAIMS() {
         ledgerColors = AIMSColors(),
         data = DummyDataSource.creditLineViewData,
         onOutstandingInfoIconClick = {},
-        onSanctionedInfoClick = {}
+        onSanctionedInfoClick = {},
+        isLmsActivated = { true }
     )
 }
 
@@ -52,7 +53,8 @@ fun CreditLineCardPreviewDBA() {
         ledgerColors = DBAColors(),
         data = DummyDataSource.creditLineViewData,
         onOutstandingInfoIconClick = {},
-        onSanctionedInfoClick = {}
+        onSanctionedInfoClick = {},
+        isLmsActivated = { true }
     )
 }
 
@@ -62,6 +64,7 @@ fun CreditLineCard(
     data: CreditLineViewData,
     onOutstandingInfoIconClick: (CreditLineViewData) -> Unit,
     onSanctionedInfoClick: () -> Unit,
+    isLmsActivated: () -> Boolean
 ) {
 
     Column(
@@ -117,10 +120,10 @@ fun CreditLineCard(
         )
 
         SanctionedCreditLimitView(
-            data.creditLimit.getAmountInRupees(),
-            ledgerColors,
-            onInfoIconClick = onSanctionedInfoClick
+            limitInRupees = data.creditLimit.getAmountInRupees(),
+            ledgerColors = ledgerColors,
+            onInfoIconClick = onSanctionedInfoClick,
+            isLmsActivated = isLmsActivated
         )
-
     }
 }

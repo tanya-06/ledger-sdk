@@ -29,8 +29,7 @@ fun AvailableCreditLimitViewScreenDBA() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
         ledgerColors = DBAColors(),
-        onInfoIconClick = { },
-        Modifier.padding(horizontal = 16.dp)
+        onInfoIconClick = { }
     )
 }
 
@@ -43,8 +42,7 @@ fun AvailableCreditLimitViewScreenAIMS() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
         ledgerColors = AIMSColors(),
-        onInfoIconClick = { },
-        Modifier.padding(horizontal = 16.dp)
+        onInfoIconClick = { }
     )
 }
 
@@ -52,11 +50,11 @@ fun AvailableCreditLimitViewScreenAIMS() {
 fun AvailableCreditLimitView(
     limitInRupees: String,
     ledgerColors: LedgerColors,
-    onInfoIconClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onInfoIconClick: () -> Unit
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {

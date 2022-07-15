@@ -36,7 +36,6 @@ fun CreditsScreen(
     Column {
         if (isLmsActivated() && totalAvailableCreditLimit.isNotEmpty()) {
             AvailableCreditLimitView(
-                modifier = Modifier.padding(horizontal = 16.dp),
                 limitInRupees = totalAvailableCreditLimit.getAmountInRupeesWithoutDecimal(),
                 ledgerColors = ledgerColors,
                 onInfoIconClick = {
@@ -59,6 +58,7 @@ fun CreditsScreen(
                     onSanctionedInfoClick = {
                         viewModel.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal()
                     },
+                    isLmsActivated = isLmsActivated
                 )
                 Divider(color = Color.Transparent, thickness = 12.dp)
             }
