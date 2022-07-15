@@ -34,7 +34,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion '1.1.1'
     }
     packagingOptions {
         resources {
@@ -108,7 +108,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.dehaat'
                 artifactId = 'Ledger-Library'
-                version = '0.1-alpha-8'
+                version = '0.1-alpha-10'
             }
         }
     }
