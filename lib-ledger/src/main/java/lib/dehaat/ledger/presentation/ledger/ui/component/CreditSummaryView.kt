@@ -89,10 +89,12 @@ fun CreditSummaryView(
         if (LedgerSDK.isDBA) {
             Divider(modifier = Modifier, thickness = 1.dp)
 
-            MinimumAmountPaymentWarning(
-                creditSummaryData = creditSummaryData,
-                ledgerColors = ledgerColors
-            )
+            if (creditSummaryData?.overdue?.minPaymentAmount?.toDouble() != 0.0) {
+                MinimumAmountPaymentWarning(
+                    creditSummaryData = creditSummaryData,
+                    ledgerColors = ledgerColors
+                )
+            }
 
             PayNowButton(
                 ledgerColors = ledgerColors,
