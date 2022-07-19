@@ -2,7 +2,10 @@
 
 package lib.dehaat.ledger.presentation.ledger.ui
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,11 +16,13 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -80,7 +85,9 @@ fun LedgerDetailScreen2(
         onBackPress = onBackPress,
         scaffoldState = scaffoldState,
         bottomBar = {
-            AnimatedVisibility(bottomBarVisibility.value) {
+            AnimatedVisibility(
+                visible = bottomBarVisibility.value
+            ) {
                 TransactionSummary(viewModel, ledgerColors)
             }
         }
@@ -137,9 +144,13 @@ fun LedgerDetailScreen2(
                 },
                 content = {
                     val pagerState = rememberPagerState(pageCount = 2)
+                    LaunchedEffect(key1 = pagerState) {
+                        snapshotFlow { pagerState.currentPage }.collect { currentPage ->
+                            bottomBarVisibility.value = currentPage == 0
+                        }
+                    }
                     Column(modifier = Modifier.background(ledgerColors.TransactionAndCreditScreenBGColor)) {
                         Tabs(pagerState, ledgerColors) { currentPage ->
-                            bottomBarVisibility.value = currentPage == 0
                             scope.launch {
                                 pagerState.animateScrollToPage(page = currentPage)
                             }

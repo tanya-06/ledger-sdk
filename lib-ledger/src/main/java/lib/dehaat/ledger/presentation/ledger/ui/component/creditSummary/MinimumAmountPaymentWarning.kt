@@ -40,10 +40,8 @@ fun MinimumAmountPaymentWarning(
     ledgerColors: LedgerColors
 ) = Column(
     modifier = Modifier.padding(
-        top = 12.dp,
-        bottom = 16.dp,
-        start = 32.dp,
-        end = 32.dp
+        vertical = 12.dp,
+        horizontal = 32.dp
     )
 ) {
     Row {

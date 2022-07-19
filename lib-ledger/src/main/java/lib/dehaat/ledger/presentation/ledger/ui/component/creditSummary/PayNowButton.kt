@@ -36,7 +36,8 @@ fun PayNowButton(
     onPayNowClick: () -> Unit
 ) = Row(
     modifier = Modifier
-        .padding(bottom = 12.dp, end = 18.dp)
+        .padding(vertical = 12.dp)
+        .padding(end = 18.dp)
         .fillMaxWidth(),
     horizontalArrangement = Arrangement.End
 ) {
