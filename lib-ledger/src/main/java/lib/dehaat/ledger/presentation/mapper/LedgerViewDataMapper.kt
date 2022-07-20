@@ -187,7 +187,8 @@ class LedgerViewDataMapper @Inject constructor() {
             erpId = erpId,
             locusId = locusId,
             creditNoteReason = creditNoteReason,
-            paymentMode = paymentMode
+            paymentMode = paymentMode,
+            source = source
         )
     }
 

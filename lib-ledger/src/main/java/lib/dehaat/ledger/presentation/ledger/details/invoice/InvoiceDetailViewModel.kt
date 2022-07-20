@@ -2,27 +2,41 @@ package lib.dehaat.ledger.presentation.ledger.details.invoice
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetInvoiceDetailUseCase
+import lib.dehaat.ledger.domain.usecases.GetInvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
-import lib.dehaat.ledger.presentation.LedgerConstants.KEY_ERP_ID
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
-import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LOCUS_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.details.invoice.state.InvoiceDetailViewModelState
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
+import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatus
 import lib.dehaat.ledger.presentation.processAPIResponseWithFailureSnackBar
+import lib.dehaat.ledger.util.DownloadFileUtil
+import lib.dehaat.ledger.util.FileUtils
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class InvoiceDetailViewModel @Inject constructor(
     private val getInvoiceDetailUseCase: GetInvoiceDetailUseCase,
+    private val getInvoiceDownloadUseCase: GetInvoiceDownloadUseCase,
     private val mapper: LedgerViewDataMapper,
+    private val downloadFileUtil: DownloadFileUtil,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -72,6 +86,86 @@ class InvoiceDetailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }
+    }
+
+    fun downloadInvoice(
+        erpId: String?,
+        source: String,
+        downloadDirectory: File,
+        invoiceDownloadStatus: (InvoiceDownloadStatus) -> Unit
+    ) = callInViewModelScope {
+        val identityId = when (source) {
+            "SAP" -> erpId?.substringAfterLast('$')
+            "ODOO" -> erpId
+            else -> null
+        }
+        identityId?.let {
+            getDownloadInvoice(it, source, downloadDirectory, invoiceDownloadStatus)
+        }
+    }
+
+    private fun getDownloadInvoice(
+        identityId: String,
+        source: String,
+        downloadDirectory: File,
+        invoiceDownloadStatus: (InvoiceDownloadStatus) -> Unit
+    ) = callInViewModelScope {
+        invoiceDownloadStatus(InvoiceDownloadStatus.PROGRESS)
+        val result = getInvoiceDownloadUseCase.invoke(identityId, source)
+        result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
+            it?.let { invoiceDownloadDataEntity ->
+                when (invoiceDownloadDataEntity.source) {
+                    "SAP" -> {
+                        FileUtils.getFileFromBase64(
+                            base64 = invoiceDownloadDataEntity.pdf.orEmpty(),
+                            fileType = invoiceDownloadDataEntity.docType,
+                            fileName = identityId,
+                            dir = downloadDirectory
+                        )?.let {
+                            invoiceDownloadStatus(InvoiceDownloadStatus.SUCCESS)
+                        } ?: invoiceDownloadStatus(InvoiceDownloadStatus.ERROR)
+                    }
+                    "ODOO" -> {
+                        invoiceDownloadDataEntity.fileName
+                            ?: return@processAPIResponseWithFailureSnackBar
+                        downloadFile(
+                            invoiceDownloadDataEntity.fileName,
+                            downloadDirectory,
+                            invoiceDownloadStatus
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun downloadFile(
+        identityId: String,
+        downloadDirectory: File,
+        invoiceDownloadStatus: (InvoiceDownloadStatus) -> Unit
+    ) = callInViewModelScope {
+        downloadFileUtil.downloadFile(
+            downloadDirectory,
+            identityId,
+            LedgerSDK.bucket
+        )?.setTransferListener(
+            object : TransferListener {
+                override fun onStateChanged(id: Int, state: TransferState?) {
+                    if (state == TransferState.COMPLETED) {
+                        invoiceDownloadStatus(InvoiceDownloadStatus.SUCCESS)
+                    }
+                }
+
+                override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
+                    invoiceDownloadStatus(InvoiceDownloadStatus.PROGRESS)
+                }
+
+                override fun onError(id: Int, ex: Exception?) {
+                    ex?.printStackTrace()
+                    invoiceDownloadStatus(InvoiceDownloadStatus.ERROR)
+                }
+            }
+        )
     }
 
     private fun calledAPI() {

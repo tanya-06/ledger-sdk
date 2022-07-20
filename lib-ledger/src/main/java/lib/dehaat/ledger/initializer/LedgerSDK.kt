@@ -8,8 +8,10 @@ import lib.dehaat.ledger.presentation.ledger.LedgerDetailActivity
 
 object LedgerSDK {
     lateinit var currentApp: LedgerParentApp
-    fun init(context: Context, app: LedgerParentApp) {
+    lateinit var bucket: String
+    fun init(context: Context, app: LedgerParentApp, bucket: String) {
         currentApp = app
+        this.bucket = bucket
         Fresco.initialize(context)
     }
 

@@ -76,6 +76,7 @@ fun LedgerNavigation(
                 LedgerConstants.KEY_LEDGER_ID,
                 LedgerConstants.KEY_ERP_ID,
                 LedgerConstants.KEY_LOCUS_ID,
+                LedgerConstants.KEY_SOURCE
             ),
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_LEDGER_ID) {
@@ -85,19 +86,29 @@ fun LedgerNavigation(
                     type = NavType.StringType
                     nullable = true
                 },
-                navArgument(LedgerConstants.KEY_LOCUS_ID) {
+                navArgument(LedgerConstants.KEY_SOURCE) {
                     type = NavType.StringType
-                    nullable = true
-                })
+                },
+
+            )
         ) {
+
+            val erpId = it.arguments?.get(LedgerConstants.KEY_ERP_ID) as String?
+            val source = it.arguments?.get(LedgerConstants.KEY_SOURCE) as String
 
             val viewModel = hiltViewModel<InvoiceDetailViewModel>()
 
-            InvoiceDetailScreen(viewModel = viewModel, ledgerColors = ledgerColors, onBackPress = {
-                navController.popBackStack()
-            }, onDownloadInvoiceClick = {
-                ledgerCallbacks?.onClickDownloadInvoice(viewModel.uiState.value.invoiceDetailDataViewData)
-            })
+            InvoiceDetailScreen(
+                viewModel = viewModel,
+                erpId = erpId,
+                source = source,
+                ledgerColors = ledgerColors,
+                onBackPress = {
+                    navController.popBackStack()
+                }, onDownloadInvoiceClick = { invoiceDownloadStatus ->
+                    ledgerCallbacks?.onClickDownloadInvoice(invoiceDownloadStatus)
+                }
+            )
 
         }
 
@@ -170,13 +181,15 @@ fun provideDetailPageNavCallBacks(navController: NavHostController) =
         override fun navigateToInvoiceDetailPage(
             legerId: String,
             erpId: String?,
-            locusId: String?
+            locusId: String?,
+            source: String
         ) {
             navigateToInvoiceDetailScreen(
                 navController = navController,
                 ledgerId = legerId,
                 erpId = erpId,
-                locusId = locusId
+                locusId = locusId,
+                source = source
             )
         }
 
@@ -214,13 +227,15 @@ fun navigateToInvoiceDetailScreen(
     navController: NavHostController,
     ledgerId: String,
     erpId: String?,
-    locusId: String?
+    locusId: String?,
+    source: String
 ) {
     navController.navigate(
         LedgerRoutes.LedgerInvoiceDetailScreen.screen.withArgs(
             ledgerId,
             erpId,
-            locusId
+            locusId,
+            source
         )
     )
 }

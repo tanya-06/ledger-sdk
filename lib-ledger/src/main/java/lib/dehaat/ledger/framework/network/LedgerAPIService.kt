@@ -4,6 +4,7 @@ import lib.dehaat.ledger.framework.model.creditlines.ResponseCreditLines
 import lib.dehaat.ledger.framework.model.creditsummary.ResponseCreditSummary
 import lib.dehaat.ledger.framework.model.detail.creditnote.ResponseCreditNoteDetail
 import lib.dehaat.ledger.framework.model.detail.invoice.ResponseInvoiceDetail
+import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.ResponseDownloadInvoice
 import lib.dehaat.ledger.framework.model.detail.payment.ResponsePaymentDetail
 import lib.dehaat.ledger.framework.model.transactions.ResponseTransactions
 import lib.dehaat.ledger.framework.model.transactionsummary.ResponseTransactionSummary
@@ -52,4 +53,10 @@ interface LedgerAPIService {
     suspend fun getCreditNoteDetail(
         @Query("ledger_id") ledgerId: String
     ): Response<ResponseCreditNoteDetail>
+
+    @GET("/stock-management/v1/invoice-download")
+    suspend fun downloadInvoice(
+        @Query("invoice_id") identityId: String,
+        @Query("source") source: String
+    ): Response<ResponseDownloadInvoice>
 }

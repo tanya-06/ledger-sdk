@@ -11,7 +11,7 @@ import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.InfoViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.OverdueViewData
-import lib.dehaat.ledger.presentation.model.detail.invoice.InvoiceDetailDataViewData
+import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatus
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 
 object DummyDataSource {
@@ -74,7 +74,8 @@ object DummyDataSource {
             erpId = "erpId",
             locusId = "locusId",
             creditNoteReason = "creditNoteReason",
-            paymentMode = "paymentMode"
+            paymentMode = "paymentMode",
+            source = "SAP"
         )
     }
     private val dbaApp by lazy {
@@ -85,7 +86,7 @@ object DummyDataSource {
                 ) = Unit
 
                 override fun onClickDownloadInvoice(
-                    invoiceDetailDataViewData: InvoiceDetailDataViewData?
+                    invoiceDetailDataViewData: InvoiceDownloadStatus
                 ) = Unit
 
                 override fun onPaymentOptionsClick(
@@ -99,11 +100,13 @@ object DummyDataSource {
 
     fun initDBA(context: Context) = LedgerSDK.init(
         context,
-        dbaApp
+        dbaApp,
+        "bucket"
     )
 
     fun initAIMS(context: Context) = LedgerSDK.init(
         context,
-        aimsApp
+        aimsApp,
+        "bucket"
     )
 }

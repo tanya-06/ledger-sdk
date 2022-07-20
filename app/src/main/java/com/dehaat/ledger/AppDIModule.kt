@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
-const val ANIL_POST_MAN_MOCK_API_URL = "https://60557434-37f7-4d1a-be26-92d9037354c4.mock.pstmn.io"
+const val ANIL_POST_MAN_MOCK_API_URL = "https://b7bcaa8f-c878-4f8c-8e3f-4a63f40e45c8.mock.pstmn.io"
 
 @Module
 @InstallIn(SingletonComponent::class)

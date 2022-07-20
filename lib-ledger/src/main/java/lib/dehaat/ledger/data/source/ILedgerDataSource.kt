@@ -5,10 +5,10 @@ import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
 import lib.dehaat.ledger.entities.detail.creditnote.CreditNoteDetailEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
+import lib.dehaat.ledger.entities.detail.invoice.invoicedownload.InvoiceDownloadDataEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.framework.model.transactionsummary.ResponseTransactionSummary
 
 interface ILedgerDataSource {
 
@@ -34,6 +34,11 @@ interface ILedgerDataSource {
     suspend fun getInvoiceDetail(
         ledgerId: String
     ): APIResultEntity<InvoiceDetailDataEntity?>
+
+    suspend fun getInvoiceDownload(
+        identityId: String,
+        source: String
+    ): APIResultEntity<InvoiceDownloadDataEntity?>
 
     suspend fun getPaymentDetail(
         ledgerId: String

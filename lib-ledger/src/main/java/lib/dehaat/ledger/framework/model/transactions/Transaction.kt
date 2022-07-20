@@ -20,5 +20,7 @@ data class Transaction(
     @Json(name = "credit_note_reason")
     val creditNoteReason: String?,
     @Json(name = "payment_mode")
-    val paymentMode: String?
+    val paymentMode: String?,
+    @Json(name = "source")
+    val source: String
 )

@@ -42,6 +42,14 @@ class LedgerRepository @Inject constructor(private val networkSource: ILedgerDat
         ledgerId
     )
 
+    override suspend fun getInvoiceDownload(
+        identityId: String,
+        source: String
+    ) = networkSource.getInvoiceDownload(
+        identityId,
+        source
+    )
+
     override suspend fun getPaymentDetail(
         ledgerId: String
     ) = networkSource.getPaymentDetail(

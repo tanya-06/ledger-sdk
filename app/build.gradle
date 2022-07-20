@@ -100,4 +100,10 @@ dependencies {
 
     implementation 'com.github.Dehaat:clean-arch-base:0.0.1'
     implementation 'com.github.Dehaat:dehaat-android-base:v0.0.2-beta-6'
+
+    //AWS
+    def aws_android_sdk = '2.6.31'
+    implementation("com.amazonaws:aws-android-sdk-s3:$aws_android_sdk")
+    implementation("com.amazonaws:aws-android-sdk-cognito:$aws_android_sdk")
+    implementation("com.amazonaws:aws-android-sdk-mobile-client:2.6.15@aar") { transitive = true }
 }

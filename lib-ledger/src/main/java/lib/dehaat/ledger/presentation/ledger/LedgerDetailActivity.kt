@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import com.amazonaws.mobile.client.AWSMobileClient
 import dagger.hilt.android.AndroidEntryPoint
 import lib.dehaat.ledger.initializer.LedgerParentApp
 import lib.dehaat.ledger.initializer.LedgerSDK
@@ -43,6 +44,7 @@ class LedgerDetailActivity : ComponentActivity() {
 
         val partnerId = intent.getStringExtra(LedgerConstants.KEY_PARTNER_ID)
         val dcName = intent.getStringExtra(LedgerConstants.KEY_DC_NAME)
+        AWSMobileClient.getInstance().initialize(this).execute()
         partnerId?.let {
             setContent {
                 LedgerTheme {

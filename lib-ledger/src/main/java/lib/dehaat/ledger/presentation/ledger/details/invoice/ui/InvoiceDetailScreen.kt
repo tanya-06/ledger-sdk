@@ -1,8 +1,18 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice.ui
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import android.os.Environment
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.initializer.getAmountInRupees
@@ -23,21 +34,31 @@ import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSumm
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryViewWithTopPadding
 import lib.dehaat.ledger.presentation.ledger.components.ProductView
 import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
+import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatus
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
+import java.io.File
 
 @Composable
 fun InvoiceDetailScreen(
     viewModel: InvoiceDetailViewModel,
+    erpId: String?,
+    source: String,
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit,
-    onDownloadInvoiceClick: () -> Unit
+    onDownloadInvoiceClick: (InvoiceDownloadStatus) -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
     val invoiceData = uiState.invoiceDetailDataViewData
     val scrollState = rememberScrollState()
+    val downloadDirectory = File(
+        LocalContext.current.getExternalFilesDir(
+            Environment.DIRECTORY_DOWNLOADS
+        ),
+        "DeHaat"
+    ).apply { mkdir() }
 
     CommonContainer(
         title = "Invoice Detail",
@@ -231,7 +252,12 @@ fun InvoiceDetailScreen(
                 Text(
                     modifier = Modifier
                         .clickable {
-                            onDownloadInvoiceClick()
+                            viewModel.downloadInvoice(
+                                erpId,
+                                source,
+                                downloadDirectory,
+                                onDownloadInvoiceClick
+                            )
                         }
                         .padding(top = 16.dp)
                         .background(shape = RoundedCornerShape(40.dp), color = Color.White)

@@ -11,6 +11,7 @@ import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
+import lib.dehaat.ledger.entities.detail.invoice.invoicedownload.InvoiceDownloadDataEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
@@ -26,6 +27,8 @@ import lib.dehaat.ledger.framework.model.detail.creditnote.ProductsInfo
 import lib.dehaat.ledger.framework.model.detail.creditnote.Summary
 import lib.dehaat.ledger.framework.model.detail.invoice.InvoiceDetailData
 import lib.dehaat.ledger.framework.model.detail.invoice.Loan
+import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.DownloadInvoiceData
+import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.ResponseDownloadInvoice
 import lib.dehaat.ledger.framework.model.detail.payment.PaymentDetailData
 import lib.dehaat.ledger.framework.model.transactions.Transaction
 import lib.dehaat.ledger.framework.model.transactions.TransactionsData
@@ -86,6 +89,15 @@ class LedgerFrameworkMapper @Inject constructor() {
             summary = getInvoiceDetailSummaryEntity(summary),
             loans = loans.map { getInvoiceDetailLoanEntity(it) },
             productsInfo = getInvoiceDetailProductInfoEntity(productsInfo),
+        )
+    }
+
+    fun toInvoiceDownloadDataEntity(data: DownloadInvoiceData) = with(data) {
+        InvoiceDownloadDataEntity(
+            source = source,
+            pdf = pdf,
+            fileName = fileName,
+            docType = docType
         )
     }
 
@@ -197,7 +209,8 @@ class LedgerFrameworkMapper @Inject constructor() {
             erpId = erpId,
             locusId = locusId,
             creditNoteReason = creditNoteReason,
-            paymentMode = paymentMode
+            paymentMode = paymentMode,
+            source = source
         )
     }
 

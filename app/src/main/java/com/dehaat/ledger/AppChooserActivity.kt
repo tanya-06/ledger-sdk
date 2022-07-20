@@ -24,7 +24,7 @@ import lib.dehaat.ledger.initializer.LedgerParentApp
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallbacks
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
-import lib.dehaat.ledger.presentation.model.detail.invoice.InvoiceDetailDataViewData
+import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatus
 
 class AppChooserActivity : AppCompatActivity() {
 
@@ -35,28 +35,31 @@ class AppChooserActivity : AppCompatActivity() {
                 onClickDBAButton = {
                     LedgerSDK.init(
                         applicationContext,
-                        LedgerParentApp.DBA(ledgerCallBack = object : LedgerCallbacks {
-                            override fun onClickPayNow(creditSummaryViewData: CreditSummaryViewData?) {
-                                showToast(creditSummaryViewData.toString())
-                            }
+                        LedgerParentApp.DBA(
+                            ledgerCallBack = object : LedgerCallbacks {
+                                override fun onClickPayNow(creditSummaryViewData: CreditSummaryViewData?) {
+                                    showToast(creditSummaryViewData.toString())
+                                }
 
-                            override fun onClickDownloadInvoice(invoiceDetailDataViewData: InvoiceDetailDataViewData?) {
-                                showToast(invoiceDetailDataViewData.toString())
-                            }
+                                override fun onClickDownloadInvoice(invoiceDetailDataViewData: InvoiceDownloadStatus) {
+                                    showToast(invoiceDetailDataViewData.toString())
+                                }
 
-                            override fun onPaymentOptionsClick(
-                                creditSummaryViewData: CreditSummaryViewData?,
-                                resultLauncher: ActivityResultLauncher<Intent?>
-                            ) {
-                                showToast(creditSummaryViewData.toString())
+                                override fun onPaymentOptionsClick(
+                                    creditSummaryViewData: CreditSummaryViewData?,
+                                    resultLauncher: ActivityResultLauncher<Intent?>
+                                ) {
+                                    showToast(creditSummaryViewData.toString())
+                                }
                             }
-                        })
+                        ),
+                        LedgerSDK.bucket
                     )
                     LedgerSDK.openLedger(this, "123456", dcName = "DC DBA")
                 },
                 onClickAIMSButton = {
-                    LedgerSDK.init(applicationContext, LedgerParentApp.AIMS())
-                    LedgerSDK.openLedger(this, "123456", dcName = "DC AIMS")
+                    LedgerSDK.init(applicationContext, LedgerParentApp.AIMS(), "fnfsandboxec2odoo")
+                    LedgerSDK.openLedger(this, "0010000654", dcName = "DC AIMS")
                 })
         }
     }

@@ -99,6 +99,11 @@ dependencies {
     implementation "com.github.Tlaster:NestedScrollView:0.7.0"
 
 
+    //AWS
+    def aws_android_sdk = '2.6.31'
+    implementation("com.amazonaws:aws-android-sdk-s3:$aws_android_sdk")
+    implementation("com.amazonaws:aws-android-sdk-cognito:$aws_android_sdk")
+    implementation("com.amazonaws:aws-android-sdk-mobile-client:2.6.15@aar") { transitive = true }
 }
 
 afterEvaluate {
