@@ -7,7 +7,7 @@ import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatu
 
 interface LedgerCallbacks {
     fun onClickPayNow(creditSummaryViewData: CreditSummaryViewData?)
-    fun onClickDownloadInvoice(invoiceDetailDataViewData: InvoiceDownloadStatus)
+    fun onClickDownloadInvoice(invoiceDownloadStatus: InvoiceDownloadStatus)
     fun onPaymentOptionsClick(
         creditSummaryViewData: CreditSummaryViewData?,
         resultLauncher: ActivityResultLauncher<Intent?>
