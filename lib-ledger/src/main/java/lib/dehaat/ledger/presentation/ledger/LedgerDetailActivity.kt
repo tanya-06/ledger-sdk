@@ -55,7 +55,7 @@ class LedgerDetailActivity : ComponentActivity() {
                         resultLauncher = resultLauncher,
                         finishActivity = { finish() },
                         viewModel = viewModel,
-                        ledgerCallbacks = (LedgerSDK.currentApp as? LedgerParentApp.DBA)?.ledgerCallBack
+                        ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack
                     )
                 }
             }
