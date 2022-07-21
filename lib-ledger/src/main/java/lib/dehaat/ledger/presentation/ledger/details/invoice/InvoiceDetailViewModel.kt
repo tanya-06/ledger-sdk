@@ -24,7 +24,7 @@ import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.details.invoice.state.InvoiceDetailViewModelState
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
-import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatus
+import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.processAPIResponseWithFailureSnackBar
 import lib.dehaat.ledger.util.DownloadFileUtil
 import lib.dehaat.ledger.util.FileUtils
@@ -48,6 +48,8 @@ class InvoiceDetailViewModel @Inject constructor(
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> get() = _uiEvent
+
+    private val invoiceDownloadData = InvoiceDownloadData()
 
     private val viewModelState = MutableStateFlow(InvoiceDetailViewModelState())
     val uiState = viewModelState
@@ -92,8 +94,13 @@ class InvoiceDetailViewModel @Inject constructor(
         erpId: String?,
         source: String,
         downloadDirectory: File,
-        invoiceDownloadStatus: (InvoiceDownloadStatus) -> Unit
+        invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
+        invoiceDownloadData.apply {
+            filePath = downloadDirectory.path
+            partnerId = ledgerId
+            invoiceId = erpId.toString()
+        }
         val identityId = when (source) {
             "SAP" -> erpId?.substringAfterLast('$')
             "ODOO" -> erpId
@@ -104,28 +111,37 @@ class InvoiceDetailViewModel @Inject constructor(
         }
     }
 
+    fun updateProgressDialog(show: Boolean) = viewModelState.update {
+        it.copy(isLoading = show)
+    }
+
     private fun getDownloadInvoice(
         identityId: String,
         source: String,
         downloadDirectory: File,
-        invoiceDownloadStatus: (InvoiceDownloadStatus) -> Unit
+        invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
-        invoiceDownloadStatus(InvoiceDownloadStatus.PROGRESS)
+        updateProgressDialog(true)
         val result = getInvoiceDownloadUseCase.invoke(identityId, source)
         result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
             it?.let { invoiceDownloadDataEntity ->
                 when (invoiceDownloadDataEntity.source) {
                     "SAP" -> {
+                        updateProgressDialog(false)
                         FileUtils.getFileFromBase64(
                             base64 = invoiceDownloadDataEntity.pdf.orEmpty(),
                             fileType = invoiceDownloadDataEntity.docType,
                             fileName = identityId,
                             dir = downloadDirectory
                         )?.let {
-                            invoiceDownloadStatus(InvoiceDownloadStatus.SUCCESS)
-                        } ?: invoiceDownloadStatus(InvoiceDownloadStatus.ERROR)
+                            invoiceDownloadStatus(invoiceDownloadData)
+                        } ?: kotlin.run {
+                            invoiceDownloadData.isFailed = true
+                            invoiceDownloadStatus(invoiceDownloadData)
+                        }
                     }
                     "ODOO" -> {
+                        updateProgressDialog(false)
                         invoiceDownloadDataEntity.fileName
                             ?: return@processAPIResponseWithFailureSnackBar
                         downloadFile(
@@ -133,6 +149,11 @@ class InvoiceDetailViewModel @Inject constructor(
                             downloadDirectory,
                             invoiceDownloadStatus
                         )
+                    }
+                    else -> {
+                        invoiceDownloadData.isFailed = true
+                        invoiceDownloadStatus(invoiceDownloadData)
+                        updateProgressDialog(false)
                     }
                 }
             }
@@ -142,8 +163,9 @@ class InvoiceDetailViewModel @Inject constructor(
     private fun downloadFile(
         identityId: String,
         downloadDirectory: File,
-        invoiceDownloadStatus: (InvoiceDownloadStatus) -> Unit
+        invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
+        updateProgressDialog(true)
         downloadFileUtil.downloadFile(
             downloadDirectory,
             identityId,
@@ -152,17 +174,18 @@ class InvoiceDetailViewModel @Inject constructor(
             object : TransferListener {
                 override fun onStateChanged(id: Int, state: TransferState?) {
                     if (state == TransferState.COMPLETED) {
-                        invoiceDownloadStatus(InvoiceDownloadStatus.SUCCESS)
+                        updateProgressDialog(false)
+                        invoiceDownloadStatus(invoiceDownloadData)
                     }
                 }
 
-                override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                    invoiceDownloadStatus(InvoiceDownloadStatus.PROGRESS)
-                }
+                override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) = Unit
 
                 override fun onError(id: Int, ex: Exception?) {
                     ex?.printStackTrace()
-                    invoiceDownloadStatus(InvoiceDownloadStatus.ERROR)
+                    invoiceDownloadData.isFailed = true
+                    invoiceDownloadStatus(invoiceDownloadData)
+                    updateProgressDialog(false)
                 }
             }
         )

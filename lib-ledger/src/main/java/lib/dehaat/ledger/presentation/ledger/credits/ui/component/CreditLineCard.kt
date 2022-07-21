@@ -94,13 +94,15 @@ fun CreditLineCard(
                 maxLines = 1
             )
 
-            Image(
-                modifier = Modifier
-                    .padding(start = 7.dp)
-                    .clickable { onOutstandingInfoIconClick(data) },
-                painter = painterResource(id = R.drawable.ic_info_icon),
-                contentDescription = "info"
-            )
+            if (data.belongsToGapl) {
+                Image(
+                    modifier = Modifier
+                        .padding(start = 7.dp)
+                        .clickable { onOutstandingInfoIconClick(data) },
+                    painter = painterResource(id = R.drawable.ic_info_icon),
+                    contentDescription = "info"
+                )
+            }
         }
 
         Text(

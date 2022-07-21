@@ -24,7 +24,7 @@ import lib.dehaat.ledger.initializer.LedgerParentApp
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallbacks
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
-import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatus
+import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 
 class AppChooserActivity : AppCompatActivity() {
 
@@ -41,8 +41,8 @@ class AppChooserActivity : AppCompatActivity() {
                                     showToast(creditSummaryViewData.toString())
                                 }
 
-                                override fun onClickDownloadInvoice(invoiceDownloadStatus: InvoiceDownloadStatus) {
-                                    showToast(invoiceDownloadStatus.toString())
+                                override fun onClickDownloadInvoice(invoiceDownloadData: InvoiceDownloadData) {
+                                    showToast(invoiceDownloadData.toString())
                                 }
 
                                 override fun onPaymentOptionsClick(
@@ -58,7 +58,24 @@ class AppChooserActivity : AppCompatActivity() {
                     LedgerSDK.openLedger(this, "123456", dcName = "DC DBA")
                 },
                 onClickAIMSButton = {
-                    LedgerSDK.init(applicationContext, LedgerParentApp.AIMS(), "fnfsandboxec2odoo")
+                    LedgerSDK.init(applicationContext, LedgerParentApp.AIMS(
+                        ledgerCallBack = object : LedgerCallbacks {
+                            override fun onClickPayNow(creditSummaryViewData: CreditSummaryViewData?) {
+                                showToast(creditSummaryViewData.toString())
+                            }
+
+                            override fun onClickDownloadInvoice(invoiceDownloadData: InvoiceDownloadData) {
+                                showToast(invoiceDownloadData.toString())
+                            }
+
+                            override fun onPaymentOptionsClick(
+                                creditSummaryViewData: CreditSummaryViewData?,
+                                resultLauncher: ActivityResultLauncher<Intent?>
+                            ) {
+                                showToast(creditSummaryViewData.toString())
+                            }
+                        }
+                    ), "fnfsandboxec2odoo")
                     LedgerSDK.openLedger(this, "0010000654", dcName = "DC AIMS")
                 })
         }

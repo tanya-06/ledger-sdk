@@ -5,14 +5,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import lib.dehaat.ledger.initializer.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
@@ -34,7 +39,7 @@ import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSumm
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryViewWithTopPadding
 import lib.dehaat.ledger.presentation.ledger.components.ProductView
 import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
-import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadStatus
+import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
@@ -47,7 +52,7 @@ fun InvoiceDetailScreen(
     source: String,
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit,
-    onDownloadInvoiceClick: (InvoiceDownloadStatus) -> Unit
+    onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -64,6 +69,21 @@ fun InvoiceDetailScreen(
         title = "Invoice Detail",
         onBackPress = onBackPress,
     ) {
+        if (uiState.isLoading) {
+            Dialog(
+                onDismissRequest = { viewModel.updateProgressDialog(false) },
+                DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .background(Color.White, shape = RoundedCornerShape(8.dp))
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
         Column(
             modifier = Modifier
                 .verticalScroll(
