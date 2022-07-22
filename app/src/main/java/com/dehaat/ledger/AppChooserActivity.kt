@@ -53,7 +53,7 @@ class AppChooserActivity : AppCompatActivity() {
                                 }
                             }
                         ),
-                        LedgerSDK.bucket
+                        "fnfsandboxec2odoo"
                     )
                     LedgerSDK.openLedger(this, "123456", dcName = "DC DBA")
                 },
