@@ -23,17 +23,19 @@ fun FilterStrip(
     onWithPenaltyChange: (Boolean) -> Unit,
     onDaysToFilterIconClick: () -> Unit,
     onDateRangeFilterIconClick: () -> Unit,
+    isLmsActivated: () -> Boolean
 ) {
-
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        Text(text = "Invoice with Penalty")
-        Switch(
-            modifier = Modifier.padding(start = 12.dp),
-            checked = withPenalty,
-            onCheckedChange = {
-                onWithPenaltyChange(it)
-            }
-        )
+        if (isLmsActivated()) {
+            Text(text = "Invoice with Penalty")
+            Switch(
+                modifier = Modifier.padding(start = 12.dp),
+                checked = withPenalty,
+                onCheckedChange = {
+                    onWithPenaltyChange(it)
+                }
+            )
+        }
 
         Row(
             modifier = Modifier
@@ -57,5 +59,4 @@ fun FilterStrip(
             )
         }
     }
-
 }

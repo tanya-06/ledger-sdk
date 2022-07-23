@@ -40,7 +40,8 @@ fun CreditsScreen(
                 ledgerColors = ledgerColors,
                 onInfoIconClick = {
                     viewModel.showAvailableCreditLimitInfoModal()
-                }
+                },
+                isLmsActivated = isLmsActivated
             )
         }
 

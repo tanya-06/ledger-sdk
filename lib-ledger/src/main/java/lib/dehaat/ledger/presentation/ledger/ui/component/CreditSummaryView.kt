@@ -15,7 +15,6 @@ import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.AIMSColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.MinimumAmountPaymentWarning
 import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.PayNowButton
 import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.PaymentOptionsButton
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
@@ -75,9 +74,6 @@ fun CreditSummaryView(
             )
             .fillMaxWidth()
     ) {
-        creditSummaryData?.overdue?.minPaymentAmount?.let {
-            InfoOrderBlockPayImmediate(ledgerColors = ledgerColors)
-        }
 
         HeaderTotalOutstanding(
             creditSummaryData = creditSummaryData,
@@ -88,13 +84,6 @@ fun CreditSummaryView(
 
         if (LedgerSDK.isDBA) {
             Divider(modifier = Modifier, thickness = 1.dp)
-
-            if (creditSummaryData?.overdue?.minPaymentAmount?.toDouble() != 0.0) {
-                MinimumAmountPaymentWarning(
-                    creditSummaryData = creditSummaryData,
-                    ledgerColors = ledgerColors
-                )
-            }
 
             PayNowButton(
                 ledgerColors = ledgerColors,

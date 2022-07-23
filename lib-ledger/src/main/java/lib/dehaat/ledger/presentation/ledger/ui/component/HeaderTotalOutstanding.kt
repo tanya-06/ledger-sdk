@@ -1,23 +1,18 @@
 package lib.dehaat.ledger.presentation.ledger.ui.component
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.getAmountInRupees
@@ -37,7 +32,7 @@ private fun TotalOutstandingAIMSPreview() {
     HeaderTotalOutstanding(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = AIMSColors(),
-        isLmsActivated = { false }
+        isLmsActivated = { true }
     ) {}
 }
 
@@ -50,7 +45,7 @@ private fun TotalOutstandingDBAPreview() {
     HeaderTotalOutstanding(
         creditSummaryData = DummyDataSource.creditSummaryViewData,
         ledgerColors = DBAColors(),
-        isLmsActivated = { false }
+        isLmsActivated = { true }
     ) {}
 }
 
@@ -80,65 +75,21 @@ fun HeaderTotalOutstanding(
                     text = "Total Outstanding",
                     style = text14Sp(textColor = ledgerColors.CtaColor)
                 )
-                Image(
-                    modifier = Modifier
-                        .padding(start = 7.dp)
-                        .clickable { onClickTotalOutstandingInfo() },
-                    painter = painterResource(id = R.drawable.ic_info_icon),
-                    contentDescription = "info"
-                )
+                if (isLmsActivated()) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(start = 7.dp)
+                            .clickable { onClickTotalOutstandingInfo() },
+                        painter = painterResource(id = R.drawable.ic_info_icon),
+                        contentDescription = "info"
+                    )
+                }
             }
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = creditSummaryData?.credit?.totalOutstandingAmount.getAmountInRupees(),
                 style = textBold14Sp(textColor = ledgerColors.CtaColor)
             )
-            if (creditSummaryData?.credit?.totalAvailableCreditLimit != null &&
-                creditSummaryData.credit.totalAvailableCreditLimit <= "0.0" &&
-                !isLmsActivated()
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .background(color = ledgerColors.ErrorLightColor)
-                        .padding(2.dp),
-                    text = "Credit Limit Exhausted",
-                    style = text14Sp(textColor = ledgerColors.ErrorColor)
-                )
-            }
-            //TODO dcFinanced == false
-            if (!isLmsActivated()) {
-                Text(
-                    modifier = Modifier.padding(top = 12.dp),
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 14.sp,
-                                color = ledgerColors.SummaryColor,
-                            )
-                        ) {
-                            append("Includes overdue amount of ")
-                        }
-
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 14.sp,
-                                color = ledgerColors.ErrorColor,
-                            )
-                        ) {
-                            append(creditSummaryData?.overdue?.totalOverdueAmount.getAmountInRupees())
-                        }
-                    }
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .background(color = ledgerColors.ErrorLightColor)
-                        .padding(2.dp),
-                    text = "Overdue limit exhausted",
-                    style = text14Sp(textColor = ledgerColors.ErrorColor)
-                )
-            }
         }
     }
 }

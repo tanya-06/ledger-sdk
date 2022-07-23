@@ -19,28 +19,28 @@ object DummyDataSource {
     private val creditViewData by lazy {
         CreditViewData(
             externalFinancierSupported = true,
-            totalCreditLimit = "totalCreditLimit",
-            totalAvailableCreditLimit = "-50000",
-            totalOutstandingAmount = "10000",
-            principalOutstandingAmount = "principalOutstandingAmount",
-            interestOutstandingAmount = "interestOutstandingAmount",
-            overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
-            penaltyOutstandingAmount = "penaltyOutstandingAmount"
+            totalCreditLimit = "000001",
+            totalAvailableCreditLimit = "-000002",
+            totalOutstandingAmount = "000003",
+            principalOutstandingAmount = "000004",
+            interestOutstandingAmount = "000005",
+            overdueInterestOutstandingAmount = "000006",
+            penaltyOutstandingAmount = "000007"
         )
     }
 
     private val infoViewData by lazy {
         InfoViewData(
-            totalPurchaseAmount = "totalPurchaseAmount",
-            totalPaymentAmount = "totalPaymentAmount",
-            undeliveredInvoiceAmount = "undeliveredInvoiceAmount"
+            totalPurchaseAmount = "000008",
+            totalPaymentAmount = "000009",
+            undeliveredInvoiceAmount = "000010"
         )
     }
     private val overdueViewData by lazy {
         OverdueViewData(
-            totalOverdueLimit = "totalOverdueLimit",
-            totalOverdueAmount = "totalOverdueAmount",
-            minPaymentAmount = "minPaymentAmount",
+            totalOverdueLimit = "1000",
+            totalOverdueAmount = "1000",
+            minPaymentAmount = "1000",
             minPaymentDueDate = 78
         )
     }
@@ -55,14 +55,14 @@ object DummyDataSource {
         CreditLineViewData(
             belongsToGapl = true,
             lenderViewName = "lenderViewName",
-            creditLimit = "creditLimit",
-            availableCreditLimit = "availableCreditLimit",
-            totalOutstandingAmount = "totalOutstandingAmount",
-            principalOutstandingAmount = "principalOutstandingAmount",
-            interestOutstandingAmount = "interestOutstandingAmount",
-            overdueInterestOutstandingAmount = "overdueInterestOutstandingAmount",
-            penaltyOutstandingAmount = "penaltyOutstandingAmount",
-            advanceAmount = "advanceAmount"
+            creditLimit = "000011",
+            availableCreditLimit = "000012",
+            totalOutstandingAmount = "000013",
+            principalOutstandingAmount = "000014",
+            interestOutstandingAmount = "000015",
+            overdueInterestOutstandingAmount = "000016",
+            penaltyOutstandingAmount = "000017",
+            advanceAmount = "000018"
         )
     }
     val transactionViewData by lazy {
@@ -70,7 +70,7 @@ object DummyDataSource {
             ledgerId = "ledgerId",
             type = "type",
             date = 67384543,
-            amount = "amount",
+            amount = "000019",
             erpId = "erpId",
             locusId = "locusId",
             creditNoteReason = "creditNoteReason",

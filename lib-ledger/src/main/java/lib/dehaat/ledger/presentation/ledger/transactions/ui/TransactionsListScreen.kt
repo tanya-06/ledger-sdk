@@ -37,7 +37,8 @@ fun TransactionsListScreen(
     viewModel: LedgerTransactionViewModel = hiltViewModel(),
     ledgerDetailViewModel: LedgerDetailViewModel,
     openDaysFilter: () -> Unit,
-    openRangeFilter: () -> Unit
+    openRangeFilter: () -> Unit,
+    isLmsActivated: () -> Boolean
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
@@ -51,7 +52,8 @@ fun TransactionsListScreen(
                 viewModel.applyOnlyPenaltyInvoicesFilter(it)
             },
             onDaysToFilterIconClick = openDaysFilter,
-            onDateRangeFilterIconClick = openRangeFilter
+            onDateRangeFilterIconClick = openRangeFilter,
+            isLmsActivated = isLmsActivated
         )
         LazyColumn(
             modifier = Modifier,

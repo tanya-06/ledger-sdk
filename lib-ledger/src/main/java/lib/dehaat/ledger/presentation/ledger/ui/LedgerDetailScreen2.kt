@@ -181,7 +181,8 @@ fun LedgerDetailScreen2(
                                     },
                                     openRangeFilter = {
                                         viewModel.showDaysRangeFilterDialog(true)
-                                    }
+                                    },
+                                    isLmsActivated = isLmsActivated
                                 )
                             }
                         }

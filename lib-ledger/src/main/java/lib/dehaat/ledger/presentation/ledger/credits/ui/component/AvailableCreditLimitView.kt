@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +30,8 @@ fun AvailableCreditLimitViewScreenDBA() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
         ledgerColors = DBAColors(),
-        onInfoIconClick = { }
+        onInfoIconClick = { },
+        isLmsActivated = { true }
     )
 }
 
@@ -42,7 +44,8 @@ fun AvailableCreditLimitViewScreenAIMS() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
         ledgerColors = AIMSColors(),
-        onInfoIconClick = { }
+        onInfoIconClick = { },
+        isLmsActivated = { true }
     )
 }
 
@@ -50,7 +53,8 @@ fun AvailableCreditLimitViewScreenAIMS() {
 fun AvailableCreditLimitView(
     limitInRupees: String,
     ledgerColors: LedgerColors,
-    onInfoIconClick: () -> Unit
+    onInfoIconClick: () -> Unit,
+    isLmsActivated: () -> Boolean
 ) {
     Row(
         modifier = Modifier
@@ -72,13 +76,15 @@ fun AvailableCreditLimitView(
             maxLines = 1
         )
 
-        Image(
-            modifier = Modifier
-                .padding(start = 7.dp)
-                .clickable { onInfoIconClick() },
-            painter = painterResource(id = R.drawable.ic_info_icon),
-            contentDescription = "info"
-        )
+        if (isLmsActivated()) {
+            Icon(
+                modifier = Modifier
+                    .padding(start = 7.dp)
+                    .clickable { onInfoIconClick() },
+                painter = painterResource(id = R.drawable.ic_info_icon),
+                contentDescription = "info"
+            )
+        }
 
         Text(
             modifier = Modifier
