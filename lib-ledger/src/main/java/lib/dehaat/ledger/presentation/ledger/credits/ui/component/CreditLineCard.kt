@@ -94,7 +94,7 @@ fun CreditLineCard(
                 maxLines = 1
             )
 
-            if (data.belongsToGapl) {
+            if (!data.belongsToGapl) {
                 Image(
                     modifier = Modifier
                         .padding(start = 7.dp)
@@ -122,7 +122,7 @@ fun CreditLineCard(
         )
 
         SanctionedCreditLimitView(
-            limitInRupees = data.creditLimit.getAmountInRupees(),
+            limitInRupees = data.availableCreditLimit.getAmountInRupees(),
             ledgerColors = ledgerColors,
             onInfoIconClick = onSanctionedInfoClick,
             isLmsActivated = isLmsActivated
