@@ -57,21 +57,23 @@ class LedgerDetailActivity : ComponentActivity() {
                         viewModel = viewModel,
                         ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack,
                         onDownloadClick = {
-                            val callBacks = LedgerSDK.currentApp.ledgerCallBack
-                            callBacks.onClickDownloadInvoice(it)
+                            val ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack
                             notificationHandler.notificationBuilder.setSmallIcon(LedgerSDK.appIcon)
                             if (it.isFailed) {
                                 showToast("Technical problem occurred, try again after some time")
                             } else {
                                 notificationHandler.apply {
                                     if (it.progressData.bytesCurrent == 100) {
-                                        notificationBuilder.setContentText("Invoice downloaded successfully")
-                                        notificationBuilder.setContentIntent(
-                                            callBacks.downloadInvoiceIntent.invoke(
-                                                this@LedgerDetailActivity,
-                                                it.filePath
+                                        notificationBuilder.apply {
+                                            setContentText("Invoice downloaded successfully")
+                                            setContentIntent(
+                                                ledgerCallbacks.downloadInvoiceIntent.invoke(
+                                                    this@LedgerDetailActivity,
+                                                    it.filePath
+                                                )
                                             )
-                                        )
+                                        }
+                                        ledgerCallbacks.onDownloadInvoiceSuccess(it)
                                         showToast("Invoice downloaded successfully")
                                     } else {
                                         notificationBuilder.setContentText("Invoice download in progress")

@@ -18,13 +18,13 @@ interface LedgerCallbacks {
 
 data class LedgerCallBack(
     val onClickPayNow: PayNowClick,
-    val onClickDownloadInvoice: DownloadInvoiceClick,
+    val onDownloadInvoiceSuccess: DownloadInvoiceSuccess,
     val onPaymentOptionsClick: PaymentOptionsClick,
     val downloadInvoiceIntent: DownloadInvoiceIntent
 )
 typealias PayNowClick = (creditSummaryViewData: CreditSummaryViewData?) -> Unit
 typealias DownloadInvoiceIntent = (Context, String) -> PendingIntent?
-typealias DownloadInvoiceClick = (invoiceDownloadData: InvoiceDownloadData) -> Unit
+typealias DownloadInvoiceSuccess = (invoiceDownloadData: InvoiceDownloadData) -> Unit
 
 typealias PaymentOptionsClick = (
     creditSummaryViewData: CreditSummaryViewData?,

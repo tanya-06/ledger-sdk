@@ -1,6 +1,6 @@
 package lib.dehaat.ledger.initializer
 
-import lib.dehaat.ledger.initializer.callbacks.DownloadInvoiceClick
+import lib.dehaat.ledger.initializer.callbacks.DownloadInvoiceSuccess
 import lib.dehaat.ledger.initializer.callbacks.DownloadInvoiceIntent
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
 import lib.dehaat.ledger.initializer.themes.AIMSColors
@@ -12,13 +12,13 @@ sealed class LedgerParentApp(
     val ledgerColors: LedgerColors
 ) {
     class AIMS(
-        downloadInvoiceClick: DownloadInvoiceClick,
+        downloadInvoiceClick: DownloadInvoiceSuccess,
         downloadInvoiceIntent: DownloadInvoiceIntent,
         ledgerColors: LedgerColors = AIMSColors()
     ) : LedgerParentApp(
         LedgerCallBack(
             onClickPayNow = {},
-            onClickDownloadInvoice = downloadInvoiceClick,
+            onDownloadInvoiceSuccess = downloadInvoiceClick,
             onPaymentOptionsClick = { _, _ -> },
             downloadInvoiceIntent = downloadInvoiceIntent
         ),
