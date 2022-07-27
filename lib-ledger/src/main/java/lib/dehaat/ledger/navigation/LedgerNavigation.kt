@@ -110,7 +110,6 @@ fun LedgerNavigation(
                 },
                 onDownloadInvoiceClick = onDownloadClick
             )
-
         }
 
         composable(

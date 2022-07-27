@@ -141,7 +141,7 @@ class LedgerDetailViewModel @Inject constructor(
             val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
             viewModelState.update { ledgerDetailViewModelState ->
                 ledgerDetailViewModelState.copy(
-                    isLoading = true,
+                    isLoading = false,
                     transactionSummaryViewData = transactionSummaryViewData
                 )
             }
@@ -154,16 +154,12 @@ class LedgerDetailViewModel @Inject constructor(
         }
     }
 
-    private fun calledAPI() {
-        viewModelState.update {
-            it.copy(isLoading = false)
-        }
-    }
+    private fun calledAPI() = updateProgressDialog(false)
 
-    private fun callingAPI() {
-        viewModelState.update {
-            it.copy(isLoading = true)
-        }
+    private fun callingAPI() = updateProgressDialog(true)
+
+    fun updateProgressDialog(show: Boolean) = viewModelState.update {
+        it.copy(isLoading = show)
     }
 
     private fun getOverAllSummaryData(creditSummaryViewData: CreditSummaryViewData) =

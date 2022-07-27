@@ -2,14 +2,14 @@
 
 package lib.dehaat.ledger.presentation.ledger.ui
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -27,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -92,103 +94,123 @@ fun LedgerDetailScreen2(
             }
         }
     ) {
-        ModalBottomSheetLayout(
-            modifier = Modifier.padding(it),
-            sheetContent = {
+        if (uiState.isLoading) {
+            Dialog(
+                onDismissRequest = { viewModel.updateProgressDialog(false) },
+                DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .background(Color.White, shape = RoundedCornerShape(8.dp))
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        } else {
+            ModalBottomSheetLayout(
+                modifier = Modifier.padding(it),
+                sheetContent = {
 
-                when (val bottomSheetType = uiState.bottomSheetType) {
-                    is BottomSheetType.LenderOutStanding -> LenderOutStandingDetails(
-                        data = bottomSheetType.data,
-                        ledgerColors = ledgerColors
-                    )
-                    is BottomSheetType.OverAllOutStanding ->
-                        OverAllOutStandingDetails(
+                    when (val bottomSheetType = uiState.bottomSheetType) {
+                        is BottomSheetType.LenderOutStanding -> LenderOutStandingDetails(
                             data = bottomSheetType.data,
                             ledgerColors = ledgerColors
                         )
-                    is BottomSheetType.DaysFilterTypeSheet -> DaysToFilterContent(
-                        selectedFilter = bottomSheetType.selectedFilter,
-                        ledgerColors = ledgerColors,
-                        onFilterSelected = { daysToFilter ->
-                            viewModel.updateSelectedFilter(daysToFilter)
-                            viewModel.getTransactionSummaryFromServer()
-                            scope.launch {
-                                sheetState.animateTo(ModalBottomSheetValue.Hidden)
-                            }
-                        }
-                    )
-                }
-
-            },
-            sheetBackgroundColor = Color.White,
-            sheetState = sheetState,
-            sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        ) {
-            val nestedScrollViewState = rememberNestedScrollViewState()
-            VerticalNestedScrollView(
-                state = nestedScrollViewState,
-                header = {
-                    Header(
-                        creditSummaryData = uiState.creditSummaryViewData,
-                        ledgerColors = ledgerColors,
-                        isLmsActivated = isLmsActivated,
-                        onPayNowClick = onPayNowClick,
-                        onClickTotalOutstandingInfo = {
-                            scope.launch {
-                                viewModel.openAllOutstandingModal()
-                                sheetState.animateTo(ModalBottomSheetValue.Expanded)
-                            }
-                        },
-                        onPaymentOptionsClick = onPaymentOptionsClick
-                    )
-                },
-                content = {
-                    val pagerState = rememberPagerState(pageCount = 2)
-                    LaunchedEffect(key1 = pagerState) {
-                        snapshotFlow { pagerState.currentPage }.collect { currentPage ->
-                            bottomBarVisibility.value = currentPage == 0
-                        }
-                    }
-                    Column(modifier = Modifier.background(ledgerColors.TransactionAndCreditScreenBGColor)) {
-                        Tabs(pagerState, ledgerColors) { currentPage ->
-                            scope.launch {
-                                pagerState.animateScrollToPage(page = currentPage)
-                            }
-                        }
-                        HorizontalPager(
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(color = ledgerColors.TransactionAndCreditScreenBGColor),
-                            state = pagerState,
-                            verticalAlignment = Alignment.Top
-                        ) { index ->
-                            when (index) {
-                                1 -> CreditsScreen(
-                                    ledgerDetailViewModel = viewModel,
-                                    ledgerColors = ledgerColors,
-                                    isLmsActivated = isLmsActivated,
-                                ) {
-                                    viewModel.showLenderOutstandingModal(it)
-                                    scope.launch { sheetState.animateTo(ModalBottomSheetValue.Expanded) }
+                        is BottomSheetType.OverAllOutStanding ->
+                            OverAllOutStandingDetails(
+                                data = bottomSheetType.data,
+                                ledgerColors = ledgerColors
+                            )
+                        is BottomSheetType.DaysFilterTypeSheet -> DaysToFilterContent(
+                            selectedFilter = bottomSheetType.selectedFilter,
+                            ledgerColors = ledgerColors,
+                            onFilterSelected = { daysToFilter ->
+                                viewModel.updateSelectedFilter(daysToFilter)
+                                viewModel.getTransactionSummaryFromServer()
+                                scope.launch {
+                                    sheetState.animateTo(ModalBottomSheetValue.Hidden)
                                 }
-                                else -> TransactionsListScreen(
-                                    ledgerColors = ledgerColors,
-                                    detailPageNavigationCallback = detailPageNavigationCallback,
-                                    ledgerDetailViewModel = viewModel,
-                                    openDaysFilter = {
-                                        viewModel.showDaysFilterBottomSheet()
+                            }
+                        )
+                    }
+
+                },
+                sheetBackgroundColor = Color.White,
+                sheetState = sheetState,
+                sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            ) {
+                val nestedScrollViewState = rememberNestedScrollViewState()
+                VerticalNestedScrollView(
+                    state = nestedScrollViewState,
+                    header = {
+                        Header(
+                            creditSummaryData = uiState.creditSummaryViewData,
+                            ledgerColors = ledgerColors,
+                            isLmsActivated = isLmsActivated,
+                            onPayNowClick = onPayNowClick,
+                            onClickTotalOutstandingInfo = {
+                                scope.launch {
+                                    viewModel.openAllOutstandingModal()
+                                    sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                                }
+                            },
+                            onPaymentOptionsClick = onPaymentOptionsClick
+                        )
+                    },
+                    content = {
+                        val pagerState = rememberPagerState(pageCount = 2)
+                        LaunchedEffect(key1 = pagerState) {
+                            snapshotFlow { pagerState.currentPage }.collect { currentPage ->
+                                bottomBarVisibility.value = currentPage == 0
+                            }
+                        }
+                        Column(modifier = Modifier.background(ledgerColors.TransactionAndCreditScreenBGColor)) {
+                            Tabs(pagerState, ledgerColors) { currentPage ->
+                                scope.launch {
+                                    pagerState.animateScrollToPage(page = currentPage)
+                                }
+                            }
+                            HorizontalPager(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .background(color = ledgerColors.TransactionAndCreditScreenBGColor),
+                                state = pagerState,
+                                verticalAlignment = Alignment.Top
+                            ) { index ->
+                                when (index) {
+                                    1 -> CreditsScreen(
+                                        ledgerDetailViewModel = viewModel,
+                                        ledgerColors = ledgerColors,
+                                        isLmsActivated = isLmsActivated,
+                                    ) {
+                                        viewModel.showLenderOutstandingModal(it)
                                         scope.launch { sheetState.animateTo(ModalBottomSheetValue.Expanded) }
-                                    },
-                                    openRangeFilter = {
-                                        viewModel.showDaysRangeFilterDialog(true)
-                                    },
-                                    isLmsActivated = isLmsActivated
-                                )
+                                    }
+                                    else -> TransactionsListScreen(
+                                        ledgerColors = ledgerColors,
+                                        detailPageNavigationCallback = detailPageNavigationCallback,
+                                        ledgerDetailViewModel = viewModel,
+                                        openDaysFilter = {
+                                            viewModel.showDaysFilterBottomSheet()
+                                            scope.launch {
+                                                sheetState.animateTo(
+                                                    ModalBottomSheetValue.Expanded
+                                                )
+                                            }
+                                        },
+                                        openRangeFilter = {
+                                            viewModel.showDaysRangeFilterDialog(true)
+                                        },
+                                        isLmsActivated = isLmsActivated
+                                    )
+                                }
                             }
                         }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

@@ -250,7 +250,8 @@ fun InvoiceDetailScreen(
                 Divider(
                     modifier = Modifier
                         .padding(vertical = 10.dp)
-                        .background(color = ledgerColors.TabBorderColorDefault), thickness = 1.dp
+                        .background(color = ledgerColors.TabBorderColorDefault),
+                    thickness = 1.dp
                 )
 
                 CreditNoteKeyValue(
