@@ -47,5 +47,4 @@ interface ILedgerDataSource {
     suspend fun getCreditNoteDetail(
         ledgerId: String
     ): APIResultEntity<CreditNoteDetailEntity?>
-
 }

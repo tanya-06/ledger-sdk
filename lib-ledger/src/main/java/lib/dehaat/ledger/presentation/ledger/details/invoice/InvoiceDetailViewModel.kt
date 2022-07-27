@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -19,6 +20,7 @@ import lib.dehaat.ledger.domain.usecases.GetInvoiceDetailUseCase
 import lib.dehaat.ledger.domain.usecases.GetInvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.initializer.LedgerSDK
+import lib.dehaat.ledger.presentation.LedgerConstants.ERROR_LOGS
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -86,6 +88,7 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     private fun sendShowSnackBarEvent(message: String) {
+        Log.d(ERROR_LOGS, "sendShowSnackBarEvent: $message")
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }

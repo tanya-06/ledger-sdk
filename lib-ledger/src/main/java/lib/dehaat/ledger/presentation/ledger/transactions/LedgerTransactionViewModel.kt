@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.transactions
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -25,6 +26,7 @@ import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.framework.model.BaseAPIErrorResponse
 import lib.dehaat.ledger.framework.network.BasePagingSourceWithResponse
+import lib.dehaat.ledger.presentation.LedgerConstants.ERROR_LOGS
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PARTNER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -148,6 +150,7 @@ class LedgerTransactionViewModel @Inject constructor(
         }
 
     private fun sendShowSnackBarEvent(message: String) {
+        Log.d(ERROR_LOGS, "sendShowSnackBarEvent: $message")
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }

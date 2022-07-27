@@ -61,5 +61,4 @@ class LedgerRepository @Inject constructor(private val networkSource: ILedgerDat
     ) = networkSource.getCreditNoteDetail(
         ledgerId
     )
-
 }

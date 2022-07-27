@@ -10,5 +10,6 @@ object LedgerConstants {
     const val KEY_SOURCE = "KEY_SOURCE"
     const val KEY_PAYMENT_MODE = "KEY_PAYMENT_MODE"
     const val KEY_LMS_ACTIVATED = "KEY_LMS_ACTIVATED"
+    const val ERROR_LOGS = "ERROR_LOGS"
 
 }
