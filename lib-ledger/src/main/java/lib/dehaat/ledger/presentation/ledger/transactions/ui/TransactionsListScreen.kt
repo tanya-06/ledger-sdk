@@ -67,7 +67,8 @@ fun TransactionsListScreen(
                                 legerId = data.ledgerId,
                                 erpId = data.erpId,
                                 locusId = data.locusId,
-                                mode = data.paymentMode
+                                mode = data.paymentMode,
+                                isLMSActivated = isLmsActivated()
                             )
                             TransactionType.CREDIT_NOTE -> detailPageNavigationCallback.navigateToCreditNoteDetailPage(
                                 legerId = data.ledgerId,

@@ -145,7 +145,8 @@ fun LedgerNavigation(
                 LedgerConstants.KEY_LEDGER_ID,
                 LedgerConstants.KEY_ERP_ID,
                 LedgerConstants.KEY_LOCUS_ID,
-                LedgerConstants.KEY_PAYMENT_MODE
+                LedgerConstants.KEY_PAYMENT_MODE,
+                LedgerConstants.KEY_LMS_ACTIVATED
             ),
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_LEDGER_ID) {
@@ -162,12 +163,20 @@ fun LedgerNavigation(
                 navArgument(LedgerConstants.KEY_PAYMENT_MODE) {
                     type = NavType.StringType
                     nullable = true
-                })
+                },
+                navArgument(LedgerConstants.KEY_LMS_ACTIVATED) {
+                    type = NavType.BoolType
+                    nullable = false
+                }
+            )
         ) {
 
             val viewModel = hiltViewModel<PaymentDetailViewModel>()
 
-            PaymentDetailScreen(viewModel = viewModel, ledgerColors = ledgerColors) {
+            PaymentDetailScreen(
+                viewModel = viewModel,
+                ledgerColors = ledgerColors
+            ) {
                 navController.popBackStack()
             }
 
@@ -210,14 +219,16 @@ fun provideDetailPageNavCallBacks(navController: NavHostController) =
             legerId: String,
             erpId: String?,
             locusId: String?,
-            mode: String?
+            mode: String?,
+            isLMSActivated: Boolean
         ) {
             navigateToPaymentDetailScreen(
                 navController = navController,
                 ledgerId = legerId,
                 erpId = erpId,
                 locusId = locusId,
-                mode = mode
+                mode = mode,
+                isLMSActivated = isLMSActivated
             )
         }
 
@@ -260,14 +271,16 @@ fun navigateToPaymentDetailScreen(
     ledgerId: String,
     erpId: String?,
     locusId: String?,
-    mode: String?
+    mode: String?,
+    isLMSActivated: Boolean
 ) {
     navController.navigate(
         LedgerRoutes.LedgerPaymentDetailScreen.screen.withArgs(
             ledgerId,
             erpId,
             locusId,
-            mode
+            mode,
+            isLMSActivated
         )
     )
 }

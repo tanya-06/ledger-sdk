@@ -22,6 +22,7 @@ import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValue
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryView
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryViewWithTopPadding
+import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
 import lib.dehaat.ledger.resources.text18Sp
 
@@ -31,7 +32,6 @@ fun PaymentDetailScreen(
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit
 ) {
-
     val uiState by viewModel.uiState.collectAsState()
     val paymentSummary = uiState.paymentDetailSummaryViewData
     val scrollState = rememberScrollState()
@@ -40,78 +40,99 @@ fun PaymentDetailScreen(
         title = "Payment Detail",
         onBackPress = onBackPress,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(
-                    state = scrollState,
-                    enabled = true,
-                )
-                .background(Color.White)
-                .padding(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            CreditNoteKeyValue(
-                "Payment Amount",
-                paymentSummary?.totalAmount.getAmountInRupees(),
-                keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                valueTextStyle = text18Sp(
-                    fontWeight = FontWeight.Bold,
-                    textColor = ledgerColors.CtaDarkColor
-                ),
-            )
-
+        if (uiState.isLoading) {
+            ShowProgress()
+        } else {
             Column(
                 modifier = Modifier
-                    .padding(top = 8.dp)
-                    .background(
-                        shape = RoundedCornerShape(9.dp),
-                        color = ledgerColors.InfoContainerBgColor
+                    .fillMaxSize()
+                    .verticalScroll(
+                        state = scrollState,
+                        enabled = true,
                     )
-                    .padding(16.dp)
+                    .background(Color.White)
+                    .padding(18.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                CreditNoteKeyValueInSummaryView(
-                    "Principal Paid", paymentSummary?.principalComponent.getAmountInRupees(),
-                    ledgerColors = ledgerColors,
+                CreditNoteKeyValue(
+                    "Payment Amount",
+                    paymentSummary?.totalAmount.getAmountInRupees(),
+                    keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                    valueTextStyle = text18Sp(
+                        fontWeight = FontWeight.Bold,
+                        textColor = ledgerColors.CtaDarkColor
+                    ),
                 )
 
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "Penalty Paid",
-                    paymentSummary?.penaltyComponent.getAmountInRupees(),
-                    ledgerColors = ledgerColors,
-                )
+                Column(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .background(
+                            shape = RoundedCornerShape(9.dp),
+                            color = ledgerColors.InfoContainerBgColor
+                        )
+                        .padding(16.dp)
+                ) {
+                    if (viewModel.isLmsActivated()) {
+                        paymentSummary?.principalComponent?.let {
+                            CreditNoteKeyValueInSummaryView(
+                                "Principal Paid",
+                                it.getAmountInRupees(),
+                                ledgerColors = ledgerColors,
+                            )
+                        }
 
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "Advance Paid",
-                    paymentSummary?.advanceComponent.getAmountInRupees(),
-                    ledgerColors = ledgerColors,
-                )
+                        paymentSummary?.penaltyComponent?.let {
+                            CreditNoteKeyValueInSummaryViewWithTopPadding(
+                                "Penalty Paid",
+                                it.getAmountInRupees(),
+                                ledgerColors = ledgerColors,
+                            )
+                        }
 
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "Payment Method",
-                    viewModel.paymentMode ?: "",
-                    ledgerColors = ledgerColors,
-                )
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "Reference ID",
-                    paymentSummary?.referenceId ?: "",
+                        paymentSummary?.advanceComponent?.let {
+                            CreditNoteKeyValueInSummaryViewWithTopPadding(
+                                "Advance Paid",
+                                it.getAmountInRupees(),
+                                ledgerColors = ledgerColors,
+                            )
+                        }
+                    }
 
-                    ledgerColors = ledgerColors,
-                )
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "Payment Date",
-                    paymentSummary?.timestamp.toDateMonthYear(),
+                    viewModel.paymentMode?.let {
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Payment Method",
+                            viewModel.paymentMode ?: "",
+                            ledgerColors = ledgerColors,
+                        )
+                    }
 
-                    ledgerColors = ledgerColors,
-                )
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "Paid To",
-                    paymentSummary?.paidTo ?: "",
-                    ledgerColors = ledgerColors,
-                )
+                    paymentSummary?.referenceId?.let {
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Reference ID",
+                            it,
+                            ledgerColors = ledgerColors,
+                        )
+                    }
 
+                    paymentSummary?.timestamp?.let {
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Payment Date",
+                            it.toDateMonthYear(),
+                            ledgerColors = ledgerColors,
+                        )
+                    }
+                    if (viewModel.isLmsActivated()) {
+                        paymentSummary?.paidTo?.let {
+                            CreditNoteKeyValueInSummaryViewWithTopPadding(
+                                "Paid To",
+                                it,
+                                ledgerColors = ledgerColors,
+                            )
+                        }
+                    }
+                }
             }
         }
     }

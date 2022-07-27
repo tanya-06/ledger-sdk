@@ -13,6 +13,7 @@ interface DetailPageNavigationCallback {
         legerId: String,
         erpId: String?,
         locusId: String?,
-        mode: String?
+        mode: String?,
+        isLMSActivated: Boolean
     )
 }

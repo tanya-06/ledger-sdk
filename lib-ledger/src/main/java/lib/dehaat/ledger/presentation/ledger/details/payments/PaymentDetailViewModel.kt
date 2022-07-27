@@ -19,6 +19,7 @@ import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
 import lib.dehaat.ledger.presentation.LedgerConstants.ERROR_LOGS
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_ERP_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
+import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LMS_ACTIVATED
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LOCUS_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PAYMENT_MODE
 import lib.dehaat.ledger.presentation.common.BaseViewModel
@@ -47,6 +48,8 @@ class PaymentDetailViewModel @Inject constructor(
 
     val paymentMode by lazy { savedStateHandle.get<String>(KEY_PAYMENT_MODE) }
 
+    private val lmsActivated by lazy { savedStateHandle.get<Boolean>(KEY_LMS_ACTIVATED)}
+
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> get() = _uiEvent
 
@@ -62,6 +65,8 @@ class PaymentDetailViewModel @Inject constructor(
     init {
         getPaymentDetailFromServer()
     }
+
+    fun isLmsActivated() = lmsActivated == true
 
     private fun getPaymentDetailFromServer() {
         callInViewModelScope {
