@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.initializer.themes.AIMSColors
@@ -46,6 +47,6 @@ fun Tag(value: String, modifier: Modifier = Modifier, ledgerColors: LedgerColors
         text = value,
         style = textMedium14Sp(textColor = ledgerColors.TagBorderColorDefault),
         maxLines = 1,
+        overflow = TextOverflow.Ellipsis
     )
-
 }

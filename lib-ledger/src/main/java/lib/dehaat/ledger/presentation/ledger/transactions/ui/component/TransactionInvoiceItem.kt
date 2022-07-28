@@ -136,7 +136,6 @@ private fun provideTransactionLabel(type: String) = when (type) {
     else -> "Transaction"
 }
 
-@Composable
 private fun provideTransactionTag(data: TransactionViewData) = when (data.type) {
     TransactionType.PAYMENT -> data.paymentMode
     TransactionType.CREDIT_NOTE -> data.creditNoteReason

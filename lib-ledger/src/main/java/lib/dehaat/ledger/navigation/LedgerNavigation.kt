@@ -129,7 +129,8 @@ fun LedgerNavigation(
                 navArgument(LedgerConstants.KEY_LOCUS_ID) {
                     type = NavType.StringType
                     nullable = true
-                })
+                }
+            )
         ) {
 
             val viewModel = hiltViewModel<CreditNoteDetailViewModel>()
