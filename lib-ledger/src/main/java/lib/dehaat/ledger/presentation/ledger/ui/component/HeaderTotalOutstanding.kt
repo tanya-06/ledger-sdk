@@ -15,13 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
-import lib.dehaat.ledger.initializer.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.AIMSColors
 import lib.dehaat.ledger.initializer.themes.DBAColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.resources.text14Sp
 import lib.dehaat.ledger.resources.textBold14Sp
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @Preview(
     name = "Total Outstanding Header AIMS",

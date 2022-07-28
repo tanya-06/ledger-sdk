@@ -46,6 +46,7 @@ import lib.dehaat.ledger.presentation.ledger.transactions.ui.TransactionsListScr
 import lib.dehaat.ledger.presentation.ledger.ui.component.Header
 import lib.dehaat.ledger.presentation.ledger.ui.component.Tabs
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionSummary
+import lib.dehaat.ledger.util.HandleAPIErrors
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
 import moe.tlaster.nestedscrollview.rememberNestedScrollViewState
 
@@ -60,6 +61,7 @@ fun LedgerDetailScreen2(
     onPayNowClick: () -> Unit,
     onPaymentOptionsClick: () -> Unit
 ) {
+    HandleAPIErrors(viewModel.uiEvent)
     val uiState by viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()

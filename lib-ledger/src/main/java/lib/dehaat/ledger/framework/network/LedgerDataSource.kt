@@ -3,11 +3,11 @@ package lib.dehaat.ledger.framework.network
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.coroutine.IDispatchers
 import com.dehaat.androidbase.network.api.makeAPICall
+import javax.inject.Inject
 import lib.dehaat.ledger.data.source.ILedgerDataSource
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.framework.mapper.LedgerFrameworkMapper
 import retrofit2.Response
-import javax.inject.Inject
 
 class LedgerDataSource @Inject constructor(
     private val dispatcher: IDispatchers,
@@ -74,7 +74,7 @@ class LedgerDataSource @Inject constructor(
         source: String
     ) = callAPI(
         dispatcher,
-        {apiService.downloadInvoice(identityId, source)}
+        { apiService.downloadInvoice(identityId, source) }
     ) {
         it?.downloadInvoiceData?.let { data -> mapper.toInvoiceDownloadDataEntity(data) }
     }
@@ -102,8 +102,10 @@ class LedgerDataSource @Inject constructor(
         apiCall: suspend () -> Response<D>,
         parse: (D?) -> C
     ): APIResultEntity<C> {
-        return makeAPICall(dispatchers.io, {
-            apiCall.invoke()
-        }, parse)
+        return makeAPICall(
+            dispatchers.io,
+            { apiCall.invoke() },
+            parse
+        )
     }
 }

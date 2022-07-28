@@ -1,11 +1,11 @@
 package lib.dehaat.ledger.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,7 +21,6 @@ import lib.dehaat.ledger.domain.usecases.GetTransactionSummaryUseCase
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.presentation.LedgerConstants.ERROR_LOGS
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PARTNER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -31,7 +30,7 @@ import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
-import javax.inject.Inject
+import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
 class LedgerDetailViewModel @Inject constructor(
@@ -151,7 +150,6 @@ class LedgerDetailViewModel @Inject constructor(
     }
 
     private fun sendShowSnackBarEvent(message: String) {
-        Log.d(ERROR_LOGS, "sendShowSnackBarEvent: $message")
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }
@@ -230,18 +228,5 @@ class LedgerDetailViewModel @Inject constructor(
         callInViewModelScope {
             _selectedDaysToFilterEvent.emit(selectedFilter)
         }
-    }
-}
-
-fun <D> APIResultEntity<D>.processAPIResponseWithFailureSnackBar(
-    onFailure: (message: String) -> Unit,
-    handleSuccess: (data: D) -> Unit
-) {
-    when (this) {
-        is APIResultEntity.Success -> handleSuccess(this.data)
-        is APIResultEntity.Failure.ErrorException -> onFailure(
-            this.exceptionError.message ?: ""
-        )
-        is APIResultEntity.Failure.ErrorFailure -> onFailure(this.responseMessage)
     }
 }

@@ -1,7 +1,7 @@
 package lib.dehaat.ledger.domain.usecases
 
-import lib.dehaat.ledger.domain.ILedgerRepository
 import javax.inject.Inject
+import lib.dehaat.ledger.domain.ILedgerRepository
 
 class GetInvoiceDownloadUseCase @Inject constructor(
     val repo: ILedgerRepository

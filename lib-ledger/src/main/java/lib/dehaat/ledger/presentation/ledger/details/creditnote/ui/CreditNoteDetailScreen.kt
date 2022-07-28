@@ -1,7 +1,12 @@
 package lib.dehaat.ledger.presentation.ledger.details.creditnote.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -19,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import lib.dehaat.ledger.initializer.getAmountInRupees
+import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYearTime
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -31,6 +36,7 @@ import lib.dehaat.ledger.presentation.ledger.components.ProductView
 import lib.dehaat.ledger.presentation.ledger.details.creditnote.CreditNoteDetailViewModel
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
+import lib.dehaat.ledger.util.HandleAPIErrors
 
 @Composable
 fun CreditNoteDetailScreen(
@@ -38,6 +44,7 @@ fun CreditNoteDetailScreen(
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit
 ) {
+    HandleAPIErrors(viewModel.uiEvent)
     val uiState by viewModel.uiState.collectAsState()
     val creditNoteDetailViewData = uiState.creditNoteDetailViewData
     val scrollState = rememberScrollState()
@@ -200,7 +207,6 @@ fun CreditNoteDetailScreen(
                     modifier = Modifier,
                 )
             }
-
         }
     }
 }

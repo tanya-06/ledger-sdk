@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import java.io.File
-import lib.dehaat.ledger.initializer.getAmountInRupees
+import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -46,6 +46,7 @@ import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
+import lib.dehaat.ledger.util.HandleAPIErrors
 
 @Composable
 fun InvoiceDetailScreen(
@@ -56,6 +57,7 @@ fun InvoiceDetailScreen(
     onBackPress: () -> Unit,
     onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
 ) {
+    HandleAPIErrors(viewModel.uiEvent)
 
     val uiState by viewModel.uiState.collectAsState()
     val invoiceData = uiState.invoiceDetailDataViewData

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import lib.dehaat.ledger.initializer.getAmountInRupees
+import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -25,6 +25,7 @@ import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSumm
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
 import lib.dehaat.ledger.resources.text18Sp
+import lib.dehaat.ledger.util.HandleAPIErrors
 
 @Composable
 fun PaymentDetailScreen(
@@ -32,6 +33,7 @@ fun PaymentDetailScreen(
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit
 ) {
+    HandleAPIErrors(viewModel.uiEvent)
     val uiState by viewModel.uiState.collectAsState()
     val paymentSummary = uiState.paymentDetailSummaryViewData
     val scrollState = rememberScrollState()

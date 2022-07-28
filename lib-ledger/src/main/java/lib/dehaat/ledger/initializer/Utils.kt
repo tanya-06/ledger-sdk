@@ -10,16 +10,6 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun String?.getAmountInRupeesWithoutDecimal(): String {
-    val value = this?.toDoubleOrNull()
-    return String.format("%s%s", "₹", formatDecimal(value, 0))
-}
-
-fun String?.getAmountInRupees(): String {
-    val value = this?.toDoubleOrNull()
-    return String.format("%s%s", "₹", formatDecimal(value))
-}
-
 fun Long?.toDateMonthName(): String {
     return format("dd MMM", this)
 }

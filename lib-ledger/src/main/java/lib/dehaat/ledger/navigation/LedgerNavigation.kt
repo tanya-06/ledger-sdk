@@ -22,6 +22,8 @@ import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewM
 import lib.dehaat.ledger.presentation.ledger.details.payments.ui.PaymentDetailScreen
 import lib.dehaat.ledger.presentation.ledger.ui.LedgerDetailScreen2
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
+import lib.dehaat.ledger.util.withArgs
+import lib.dehaat.ledger.util.withArgsPath
 
 @Composable
 fun LedgerNavigation(
@@ -284,22 +286,4 @@ fun navigateToPaymentDetailScreen(
             isLMSActivated
         )
     )
-}
-
-fun String.withArgs(vararg args: Any?): String {
-    return buildString {
-        append(this@withArgs)
-        args.forEach { arg ->
-            append("/$arg")
-        }
-    }
-}
-
-fun String.withArgsPath(vararg args: String): String {
-    return buildString {
-        append(this@withArgsPath)
-        args.forEach { arg ->
-            append("/{$arg}")
-        }
-    }
 }

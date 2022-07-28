@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,6 +20,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.dehaat.androidbase.helper.showToast
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
@@ -43,9 +45,11 @@ fun TransactionsListScreen(
     val uiState by viewModel.uiState.collectAsState()
     val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
     Column {
-        FilterStrip(modifier = Modifier.padding(horizontal = 18.dp),
+        FilterStrip(
+            modifier = Modifier.padding(horizontal = 18.dp),
             ledgerColors = ledgerColors,
             withPenalty = uiState.onlyPenaltyInvoices,
             onWithPenaltyChange = {
@@ -100,25 +104,29 @@ fun TransactionsListScreen(
             }
         }
     }
-
     LaunchedEffect(Unit) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .collect { event ->
-                when (event) {
-                    is UiEvent.ShowSnackbar -> {
-                    }
-                    is UiEvent.RefreshList -> {
-                        transactions.refresh()
-                    }
-                    else -> Unit
+        viewModel.uiEvent.flowWithLifecycle(
+            lifecycleOwner.lifecycle,
+            Lifecycle.State.STARTED
+        ).collect { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> {
+                    context.showToast(event.message)
                 }
+                is UiEvent.RefreshList -> {
+                    transactions.refresh()
+                }
+                else -> Unit
             }
+        }
     }
 
     LaunchedEffect(Unit) {
-        ledgerDetailViewModel.selectedDaysToFilterEvent.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .collect { event ->
-                viewModel.applyDaysFilter(event)
-            }
+        ledgerDetailViewModel.selectedDaysToFilterEvent.flowWithLifecycle(
+            lifecycleOwner.lifecycle,
+            Lifecycle.State.STARTED
+        ).collect { event ->
+            viewModel.applyDaysFilter(event)
+        }
     }
 }

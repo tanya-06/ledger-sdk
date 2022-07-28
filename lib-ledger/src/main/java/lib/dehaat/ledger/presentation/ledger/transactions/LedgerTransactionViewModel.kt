@@ -1,6 +1,5 @@
 package lib.dehaat.ledger.presentation.ledger.transactions
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -9,10 +8,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
-import com.dehaat.androidbase.helper.tryCatchWithReturn
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +21,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
-import lib.dehaat.ledger.framework.model.BaseAPIErrorResponse
 import lib.dehaat.ledger.framework.network.BasePagingSourceWithResponse
-import lib.dehaat.ledger.presentation.LedgerConstants.ERROR_LOGS
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PARTNER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -34,7 +29,7 @@ import lib.dehaat.ledger.presentation.ledger.transactions.state.TransactionsView
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
-import javax.inject.Inject
+import lib.dehaat.ledger.util.getFailureError
 
 @HiltViewModel
 class LedgerTransactionViewModel @Inject constructor(
@@ -138,19 +133,19 @@ class LedgerTransactionViewModel @Inject constructor(
         return Pair(pastDaySec, currentDaySec)
     }
 
-    private fun processTransactionListResponse(response: APIResultEntity<List<TransactionEntity>>) =
-        when (response) {
-            is APIResultEntity.Success -> {
-                response.data
-            }
-            is APIResultEntity.Failure -> {
-                sendShowSnackBarEvent((response.getFailureError()))
-                emptyList()
-            }
+    private fun processTransactionListResponse(
+        response: APIResultEntity<List<TransactionEntity>>
+    ) = when (response) {
+        is APIResultEntity.Success -> {
+            response.data
         }
+        is APIResultEntity.Failure -> {
+            sendShowSnackBarEvent((response.getFailureError()))
+            emptyList()
+        }
+    }
 
     private fun sendShowSnackBarEvent(message: String) {
-        Log.d(ERROR_LOGS, "sendShowSnackBarEvent: $message")
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }
@@ -160,24 +155,3 @@ class LedgerTransactionViewModel @Inject constructor(
         callInViewModelScope { _uiEvent.emit(UiEvent.RefreshList) }
     }
 }
-
-fun APIResultEntity.Failure.getFailureError() = when (this) {
-    is APIResultEntity.Failure.ErrorException -> this.exceptionError.message.nullToValue("API Exception")
-    is APIResultEntity.Failure.ErrorFailure -> parseAPIErrorBody(
-        this.responseErrorBody,
-        this.responseMessage
-    )
-}
-
-fun String?.nullToValue(value: String = "--") = this ?: value
-
-
-fun parseAPIErrorBody(errorBodyResponse: String?, defaultError: String = "Error!!") =
-    errorBodyResponse?.let { errorBody ->
-        tryCatchWithReturn(defaultError) {
-            val moshi = Moshi.Builder().build()
-            val jsonAdapter: JsonAdapter<BaseAPIErrorResponse> =
-                moshi.adapter(BaseAPIErrorResponse::class.java)
-            jsonAdapter.fromJson(errorBody)?.error?.message ?: defaultError
-        }
-    } ?: defaultError

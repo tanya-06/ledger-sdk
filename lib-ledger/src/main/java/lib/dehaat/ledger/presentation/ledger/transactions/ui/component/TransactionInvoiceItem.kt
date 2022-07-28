@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.dehaat.androidbase.helper.isNotNull
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
-import lib.dehaat.ledger.initializer.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.AIMSColors
 import lib.dehaat.ledger.initializer.themes.DBAColors
 import lib.dehaat.ledger.initializer.themes.LedgerColors
@@ -29,6 +28,7 @@ import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionT
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @Preview(
     name = "TransactionInvoiceItem Preview AIMS",

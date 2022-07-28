@@ -1,6 +1,5 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -8,6 +7,8 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.File
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,7 +21,6 @@ import lib.dehaat.ledger.domain.usecases.GetInvoiceDetailUseCase
 import lib.dehaat.ledger.domain.usecases.GetInvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.presentation.LedgerConstants.ERROR_LOGS
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -28,11 +28,9 @@ import lib.dehaat.ledger.presentation.ledger.details.invoice.state.InvoiceDetail
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.invoicedownload.ProgressData
-import lib.dehaat.ledger.presentation.processAPIResponseWithFailureSnackBar
 import lib.dehaat.ledger.util.DownloadFileUtil
 import lib.dehaat.ledger.util.FileUtils
-import java.io.File
-import javax.inject.Inject
+import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
 class InvoiceDetailViewModel @Inject constructor(
@@ -88,7 +86,6 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     private fun sendShowSnackBarEvent(message: String) {
-        Log.d(ERROR_LOGS, "sendShowSnackBarEvent: $message")
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }
