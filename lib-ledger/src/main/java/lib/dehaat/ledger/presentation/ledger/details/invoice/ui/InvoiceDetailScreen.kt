@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -29,11 +30,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import java.io.File
 import lib.dehaat.ledger.initializer.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
+import lib.dehaat.ledger.presentation.common.uicomponent.SpaceSmall12
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValue
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryView
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryViewWithTopPadding
@@ -43,7 +46,6 @@ import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
-import java.io.File
 
 @Composable
 fun InvoiceDetailScreen(
@@ -96,15 +98,57 @@ fun InvoiceDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            CreditNoteKeyValue(
-                "Invoice Amount",
-                invoiceData?.summary?.amount.getAmountInRupees(),
-                keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                valueTextStyle = text18Sp(
-                    fontWeight = FontWeight.Bold,
-                    textColor = ledgerColors.CtaDarkColor
-                ),
-            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    invoiceData?.summary?.let { summary ->
+                        CreditNoteKeyValue(
+                            key = "Invoice Amount",
+                            value = summary.amount.getAmountInRupees(),
+                            keyTextStyle = text18Sp(
+                                fontWeight = FontWeight.Bold,
+                                textColor = ledgerColors.CtaDarkColor
+                            ),
+                            valueTextStyle = text18Sp(
+                                fontWeight = FontWeight.Bold,
+                                textColor = ledgerColors.CtaDarkColor
+                            )
+                        )
+
+                        SpaceSmall12()
+
+                        CreditNoteKeyValue(
+                            key = "Invoice ID",
+                            value = summary.number,
+                            keyTextStyle = text18Sp(
+                                textColor = ledgerColors.CtaDarkColor
+                            ),
+                            valueTextStyle = text18Sp(
+                                textColor = ledgerColors.CtaDarkColor
+                            )
+                        )
+
+                        SpaceSmall12()
+
+                        CreditNoteKeyValue(
+                            key = "Invoice Date",
+                            value = summary.timestamp.toDateMonthYear(),
+                            keyTextStyle = text18Sp(
+                                textColor = ledgerColors.CtaDarkColor
+                            ),
+                            valueTextStyle = text18Sp(
+                                textColor = ledgerColors.CtaDarkColor
+                            )
+                        )
+                    }
+                }
+            }
 
             SpaceMedium()
 
