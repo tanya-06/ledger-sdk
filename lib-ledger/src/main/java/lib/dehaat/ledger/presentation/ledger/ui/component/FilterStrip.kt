@@ -1,10 +1,10 @@
 package lib.dehaat.ledger.presentation.ledger.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -43,19 +43,23 @@ fun FilterStrip(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
+            Icon(
                 modifier = Modifier.clickable {
                     onDaysToFilterIconClick()
                 },
                 painter = painterResource(id = R.drawable.ic_days_filter),
-                contentDescription = "Days Filter"
+                contentDescription = "Days Filter",
+                tint = ledgerColors.FilterIconsColor
             )
-            Image(
-                modifier = Modifier.padding(start = 24.dp).clickable {
-                    onDateRangeFilterIconClick()
-                },
+            Icon(
+                modifier = Modifier
+                    .padding(start = 24.dp)
+                    .clickable {
+                        onDateRangeFilterIconClick()
+                    },
                 painter = painterResource(id = R.drawable.ic_calender_filter),
-                contentDescription = "Days Filter"
+                contentDescription = "Days Filter",
+                tint = ledgerColors.FilterIconsColor
             )
         }
     }

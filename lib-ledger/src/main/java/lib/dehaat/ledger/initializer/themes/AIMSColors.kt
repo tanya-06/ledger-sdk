@@ -28,5 +28,6 @@ class AIMSColors : LedgerColors(
     InfoContainerBgColor = Color(0xFFF8F8F8),
     CreditViewHeaderDividerBColor = Color(0xFFEFEFEF),
     TransactionAndCreditScreenBGColor = Color(0xFFFAFAFA),
-    FilterDialogDateBGColor = Color(0xFFF1F3F8)
+    FilterDialogDateBGColor = Color(0xFFF1F3F8),
+    FilterIconsColor = Color(0XFF4749A0)
 )

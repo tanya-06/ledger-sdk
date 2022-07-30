@@ -1,6 +1,7 @@
 package lib.dehaat.ledger.initializer.themes
 
 import androidx.compose.ui.graphics.Color
+import lib.dehaat.ledger.resources.PrimaryGreen
 
 class DBAColors : LedgerColors(
     CreditLineCardBG = Color(0xFFDCEBFF),
@@ -13,9 +14,9 @@ class DBAColors : LedgerColors(
     DownloadInvoiceColor = Color(0xFF27AE60),
     TabBGColorDefault = Color.White,
     TabBorderColorDefault = Color(0xFFE5E5E5),
-    TabBGColorSelected = Color(0xFFF3F3FD),
-    TabBorderColorSelected = Color(0xFF4749A0),
-    TabTextColorSelected = Color(0xFF4749A0),
+    TabBGColorSelected = Color(0xFFebfff3),
+    TabBorderColorSelected = PrimaryGreen,
+    TabTextColorSelected = PrimaryGreen,
     TabTextColorDefault = Color(0xFF5C5C5C),
     TransactionAmountColor = Color(0xFF313256),
     TransactionDateColor = Color(0xFF5C5C5C),
@@ -28,5 +29,6 @@ class DBAColors : LedgerColors(
     InfoContainerBgColor = Color(0xFFF8F8F8),
     CreditViewHeaderDividerBColor = Color(0xFFEFEFEF),
     TransactionAndCreditScreenBGColor = Color(0xFFFAFAFA),
-    FilterDialogDateBGColor = Color(0xFFF1F3F8) // TODO check on DBA
+    FilterDialogDateBGColor = Color(0xFFF1F3F8), // TODO check on DBA
+    FilterIconsColor = PrimaryGreen
 )
