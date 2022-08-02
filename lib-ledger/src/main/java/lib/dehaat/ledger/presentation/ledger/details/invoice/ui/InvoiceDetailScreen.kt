@@ -165,7 +165,7 @@ fun InvoiceDetailScreen(
                         )
                         .padding(16.dp)
                 ) {
-                    if (loan.belongsToGapl) {
+                    if (viewModel.isLmsActivated()) {
                         CreditNoteKeyValueInSummaryView(
                             "Credit Account Number",
                             loan.loanAccountNo,
@@ -215,7 +215,7 @@ fun InvoiceDetailScreen(
                         loan.overdueInterestOutstandingAmount.getAmountInRupeesOrDash(),
                         ledgerColors = ledgerColors,
                     )
-                    if (loan.belongsToGapl) {
+                    if (viewModel.isLmsActivated()) {
                         CreditNoteKeyValueInSummaryViewWithTopPadding(
                             "Disbursal Date",
                             loan.disbursalDate.toDateMonthYear(),
@@ -227,7 +227,7 @@ fun InvoiceDetailScreen(
                         loan.interestFreeEndDate.toDateMonthYear(),
                         ledgerColors = ledgerColors,
                     )
-                    if (loan.belongsToGapl) {
+                    if (viewModel.isLmsActivated()) {
                         CreditNoteKeyValueInSummaryViewWithTopPadding(
                             "Financier",
                             loan.financier,

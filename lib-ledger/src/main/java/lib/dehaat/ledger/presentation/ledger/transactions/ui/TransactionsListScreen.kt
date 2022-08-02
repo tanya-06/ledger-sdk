@@ -83,7 +83,8 @@ fun TransactionsListScreen(
                                 legerId = data.ledgerId,
                                 erpId = data.erpId,
                                 locusId = data.locusId,
-                                source = data.source
+                                source = data.source,
+                                isLMSActivated = isLmsActivated()
                             )
                             else -> Unit
                         }

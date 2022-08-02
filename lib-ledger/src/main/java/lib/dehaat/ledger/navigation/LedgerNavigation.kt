@@ -80,7 +80,8 @@ fun LedgerNavigation(
                 LedgerConstants.KEY_LEDGER_ID,
                 LedgerConstants.KEY_ERP_ID,
                 LedgerConstants.KEY_LOCUS_ID,
-                LedgerConstants.KEY_SOURCE
+                LedgerConstants.KEY_SOURCE,
+                LedgerConstants.KEY_LMS_ACTIVATED
             ),
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_LEDGER_ID) {
@@ -93,8 +94,10 @@ fun LedgerNavigation(
                 navArgument(LedgerConstants.KEY_SOURCE) {
                     type = NavType.StringType
                 },
-
-                )
+                navArgument(LedgerConstants.KEY_LMS_ACTIVATED) {
+                    type = NavType.BoolType
+                }
+            )
         ) {
 
             val erpId = it.arguments?.get(LedgerConstants.KEY_ERP_ID) as String?
@@ -194,14 +197,16 @@ fun provideDetailPageNavCallBacks(navController: NavHostController) =
             legerId: String,
             erpId: String?,
             locusId: String?,
-            source: String
+            source: String,
+            isLMSActivated: Boolean
         ) {
             navigateToInvoiceDetailScreen(
                 navController = navController,
                 ledgerId = legerId,
                 erpId = erpId,
                 locusId = locusId,
-                source = source
+                source = source,
+                isLMSActivated = isLMSActivated
             )
         }
 
@@ -242,14 +247,16 @@ fun navigateToInvoiceDetailScreen(
     ledgerId: String,
     erpId: String?,
     locusId: String?,
-    source: String
+    source: String,
+    isLMSActivated: Boolean
 ) {
     navController.navigate(
         LedgerRoutes.LedgerInvoiceDetailScreen.screen.withArgs(
             ledgerId,
             erpId,
             locusId,
-            source
+            source,
+            isLMSActivated
         )
     )
 }

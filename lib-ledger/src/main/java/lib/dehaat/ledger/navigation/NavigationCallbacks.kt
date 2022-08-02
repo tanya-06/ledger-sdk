@@ -5,7 +5,8 @@ interface DetailPageNavigationCallback {
         legerId: String,
         erpId: String?,
         locusId: String?,
-        source: String
+        source: String,
+        isLMSActivated: Boolean
     )
 
     fun navigateToCreditNoteDetailPage(legerId: String, erpId: String?, locusId: String?)
