@@ -3,10 +3,12 @@ package lib.dehaat.ledger.presentation.ledger.details.payments.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -26,6 +27,7 @@ import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.util.HandleAPIErrors
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun PaymentDetailScreen(
@@ -57,21 +59,29 @@ fun PaymentDetailScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                CreditNoteKeyValue(
-                    "Payment Amount",
-                    paymentSummary?.totalAmount.getAmountInRupees(),
-                    keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                    valueTextStyle = text18Sp(
-                        fontWeight = FontWeight.Bold,
-                        textColor = ledgerColors.CtaDarkColor
-                    ),
-                )
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    CreditNoteKeyValue(
+                        "Payment Amount",
+                        paymentSummary?.totalAmount.getAmountInRupees(),
+                        keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                        valueTextStyle = text18Sp(
+                            fontWeight = FontWeight.Bold,
+                            textColor = ledgerColors.CtaDarkColor
+                        ),
+                        modifier = Modifier
+                            .padding(16.dp)
+                    )
+                }
 
                 Column(
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .background(
-                            shape = RoundedCornerShape(9.dp),
+                            shape = RoundedCornerShape(4.dp),
                             color = ledgerColors.InfoContainerBgColor
                         )
                         .padding(16.dp)

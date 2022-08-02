@@ -14,6 +14,10 @@ fun String?.getAmountInRupees(): String {
     return String.format("%s%s", "₹", formatDecimal(value))
 }
 
+fun String?.getAmountInRupeesOrDash(): String = this?.let {
+    it.getAmountInRupees()
+} ?: "-"
+
 fun String.withArgs(
     vararg args: Any?
 ) = buildString {

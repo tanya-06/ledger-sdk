@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.mapper
 
+import javax.inject.Inject
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
@@ -11,6 +12,7 @@ import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
+import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
@@ -24,9 +26,9 @@ import lib.dehaat.ledger.presentation.model.detail.creditnote.ProductsInfoViewDa
 import lib.dehaat.ledger.presentation.model.detail.creditnote.SummaryViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.InvoiceDetailDataViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.LoanViewData
+import lib.dehaat.ledger.presentation.model.detail.invoice.OverdueInfoViewData
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.presentation.model.transactionsummary.TransactionSummaryViewData
-import javax.inject.Inject
 
 typealias ViewDataPaymentDetailSummary = lib.dehaat.ledger.presentation.model.detail.payment.PaymentDetailSummaryViewData
 typealias EntityPaymentDetailSummary = lib.dehaat.ledger.entities.detail.payment.SummaryEntity
@@ -91,6 +93,7 @@ class LedgerViewDataMapper @Inject constructor() {
         InvoiceDetailDataViewData(
             summary = getInvoiceDetailSummaryViewData(summary),
             loans = loans.map { getInvoiceDetailLoanViewData(it) },
+            overdueInfo = getInvoiceDetailOverdueViewData(overdueInfo),
             productsInfo = getInvoiceDetailProductInfoViewData(productsInfo),
         )
     }
@@ -143,6 +146,12 @@ class LedgerViewDataMapper @Inject constructor() {
             amount = amount,
             number = number,
             timestamp = timestamp
+        )
+    }
+
+    private fun getInvoiceDetailOverdueViewData(data: OverdueInfoEntity) = with(data) {
+        OverdueInfoViewData(
+            overdueDate = overdueDate
         )
     }
 

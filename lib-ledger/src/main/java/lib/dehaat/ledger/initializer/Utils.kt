@@ -19,7 +19,7 @@ fun Long?.toDateMonthYearTime(): String {
 }
 
 fun Long?.toDateMonthYear(): String {
-    return format("dd/MM/yyyy", this)
+    return format("dd-MMM-yyyy", this)
 }
 
 fun format(dateFormat: String, timeInSec: Long?) = try {

@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.framework.mapper
 
+import javax.inject.Inject
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
@@ -11,6 +12,7 @@ import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
+import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
 import lib.dehaat.ledger.entities.detail.invoice.invoicedownload.InvoiceDownloadDataEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
@@ -27,12 +29,12 @@ import lib.dehaat.ledger.framework.model.detail.creditnote.ProductsInfo
 import lib.dehaat.ledger.framework.model.detail.creditnote.Summary
 import lib.dehaat.ledger.framework.model.detail.invoice.InvoiceDetailData
 import lib.dehaat.ledger.framework.model.detail.invoice.Loan
+import lib.dehaat.ledger.framework.model.detail.invoice.OverdueInfo
 import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.DownloadInvoiceData
 import lib.dehaat.ledger.framework.model.detail.payment.PaymentDetailData
 import lib.dehaat.ledger.framework.model.transactions.Transaction
 import lib.dehaat.ledger.framework.model.transactions.TransactionsData
 import lib.dehaat.ledger.framework.model.transactionsummary.TransactionDetailData
-import javax.inject.Inject
 
 typealias NetworkPaymentDetailSummary = lib.dehaat.ledger.framework.model.detail.payment.Summary
 typealias EntityPaymentDetailSummary = lib.dehaat.ledger.entities.detail.payment.SummaryEntity
@@ -87,6 +89,7 @@ class LedgerFrameworkMapper @Inject constructor() {
         InvoiceDetailDataEntity(
             summary = getInvoiceDetailSummaryEntity(summary),
             loans = loans.map { getInvoiceDetailLoanEntity(it) },
+            overdueInfo = getInvoiceDetailOverdueInfoEntity(overdueInfo),
             productsInfo = getInvoiceDetailProductInfoEntity(productsInfo),
         )
     }
@@ -164,6 +167,12 @@ class LedgerFrameworkMapper @Inject constructor() {
             amount = amount,
             number = number,
             timestamp = timestamp
+        )
+    }
+
+    private fun getInvoiceDetailOverdueInfoEntity(data: OverdueInfo) = with(data) {
+        OverdueInfoEntity(
+            overdueDate = overdueDate
         )
     }
 

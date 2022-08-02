@@ -21,7 +21,7 @@ import lib.dehaat.ledger.presentation.ledger.credits.ui.component.AvailableCredi
 import lib.dehaat.ledger.presentation.ledger.credits.ui.component.CreditLineCard
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.util.HandleAPIErrors
-import lib.dehaat.ledger.util.getAmountInRupeesWithoutDecimal
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun CreditsScreen(
@@ -37,7 +37,7 @@ fun CreditsScreen(
     Column {
         if (isLmsActivated() && totalAvailableCreditLimit.isNotEmpty()) {
             AvailableCreditLimitView(
-                limitInRupees = totalAvailableCreditLimit.getAmountInRupeesWithoutDecimal(),
+                limitInRupees = totalAvailableCreditLimit.getAmountInRupees(),
                 ledgerColors = ledgerColors,
                 onInfoIconClick = {
                     viewModel.showAvailableCreditLimitInfoModal()

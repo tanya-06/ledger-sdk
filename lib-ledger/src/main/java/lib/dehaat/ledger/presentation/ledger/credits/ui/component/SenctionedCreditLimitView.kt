@@ -1,7 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.credits.ui.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -69,20 +68,10 @@ fun SanctionedCreditLimitView(
         Text(
             modifier = Modifier
                 .padding(start = 9.dp),
-            text = "Available Credit Limit",
+            text = "Sanctioned Credit Limit",
             style = text12Sp(textColor = ledgerColors.LenderNameColor),
             maxLines = 1
         )
-
-        if (isLmsActivated()) {
-            Image(
-                modifier = Modifier
-                    .padding(start = 7.dp)
-                    .clickable { onInfoIconClick() },
-                painter = painterResource(id = R.drawable.ic_info_icon),
-                contentDescription = "info"
-            )
-        }
 
         Text(
             modifier = Modifier

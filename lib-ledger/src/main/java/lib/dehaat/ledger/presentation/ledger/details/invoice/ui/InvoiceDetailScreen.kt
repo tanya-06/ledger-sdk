@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import java.io.File
-import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -47,6 +46,8 @@ import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
 import lib.dehaat.ledger.util.HandleAPIErrors
+import lib.dehaat.ledger.util.getAmountInRupees
+import lib.dehaat.ledger.util.getAmountInRupeesOrDash
 
 @Composable
 fun InvoiceDetailScreen(
@@ -164,69 +165,96 @@ fun InvoiceDetailScreen(
                         )
                         .padding(16.dp)
                 ) {
+                    if (loan.belongsToGapl) {
+                        CreditNoteKeyValueInSummaryView(
+                            "Credit Account Number",
+                            loan.loanAccountNo,
+                            ledgerColors = ledgerColors,
+                        )
 
-                    CreditNoteKeyValueInSummaryView(
-                        "Credit Account Number",
-                        loan.loanAccountNo,
-                        ledgerColors = ledgerColors,
-                    )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Credit Status",
+                            loan.status,
+                            ledgerColors = ledgerColors,
+                        )
 
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Credit Status",
-                        loan.status,
-                        ledgerColors = ledgerColors,
-                    )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Credit Amount",
+                            loan.amount.getAmountInRupees(),
+                            ledgerColors = ledgerColors,
+                        )
 
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Credit Amount",
-                        loan.amount.getAmountInRupees(),
-                        ledgerColors = ledgerColors,
-                    )
-
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Invoice Contribution in Credit Amount",
-                        loan.invoiceContributionInLoan.getAmountInRupees(),
-                        ledgerColors = ledgerColors,
-                    )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Invoice Contribution in Credit Amount",
+                            loan.invoiceContributionInLoan.getAmountInRupees(),
+                            ledgerColors = ledgerColors,
+                        )
+                    }
                     CreditNoteKeyValueInSummaryViewWithTopPadding(
                         "Outstanding",
-                        loan.totalOutstandingAmount.getAmountInRupees(),
+                        loan.totalOutstandingAmount.getAmountInRupeesOrDash(),
                         ledgerColors = ledgerColors,
                     )
                     CreditNoteKeyValueInSummaryViewWithTopPadding(
                         "Principal o/s",
-                        loan.principalOutstandingAmount.getAmountInRupees(),
+                        loan.principalOutstandingAmount.getAmountInRupeesOrDash(),
                         ledgerColors = ledgerColors,
                     )
                     CreditNoteKeyValueInSummaryViewWithTopPadding(
                         "Interest o/s",
-                        loan.interestOutstandingAmount.getAmountInRupees(),
+                        loan.interestOutstandingAmount.getAmountInRupeesOrDash(),
                         ledgerColors = ledgerColors,
                     )
                     CreditNoteKeyValueInSummaryViewWithTopPadding(
                         "Penalty o/s",
-                        loan.penaltyOutstandingAmount.getAmountInRupees(),
+                        loan.penaltyOutstandingAmount.getAmountInRupeesOrDash(),
                         ledgerColors = ledgerColors,
                     )
                     CreditNoteKeyValueInSummaryViewWithTopPadding(
                         "Overdue Interest o/s",
-                        loan.overdueInterestOutstandingAmount.getAmountInRupees(),
+                        loan.overdueInterestOutstandingAmount.getAmountInRupeesOrDash(),
                         ledgerColors = ledgerColors,
                     )
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Disbursal Date",
-                        loan.disbursalDate.toDateMonthYear(),
-                        ledgerColors = ledgerColors,
-                    )
+                    if (loan.belongsToGapl) {
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Disbursal Date",
+                            loan.disbursalDate.toDateMonthYear(),
+                            ledgerColors = ledgerColors,
+                        )
+                    }
                     CreditNoteKeyValueInSummaryViewWithTopPadding(
                         "Interest-Free Period End Date",
                         loan.interestFreeEndDate.toDateMonthYear(),
                         ledgerColors = ledgerColors,
                     )
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Financier",
-                        loan.financier,
-                        ledgerColors = ledgerColors,
+                    if (loan.belongsToGapl) {
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Financier",
+                            loan.financier,
+                            ledgerColors = ledgerColors,
+                        )
+                    }
+                }
+            }
+
+            SpaceMedium()
+
+            invoiceData?.overdueInfo?.let {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    CreditNoteKeyValue(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                        key = "Overdue Date",
+                        value = it.overdueDate.toDateMonthYear(),
+                        keyTextStyle = text18Sp(
+                            textColor = ledgerColors.CtaDarkColor
+                        ),
+                        valueTextStyle = text18Sp(
+                            textColor = ledgerColors.CtaDarkColor
+                        )
                     )
                 }
             }
