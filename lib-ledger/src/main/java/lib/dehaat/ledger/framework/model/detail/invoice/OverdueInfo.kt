@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class OverdueInfo(
     @Json(name = "overdue_date")
-    val overdueDate: Long
+    val overdueDate: Long?
 )

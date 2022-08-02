@@ -170,9 +170,9 @@ class LedgerFrameworkMapper @Inject constructor() {
         )
     }
 
-    private fun getInvoiceDetailOverdueInfoEntity(data: OverdueInfo) = with(data) {
+    private fun getInvoiceDetailOverdueInfoEntity(data: OverdueInfo?) = with(data) {
         OverdueInfoEntity(
-            overdueDate = overdueDate
+            overdueDate = this?.overdueDate
         )
     }
 

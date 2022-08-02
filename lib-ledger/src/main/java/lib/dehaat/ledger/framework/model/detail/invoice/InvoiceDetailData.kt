@@ -10,7 +10,7 @@ data class InvoiceDetailData(
     @Json(name = "loans")
     val loans: List<Loan>,
     @Json(name = "overdue_info")
-    val overdueInfo: OverdueInfo,
+    val overdueInfo: OverdueInfo?,
     @Json(name = "products_info")
     val productsInfo: ProductsInfo
 )

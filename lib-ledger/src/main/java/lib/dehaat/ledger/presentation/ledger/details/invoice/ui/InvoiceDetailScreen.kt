@@ -238,9 +238,9 @@ fun InvoiceDetailScreen(
                 }
             }
 
-            SpaceMedium()
+            if (!viewModel.isLmsActivated()) {
+                SpaceMedium()
 
-            invoiceData?.overdueInfo?.let {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -249,7 +249,7 @@ fun InvoiceDetailScreen(
                     CreditNoteKeyValue(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
                         key = "Overdue Date",
-                        value = it.overdueDate.toDateMonthYear(),
+                        value = invoiceData?.overdueInfo?.overdueDate.toDateMonthYear(),
                         keyTextStyle = text18Sp(
                             textColor = ledgerColors.CtaDarkColor
                         ),
