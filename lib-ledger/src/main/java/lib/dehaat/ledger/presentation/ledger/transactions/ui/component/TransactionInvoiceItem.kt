@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dehaat.androidbase.helper.isNotNull
@@ -74,25 +75,23 @@ fun TransactionInvoiceItem(
         val icon = provideTransactionIcon(data.type)
         Image(painter = painterResource(id = icon), contentDescription = "transaction icon")
 
-        val transactionType = provideTransactionLabel(data.type)
+        var transactionType = provideTransactionLabel(data.type)
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp)
         ) {
             Row {
-                Text(
-                    text = transactionType,
-                    style = textMedium14Sp(textColor = ledgerColors.CtaDarkColor)
-                )
                 val tagLabel = provideTransactionTag(data = data)
                 if (tagLabel.isNotNull()) {
-                    Tag(
-                        value = tagLabel.orEmpty(),
-                        modifier = Modifier.padding(start = 12.dp),
-                        ledgerColors = ledgerColors
-                    )
+                    transactionType = "$transactionType ($tagLabel)"
                 }
+                Text(
+                    text = transactionType,
+                    style = textMedium14Sp(textColor = ledgerColors.CtaDarkColor),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
 
             Text(
@@ -103,15 +102,14 @@ fun TransactionInvoiceItem(
         }
 
         Text(
+            modifier = Modifier.padding(horizontal = 12.dp),
             text = data.amount.getAmountInRupees(),
             style = textBold14Sp(textColor = getAmountColor(data.type, ledgerColors = ledgerColors))
         )
         Image(
-            modifier = Modifier.padding(start = 11.dp),
             painter = painterResource(id = R.drawable.ic_transaction_arrow_right),
             contentDescription = "Proceed"
         )
-
     }
 }
 

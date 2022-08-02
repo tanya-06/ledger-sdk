@@ -153,19 +153,20 @@ fun InvoiceDetailScreen(
                 }
             }
 
-            SpaceMedium()
+            if (viewModel.isLmsActivated()) {
+                SpaceMedium()
 
-            invoiceData?.loans?.forEach { loan ->
-                Column(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .background(
-                            shape = RoundedCornerShape(9.dp),
-                            color = ledgerColors.InfoContainerBgColor
-                        )
-                        .padding(16.dp)
-                ) {
-                    if (viewModel.isLmsActivated()) {
+                invoiceData?.loans?.forEach { loan ->
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .background(
+                                shape = RoundedCornerShape(9.dp),
+                                color = ledgerColors.InfoContainerBgColor
+                            )
+                            .padding(16.dp)
+                    ) {
+
                         CreditNoteKeyValueInSummaryView(
                             "Credit Account Number",
                             loan.loanAccountNo,
@@ -189,45 +190,45 @@ fun InvoiceDetailScreen(
                             loan.invoiceContributionInLoan.getAmountInRupees(),
                             ledgerColors = ledgerColors,
                         )
-                    }
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Outstanding",
-                        loan.totalOutstandingAmount.getAmountInRupeesOrDash(),
-                        ledgerColors = ledgerColors,
-                    )
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Principal o/s",
-                        loan.principalOutstandingAmount.getAmountInRupeesOrDash(),
-                        ledgerColors = ledgerColors,
-                    )
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Interest o/s",
-                        loan.interestOutstandingAmount.getAmountInRupeesOrDash(),
-                        ledgerColors = ledgerColors,
-                    )
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Penalty o/s",
-                        loan.penaltyOutstandingAmount.getAmountInRupeesOrDash(),
-                        ledgerColors = ledgerColors,
-                    )
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Overdue Interest o/s",
-                        loan.overdueInterestOutstandingAmount.getAmountInRupeesOrDash(),
-                        ledgerColors = ledgerColors,
-                    )
-                    if (viewModel.isLmsActivated()) {
+
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Outstanding",
+                            loan.totalOutstandingAmount.getAmountInRupeesOrDash(),
+                            ledgerColors = ledgerColors,
+                        )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Principal o/s",
+                            loan.principalOutstandingAmount.getAmountInRupeesOrDash(),
+                            ledgerColors = ledgerColors,
+                        )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Interest o/s",
+                            loan.interestOutstandingAmount.getAmountInRupeesOrDash(),
+                            ledgerColors = ledgerColors,
+                        )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Penalty o/s",
+                            loan.penaltyOutstandingAmount.getAmountInRupeesOrDash(),
+                            ledgerColors = ledgerColors,
+                        )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Overdue Interest o/s",
+                            loan.overdueInterestOutstandingAmount.getAmountInRupeesOrDash(),
+                            ledgerColors = ledgerColors,
+                        )
+
                         CreditNoteKeyValueInSummaryViewWithTopPadding(
                             "Disbursal Date",
                             loan.disbursalDate.toDateMonthYear(),
                             ledgerColors = ledgerColors,
                         )
-                    }
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Interest-Free Period End Date",
-                        loan.interestFreeEndDate.toDateMonthYear(),
-                        ledgerColors = ledgerColors,
-                    )
-                    if (viewModel.isLmsActivated()) {
+
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Interest-Free Period End Date",
+                            loan.interestFreeEndDate.toDateMonthYear(),
+                            ledgerColors = ledgerColors,
+                        )
+
                         CreditNoteKeyValueInSummaryViewWithTopPadding(
                             "Financier",
                             loan.financier,

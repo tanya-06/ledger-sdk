@@ -1,11 +1,9 @@
 package lib.dehaat.ledger.presentation.ledger.credits.ui.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,9 +27,7 @@ import lib.dehaat.ledger.resources.textBold14Sp
 fun AvailableCreditLimitViewScreenDBA() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
-        ledgerColors = DBAColors(),
-        onInfoIconClick = { },
-        isLmsActivated = { true }
+        ledgerColors = DBAColors()
     )
 }
 
@@ -43,18 +39,14 @@ fun AvailableCreditLimitViewScreenDBA() {
 fun AvailableCreditLimitViewScreenAIMS() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
-        ledgerColors = AIMSColors(),
-        onInfoIconClick = { },
-        isLmsActivated = { true }
+        ledgerColors = AIMSColors()
     )
 }
 
 @Composable
 fun AvailableCreditLimitView(
     limitInRupees: String,
-    ledgerColors: LedgerColors,
-    onInfoIconClick: () -> Unit,
-    isLmsActivated: () -> Boolean
+    ledgerColors: LedgerColors
 ) {
     Row(
         modifier = Modifier
@@ -75,16 +67,6 @@ fun AvailableCreditLimitView(
             style = text12Sp(textColor = ledgerColors.LenderNameColor),
             maxLines = 1
         )
-
-        if (isLmsActivated()) {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 7.dp)
-                    .clickable { onInfoIconClick() },
-                painter = painterResource(id = R.drawable.ic_info_icon),
-                contentDescription = "info"
-            )
-        }
 
         Text(
             modifier = Modifier

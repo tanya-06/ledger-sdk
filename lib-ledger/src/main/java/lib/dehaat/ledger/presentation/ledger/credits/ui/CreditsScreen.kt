@@ -38,11 +38,7 @@ fun CreditsScreen(
         if (isLmsActivated() && totalAvailableCreditLimit.isNotEmpty()) {
             AvailableCreditLimitView(
                 limitInRupees = totalAvailableCreditLimit.getAmountInRupees(),
-                ledgerColors = ledgerColors,
-                onInfoIconClick = {
-                    viewModel.showAvailableCreditLimitInfoModal()
-                },
-                isLmsActivated = isLmsActivated
+                ledgerColors = ledgerColors
             )
         }
 
