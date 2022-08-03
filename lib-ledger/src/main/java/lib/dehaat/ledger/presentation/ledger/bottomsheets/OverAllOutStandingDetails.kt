@@ -57,7 +57,7 @@ fun OverAllOutStandingDetails(data: OverAllOutStandingDetailViewData, ledgerColo
         SpaceMedium()
 
         CreditNoteKeyValueInSummaryView(
-            "Principle o/s",
+            "Principal o/s",
             data.principleOutstanding.getAmountInRupees(),
             ledgerColors = ledgerColors
         )

@@ -27,10 +27,8 @@ import lib.dehaat.ledger.resources.textBold14Sp
 fun SanctionedCreditLimitViewPreviewAIMS() {
     SanctionedCreditLimitView(
         limitInRupees = "10000",
-        ledgerColors = AIMSColors(),
-        onInfoIconClick = { },
-        isLmsActivated = { true }
-    )
+        ledgerColors = AIMSColors()
+    ) { true }
 }
 
 @Preview(
@@ -41,17 +39,14 @@ fun SanctionedCreditLimitViewPreviewAIMS() {
 fun SanctionedCreditLimitViewPreviewDBA() {
     SanctionedCreditLimitView(
         limitInRupees = "10000",
-        ledgerColors = DBAColors(),
-        onInfoIconClick = { },
-        isLmsActivated = { true }
-    )
+        ledgerColors = DBAColors()
+    ) { true }
 }
 
 @Composable
 fun SanctionedCreditLimitView(
     limitInRupees: String,
     ledgerColors: LedgerColors,
-    onInfoIconClick: () -> Unit,
     isLmsActivated: () -> Boolean
 ) {
     Row(

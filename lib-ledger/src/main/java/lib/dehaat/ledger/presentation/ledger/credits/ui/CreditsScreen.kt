@@ -53,9 +53,6 @@ fun CreditsScreen(
                     onOutstandingInfoIconClick = {
                         openLenderOutstandingBottomSheet(it)
                     },
-                    onSanctionedInfoClick = {
-                        viewModel.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal()
-                    },
                     isLmsActivated = isLmsActivated
                 )
                 Divider(color = Color.Transparent, thickness = 12.dp)
