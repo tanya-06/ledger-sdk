@@ -35,7 +35,7 @@ fun TransactionSummary(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
-                .background(ledgerColors.TransactionAmountColor),
+                .background(ledgerColors.LedgerPrimaryColor),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {

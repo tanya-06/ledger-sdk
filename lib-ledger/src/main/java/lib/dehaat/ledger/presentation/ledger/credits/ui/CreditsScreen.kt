@@ -38,31 +38,37 @@ fun CreditsScreen(
         if (isLmsActivated() && totalAvailableCreditLimit.isNotEmpty()) {
             AvailableCreditLimitView(
                 limitInRupees = totalAvailableCreditLimit.getAmountInRupees(),
-                ledgerColors = ledgerColors
+                ledgerColors = ledgerColors,
+                isLmsActivated = isLmsActivated
             )
         }
 
-        LazyColumn(
-            contentPadding = PaddingValues(16.dp),
-            modifier = Modifier
-        ) {
-            items(uiState.creditLinesViewData) { item ->
-                CreditLineCard(
-                    ledgerColors = ledgerColors,
-                    data = item,
-                    onOutstandingInfoIconClick = {
-                        openLenderOutstandingBottomSheet(it)
-                    },
-                    isLmsActivated = isLmsActivated
-                )
-                Divider(color = Color.Transparent, thickness = 12.dp)
+        if (!isLmsActivated()) {
+            LazyColumn(
+                contentPadding = PaddingValues(16.dp),
+                modifier = Modifier
+            ) {
+                items(uiState.creditLinesViewData) { item ->
+                    CreditLineCard(
+                        ledgerColors = ledgerColors,
+                        data = item,
+                        onOutstandingInfoIconClick = {
+                            openLenderOutstandingBottomSheet(it)
+                        },
+                        isLmsActivated = isLmsActivated
+                    )
+                    Divider(color = Color.Transparent, thickness = 12.dp)
+                }
             }
         }
 
         if (uiState.showAvailableCreditLimitInfoModal) {
-            AvailableCreditLimitInfoModal(ledgerColors = ledgerColors, onOkClick = {
-                viewModel.hideAvailableCreditLimitInfoModal()
-            })
+            AvailableCreditLimitInfoModal(
+                ledgerColors = ledgerColors,
+                onOkClick = {
+                    viewModel.hideAvailableCreditLimitInfoModal()
+                }
+            )
         }
 
         if (uiState.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal) {

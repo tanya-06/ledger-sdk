@@ -30,5 +30,6 @@ class DBAColors : LedgerColors(
     CreditViewHeaderDividerBColor = Color(0xFFEFEFEF),
     TransactionAndCreditScreenBGColor = Color(0xFFFAFAFA),
     FilterDialogDateBGColor = Color(0xFFF1F3F8), // TODO check on DBA
-    FilterIconsColor = PrimaryGreen
+    FilterIconsColor = PrimaryGreen,
+    LedgerPrimaryColor = PrimaryGreen
 )

@@ -103,10 +103,10 @@ fun LedgerNavigation(
             val erpId = it.arguments?.get(LedgerConstants.KEY_ERP_ID) as String?
             val source = it.arguments?.get(LedgerConstants.KEY_SOURCE) as String
 
-            val viewModel = hiltViewModel<InvoiceDetailViewModel>()
+            val invoiceDetailViewModel = hiltViewModel<InvoiceDetailViewModel>()
 
             InvoiceDetailScreen(
-                viewModel = viewModel,
+                viewModel = invoiceDetailViewModel,
                 erpId = erpId,
                 source = source,
                 ledgerColors = ledgerColors,
@@ -138,9 +138,9 @@ fun LedgerNavigation(
             )
         ) {
 
-            val viewModel = hiltViewModel<CreditNoteDetailViewModel>()
+            val creditNoteDetailViewModel = hiltViewModel<CreditNoteDetailViewModel>()
 
-            CreditNoteDetailScreen(viewModel = viewModel, ledgerColors = ledgerColors) {
+            CreditNoteDetailScreen(viewModel = creditNoteDetailViewModel, ledgerColors = ledgerColors) {
                 navController.popBackStack()
             }
 
@@ -176,18 +176,14 @@ fun LedgerNavigation(
                 }
             )
         ) {
-
-            val viewModel = hiltViewModel<PaymentDetailViewModel>()
-
+            val paymentDetailViewModel = hiltViewModel<PaymentDetailViewModel>()
             PaymentDetailScreen(
-                viewModel = viewModel,
+                viewModel = paymentDetailViewModel,
                 ledgerColors = ledgerColors
             ) {
                 navController.popBackStack()
             }
-
         }
-
     }
 }
 

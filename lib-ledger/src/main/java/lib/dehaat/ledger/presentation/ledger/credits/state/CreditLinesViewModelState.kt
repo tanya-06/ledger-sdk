@@ -1,7 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.credits.state
 
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
-import lib.dehaat.ledger.presentation.model.outstanding.LedgerOutStandingDetailViewData
 
 data class CreditLinesViewModelState(
     val creditLinesViewData: List<CreditLineViewData>? = null,

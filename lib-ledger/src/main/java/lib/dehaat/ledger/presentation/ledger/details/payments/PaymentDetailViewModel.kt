@@ -68,9 +68,9 @@ class PaymentDetailViewModel @Inject constructor(
 
     private fun getPaymentDetailFromServer() {
         callInViewModelScope {
-            callingAPI()
+            updateProgressDialog(true)
             val response = getPaymentDetailUseCase.invoke(ledgerId)
-            calledAPI()
+            updateProgressDialog(false)
             processPaymentDetailResponse(response)
         }
     }
@@ -92,15 +92,7 @@ class PaymentDetailViewModel @Inject constructor(
         }
     }
 
-    private fun calledAPI() {
-        viewModelState.update {
-            it.copy(isLoading = false)
-        }
-    }
-
-    private fun callingAPI() {
-        viewModelState.update {
-            it.copy(isLoading = true)
-        }
+    fun updateProgressDialog(show: Boolean) = viewModelState.update {
+        it.copy(isLoading = show)
     }
 }

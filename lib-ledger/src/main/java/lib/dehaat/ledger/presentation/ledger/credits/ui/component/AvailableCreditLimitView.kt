@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,7 +28,8 @@ import lib.dehaat.ledger.resources.textBold14Sp
 fun AvailableCreditLimitViewScreenDBA() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
-        ledgerColors = DBAColors()
+        ledgerColors = DBAColors(),
+        isLmsActivated = { true }
     )
 }
 
@@ -39,14 +41,16 @@ fun AvailableCreditLimitViewScreenDBA() {
 fun AvailableCreditLimitViewScreenAIMS() {
     AvailableCreditLimitView(
         limitInRupees = "10000",
-        ledgerColors = AIMSColors()
+        ledgerColors = AIMSColors(),
+        isLmsActivated = { true }
     )
 }
 
 @Composable
 fun AvailableCreditLimitView(
     limitInRupees: String,
-    ledgerColors: LedgerColors
+    ledgerColors: LedgerColors,
+    isLmsActivated: () -> Boolean
 ) {
     Row(
         modifier = Modifier
@@ -65,7 +69,12 @@ fun AvailableCreditLimitView(
                 .padding(start = 9.dp),
             text = "Available Credit Limit",
             style = text12Sp(textColor = ledgerColors.LenderNameColor),
-            maxLines = 1
+            maxLines = 1,
+            fontWeight = if (isLmsActivated()) {
+                FontWeight.Bold
+            } else {
+                FontWeight.Normal
+            }
         )
 
         Text(
@@ -75,7 +84,12 @@ fun AvailableCreditLimitView(
             text = limitInRupees,
             style = textBold14Sp(textColor = ledgerColors.TransactionDateColor),
             maxLines = 1,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
+            fontWeight = if (isLmsActivated()) {
+                FontWeight.Bold
+            } else {
+                FontWeight.Normal
+            }
         )
     }
 }

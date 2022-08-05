@@ -3,13 +3,12 @@
 package lib.dehaat.ledger.presentation.ledger.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -27,8 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -40,6 +37,8 @@ import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.DaysToFilterContent
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.LenderOutStandingDetails
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.OverAllOutStandingDetails
+import lib.dehaat.ledger.presentation.ledger.components.InformationDialog
+import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.credits.ui.CreditsScreen
 import lib.dehaat.ledger.presentation.ledger.state.BottomSheetType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.TransactionsListScreen
@@ -66,12 +65,8 @@ fun LedgerDetailScreen2(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = {
-            if (it == ModalBottomSheetValue.Hidden) {
-            }
-            true
-        })
+        initialValue = ModalBottomSheetValue.Hidden
+    )
 
     val bottomBarVisibility = rememberSaveable { mutableStateOf(true) }
     if (uiState.isFilteringWithRange) {
@@ -83,6 +78,13 @@ fun LedgerDetailScreen2(
             }
         )
     }
+    if (uiState.showOutstandingDialog) {
+        InformationDialog(
+            title = "Total Outstanding = Total Purchase Amount + Interest Till Date - Total Payment Amount",
+        ) {
+            viewModel.closeOutstandingDialog()
+        }
+    }
 
     CommonContainer(
         title = viewModel.dcName,
@@ -90,25 +92,17 @@ fun LedgerDetailScreen2(
         scaffoldState = scaffoldState,
         bottomBar = {
             AnimatedVisibility(
-                visible = bottomBarVisibility.value
+                visible = bottomBarVisibility.value,
+                enter = expandVertically(),
+                exit = shrinkVertically()
             ) {
                 TransactionSummary(viewModel, ledgerColors)
             }
         }
     ) {
         if (uiState.isLoading) {
-            Dialog(
-                onDismissRequest = { viewModel.updateProgressDialog(false) },
-                DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .background(Color.White, shape = RoundedCornerShape(8.dp))
-                ) {
-                    CircularProgressIndicator()
-                }
+            ShowProgressDialog(ledgerColors) {
+                viewModel.updateProgressDialog(false)
             }
         } else {
             ModalBottomSheetLayout(
@@ -154,8 +148,12 @@ fun LedgerDetailScreen2(
                             onPayNowClick = onPayNowClick,
                             onClickTotalOutstandingInfo = {
                                 scope.launch {
-                                    viewModel.openAllOutstandingModal()
-                                    sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                                    if (isLmsActivated()) {
+                                        viewModel.openOutstandingDialog()
+                                    } else {
+                                        viewModel.openAllOutstandingModal()
+                                        sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                                    }
                                 }
                             },
                             onPaymentOptionsClick = onPaymentOptionsClick

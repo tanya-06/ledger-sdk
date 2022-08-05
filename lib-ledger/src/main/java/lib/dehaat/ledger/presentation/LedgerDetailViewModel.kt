@@ -185,6 +185,22 @@ class LedgerDetailViewModel @Inject constructor(
         }
     }
 
+    fun closeOutstandingDialog() {
+        viewModelState.update {
+            it.copy(
+                showOutstandingDialog = false
+            )
+        }
+    }
+
+    fun openOutstandingDialog() {
+        viewModelState.update {
+            it.copy(
+                showOutstandingDialog = true
+            )
+        }
+    }
+
     fun showLenderOutstandingModal(data: CreditLineViewData) {
         viewModelState.update {
             it.copy(

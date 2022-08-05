@@ -89,7 +89,7 @@ fun CreditLineCard(
                 maxLines = 1
             )
 
-            if (!data.belongsToGapl) {
+            /*if (!data.belongsToGapl) {
                 Image(
                     modifier = Modifier
                         .padding(start = 7.dp)
@@ -97,7 +97,7 @@ fun CreditLineCard(
                     painter = painterResource(id = R.drawable.ic_info_icon),
                     contentDescription = "info"
                 )
-            }
+            }*/
         }
 
         Text(

@@ -29,5 +29,6 @@ open class LedgerColors(
     val CreditViewHeaderDividerBColor: Color,
     val TransactionAndCreditScreenBGColor: Color,
     val FilterDialogDateBGColor: Color,
-    val FilterIconsColor: Color
+    val FilterIconsColor: Color,
+    val LedgerPrimaryColor: Color
 )
