@@ -2,6 +2,7 @@ package lib.dehaat.ledger.presentation.ledger.transactions.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
@@ -58,7 +59,7 @@ fun TransactionsListScreen(
             isLmsActivated = isLmsActivated
         )*/
         LazyColumn(
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
         ) {
             items(transactions) { data ->
