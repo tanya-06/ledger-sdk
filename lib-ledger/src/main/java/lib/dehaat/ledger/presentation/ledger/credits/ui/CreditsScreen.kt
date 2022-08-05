@@ -76,6 +76,8 @@ fun CreditsScreen(
 
         if (uiState.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal) {
             AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
+                title = "Available Credit Limit = Total Credit Limit - Outstanding\n" +
+                        "(Note: We have excluded orders in calculation for which remains to be invoiced",
                 ledgerColors = ledgerColors,
                 lmsActivated = isLmsActivated(),
                 onOkClick = {

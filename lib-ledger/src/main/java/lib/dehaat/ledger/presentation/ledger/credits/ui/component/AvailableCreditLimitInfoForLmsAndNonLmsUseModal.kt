@@ -23,6 +23,7 @@ val credit_line_limit_definition_for_non_lms =
 
 @Composable
 fun AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
+    title: String,
     lmsActivated: Boolean,
     ledgerColors: LedgerColors,
     onOkClick: () -> Unit,
@@ -46,7 +47,7 @@ fun AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
 
                 Text(
                     modifier = Modifier,
-                    text = if(lmsActivated) credit_line_limit_definition_for_lms else credit_line_limit_definition_for_non_lms ,
+                    text = title ,
                     style = text14Sp(),
                 )
 

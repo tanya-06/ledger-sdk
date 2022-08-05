@@ -37,9 +37,9 @@ import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.DaysToFilterContent
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.LenderOutStandingDetails
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.OverAllOutStandingDetails
-import lib.dehaat.ledger.presentation.ledger.components.InformationDialog
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.credits.ui.CreditsScreen
+import lib.dehaat.ledger.presentation.ledger.credits.ui.component.AvailableCreditLimitInfoForLmsAndNonLmsUseModal
 import lib.dehaat.ledger.presentation.ledger.state.BottomSheetType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.TransactionsListScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.Header
@@ -79,11 +79,14 @@ fun LedgerDetailScreen2(
         )
     }
     if (uiState.showOutstandingDialog) {
-        InformationDialog(
+        AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
             title = "Total Outstanding = Total Purchase Amount + Interest Till Date - Total Payment Amount",
-        ) {
-            viewModel.closeOutstandingDialog()
-        }
+            ledgerColors = ledgerColors,
+            lmsActivated = isLmsActivated(),
+            onOkClick = {
+                viewModel.closeOutstandingDialog()
+            }
+        )
     }
 
     CommonContainer(
