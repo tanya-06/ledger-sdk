@@ -32,68 +32,72 @@ class AppChooserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Dummy(
-                onClickDBAButton = {
-                    LedgerSDK.init(
-                        applicationContext,
-                        LedgerParentApp.DBA(
-                            ledgerCallBack = LedgerCallBack(
-                                onClickPayNow = { showToast(it.toString()) },
-                                onDownloadInvoiceSuccess = { showToast(it.toString()) },
-                                onPaymentOptionsClick = { creditSummaryViewData, resultLauncher ->
-                                    showToast(creditSummaryViewData.toString())
-                                },
-                                downloadInvoiceIntent = { context, path ->
-                                    PendingIntent.getActivity(
-                                        this,
-                                        0,
-                                        Intent(
-                                            this,
-                                            LedgerDetailActivity::class.java
-                                        ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
-                                        -PendingIntent.FLAG_ONE_SHOT
-                                    )
-                                }
-                            )
-                        ),
-                        bucket = "fnfsandboxec2odoo",
-                        appIcon = R.drawable.ic_payment
-                    )
-                    LedgerSDK.openLedger(
-                        context = this,
-                        partnerId = "123456",
-                        dcName = "DC DBA",
-                        language = "en"
-                    )
-                },
-                onClickAIMSButton = {
-                    LedgerSDK.init(
-                        applicationContext,
-                        LedgerParentApp.AIMS(
-                            downloadInvoiceClick = { showToast(it.toString()) },
-                            downloadInvoiceIntent = { context, path ->
-                                PendingIntent.getActivity(
-                                    this,
-                                    0,
-                                    Intent(
-                                        this,
-                                        LedgerDetailActivity::class.java
-                                    ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
-                                    -PendingIntent.FLAG_ONE_SHOT
-                                )
-                            }
-                        ),
-                        bucket = "fnfsandboxec2odoo",
-                        appIcon = R.drawable.ic_payment
-                    )
-                    LedgerSDK.openLedger(
-                        context = this,
-                        partnerId = "123456",
-                        dcName = "DC AIMS",
-                        language = "hi"
-                    )
-                }
+                onClickDBAButton = { openDBA() },
+                onClickAIMSButton = { openAIMS() }
             )
         }
+    }
+
+    private fun openDBA() {
+        LedgerSDK.init(
+            applicationContext,
+            LedgerParentApp.DBA(
+                ledgerCallBack = LedgerCallBack(
+                    onClickPayNow = { showToast(it.toString()) },
+                    onDownloadInvoiceSuccess = { showToast(it.toString()) },
+                    onPaymentOptionsClick = { creditSummaryViewData, resultLauncher ->
+                        showToast(creditSummaryViewData.toString())
+                    },
+                    downloadInvoiceIntent = { context, path ->
+                        PendingIntent.getActivity(
+                            this,
+                            0,
+                            Intent(
+                                this,
+                                LedgerDetailActivity::class.java
+                            ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
+                            -PendingIntent.FLAG_ONE_SHOT
+                        )
+                    }
+                )
+            ),
+            bucket = "fnfsandboxec2odoo",
+            appIcon = R.drawable.ic_payment
+        )
+        LedgerSDK.openLedger(
+            context = this,
+            partnerId = "123456",
+            dcName = "DC DBA",
+            language = "en"
+        )
+    }
+
+    private fun openAIMS() {
+        LedgerSDK.init(
+            applicationContext,
+            LedgerParentApp.AIMS(
+                downloadInvoiceClick = { showToast(it.toString()) },
+                downloadInvoiceIntent = { context, path ->
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        Intent(
+                            this,
+                            LedgerDetailActivity::class.java
+                        ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
+                        -PendingIntent.FLAG_ONE_SHOT
+                    )
+                }
+            ),
+            bucket = "fnfsandboxec2odoo",
+            appIcon = R.drawable.ic_payment
+        )
+        LedgerSDK.openLedger(
+            context = this,
+            partnerId = "123456",
+            dcName = "DC AIMS",
+            language = "hi"
+        )
     }
 
     private fun showToast(msg: String) {

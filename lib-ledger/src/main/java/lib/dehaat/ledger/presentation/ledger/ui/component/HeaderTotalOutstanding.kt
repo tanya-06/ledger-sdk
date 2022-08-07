@@ -86,11 +86,14 @@ fun HeaderTotalOutstanding(
                     )
                 }
             }
-            Text(
-                modifier = Modifier.padding(top = 8.dp),
-                text = creditSummaryData?.credit?.totalOutstandingAmount.getAmountInRupees(),
-                style = textBold14Sp(textColor = ledgerColors.CtaColor)
-            )
+
+            creditSummaryData?.credit?.totalOutstandingAmount?.let {
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = it.getAmountInRupees(),
+                    style = textBold14Sp(textColor = ledgerColors.CtaColor)
+                )
+            }
         }
     }
 }

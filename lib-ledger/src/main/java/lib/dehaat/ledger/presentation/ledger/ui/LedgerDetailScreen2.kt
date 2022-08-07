@@ -111,7 +111,6 @@ fun LedgerDetailScreen2(
             ModalBottomSheetLayout(
                 modifier = Modifier.padding(it),
                 sheetContent = {
-
                     when (val bottomSheetType = uiState.bottomSheetType) {
                         is BottomSheetType.LenderOutStanding -> LenderOutStandingDetails(
                             data = bottomSheetType.data,
