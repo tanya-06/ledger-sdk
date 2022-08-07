@@ -54,7 +54,7 @@ private fun TotalOutstandingDBAPreview() {
 fun HeaderTotalOutstanding(
     creditSummaryData: CreditSummaryViewData?,
     ledgerColors: LedgerColors,
-    isLmsActivated: () -> Boolean,
+    isLmsActivated: () -> Boolean?,
     onClickTotalOutstandingInfo: () -> Unit
 ) {
     Column(
@@ -76,7 +76,7 @@ fun HeaderTotalOutstanding(
                     text = stringResource(id = R.string.total_outstanding),
                     style = text14Sp(textColor = ledgerColors.CtaColor)
                 )
-                if (isLmsActivated()) {
+                if (isLmsActivated() == true) {
                     Icon(
                         modifier = Modifier
                             .padding(start = 7.dp)

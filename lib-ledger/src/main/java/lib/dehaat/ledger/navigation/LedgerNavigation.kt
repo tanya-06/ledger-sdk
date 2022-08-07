@@ -80,8 +80,7 @@ fun LedgerNavigation(
                 LedgerConstants.KEY_LEDGER_ID,
                 LedgerConstants.KEY_ERP_ID,
                 LedgerConstants.KEY_LOCUS_ID,
-                LedgerConstants.KEY_SOURCE,
-                LedgerConstants.KEY_LMS_ACTIVATED
+                LedgerConstants.KEY_SOURCE
             ),
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_LEDGER_ID) {
@@ -93,9 +92,6 @@ fun LedgerNavigation(
                 },
                 navArgument(LedgerConstants.KEY_SOURCE) {
                     type = NavType.StringType
-                },
-                navArgument(LedgerConstants.KEY_LMS_ACTIVATED) {
-                    type = NavType.BoolType
                 }
             )
         ) {
@@ -104,6 +100,7 @@ fun LedgerNavigation(
             val source = it.arguments?.get(LedgerConstants.KEY_SOURCE) as String
 
             val invoiceDetailViewModel = hiltViewModel<InvoiceDetailViewModel>()
+            invoiceDetailViewModel.setIsLmsActivated(viewModel.isLMSActivated())
 
             InvoiceDetailScreen(
                 viewModel = invoiceDetailViewModel,
@@ -140,7 +137,10 @@ fun LedgerNavigation(
 
             val creditNoteDetailViewModel = hiltViewModel<CreditNoteDetailViewModel>()
 
-            CreditNoteDetailScreen(viewModel = creditNoteDetailViewModel, ledgerColors = ledgerColors) {
+            CreditNoteDetailScreen(
+                viewModel = creditNoteDetailViewModel,
+                ledgerColors = ledgerColors
+            ) {
                 navController.popBackStack()
             }
 
@@ -151,8 +151,7 @@ fun LedgerNavigation(
                 LedgerConstants.KEY_LEDGER_ID,
                 LedgerConstants.KEY_ERP_ID,
                 LedgerConstants.KEY_LOCUS_ID,
-                LedgerConstants.KEY_PAYMENT_MODE,
-                LedgerConstants.KEY_LMS_ACTIVATED
+                LedgerConstants.KEY_PAYMENT_MODE
             ),
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_LEDGER_ID) {
@@ -169,14 +168,11 @@ fun LedgerNavigation(
                 navArgument(LedgerConstants.KEY_PAYMENT_MODE) {
                     type = NavType.StringType
                     nullable = true
-                },
-                navArgument(LedgerConstants.KEY_LMS_ACTIVATED) {
-                    type = NavType.BoolType
-                    nullable = false
                 }
             )
         ) {
             val paymentDetailViewModel = hiltViewModel<PaymentDetailViewModel>()
+            paymentDetailViewModel.setIsLmsActivated(viewModel.isLMSActivated())
             PaymentDetailScreen(
                 viewModel = paymentDetailViewModel,
                 ledgerColors = ledgerColors
@@ -193,16 +189,14 @@ fun provideDetailPageNavCallBacks(navController: NavHostController) =
             legerId: String,
             erpId: String?,
             locusId: String?,
-            source: String,
-            isLMSActivated: Boolean
+            source: String
         ) {
             navigateToInvoiceDetailScreen(
                 navController = navController,
                 ledgerId = legerId,
                 erpId = erpId,
                 locusId = locusId,
-                source = source,
-                isLMSActivated = isLMSActivated
+                source = source
             )
         }
 
@@ -223,19 +217,16 @@ fun provideDetailPageNavCallBacks(navController: NavHostController) =
             legerId: String,
             erpId: String?,
             locusId: String?,
-            mode: String?,
-            isLMSActivated: Boolean
+            mode: String?
         ) {
             navigateToPaymentDetailScreen(
                 navController = navController,
                 ledgerId = legerId,
                 erpId = erpId,
                 locusId = locusId,
-                mode = mode,
-                isLMSActivated = isLMSActivated
+                mode = mode
             )
         }
-
     }
 
 fun navigateToInvoiceDetailScreen(
@@ -243,16 +234,14 @@ fun navigateToInvoiceDetailScreen(
     ledgerId: String,
     erpId: String?,
     locusId: String?,
-    source: String,
-    isLMSActivated: Boolean
+    source: String
 ) {
     navController.navigate(
         LedgerRoutes.LedgerInvoiceDetailScreen.screen.withArgs(
             ledgerId,
             erpId,
             locusId,
-            source,
-            isLMSActivated
+            source
         )
     )
 }
@@ -277,16 +266,14 @@ fun navigateToPaymentDetailScreen(
     ledgerId: String,
     erpId: String?,
     locusId: String?,
-    mode: String?,
-    isLMSActivated: Boolean
+    mode: String?
 ) {
     navController.navigate(
         LedgerRoutes.LedgerPaymentDetailScreen.screen.withArgs(
             ledgerId,
             erpId,
             locusId,
-            mode,
-            isLMSActivated
+            mode
         )
     )
 }

@@ -23,10 +23,10 @@ fun FilterStrip(
     onWithPenaltyChange: (Boolean) -> Unit,
     onDaysToFilterIconClick: () -> Unit,
     onDateRangeFilterIconClick: () -> Unit,
-    isLmsActivated: () -> Boolean
+    isLmsActivated: () -> Boolean?
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        if (isLmsActivated()) {
+        if (isLmsActivated() == true) {
             Text(text = "Invoice with Penalty")
             Switch(
                 modifier = Modifier.padding(start = 12.dp),

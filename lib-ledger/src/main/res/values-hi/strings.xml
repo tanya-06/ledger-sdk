@@ -2,4 +2,6 @@
 <resources>
     <string name="total_outstanding">कुल बकाया</string>
     <string name="ledger">बही खाता</string>
+    <string name="purchase_amount">Purchase Amount</string>
+    <string name="payment_amount">Payment Amount</string>
 </resources>

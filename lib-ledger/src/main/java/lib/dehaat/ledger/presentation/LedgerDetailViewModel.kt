@@ -175,7 +175,7 @@ class LedgerDetailViewModel @Inject constructor(
         }
 
     fun isLMSActivated() =
-        viewModelState.value.creditSummaryViewData?.credit?.externalFinancierSupported ?: false
+        viewModelState.value.creditSummaryViewData?.credit?.externalFinancierSupported
 
     fun openAllOutstandingModal() {
         viewModelState.update {

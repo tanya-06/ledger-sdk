@@ -39,7 +39,7 @@ fun TransactionsListScreen(
     ledgerDetailViewModel: LedgerDetailViewModel,
     openDaysFilter: () -> Unit,
     openRangeFilter: () -> Unit,
-    isLmsActivated: () -> Boolean
+    isLmsActivated: () -> Boolean?
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
@@ -70,8 +70,7 @@ fun TransactionsListScreen(
                                 legerId = data.ledgerId,
                                 erpId = data.erpId,
                                 locusId = data.locusId,
-                                mode = data.paymentMode,
-                                isLMSActivated = isLmsActivated()
+                                mode = data.paymentMode
                             )
                             TransactionType.CREDIT_NOTE -> detailPageNavigationCallback.navigateToCreditNoteDetailPage(
                                 legerId = data.ledgerId,
@@ -82,8 +81,7 @@ fun TransactionsListScreen(
                                 legerId = data.ledgerId,
                                 erpId = data.erpId,
                                 locusId = data.locusId,
-                                source = data.source,
-                                isLMSActivated = isLmsActivated()
+                                source = data.source
                             )
                             else -> Unit
                         }

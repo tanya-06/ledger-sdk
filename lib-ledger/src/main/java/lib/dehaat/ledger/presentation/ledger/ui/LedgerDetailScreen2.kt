@@ -56,7 +56,7 @@ fun LedgerDetailScreen2(
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit,
     detailPageNavigationCallback: DetailPageNavigationCallback,
-    isLmsActivated: () -> Boolean,
+    isLmsActivated: () -> Boolean?,
     onPayNowClick: () -> Unit,
     onPaymentOptionsClick: () -> Unit
 ) {
@@ -150,7 +150,7 @@ fun LedgerDetailScreen2(
                             onPayNowClick = onPayNowClick,
                             onClickTotalOutstandingInfo = {
                                 scope.launch {
-                                    if (isLmsActivated()) {
+                                    if (isLmsActivated() == true) {
                                         viewModel.openOutstandingDialog()
                                     } else {
                                         viewModel.openAllOutstandingModal()

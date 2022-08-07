@@ -28,14 +28,14 @@ fun CreditsScreen(
     ledgerDetailViewModel: LedgerDetailViewModel,
     ledgerColors: LedgerColors,
     viewModel: LedgerCreditViewModel = hiltViewModel(),
-    isLmsActivated: () -> Boolean,
+    isLmsActivated: () -> Boolean?,
     openLenderOutstandingBottomSheet: (CreditLineViewData) -> Unit
 ) {
     HandleAPIErrors(viewModel.uiEvent)
     val uiState by viewModel.uiState.collectAsState()
     val totalAvailableCreditLimit by ledgerDetailViewModel.totalAvailableCreditLimit.collectAsState()
     Column {
-        if (isLmsActivated() && totalAvailableCreditLimit.isNotEmpty()) {
+        if (isLmsActivated() == true && totalAvailableCreditLimit.isNotEmpty()) {
             AvailableCreditLimitView(
                 limitInRupees = totalAvailableCreditLimit.getAmountInRupees(),
                 ledgerColors = ledgerColors,
@@ -46,7 +46,7 @@ fun CreditsScreen(
             )
         }
 
-        if (!isLmsActivated()) {
+        if (isLmsActivated() == false) {
             LazyColumn(
                 contentPadding = PaddingValues(16.dp),
                 modifier = Modifier

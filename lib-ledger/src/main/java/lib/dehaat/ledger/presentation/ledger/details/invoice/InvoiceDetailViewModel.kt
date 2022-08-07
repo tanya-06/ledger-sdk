@@ -21,7 +21,6 @@ import lib.dehaat.ledger.domain.usecases.GetInvoiceDetailUseCase
 import lib.dehaat.ledger.domain.usecases.GetInvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -48,7 +47,7 @@ class InvoiceDetailViewModel @Inject constructor(
         )
     }
 
-    private val lmsActivated by lazy { savedStateHandle.get<Boolean>(LedgerConstants.KEY_LMS_ACTIVATED) }
+    private var lmsActivated: Boolean? = null
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> get() = _uiEvent
@@ -68,7 +67,11 @@ class InvoiceDetailViewModel @Inject constructor(
         getInvoiceDetailFromServer()
     }
 
-    fun isLmsActivated() = lmsActivated == true
+    fun isLmsActivated() = lmsActivated
+
+    fun setIsLmsActivated(activated: Boolean?) {
+        lmsActivated = activated
+    }
 
     private fun getInvoiceDetailFromServer() {
         callInViewModelScope {

@@ -2,4 +2,6 @@
 <resources>
     <string name="total_outstanding">Total Outstanding</string>
     <string name="ledger">Ledger</string>
+    <string name="purchase_amount">Purchase Amount</string>
+    <string name="payment_amount">Payment Amount</string>
 </resources>

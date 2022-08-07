@@ -47,7 +47,7 @@ fun SanctionedCreditLimitViewPreviewDBA() {
 fun SanctionedCreditLimitView(
     limitInRupees: String,
     ledgerColors: LedgerColors,
-    isLmsActivated: () -> Boolean
+    isLmsActivated: () -> Boolean?
 ) {
     Row(
         modifier = Modifier
@@ -63,7 +63,7 @@ fun SanctionedCreditLimitView(
         Text(
             modifier = Modifier
                 .padding(start = 9.dp),
-            text = if (isLmsActivated()) "Sanctioned Credit Limit" else "Available Credit Limit",
+            text = if (isLmsActivated() == true) "Sanctioned Credit Limit" else "Available Credit Limit",
             style = text12Sp(textColor = ledgerColors.LenderNameColor),
             maxLines = 1
         )

@@ -15,14 +15,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValue
-import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryView
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryViewWithTopPadding
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
@@ -62,22 +63,24 @@ fun PaymentDetailScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(4.dp)
-                ) {
-                    CreditNoteKeyValue(
-                        "Payment Amount",
-                        paymentSummary?.totalAmount.getAmountInRupees(),
-                        keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                        valueTextStyle = text18Sp(
-                            fontWeight = FontWeight.Bold,
-                            textColor = ledgerColors.CtaDarkColor
-                        ),
+                paymentSummary?.totalAmount?.let {
+                    Card(
                         modifier = Modifier
-                            .padding(16.dp)
-                    )
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(4.dp)
+                    ) {
+                        CreditNoteKeyValue(
+                            stringResource(id = R.string.payment_amount),
+                            it.getAmountInRupees(),
+                            keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                            valueTextStyle = text18Sp(
+                                fontWeight = FontWeight.Bold,
+                                textColor = ledgerColors.CtaDarkColor
+                            ),
+                            modifier = Modifier
+                                .padding(16.dp)
+                        )
+                    }
                 }
 
                 SpaceMedium()
@@ -117,7 +120,7 @@ fun PaymentDetailScreen(
                             }
                         }*/
 
-                        if (viewModel.isLmsActivated()) {
+                        if (viewModel.isLmsActivated() == true) {
                             paymentSummary?.paidTo?.let {
                                 CreditNoteKeyValueInSummaryViewWithTopPadding(
                                     "Paid To",

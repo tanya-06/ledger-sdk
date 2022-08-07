@@ -251,25 +251,27 @@ fun InvoiceDetailScreen(
                     }
                 }*/
 
-                if (!viewModel.isLmsActivated()) {
-                    SpaceMedium()
+                invoiceData?.overdueInfo?.overdueDate?.let {
+                    if (viewModel.isLmsActivated() == false) {
+                        SpaceMedium()
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        CreditNoteKeyValue(
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                            key = "Overdue Date",
-                            value = invoiceData?.overdueInfo?.overdueDate.toDateMonthYear(),
-                            keyTextStyle = text18Sp(
-                                textColor = ledgerColors.CtaDarkColor
-                            ),
-                            valueTextStyle = text18Sp(
-                                textColor = ledgerColors.CtaDarkColor
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            CreditNoteKeyValue(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                                key = "Overdue Date",
+                                value = it.toDateMonthYear(),
+                                keyTextStyle = text18Sp(
+                                    textColor = ledgerColors.CtaDarkColor
+                                ),
+                                valueTextStyle = text18Sp(
+                                    textColor = ledgerColors.CtaDarkColor
+                                )
                             )
-                        )
+                        }
                     }
                 }
 

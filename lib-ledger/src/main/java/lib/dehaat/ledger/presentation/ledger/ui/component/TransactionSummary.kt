@@ -15,11 +15,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
 import lib.dehaat.ledger.resources.TextWhite
@@ -41,7 +43,7 @@ fun TransactionSummary(
         ) {
             Text(
                 text = buildAnnotatedString {
-                    append("Purchase Amount")
+                    append(stringResource(id = R.string.purchase_amount))
                     pushStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.Bold,
@@ -63,7 +65,7 @@ fun TransactionSummary(
             )
             Text(
                 text = buildAnnotatedString {
-                    append("Payment Amount")
+                    append(stringResource(id = R.string.payment_amount))
                     pushStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.Bold,

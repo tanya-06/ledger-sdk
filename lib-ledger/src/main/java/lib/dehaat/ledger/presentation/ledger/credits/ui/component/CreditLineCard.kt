@@ -59,7 +59,7 @@ fun CreditLineCard(
     ledgerColors: LedgerColors,
     data: CreditLineViewData,
     onOutstandingInfoIconClick: (CreditLineViewData) -> Unit,
-    isLmsActivated: () -> Boolean
+    isLmsActivated: () -> Boolean?
 ) {
 
     Column(
