@@ -94,9 +94,14 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     private fun sendShowSnackBarEvent(message: String) {
+        updateAPIFailure()
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }
+    }
+
+    private fun updateAPIFailure() = viewModelState.update {
+        it.copy(isError = true)
     }
 
     fun downloadInvoice(

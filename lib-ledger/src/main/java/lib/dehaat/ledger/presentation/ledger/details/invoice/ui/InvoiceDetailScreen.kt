@@ -319,23 +319,29 @@ fun InvoiceDetailScreen(
                         )
                         .padding(16.dp)
                 ) {
-                    CreditNoteKeyValueInSummaryView(
-                        "Item Total", invoiceData?.productsInfo?.itemTotal.getAmountInRupees(),
-                        ledgerColors = ledgerColors
-                    )
+                    invoiceData?.productsInfo?.itemTotal?.let {
+                        CreditNoteKeyValueInSummaryView(
+                            "Item Total", it.getAmountInRupees(),
+                            ledgerColors = ledgerColors
+                        )
+                    }
 
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "Discount",
-                        invoiceData?.productsInfo?.discount.getAmountInRupees(),
-                        ledgerColors = ledgerColors,
-                        valueTextStyle = textBold14Sp(textColor = ledgerColors.DownloadInvoiceColor),
-                    )
+                    invoiceData?.productsInfo?.discount?.let {
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Discount",
+                            it.getAmountInRupees(),
+                            ledgerColors = ledgerColors,
+                            valueTextStyle = textBold14Sp(textColor = ledgerColors.DownloadInvoiceColor),
+                        )
+                    }
 
-                    CreditNoteKeyValueInSummaryViewWithTopPadding(
-                        "GST",
-                        invoiceData?.productsInfo?.gst.getAmountInRupees(),
-                        ledgerColors = ledgerColors
-                    )
+                    invoiceData?.productsInfo?.gst?.let {
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "GST",
+                            it.getAmountInRupees(),
+                            ledgerColors = ledgerColors
+                        )
+                    }
 
                     Divider(
                         modifier = Modifier
@@ -343,17 +349,18 @@ fun InvoiceDetailScreen(
                             .background(color = ledgerColors.TabBorderColorDefault),
                         thickness = 1.dp
                     )
-
-                    CreditNoteKeyValue(
-                        "Total Amount",
-                        invoiceData?.productsInfo?.subTotal.getAmountInRupees(),
-                        keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                        valueTextStyle = text18Sp(
-                            fontWeight = FontWeight.Bold,
-                            textColor = ledgerColors.CtaDarkColor
-                        ),
-                        modifier = Modifier,
-                    )
+                    invoiceData?.productsInfo?.subTotal?.let {
+                        CreditNoteKeyValue(
+                            "Total Amount",
+                            it.getAmountInRupees(),
+                            keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                            valueTextStyle = text18Sp(
+                                fontWeight = FontWeight.Bold,
+                                textColor = ledgerColors.CtaDarkColor
+                            ),
+                            modifier = Modifier,
+                        )
+                    }
                 }
 
                 Row(

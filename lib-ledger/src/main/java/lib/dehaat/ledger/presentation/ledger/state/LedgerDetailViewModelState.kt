@@ -31,6 +31,7 @@ data class LedgerDetailViewModelState(
         data = overAllOutStandingDetailViewData
     ),
     val isLoading: Boolean = false,
+    val isError: Boolean = false,
     val transactionSummaryViewData: TransactionSummaryViewData? = null,
     val showFilterRangeDialog: Boolean = false,
     val showOutstandingDialog: Boolean = false
@@ -38,6 +39,7 @@ data class LedgerDetailViewModelState(
     fun toUiState() = LedgerDetailUIState(
         creditSummaryViewData = creditSummaryViewData,
         isLoading = isLoading,
+        isError = isError,
         bottomSheetType = bottomSheetType,
         transactionSummaryViewData = transactionSummaryViewData,
         isFilteringWithRange = showFilterRangeDialog,
@@ -48,6 +50,7 @@ data class LedgerDetailViewModelState(
 data class LedgerDetailUIState(
     val creditSummaryViewData: CreditSummaryViewData?,
     val isLoading: Boolean,
+    val isError: Boolean,
     val bottomSheetType: BottomSheetType,
     val transactionSummaryViewData: TransactionSummaryViewData?,
     val isFilteringWithRange: Boolean,
