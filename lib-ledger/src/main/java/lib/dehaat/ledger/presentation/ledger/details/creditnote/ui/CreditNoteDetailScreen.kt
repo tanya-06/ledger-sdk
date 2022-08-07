@@ -31,7 +31,9 @@ import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValue
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryView
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryViewWithTopPadding
+import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ProductView
+import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.details.creditnote.CreditNoteDetailViewModel
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
@@ -53,159 +55,171 @@ fun CreditNoteDetailScreen(
         title = "Credit Note Detail",
         onBackPress = onBackPress,
     ) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(
-                    state = scrollState,
-                    enabled = true,
-                )
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            CreditNoteKeyValue(
-                "Credit Note Amount",
-                creditNoteDetailViewData?.summary?.amount.getAmountInRupees(),
-                keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                valueTextStyle = text18Sp(
-                    fontWeight = FontWeight.Bold,
-                    textColor = ledgerColors.CtaDarkColor
-                ),
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-                    .background(
-                        shape = RoundedCornerShape(9.dp),
-                        color = ledgerColors.CreditNoteReasonLightColor
-                    )
-                    .padding(17.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            color = ledgerColors.CreditNoteReasonDarkColor,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    ) {
-                        append("Reason: ")
-                    }
-
-                    withStyle(
-                        style = SpanStyle(
-                            fontSize = 14.sp,
-                            color = ledgerColors.CreditNoteReasonDarkColor,
-                        )
-                    ) {
-                        append(creditNoteDetailViewData?.summary?.reason ?: "")
-                    }
-                })
-            }
-
-            Column(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .background(
-                        shape = RoundedCornerShape(9.dp),
-                        color = ledgerColors.InfoContainerBgColor
-                    )
-                    .padding(16.dp)
-            ) {
-                CreditNoteKeyValueInSummaryView(
-                    "Credit Note Creation date",
-                    creditNoteDetailViewData?.summary?.timestamp.toDateMonthYear(),
-                    ledgerColors = ledgerColors
-                )
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "Invoice ID",
-                    creditNoteDetailViewData?.summary?.invoiceNumber ?: "",
-                    ledgerColors = ledgerColors
-                )
-            }
-
-            Divider(
-                modifier = Modifier.padding(vertical = 20.dp),
-                thickness = 4.dp,
-                color = ledgerColors.CreditViewHeaderDividerBColor
-            )
-
-            Column(modifier = Modifier) {
-                Text(
-                    modifier = Modifier,
-                    text = "Product Details",
-                    style = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                    maxLines = 1
-                )
-                val products = creditNoteDetailViewData?.productsInfo?.productList.orEmpty()
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = "Items: ${products.size}",
-                    style = textMedium14Sp(textColor = ledgerColors.CtaColor),
-                    maxLines = 1
-                )
-
-                SpaceMedium()
-
-                products.forEachIndexed { index, product ->
-                    ProductView(
-                        modifier = Modifier.padding(end = 16.dp),
-                        ledgerColors = ledgerColors,
-                        name = product.name,
-                        image = product.fname,
-                        qty = product.quantity,
-                        price = product.priceTotal
-                    )
-                    if (index < products.lastIndex)
-                        Divider(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            color = ledgerColors.CreditViewHeaderDividerBColor,
-                            thickness = 1.dp
-                        )
+        when {
+            uiState.isLoading -> {
+                ShowProgressDialog(ledgerColors) {
+                    viewModel.updateProgressDialog(false)
                 }
             }
-
-            Column(
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .background(
-                        shape = RoundedCornerShape(9.dp),
-                        color = ledgerColors.InfoContainerBgColor
-                    )
-                    .padding(16.dp)
-            ) {
-                CreditNoteKeyValueInSummaryView(
-                    "Item Total",
-                    creditNoteDetailViewData?.productsInfo?.itemTotal.getAmountInRupees(),
-                    ledgerColors = ledgerColors
-                )
-                CreditNoteKeyValueInSummaryViewWithTopPadding(
-                    "GST",
-                    creditNoteDetailViewData?.productsInfo?.gst.getAmountInRupees(),
-                    ledgerColors = ledgerColors
-                )
-
-                Divider(
+            uiState.isError -> {
+                NoDataFound()
+            }
+            else -> {
+                Column(
                     modifier = Modifier
-                        .padding(vertical = 10.dp)
-                        .background(color = ledgerColors.TabBorderColorDefault), thickness = 1.dp
-                )
+                        .verticalScroll(
+                            state = scrollState,
+                            enabled = true,
+                        )
+                        .fillMaxSize()
+                        .background(Color.White)
+                        .padding(18.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-                CreditNoteKeyValue(
-                    "Total Amount",
-                    creditNoteDetailViewData?.productsInfo?.subTotal.getAmountInRupees(),
-                    keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                    valueTextStyle = text18Sp(
-                        fontWeight = FontWeight.Bold,
-                        textColor = ledgerColors.CtaDarkColor
-                    ),
-                    modifier = Modifier,
-                )
+                    CreditNoteKeyValue(
+                        "Credit Note Amount",
+                        creditNoteDetailViewData?.summary?.amount.getAmountInRupees(),
+                        keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                        valueTextStyle = text18Sp(
+                            fontWeight = FontWeight.Bold,
+                            textColor = ledgerColors.CtaDarkColor
+                        ),
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp)
+                            .background(
+                                shape = RoundedCornerShape(9.dp),
+                                color = ledgerColors.CreditNoteReasonLightColor
+                            )
+                            .padding(17.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = ledgerColors.CreditNoteReasonDarkColor,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("Reason: ")
+                            }
+
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 14.sp,
+                                    color = ledgerColors.CreditNoteReasonDarkColor,
+                                )
+                            ) {
+                                append(creditNoteDetailViewData?.summary?.reason ?: "")
+                            }
+                        })
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .background(
+                                shape = RoundedCornerShape(9.dp),
+                                color = ledgerColors.InfoContainerBgColor
+                            )
+                            .padding(16.dp)
+                    ) {
+                        CreditNoteKeyValueInSummaryView(
+                            "Credit Note Creation date",
+                            creditNoteDetailViewData?.summary?.timestamp.toDateMonthYear(),
+                            ledgerColors = ledgerColors
+                        )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "Invoice ID",
+                            creditNoteDetailViewData?.summary?.invoiceNumber ?: "",
+                            ledgerColors = ledgerColors
+                        )
+                    }
+
+                    Divider(
+                        modifier = Modifier.padding(vertical = 20.dp),
+                        thickness = 4.dp,
+                        color = ledgerColors.CreditViewHeaderDividerBColor
+                    )
+
+                    Column(modifier = Modifier) {
+                        Text(
+                            modifier = Modifier,
+                            text = "Product Details",
+                            style = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                            maxLines = 1
+                        )
+                        val products = creditNoteDetailViewData?.productsInfo?.productList.orEmpty()
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = "Items: ${products.size}",
+                            style = textMedium14Sp(textColor = ledgerColors.CtaColor),
+                            maxLines = 1
+                        )
+
+                        SpaceMedium()
+
+                        products.forEachIndexed { index, product ->
+                            ProductView(
+                                modifier = Modifier.padding(end = 16.dp),
+                                ledgerColors = ledgerColors,
+                                name = product.name,
+                                image = product.fname,
+                                qty = product.quantity,
+                                price = product.priceTotal
+                            )
+                            if (index < products.lastIndex)
+                                Divider(
+                                    modifier = Modifier.padding(vertical = 12.dp),
+                                    color = ledgerColors.CreditViewHeaderDividerBColor,
+                                    thickness = 1.dp
+                                )
+                        }
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .background(
+                                shape = RoundedCornerShape(9.dp),
+                                color = ledgerColors.InfoContainerBgColor
+                            )
+                            .padding(16.dp)
+                    ) {
+                        CreditNoteKeyValueInSummaryView(
+                            "Item Total",
+                            creditNoteDetailViewData?.productsInfo?.itemTotal.getAmountInRupees(),
+                            ledgerColors = ledgerColors
+                        )
+                        CreditNoteKeyValueInSummaryViewWithTopPadding(
+                            "GST",
+                            creditNoteDetailViewData?.productsInfo?.gst.getAmountInRupees(),
+                            ledgerColors = ledgerColors
+                        )
+
+                        Divider(
+                            modifier = Modifier
+                                .padding(vertical = 10.dp)
+                                .background(color = ledgerColors.TabBorderColorDefault), thickness = 1.dp
+                        )
+
+                        CreditNoteKeyValue(
+                            "Total Amount",
+                            creditNoteDetailViewData?.productsInfo?.subTotal.getAmountInRupees(),
+                            keyTextStyle = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                            valueTextStyle = text18Sp(
+                                fontWeight = FontWeight.Bold,
+                                textColor = ledgerColors.CtaDarkColor
+                            ),
+                            modifier = Modifier,
+                        )
+                    }
+                }
             }
         }
     }

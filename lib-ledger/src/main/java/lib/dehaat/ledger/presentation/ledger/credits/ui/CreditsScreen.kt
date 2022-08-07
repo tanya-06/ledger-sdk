@@ -34,55 +34,57 @@ fun CreditsScreen(
     HandleAPIErrors(viewModel.uiEvent)
     val uiState by viewModel.uiState.collectAsState()
     val totalAvailableCreditLimit by ledgerDetailViewModel.totalAvailableCreditLimit.collectAsState()
-    Column {
-        if (isLmsActivated() == true && totalAvailableCreditLimit.isNotEmpty()) {
-            AvailableCreditLimitView(
-                limitInRupees = totalAvailableCreditLimit.getAmountInRupees(),
-                ledgerColors = ledgerColors,
-                isLmsActivated = isLmsActivated,
-                onInfoIconClick = {
-                    viewModel.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal()
-                }
-            )
-        }
+    if (!uiState.isError) {
+        Column {
+            if (isLmsActivated() == true && totalAvailableCreditLimit.isNotEmpty()) {
+                AvailableCreditLimitView(
+                    limitInRupees = totalAvailableCreditLimit.getAmountInRupees(),
+                    ledgerColors = ledgerColors,
+                    isLmsActivated = isLmsActivated,
+                    onInfoIconClick = {
+                        viewModel.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal()
+                    }
+                )
+            }
 
-        if (isLmsActivated() == false) {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                modifier = Modifier
-            ) {
-                items(uiState.creditLinesViewData) { item ->
-                    CreditLineCard(
-                        ledgerColors = ledgerColors,
-                        data = item,
-                        onOutstandingInfoIconClick = {
-                            openLenderOutstandingBottomSheet(it)
-                        },
-                        isLmsActivated = isLmsActivated
-                    )
-                    Divider(color = Color.Transparent, thickness = 12.dp)
+            if (isLmsActivated() == false) {
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    modifier = Modifier
+                ) {
+                    items(uiState.creditLinesViewData) { item ->
+                        CreditLineCard(
+                            ledgerColors = ledgerColors,
+                            data = item,
+                            onOutstandingInfoIconClick = {
+                                openLenderOutstandingBottomSheet(it)
+                            },
+                            isLmsActivated = isLmsActivated
+                        )
+                        Divider(color = Color.Transparent, thickness = 12.dp)
+                    }
                 }
             }
-        }
 
-        if (uiState.showAvailableCreditLimitInfoModal) {
-            AvailableCreditLimitInfoModal(
-                ledgerColors = ledgerColors,
-                onOkClick = {
-                    viewModel.hideAvailableCreditLimitInfoModal()
-                }
-            )
-        }
+            if (uiState.showAvailableCreditLimitInfoModal) {
+                AvailableCreditLimitInfoModal(
+                    ledgerColors = ledgerColors,
+                    onOkClick = {
+                        viewModel.hideAvailableCreditLimitInfoModal()
+                    }
+                )
+            }
 
-        if (uiState.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal) {
-            AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
-                title = "Available Credit Limit = Total Credit Limit - Outstanding (Sales order amount to be invoiced)",
-                ledgerColors = ledgerColors,
-                lmsActivated = isLmsActivated(),
-                onOkClick = {
-                    viewModel.hideAvailableCreditLimitInfoForLmsAndNonLmsUseModal()
-                }
-            )
+            if (uiState.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal) {
+                AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
+                    title = "Available Credit Limit = Total Credit Limit - Outstanding (Sales order amount to be invoiced)",
+                    ledgerColors = ledgerColors,
+                    lmsActivated = isLmsActivated(),
+                    onOkClick = {
+                        viewModel.hideAvailableCreditLimitInfoForLmsAndNonLmsUseModal()
+                    }
+                )
+            }
         }
     }
 }

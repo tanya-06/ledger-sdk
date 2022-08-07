@@ -143,23 +143,25 @@ fun LedgerDetailScreen2(
                 VerticalNestedScrollView(
                     state = nestedScrollViewState,
                     header = {
-                        Header(
-                            creditSummaryData = uiState.creditSummaryViewData,
-                            ledgerColors = ledgerColors,
-                            isLmsActivated = isLmsActivated,
-                            onPayNowClick = onPayNowClick,
-                            onClickTotalOutstandingInfo = {
-                                scope.launch {
-                                    if (isLmsActivated() == true) {
-                                        viewModel.openOutstandingDialog()
-                                    } else {
-                                        viewModel.openAllOutstandingModal()
-                                        sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                        if (!uiState.isError) {
+                            Header(
+                                creditSummaryData = uiState.creditSummaryViewData,
+                                ledgerColors = ledgerColors,
+                                isLmsActivated = isLmsActivated,
+                                onPayNowClick = onPayNowClick,
+                                onClickTotalOutstandingInfo = {
+                                    scope.launch {
+                                        if (isLmsActivated() == true) {
+                                            viewModel.openOutstandingDialog()
+                                        } else {
+                                            viewModel.openAllOutstandingModal()
+                                            sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                                        }
                                     }
-                                }
-                            },
-                            onPaymentOptionsClick = onPaymentOptionsClick
-                        )
+                                },
+                                onPaymentOptionsClick = onPaymentOptionsClick
+                            )
+                        }
                     },
                     content = {
                         val pagerState = rememberPagerState(pageCount = 2)

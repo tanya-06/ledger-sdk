@@ -60,9 +60,9 @@ class CreditNoteDetailViewModel @Inject constructor(
 
     private fun getCreditNoteDetailFromServer() {
         callInViewModelScope {
-            callingAPI()
+            updateProgressDialog(true)
             val response = getCreditNoteDetailUseCase.invoke(ledgerId)
-            calledAPI()
+            updateProgressDialog(false)
             processCreditNoteDetailResponse(response)
         }
     }
@@ -90,15 +90,7 @@ class CreditNoteDetailViewModel @Inject constructor(
         it.copy(isError = true)
     }
 
-    private fun calledAPI() {
-        viewModelState.update {
-            it.copy(isLoading = false)
-        }
-    }
-
-    private fun callingAPI() {
-        viewModelState.update {
-            it.copy(isLoading = true)
-        }
+    fun updateProgressDialog(show: Boolean) = viewModelState.update {
+        it.copy(isLoading = show)
     }
 }
