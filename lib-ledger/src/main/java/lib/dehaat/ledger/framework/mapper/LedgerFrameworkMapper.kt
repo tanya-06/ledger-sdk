@@ -88,7 +88,7 @@ class LedgerFrameworkMapper @Inject constructor() {
     fun toInvoiceDetailDataEntity(data: InvoiceDetailData) = with(data) {
         InvoiceDetailDataEntity(
             summary = getInvoiceDetailSummaryEntity(summary),
-            loans = loans.map { getInvoiceDetailLoanEntity(it) },
+            loans = loans?.map { getInvoiceDetailLoanEntity(it) },
             overdueInfo = getInvoiceDetailOverdueInfoEntity(overdueInfo),
             productsInfo = getInvoiceDetailProductInfoEntity(productsInfo),
         )

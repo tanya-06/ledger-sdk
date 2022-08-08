@@ -92,7 +92,7 @@ class LedgerViewDataMapper @Inject constructor() {
     fun toInvoiceDetailDataViewData(data: InvoiceDetailDataEntity) = with(data) {
         InvoiceDetailDataViewData(
             summary = getInvoiceDetailSummaryViewData(summary),
-            loans = loans.map { getInvoiceDetailLoanViewData(it) },
+            loans = loans?.map { getInvoiceDetailLoanViewData(it) },
             overdueInfo = getInvoiceDetailOverdueViewData(overdueInfo),
             productsInfo = getInvoiceDetailProductInfoViewData(productsInfo),
         )

@@ -3,6 +3,7 @@ package lib.dehaat.ledger.presentation.ledger.transactions.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
 import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewModel
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.TransactionInvoiceItem
+import lib.dehaat.ledger.presentation.ledger.ui.component.FilterStrip
 
 @Composable
 fun TransactionsListScreen(
@@ -47,7 +49,7 @@ fun TransactionsListScreen(
     val context = LocalContext.current
 
     Column {
-        /*FilterStrip(
+        FilterStrip(
             modifier = Modifier.padding(horizontal = 18.dp),
             ledgerColors = ledgerColors,
             withPenalty = uiState.onlyPenaltyInvoices,
@@ -57,7 +59,7 @@ fun TransactionsListScreen(
             onDaysToFilterIconClick = openDaysFilter,
             onDateRangeFilterIconClick = openRangeFilter,
             isLmsActivated = isLmsActivated
-        )*/
+        )
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),

@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +24,7 @@ fun FilterStrip(
     isLmsActivated: () -> Boolean?
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        if (isLmsActivated() == true) {
+        /*if (isLmsActivated() == true) {
             Text(text = "Invoice with Penalty")
             Switch(
                 modifier = Modifier.padding(start = 12.dp),
@@ -35,7 +33,7 @@ fun FilterStrip(
                     onWithPenaltyChange(it)
                 }
             )
-        }
+        }*/
 
         Row(
             modifier = Modifier
