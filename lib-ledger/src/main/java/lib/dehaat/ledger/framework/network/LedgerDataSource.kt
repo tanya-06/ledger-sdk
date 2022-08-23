@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.framework.network
 
+import com.cleanarch.base.common.ApiExtraInfo
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.coroutine.IDispatchers
 import com.dehaat.androidbase.network.api.makeAPICall
@@ -7,6 +8,8 @@ import javax.inject.Inject
 import lib.dehaat.ledger.data.source.ILedgerDataSource
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.framework.mapper.LedgerFrameworkMapper
+import lib.dehaat.ledger.presentation.LedgerConstants.API_REQUEST_TRACE_ID
+import lib.dehaat.ledger.presentation.LedgerConstants.IB_REQUEST_IDENTIFIER
 import retrofit2.Response
 
 class LedgerDataSource @Inject constructor(
@@ -106,6 +109,11 @@ class LedgerDataSource @Inject constructor(
             dispatchers.io,
             { apiCall.invoke() },
             parse
-        )
+        ) { request, response ->
+            ApiExtraInfo().apply {
+                put(API_REQUEST_TRACE_ID, request?.header(API_REQUEST_TRACE_ID))
+                put(IB_REQUEST_IDENTIFIER, response?.headers()?.get(IB_REQUEST_IDENTIFIER))
+            }
+        }
     }
 }

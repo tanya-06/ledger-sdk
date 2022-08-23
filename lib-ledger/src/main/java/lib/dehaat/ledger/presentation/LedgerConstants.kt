@@ -10,4 +10,7 @@ object LedgerConstants {
     const val KEY_PAYMENT_MODE = "KEY_PAYMENT_MODE"
     const val KEY_LMS_ACTIVATED = "KEY_LMS_ACTIVATED"
     const val KEY_APP_LANGUAGE = "KEY_APP_LANGUAGE"
+
+    const val API_REQUEST_TRACE_ID = "api-request-trace-id"
+    const val IB_REQUEST_IDENTIFIER = "IB-Request-Identifier"
 }
