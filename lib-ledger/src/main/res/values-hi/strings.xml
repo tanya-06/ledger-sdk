@@ -4,4 +4,5 @@
     <string name="ledger">बही खाता</string>
     <string name="purchase_amount">Purchase Amount</string>
     <string name="payment_amount">Payment Amount</string>
+    <string name="to">%s to %s</string>
 </resources>

@@ -43,7 +43,8 @@ data class LedgerDetailViewModelState(
         bottomSheetType = bottomSheetType,
         transactionSummaryViewData = transactionSummaryViewData,
         isFilteringWithRange = showFilterRangeDialog,
-        showOutstandingDialog = showOutstandingDialog
+        showOutstandingDialog = showOutstandingDialog,
+        selectedDaysFilter = selectedDaysFilter
     )
 }
 
@@ -54,7 +55,8 @@ data class LedgerDetailUIState(
     val bottomSheetType: BottomSheetType,
     val transactionSummaryViewData: TransactionSummaryViewData?,
     val isFilteringWithRange: Boolean,
-    val showOutstandingDialog: Boolean
+    val showOutstandingDialog: Boolean,
+    val selectedDaysFilter: DaysToFilter?
 )
 
 sealed class BottomSheetType {

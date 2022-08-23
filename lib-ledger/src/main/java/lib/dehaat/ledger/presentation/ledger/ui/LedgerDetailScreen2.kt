@@ -45,6 +45,7 @@ import lib.dehaat.ledger.presentation.ledger.transactions.ui.TransactionsListScr
 import lib.dehaat.ledger.presentation.ledger.ui.component.Header
 import lib.dehaat.ledger.presentation.ledger.ui.component.Tabs
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionSummary
+import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.util.HandleAPIErrors
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
 import moe.tlaster.nestedscrollview.rememberNestedScrollViewState
@@ -72,8 +73,11 @@ fun LedgerDetailScreen2(
     if (uiState.isFilteringWithRange) {
         RangeFilterDialog(
             ledgerColors = ledgerColors,
-            filtered = {
-                viewModel.getTransactionSummaryFromServer()
+            filtered = { startDate, endDate ->
+                if (startDate != null && endDate != null) {
+                    viewModel.updateSelectedFilter(DaysToFilter.CustomDays(startDate, endDate))
+                    viewModel.getTransactionSummaryFromServer()
+                }
                 viewModel.showDaysRangeFilterDialog(false)
             }
         )

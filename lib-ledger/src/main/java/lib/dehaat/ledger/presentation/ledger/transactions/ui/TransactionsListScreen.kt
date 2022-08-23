@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -22,6 +25,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.dehaat.androidbase.helper.showToast
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
@@ -32,6 +36,8 @@ import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewM
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.TransactionInvoiceItem
 import lib.dehaat.ledger.presentation.ledger.ui.component.FilterStrip
+import lib.dehaat.ledger.presentation.model.transactions.toStartAndEndDates
+import lib.dehaat.ledger.resources.textBold14Sp
 
 @Composable
 fun TransactionsListScreen(
@@ -45,6 +51,8 @@ fun TransactionsListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
+    val detailPageState by ledgerDetailViewModel.uiState.collectAsState()
+    val filterState = detailPageState.selectedDaysFilter
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -60,6 +68,15 @@ fun TransactionsListScreen(
             onDateRangeFilterIconClick = openRangeFilter,
             isLmsActivated = isLmsActivated
         )
+
+        filterState?.toStartAndEndDates()?.let {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.to, it.first, it.second),
+                textAlign = TextAlign.Center,
+                style = textBold14Sp()
+            )
+        }
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),

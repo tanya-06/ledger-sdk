@@ -26,6 +26,7 @@ import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
 import lib.dehaat.ledger.resources.TextWhite
 import lib.dehaat.ledger.resources.text14Sp
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun TransactionSummary(
@@ -49,7 +50,7 @@ fun TransactionSummary(
                             fontWeight = FontWeight.Bold,
                         )
                     )
-                    append("\n${it.purchaseAmount}")
+                    append("\n${it.purchaseAmount.getAmountInRupees()}")
                 },
                 style = text14Sp(
                     textColor = TextWhite,
@@ -71,7 +72,7 @@ fun TransactionSummary(
                             fontWeight = FontWeight.Bold,
                         )
                     )
-                    append("\n${it.paymentAmount}")
+                    append("\n${it.paymentAmount.getAmountInRupees()}")
                 },
                 style = text14Sp(
                     textColor = TextWhite,
