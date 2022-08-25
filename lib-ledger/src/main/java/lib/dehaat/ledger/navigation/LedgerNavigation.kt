@@ -22,7 +22,6 @@ import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewM
 import lib.dehaat.ledger.presentation.ledger.details.payments.ui.PaymentDetailScreen
 import lib.dehaat.ledger.presentation.ledger.ui.LedgerDetailScreen2
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
-import lib.dehaat.ledger.util.withArgs
 import lib.dehaat.ledger.util.withArgsPath
 
 @Composable
@@ -183,97 +182,49 @@ fun LedgerNavigation(
     }
 }
 
-fun provideDetailPageNavCallBacks(navController: NavHostController) =
-    object : DetailPageNavigationCallback {
-        override fun navigateToInvoiceDetailPage(
-            legerId: String,
-            erpId: String?,
-            locusId: String?,
-            source: String
-        ) {
-            navigateToInvoiceDetailScreen(
-                navController = navController,
-                ledgerId = legerId,
-                erpId = erpId,
-                locusId = locusId,
-                source = source
-            )
-        }
-
-        override fun navigateToCreditNoteDetailPage(
-            legerId: String,
-            erpId: String?,
-            locusId: String?
-        ) {
-            navigateToCreditNoteDetailScreen(
-                navController = navController,
-                ledgerId = legerId,
-                erpId = erpId,
-                locusId = locusId
-            )
-        }
-
-        override fun navigateToPaymentDetailPage(
-            legerId: String,
-            erpId: String?,
-            locusId: String?,
-            mode: String?
-        ) {
-            navigateToPaymentDetailScreen(
-                navController = navController,
-                ledgerId = legerId,
-                erpId = erpId,
-                locusId = locusId,
-                mode = mode
-            )
-        }
+fun provideDetailPageNavCallBacks(
+    navController: NavHostController
+) = object : DetailPageNavigationCallback {
+    override fun navigateToInvoiceDetailPage(
+        legerId: String,
+        erpId: String?,
+        locusId: String?,
+        source: String
+    ) {
+        navigateToInvoiceDetailScreen(
+            navController = navController,
+            ledgerId = legerId,
+            erpId = erpId,
+            locusId = locusId,
+            source = source
+        )
     }
 
-fun navigateToInvoiceDetailScreen(
-    navController: NavHostController,
-    ledgerId: String,
-    erpId: String?,
-    locusId: String?,
-    source: String
-) {
-    navController.navigate(
-        LedgerRoutes.LedgerInvoiceDetailScreen.screen.withArgs(
-            ledgerId,
-            erpId,
-            locusId,
-            source
+    override fun navigateToCreditNoteDetailPage(
+        legerId: String,
+        erpId: String?,
+        locusId: String?
+    ) {
+        navigateToCreditNoteDetailScreen(
+            navController = navController,
+            ledgerId = legerId,
+            erpId = erpId,
+            locusId = locusId
         )
-    )
-}
+    }
 
-fun navigateToCreditNoteDetailScreen(
-    navController: NavHostController,
-    ledgerId: String,
-    erpId: String?,
-    locusId: String?
-) {
-    navController.navigate(
-        LedgerRoutes.LedgerCreditNoteDetailScreen.screen.withArgs(
-            ledgerId,
-            erpId,
-            locusId
+    override fun navigateToPaymentDetailPage(
+        legerId: String,
+        erpId: String?,
+        locusId: String?,
+        mode: String?
+    ) {
+        navigateToPaymentDetailScreen(
+            navController = navController,
+            ledgerId = legerId,
+            erpId = erpId,
+            locusId = locusId,
+            mode = mode
         )
-    )
-}
-
-fun navigateToPaymentDetailScreen(
-    navController: NavHostController,
-    ledgerId: String,
-    erpId: String?,
-    locusId: String?,
-    mode: String?
-) {
-    navController.navigate(
-        LedgerRoutes.LedgerPaymentDetailScreen.screen.withArgs(
-            ledgerId,
-            erpId,
-            locusId,
-            mode
-        )
-    )
+    }
 }
