@@ -23,7 +23,6 @@ import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewM
 import lib.dehaat.ledger.presentation.ledger.details.payments.ui.PaymentDetailScreen
 import lib.dehaat.ledger.presentation.ledger.ui.LedgerDetailScreen2
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
-import lib.dehaat.ledger.util.withArgsPath
 
 @Composable
 fun LedgerNavigation(
@@ -41,18 +40,16 @@ fun LedgerNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = LedgerRoutes.LedgerDetailScreen.screen.withArgsPath(
-            LedgerConstants.KEY_PARTNER_ID
-        )
+        startDestination = LedgerRoutes.LedgerDetailScreen.screen
     ) {
         composable(
-            route = LedgerRoutes.LedgerDetailScreen.screen.withArgsPath(
-                LedgerConstants.KEY_PARTNER_ID
-            ),
-            arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                type = NavType.StringType
-                defaultValue = partnerId
-            })
+            route = LedgerRoutes.LedgerDetailScreen.screen,
+            arguments = listOf(
+                navArgument(LedgerConstants.KEY_PARTNER_ID) {
+                    type = NavType.StringType
+                    defaultValue = partnerId
+                }
+            )
         ) {
             viewModel.dcName = dcName
             LedgerDetailScreen2(
