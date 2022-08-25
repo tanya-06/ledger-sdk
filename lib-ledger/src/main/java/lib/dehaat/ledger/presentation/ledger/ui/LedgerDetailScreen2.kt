@@ -76,7 +76,7 @@ fun LedgerDetailScreen2(
             filtered = { startDate, endDate ->
                 if (startDate != null && endDate != null) {
                     viewModel.updateSelectedFilter(DaysToFilter.CustomDays(startDate, endDate))
-                    viewModel.getTransactionSummaryFromServer()
+                    viewModel.getTransactionSummaryFromServer(DaysToFilter.CustomDays(startDate, endDate))
                 }
                 viewModel.showDaysRangeFilterDialog(false)
             }
@@ -130,7 +130,7 @@ fun LedgerDetailScreen2(
                             ledgerColors = ledgerColors,
                             onFilterSelected = { daysToFilter ->
                                 viewModel.updateSelectedFilter(daysToFilter)
-                                viewModel.getTransactionSummaryFromServer()
+                                viewModel.getTransactionSummaryFromServer(daysToFilter)
                                 scope.launch {
                                     sheetState.animateTo(ModalBottomSheetValue.Hidden)
                                 }

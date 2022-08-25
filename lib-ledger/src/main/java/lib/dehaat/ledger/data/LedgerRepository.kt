@@ -11,8 +11,10 @@ class LedgerRepository @Inject constructor(private val networkSource: ILedgerDat
         networkSource.getCreditSummary(partnerId)
 
     override suspend fun getTransactionSummary(
-        partnerId: String
-    ) = networkSource.getTransactionSummary(partnerId)
+        partnerId: String,
+        fromDate: Long?,
+        toDate: Long?
+    ) = networkSource.getTransactionSummary(partnerId, fromDate, toDate)
 
     override suspend fun getTransactions(
         partnerId: String,

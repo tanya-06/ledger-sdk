@@ -21,7 +21,9 @@ interface LedgerAPIService {
 
     @GET("/finance/accounting/transactions-summary")
     suspend fun getTransactionSummary(
-        @Query("partner_id") partnerId: String
+        @Query("partner_id") partnerId: String,
+        @Query("from_date") fromDate: Long?,
+        @Query("to_date") toDate: Long?
     ): Response<ResponseTransactionSummary>
 
     @GET("/finance/accounting/transactions")

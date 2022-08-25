@@ -27,6 +27,7 @@ import androidx.paging.compose.items
 import com.dehaat.androidbase.helper.showToast
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.initializer.toDateMonthName
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -72,7 +73,7 @@ fun TransactionsListScreen(
         filterState?.toStartAndEndDates()?.let {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.to, it.first, it.second),
+                text = stringResource(id = R.string.to, it.first.toDateMonthName(), it.second.toDateMonthName()),
                 textAlign = TextAlign.Center,
                 style = textBold14Sp()
             )

@@ -30,6 +30,7 @@ import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
+import lib.dehaat.ledger.presentation.model.transactions.toStartAndEndDates
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
@@ -128,9 +129,10 @@ class LedgerDetailViewModel @Inject constructor(
         }
     }
 
-    fun getTransactionSummaryFromServer() = callInViewModelScope {
+    fun getTransactionSummaryFromServer(daysToFilter: DaysToFilter? = null) = callInViewModelScope {
         callingAPI()
-        val response = getTransactionSummaryUseCase.invoke(partnerId)
+        val dates = daysToFilter?.toStartAndEndDates()
+        val response = getTransactionSummaryUseCase.invoke(partnerId, dates?.first, dates?.second)
         calledAPI()
         processTransactionSummaryResponse(response)
     }

@@ -1,7 +1,5 @@
 package lib.dehaat.ledger.presentation.model.transactions
 
-import lib.dehaat.ledger.initializer.toDateMonthName
-
 sealed class DaysToFilter {
     object All : DaysToFilter()
     object SevenDays : DaysToFilter()
@@ -10,25 +8,25 @@ sealed class DaysToFilter {
     data class CustomDays(val fromDateMilliSec: Long, val toDateMilliSec: Long) : DaysToFilter()
 }
 
-fun DaysToFilter.toStartAndEndDates(): Pair<String, String>? = when (this) {
+fun DaysToFilter.toStartAndEndDates(): Pair<Long, Long>? = when (this) {
     DaysToFilter.All -> null
     DaysToFilter.SevenDays -> {
         val time = calculateTimeInMillisecond(7)
-        Pair(time.first.toDateMonthName(), time.second.toDateMonthName())
+        Pair(time.first, time.second)
     }
     DaysToFilter.OneMonth -> {
         val time = calculateTimeInMillisecond(31)
-        Pair(time.first.toDateMonthName(), time.second.toDateMonthName())
+        Pair(time.first, time.second)
 
     }
     DaysToFilter.ThreeMonth -> {
         val time = calculateTimeInMillisecond(93)
-        Pair(time.first.toDateMonthName(), time.second.toDateMonthName())
+        Pair(time.first, time.second)
     }
     is DaysToFilter.CustomDays -> {
         val currentDaySec = toDateMilliSec / 1000
         val pastDaySec = fromDateMilliSec / 1000
-        Pair(pastDaySec.toDateMonthName(), currentDaySec.toDateMonthName())
+        Pair(pastDaySec, currentDaySec)
     }
 }
 

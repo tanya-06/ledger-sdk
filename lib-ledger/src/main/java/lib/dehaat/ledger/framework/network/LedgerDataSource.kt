@@ -25,10 +25,12 @@ class LedgerDataSource @Inject constructor(
     }
 
     override suspend fun getTransactionSummary(
-        partnerId: String
+        partnerId: String,
+        fromDate: Long?,
+        toDate: Long?
     ): APIResultEntity<TransactionSummaryEntity?> = callAPI(
         dispatcher,
-        { apiService.getTransactionSummary(partnerId) }
+        { apiService.getTransactionSummary(partnerId, fromDate, toDate) }
     ) {
         it?.transactionDetailData?.let { data -> mapper.toTransactionSummaryDataEntity(data) }
     }

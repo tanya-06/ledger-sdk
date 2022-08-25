@@ -15,7 +15,9 @@ interface ILedgerDataSource {
     suspend fun getCreditSummary(partnerId: String): APIResultEntity<CreditSummaryEntity?>
 
     suspend fun getTransactionSummary(
-        partnerId: String
+        partnerId: String,
+        fromDate: Long?,
+        toDate: Long?
     ): APIResultEntity<TransactionSummaryEntity?>
 
     suspend fun getTransactions(
