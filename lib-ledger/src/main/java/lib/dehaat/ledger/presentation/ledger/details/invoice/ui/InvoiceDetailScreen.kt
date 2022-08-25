@@ -48,8 +48,6 @@ import lib.dehaat.ledger.util.getAmountInRupees
 @Composable
 fun InvoiceDetailScreen(
     viewModel: InvoiceDetailViewModel,
-    erpId: String?,
-    source: String,
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit,
     onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
@@ -380,8 +378,6 @@ fun InvoiceDetailScreen(
                             modifier = Modifier
                                 .clickable {
                                     viewModel.downloadInvoice(
-                                        erpId,
-                                        source,
                                         downloadDirectory,
                                         onDownloadInvoiceClick
                                     )

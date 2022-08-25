@@ -33,6 +33,7 @@ import lib.dehaat.ledger.presentation.LedgerDetailViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
+import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewModel
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.TransactionInvoiceItem
@@ -98,10 +99,7 @@ fun TransactionsListScreen(
                                 locusId = data.locusId,
                             )
                             TransactionType.INVOICE -> detailPageNavigationCallback.navigateToInvoiceDetailPage(
-                                legerId = data.ledgerId,
-                                erpId = data.erpId,
-                                locusId = data.locusId,
-                                source = data.source
+                                InvoiceDetailViewModel.getArgs(it)
                             )
                             else -> Unit
                         }

@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice
 
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -21,13 +22,16 @@ import lib.dehaat.ledger.domain.usecases.GetInvoiceDetailUseCase
 import lib.dehaat.ledger.domain.usecases.GetInvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.initializer.LedgerSDK
+import lib.dehaat.ledger.presentation.LedgerConstants.KEY_ERP_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
+import lib.dehaat.ledger.presentation.LedgerConstants.KEY_SOURCE
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.details.invoice.state.InvoiceDetailViewModelState
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.invoicedownload.ProgressData
+import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.util.DownloadFileUtil
 import lib.dehaat.ledger.util.FileUtils
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
@@ -46,6 +50,9 @@ class InvoiceDetailViewModel @Inject constructor(
             "Ledger id should not null"
         )
     }
+
+    val erpId by lazy { savedStateHandle.get<String>(KEY_ERP_ID) }
+    val source by lazy { savedStateHandle.get<String>(KEY_SOURCE) ?: "" }
 
     private var lmsActivated: Boolean? = null
 
@@ -105,8 +112,6 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     fun downloadInvoice(
-        erpId: String?,
-        source: String,
         downloadDirectory: File,
         invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
@@ -224,5 +229,13 @@ class InvoiceDetailViewModel @Inject constructor(
         filePath = "${file.path}/${id.substringAfterLast('$')}.pdf"
         progressData = ProgressData()
         invoiceId = id.substringAfterLast('$')
+    }
+
+    companion object {
+        fun getArgs(data: TransactionViewData) = Bundle().apply {
+            putString(KEY_LEDGER_ID, data.ledgerId)
+            putString(KEY_ERP_ID, data.erpId)
+            putString(KEY_SOURCE, data.source)
+        }
     }
 }

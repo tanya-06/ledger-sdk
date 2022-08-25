@@ -1,6 +1,7 @@
 package lib.dehaat.ledger.navigation
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -75,36 +76,13 @@ fun LedgerNavigation(
         }
 
         composable(
-            route = LedgerRoutes.LedgerInvoiceDetailScreen.screen.withArgsPath(
-                LedgerConstants.KEY_LEDGER_ID,
-                LedgerConstants.KEY_ERP_ID,
-                LedgerConstants.KEY_LOCUS_ID,
-                LedgerConstants.KEY_SOURCE
-            ),
-            arguments = listOf(
-                navArgument(LedgerConstants.KEY_LEDGER_ID) {
-                    type = NavType.StringType
-                },
-                navArgument(LedgerConstants.KEY_ERP_ID) {
-                    type = NavType.StringType
-                    nullable = true
-                },
-                navArgument(LedgerConstants.KEY_SOURCE) {
-                    type = NavType.StringType
-                }
-            )
+            route = LedgerRoutes.LedgerInvoiceDetailScreen.screen
         ) {
-
-            val erpId = it.arguments?.get(LedgerConstants.KEY_ERP_ID) as String?
-            val source = it.arguments?.get(LedgerConstants.KEY_SOURCE) as String
-
             val invoiceDetailViewModel = hiltViewModel<InvoiceDetailViewModel>()
             invoiceDetailViewModel.setIsLmsActivated(viewModel.isLMSActivated())
 
             InvoiceDetailScreen(
                 viewModel = invoiceDetailViewModel,
-                erpId = erpId,
-                source = source,
                 ledgerColors = ledgerColors,
                 onBackPress = {
                     navController.popBackStack()
@@ -186,17 +164,11 @@ fun provideDetailPageNavCallBacks(
     navController: NavHostController
 ) = object : DetailPageNavigationCallback {
     override fun navigateToInvoiceDetailPage(
-        legerId: String,
-        erpId: String?,
-        locusId: String?,
-        source: String
+        args: Bundle
     ) {
         navigateToInvoiceDetailScreen(
             navController = navController,
-            ledgerId = legerId,
-            erpId = erpId,
-            locusId = locusId,
-            source = source
+            args = args
         )
     }
 

@@ -12,17 +12,10 @@ import lib.dehaat.ledger.util.withArgs
 
 fun navigateToInvoiceDetailScreen(
     navController: NavHostController,
-    ledgerId: String,
-    erpId: String?,
-    locusId: String?,
-    source: String
-) = navController.navigate(
-    LedgerRoutes.LedgerInvoiceDetailScreen.screen.withArgs(
-        ledgerId,
-        erpId,
-        locusId,
-        source
-    )
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.LedgerInvoiceDetailScreen.screen,
+    args = args
 )
 
 fun navigateToCreditNoteDetailScreen(
