@@ -8,7 +8,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import lib.dehaat.ledger.util.withArgs
 
 fun navigateToInvoiceDetailScreen(
     navController: NavHostController,
@@ -20,30 +19,18 @@ fun navigateToInvoiceDetailScreen(
 
 fun navigateToCreditNoteDetailScreen(
     navController: NavHostController,
-    ledgerId: String,
-    erpId: String?,
-    locusId: String?
-) = navController.navigate(
-    LedgerRoutes.LedgerCreditNoteDetailScreen.screen.withArgs(
-        ledgerId,
-        erpId,
-        locusId
-    )
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.LedgerCreditNoteDetailScreen.screen,
+    args = args
 )
 
 fun navigateToPaymentDetailScreen(
     navController: NavHostController,
-    ledgerId: String,
-    erpId: String?,
-    locusId: String?,
-    mode: String?
-) = navController.navigate(
-    LedgerRoutes.LedgerPaymentDetailScreen.screen.withArgs(
-        ledgerId,
-        erpId,
-        locusId,
-        mode
-    )
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.LedgerPaymentDetailScreen.screen,
+    args = args
 )
 
 fun NavController.navigateTo(

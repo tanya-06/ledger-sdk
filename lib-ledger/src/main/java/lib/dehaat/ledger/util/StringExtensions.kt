@@ -19,15 +19,6 @@ fun String?.getAmountInRupeesOrDash(): String = this?.let {
     it.getAmountInRupees()
 } ?: "-"
 
-fun String.withArgs(
-    vararg args: Any?
-) = buildString {
-    append(this@withArgs)
-    args.forEach { arg ->
-        append("/$arg")
-    }
-}
-
 fun String.withArgsPath(
     vararg args: String
 ) = buildString {

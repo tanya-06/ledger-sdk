@@ -33,7 +33,9 @@ import lib.dehaat.ledger.presentation.LedgerDetailViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
+import lib.dehaat.ledger.presentation.ledger.details.creditnote.CreditNoteDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
+import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewModel
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.TransactionInvoiceItem
@@ -74,7 +76,11 @@ fun TransactionsListScreen(
         filterState?.toStartAndEndDates()?.let {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.to, it.first.toDateMonthName(), it.second.toDateMonthName()),
+                text = stringResource(
+                    id = R.string.to,
+                    it.first.toDateMonthName(),
+                    it.second.toDateMonthName()
+                ),
                 textAlign = TextAlign.Center,
                 style = textBold14Sp()
             )
@@ -88,15 +94,10 @@ fun TransactionsListScreen(
                     TransactionInvoiceItem(data = it, ledgerColors = ledgerColors) {
                         when (data.type) {
                             TransactionType.PAYMENT -> detailPageNavigationCallback.navigateToPaymentDetailPage(
-                                legerId = data.ledgerId,
-                                erpId = data.erpId,
-                                locusId = data.locusId,
-                                mode = data.paymentMode
+                                PaymentDetailViewModel.getArgs(it)
                             )
                             TransactionType.CREDIT_NOTE -> detailPageNavigationCallback.navigateToCreditNoteDetailPage(
-                                legerId = data.ledgerId,
-                                erpId = data.erpId,
-                                locusId = data.locusId,
+                                CreditNoteDetailViewModel.getArgs(it)
                             )
                             TransactionType.INVOICE -> detailPageNavigationCallback.navigateToInvoiceDetailPage(
                                 InvoiceDetailViewModel.getArgs(it)

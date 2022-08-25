@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.details.payments
 
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
@@ -16,14 +17,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetPaymentDetailUseCase
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
-import lib.dehaat.ledger.presentation.LedgerConstants.KEY_ERP_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
-import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LOCUS_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PAYMENT_MODE
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.details.payments.state.PaymentDetailViewModelState
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
+import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
@@ -38,10 +38,6 @@ class PaymentDetailViewModel @Inject constructor(
             "Ledger id should not null"
         )
     }
-
-    private val locusId by lazy { savedStateHandle.get<String>(KEY_LOCUS_ID) }
-
-    private val erpId by lazy { savedStateHandle.get<String>(KEY_ERP_ID) }
 
     val paymentMode by lazy { savedStateHandle.get<String>(KEY_PAYMENT_MODE) }
 
@@ -102,5 +98,12 @@ class PaymentDetailViewModel @Inject constructor(
 
     fun updateProgressDialog(show: Boolean) = viewModelState.update {
         it.copy(isLoading = show)
+    }
+
+    companion object {
+        fun getArgs(data: TransactionViewData) = Bundle().apply {
+            putString(KEY_LEDGER_ID, data.ledgerId)
+            putString(KEY_PAYMENT_MODE, data.paymentMode)
+        }
     }
 }

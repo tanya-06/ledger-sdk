@@ -5,11 +5,7 @@ import android.os.Bundle
 interface DetailPageNavigationCallback {
     fun navigateToInvoiceDetailPage(args: Bundle)
 
-    fun navigateToCreditNoteDetailPage(legerId: String, erpId: String?, locusId: String?)
-    fun navigateToPaymentDetailPage(
-        legerId: String,
-        erpId: String?,
-        locusId: String?,
-        mode: String?
-    )
+    fun navigateToCreditNoteDetailPage(args: Bundle)
+
+    fun navigateToPaymentDetailPage(args: Bundle)
 }
