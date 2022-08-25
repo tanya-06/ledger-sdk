@@ -13,6 +13,7 @@ import com.dehaat.androidbase.helper.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.navigation.LedgerNavigation
 import lib.dehaat.ledger.presentation.LedgerConstants
@@ -47,7 +48,7 @@ class LedgerDetailActivity : ComponentActivity() {
         }
 
         if (!LedgerSDK.isCurrentAppAvailable()) {
-            showToast("Please initialize Ledger SDK with current app.")
+            showToast(getString(R.string.initialise_ledger))
             finish()
             return
         }
@@ -68,12 +69,12 @@ class LedgerDetailActivity : ComponentActivity() {
                         val ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack
                         notificationHandler.notificationBuilder.setSmallIcon(LedgerSDK.appIcon)
                         if (it.isFailed) {
-                            showToast("Technical problem occurred, try again after some time")
+                            showToast(getString(R.string.tech_problem))
                         } else {
                             notificationHandler.apply {
                                 if (it.progressData.bytesCurrent == 100) {
                                     notificationBuilder.apply {
-                                        setContentText("Invoice downloaded successfully")
+                                        setContentText(getString(R.string.invoice_download_success))
                                         setContentIntent(
                                             ledgerCallbacks.downloadInvoiceIntent.invoke(
                                                 this@LedgerDetailActivity,
@@ -82,9 +83,9 @@ class LedgerDetailActivity : ComponentActivity() {
                                         )
                                     }
                                     ledgerCallbacks.onDownloadInvoiceSuccess(it)
-                                    showToast("Invoice downloaded successfully")
+                                    showToast(getString(R.string.invoice_download_success))
                                 } else {
-                                    notificationBuilder.setContentText("Invoice download in progress")
+                                    notificationBuilder.setContentText(getString(R.string.invoice_download_in_progress))
                                 }
                                 notificationBuilder.setProgress(
                                     it.progressData.bytesTotal,

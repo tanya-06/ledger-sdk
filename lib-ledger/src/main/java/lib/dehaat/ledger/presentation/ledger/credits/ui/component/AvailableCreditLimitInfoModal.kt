@@ -7,9 +7,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.resources.text14Sp
@@ -34,7 +36,7 @@ fun AvailableCreditLimitInfoModal(
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     modifier = Modifier,
-                    text = "Information",
+                    text = stringResource(R.string.information),
                     style = text18Sp(fontWeight = FontWeight.Bold),
                     maxLines = 1
                 )
@@ -56,7 +58,7 @@ fun AvailableCreditLimitInfoModal(
                     }) {
                         Text(
                             modifier = Modifier,
-                            text = "OK",
+                            text = stringResource(R.string.okay),
                             style = textMedium14Sp(textColor = ledgerColors.DownloadInvoiceColor),
                             maxLines = 1
                         )

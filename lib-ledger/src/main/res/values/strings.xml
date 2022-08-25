@@ -5,4 +5,16 @@
     <string name="purchase_amount">Purchase Amount</string>
     <string name="payment_amount">Payment Amount</string>
     <string name="to">%s to %s</string>
+    <string name="sanctioned_credit_limit">Sanctioned Credit Limit</string>
+    <string name="available_credit_line">Available Credit Limit</string>
+    <string name="initialise_ledger">Please initialize Ledger SDK with current app.</string>
+    <string name="tech_problem">Technical problem occurred, try again after some time</string>
+    <string name="invoice_download_success">Invoice downloaded successfully</string>
+    <string name="invoice_download_in_progress">Invoice download in progress</string>
+    <string name="total_outstanding_formula">Total Outstanding = Total Purchase Amount + Interest Till Date - Total Payment Amount</string>
+    <string name="transactions">Transactions</string>
+    <string name="credits">Credits</string>
+    <string name="information">Information</string>
+    <string name="okay">OK</string>
+    <string name="outstanding">Outstanding</string>
 </resources>

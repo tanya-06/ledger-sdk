@@ -25,11 +25,13 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
@@ -84,7 +86,7 @@ fun LedgerDetailScreen2(
     }
     if (uiState.showOutstandingDialog) {
         AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
-            title = "Total Outstanding = Total Purchase Amount + Interest Till Date - Total Payment Amount",
+            title = stringResource(R.string.total_outstanding_formula),
             ledgerColors = ledgerColors,
             lmsActivated = isLmsActivated(),
             onOkClick = {
