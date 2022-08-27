@@ -10,8 +10,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.credits.LedgerCreditViewModel
@@ -77,7 +79,7 @@ fun CreditsScreen(
 
             if (uiState.showAvailableCreditLimitInfoForLmsAndNonLmsUseModal) {
                 AvailableCreditLimitInfoForLmsAndNonLmsUseModal(
-                    title = "Available Credit Limit = Total Credit Limit - Outstanding (Sales order amount to be invoiced)",
+                    title = stringResource(id = R.string.credit_limit_info),
                     ledgerColors = ledgerColors,
                     lmsActivated = isLmsActivated(),
                     onOkClick = {

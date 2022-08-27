@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="total_outstanding">Total Outstanding</string>
+    <string name="total_outstanding_formula">Total Outstanding = Total Purchase Amount + Interest Till Date - Total Payment Amount</string>
     <string name="ledger">Ledger</string>
     <string name="purchase_amount">Purchase Amount</string>
     <string name="payment_amount">Payment Amount</string>
     <string name="to">%s to %s</string>
+    <string name="pay_now_text">Pay Now</string>
+    <string name="using_this_app">Using this App</string>
+    <string name="pay_by_bank_deposit_net_banking_amp_upi">Pay by Bank deposit, Net banking &amp; UPI</string>
+    <string name="transactions">Transactions</string>
+    <string name="credits">Credits</string>
+    <string name="available_credit_limit">Available Credit Limit</string>
     <string name="sanctioned_credit_limit">Sanctioned Credit Limit</string>
-    <string name="available_credit_line">Available Credit Limit</string>
+    <string name="credit_limit_info">\u2022 Available Credit limit = Total Credit Limit - Outstanding Amount - (Sales order amount to be invoiced)</string>
+    <string name="available_credit_limit_definition">Available Credit Limit = Total Credit Limit - Outstanding - (Orders which remains to be invoiced)</string>
+    <string name="information">Information</string>
+    <string name="okay">OK</string>
+    <string name="outstanding">Outstanding</string>
+
     <string name="initialise_ledger">Please initialize Ledger SDK with current app.</string>
     <string name="tech_problem">Technical problem occurred, try again after some time</string>
     <string name="invoice_download_success">Invoice downloaded successfully</string>
     <string name="invoice_download_in_progress">Invoice download in progress</string>
-    <string name="total_outstanding_formula">Total Outstanding = Total Purchase Amount + Interest Till Date - Total Payment Amount</string>
-    <string name="transactions">Transactions</string>
-    <string name="credits">Credits</string>
-    <string name="information">Information</string>
-    <string name="okay">OK</string>
-    <string name="outstanding">Outstanding</string>
 </resources>

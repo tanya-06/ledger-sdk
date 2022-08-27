@@ -64,8 +64,13 @@ fun SanctionedCreditLimitView(
         Text(
             modifier = Modifier
                 .padding(start = 9.dp),
-            text = if (isLmsActivated() == true) stringResource(R.string.sanctioned_credit_limit) else stringResource(
-                            R.string.available_credit_line),
+            text = stringResource(
+                if (isLmsActivated() == true) {
+                    R.string.sanctioned_credit_limit
+                } else {
+                    R.string.available_credit_limit
+                }
+            ),
             style = text12Sp(textColor = ledgerColors.LenderNameColor),
             maxLines = 1
         )

@@ -18,9 +18,6 @@ import lib.dehaat.ledger.resources.text14Sp
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
 
-val available_credit_limit_definition =
-    "Available Credit Limit = Total Credit Limit - Outstanding - (Orders which remains to be invoiced"
-
 @Composable
 fun AvailableCreditLimitInfoModal(
     ledgerColors: LedgerColors,
@@ -46,8 +43,9 @@ fun AvailableCreditLimitInfoModal(
 
                 Text(
                     modifier = Modifier,
-                    text = available_credit_limit_definition,
-                    style = text14Sp())
+                    text = stringResource(id = R.string.available_credit_limit_definition),
+                    style = text14Sp()
+                )
 
                 Row(
                     horizontalArrangement = Arrangement.End,
