@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import lib.dehaat.ledger.initializer.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.text14Sp
 import lib.dehaat.ledger.resources.textBold14Sp
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun ProductView(

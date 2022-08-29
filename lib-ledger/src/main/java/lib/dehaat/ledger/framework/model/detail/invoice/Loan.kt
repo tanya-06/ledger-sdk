@@ -14,15 +14,15 @@ data class Loan(
     @Json(name = "invoice_contribution_in_loan")
     val invoiceContributionInLoan: String,
     @Json(name = "total_outstanding_amount")
-    val totalOutstandingAmount: String,
+    val totalOutstandingAmount: String?,
     @Json(name = "principal_outstanding_amount")
-    val principalOutstandingAmount: String,
+    val principalOutstandingAmount: String?,
     @Json(name = "interest_outstanding_amount")
-    val interestOutstandingAmount: String,
+    val interestOutstandingAmount: String?,
     @Json(name = "penalty_outstanding_amount")
-    val penaltyOutstandingAmount: String,
+    val penaltyOutstandingAmount: String?,
     @Json(name = "overdue_interest_outstanding_amount")
-    val overdueInterestOutstandingAmount: String,
+    val overdueInterestOutstandingAmount: String?,
     @Json(name = "disbursal_date")
     val disbursalDate: Long?,
     @Json(name = "interest_free_end_date")

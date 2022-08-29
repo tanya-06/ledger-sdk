@@ -14,17 +14,17 @@ data class Summary(
     @Json(name = "mode")
     val mode: String,
     @Json(name = "principal_component")
-    val principalComponent: String,
+    val principalComponent: String?,
     @Json(name = "interest_component")
-    val interestComponent: String,
+    val interestComponent: String?,
     @Json(name = "overdue_interest_component")
-    val overdueInterestComponent: String,
+    val overdueInterestComponent: String?,
     @Json(name = "penalty_component")
-    val penaltyComponent: String,
+    val penaltyComponent: String?,
     @Json(name = "advance_component")
-    val advanceComponent: String,
+    val advanceComponent: String?,
     @Json(name = "paid_to")
-    val paidTo: String,
+    val paidTo: String?,
     @Json(name = "belongs_to_gapl")
-    val belongsToGapl: Boolean
+    val belongsToGapl: Boolean?
 )

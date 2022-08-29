@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.mapper
 
+import javax.inject.Inject
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
@@ -11,7 +12,9 @@ import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
+import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
+import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditViewData
@@ -23,8 +26,9 @@ import lib.dehaat.ledger.presentation.model.detail.creditnote.ProductsInfoViewDa
 import lib.dehaat.ledger.presentation.model.detail.creditnote.SummaryViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.InvoiceDetailDataViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.LoanViewData
+import lib.dehaat.ledger.presentation.model.detail.invoice.OverdueInfoViewData
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
-import javax.inject.Inject
+import lib.dehaat.ledger.presentation.model.transactionsummary.TransactionSummaryViewData
 
 typealias ViewDataPaymentDetailSummary = lib.dehaat.ledger.presentation.model.detail.payment.PaymentDetailSummaryViewData
 typealias EntityPaymentDetailSummary = lib.dehaat.ledger.entities.detail.payment.SummaryEntity
@@ -42,6 +46,15 @@ class LedgerViewDataMapper @Inject constructor() {
             credit = toCreditSummaryCreditViewData(credit),
             overdue = toCreditSummaryOverDueViewData(overdue),
             info = toCreditSummaryInfoViewData(info),
+        )
+    }
+
+    fun toTransactionSummaryViewData(
+        data: TransactionSummaryEntity
+    ) = with(data) {
+        TransactionSummaryViewData(
+            purchaseAmount = purchaseAmount,
+            paymentAmount = paymentAmount
         )
     }
 
@@ -79,7 +92,8 @@ class LedgerViewDataMapper @Inject constructor() {
     fun toInvoiceDetailDataViewData(data: InvoiceDetailDataEntity) = with(data) {
         InvoiceDetailDataViewData(
             summary = getInvoiceDetailSummaryViewData(summary),
-            loans = loans.map { getInvoiceDetailLoanViewData(it) },
+            loans = loans?.map { getInvoiceDetailLoanViewData(it) },
+            overdueInfo = getInvoiceDetailOverdueViewData(overdueInfo),
             productsInfo = getInvoiceDetailProductInfoViewData(productsInfo),
         )
     }
@@ -135,6 +149,12 @@ class LedgerViewDataMapper @Inject constructor() {
         )
     }
 
+    private fun getInvoiceDetailOverdueViewData(data: OverdueInfoEntity) = with(data) {
+        OverdueInfoViewData(
+            overdueDate = overdueDate
+        )
+    }
+
     private fun getCreditNoteDetailProductInfoViewData(data: ProductsInfoEntity) = with(data) {
         ProductsInfoViewData(
             count = count,
@@ -176,7 +196,8 @@ class LedgerViewDataMapper @Inject constructor() {
             erpId = erpId,
             locusId = locusId,
             creditNoteReason = creditNoteReason,
-            paymentMode = paymentMode
+            paymentMode = paymentMode,
+            source = source
         )
     }
 

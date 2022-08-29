@@ -8,5 +8,6 @@ data class TransactionViewData(
     val erpId: String?,
     val locusId: String?,
     val creditNoteReason: String?,
-    val paymentMode: String?
+    val paymentMode: String?,
+    val source: String
 )

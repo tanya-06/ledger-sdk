@@ -1,12 +1,16 @@
 package lib.dehaat.ledger.framework.network
 
+import com.cleanarch.base.common.ApiExtraInfo
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.coroutine.IDispatchers
 import com.dehaat.androidbase.network.api.makeAPICall
-import lib.dehaat.ledger.data.source.ILedgerDataSource
-import lib.dehaat.ledger.framework.mapper.LedgerFrameworkMapper
-import retrofit2.Response
 import javax.inject.Inject
+import lib.dehaat.ledger.data.source.ILedgerDataSource
+import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.framework.mapper.LedgerFrameworkMapper
+import lib.dehaat.ledger.presentation.LedgerConstants.API_REQUEST_TRACE_ID
+import lib.dehaat.ledger.presentation.LedgerConstants.IB_REQUEST_IDENTIFIER
+import retrofit2.Response
 
 class LedgerDataSource @Inject constructor(
     private val dispatcher: IDispatchers,
@@ -18,6 +22,17 @@ class LedgerDataSource @Inject constructor(
         dispatcher,
         { apiService.getCreditSummary(partnerId = partnerId) }) {
         it?.data?.let { data -> mapper.toCreditSummaryDataEntity(data) }
+    }
+
+    override suspend fun getTransactionSummary(
+        partnerId: String,
+        fromDate: Long?,
+        toDate: Long?
+    ): APIResultEntity<TransactionSummaryEntity?> = callAPI(
+        dispatcher,
+        { apiService.getTransactionSummary(partnerId, fromDate, toDate) }
+    ) {
+        it?.transactionDetailData?.let { data -> mapper.toTransactionSummaryDataEntity(data) }
     }
 
     override suspend fun getTransactions(
@@ -51,62 +66,56 @@ class LedgerDataSource @Inject constructor(
     }
 
     override suspend fun getInvoiceDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ) = callAPI(
         dispatcher,
-        {
-            apiService.getInvoiceDetail(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId
-            )
-        }) {
+        { apiService.getInvoiceDetail(ledgerId) }
+    ) {
         it?.invoiceDetailData?.let { data -> mapper.toInvoiceDetailDataEntity(data) }
     }
 
-    override suspend fun getPaymentDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?,
-        mode: String?
+    override suspend fun getInvoiceDownload(
+        identityId: String,
+        source: String
     ) = callAPI(
         dispatcher,
-        {
-            apiService.getPaymentDetail(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId,
-                mode = mode
-            )
-        }) {
+        { apiService.downloadInvoice(identityId, source) }
+    ) {
+        it?.downloadInvoiceData?.let { data -> mapper.toInvoiceDownloadDataEntity(data) }
+    }
+
+    override suspend fun getPaymentDetail(
+        ledgerId: String
+    ) = callAPI(
+        dispatcher,
+        { apiService.getPaymentDetail(ledgerId) }
+    ) {
         it?.paymentDetailData?.let { data -> mapper.toPaymentDetailDataEntity(data) }
     }
 
     override suspend fun getCreditNoteDetail(
-        ledgerId: String,
-        locusId: String?,
-        erpId: String?
+        ledgerId: String
     ) = callAPI(
         dispatcher,
-        {
-            apiService.getCreditNoteDetail(
-                ledgerId = ledgerId,
-                locusId = locusId,
-                erpId = erpId
-            )
-        }) {
+        { apiService.getCreditNoteDetail(ledgerId) }
+    ) {
         it?.creditNoteDetailData?.let { data -> mapper.toCreditNoteDetailDataEntity(data) }
     }
 
-    suspend fun <D, C> callAPI(
+    private suspend fun <D, C> callAPI(
         dispatchers: IDispatchers,
         apiCall: suspend () -> Response<D>,
         parse: (D?) -> C
     ): APIResultEntity<C> {
-        return makeAPICall(dispatchers.io, {
-            apiCall.invoke()
-        }, parse)
+        return makeAPICall(
+            dispatchers.io,
+            { apiCall.invoke() },
+            parse
+        ) { request, response ->
+            ApiExtraInfo().apply {
+                put(API_REQUEST_TRACE_ID, request?.header(API_REQUEST_TRACE_ID))
+                put(IB_REQUEST_IDENTIFIER, response?.headers()?.get(IB_REQUEST_IDENTIFIER))
+            }
+        }
     }
 }

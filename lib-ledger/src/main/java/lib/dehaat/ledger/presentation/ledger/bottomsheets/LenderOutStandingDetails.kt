@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import lib.dehaat.ledger.initializer.getAmountInRupees
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSummaryView
 import lib.dehaat.ledger.presentation.model.outstanding.LedgerOutStandingDetailViewData
 import lib.dehaat.ledger.resources.text18Sp
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun LenderOutStandingDetails(data: LedgerOutStandingDetailViewData, ledgerColors: LedgerColors) {
