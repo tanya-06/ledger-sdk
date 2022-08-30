@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="total_outstanding">कुल बकाया</string>
+    <string name="ledger">बही खाता</string>
+    <string name="purchase_amount">खरीद राशि</string>
+    <string name="payment_amount">भुगतान राशि</string>
+    <string name="to">%s से %s</string>
+    <string name="pay_now_text">अभी भुगतान करें</string>
+    <string name="using_this_app">ऐप के जरिये</string>
+    <string name="pay_by_bank_deposit_net_banking_amp_upi">नेट बैंकिंग, यूपीआई और कार्ड द्वारा भुगतान करें</string>
+    <string name="transactions">लेन-देन</string>
+    <string name="credits">क्रेडिट</string>
+    <string name="available_credit_limit">उपलब्ध क्रेडिट सीमा</string>
+    <string name="available_credit_limit_definition">उपलब्ध क्रेडिट सीमा = कुल क्रेडिट सीमा - बकाया - (ऑर्डर जिन्का इनवॉइस बनना बाकी है)</string>
+    <string name="information">जानकारी</string>
+    <string name="okay">ठीक है</string>
+    <string name="outstanding">बकाया</string>
+
+    <string name="sanctioned_credit_limit">स्वीकृत क्रेडिट सीमा</string>
+    <string name="initialise_ledger">कृपया वर्तमान ऐप के साथ लेजर एसडीके प्रारंभ करें।</string>
+    <string name="tech_problem">तकनीकी समस्या आई, कुछ देर बाद पुन: प्रयास करें</string>
+    <string name="invoice_download_success">चालान सफलतापूर्वक डाउनलोड किया गया</string>
+    <string name="invoice_download_in_progress">चालान डाउनलोड हो रहा है</string>
+</resources>
