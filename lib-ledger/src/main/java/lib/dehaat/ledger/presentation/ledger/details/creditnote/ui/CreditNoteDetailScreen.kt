@@ -147,40 +147,42 @@ fun CreditNoteDetailScreen(
                         color = ledgerColors.CreditViewHeaderDividerBColor
                     )
 
-                    Column(modifier = Modifier) {
-                        Text(
-                            modifier = Modifier,
-                            text = "Product Details",
-                            style = text18Sp(textColor = ledgerColors.CtaDarkColor),
-                            maxLines = 1
-                        )
-                        val products = creditNoteDetailViewData?.productsInfo?.productList.orEmpty()
-                        Text(
-                            modifier = Modifier.padding(top = 8.dp),
-                            text = "Items: ${products.size}",
-                            style = textMedium14Sp(textColor = ledgerColors.CtaColor),
-                            maxLines = 1
-                        )
-
-                        SpaceMedium()
-
-                        products.forEachIndexed { index, product ->
-                            ProductView(
-                                modifier = Modifier.padding(end = 16.dp),
-                                ledgerColors = ledgerColors,
-                                name = product.name,
-                                image = product.fname,
-                                qty = product.quantity,
-                                price = product.priceTotal
+                    creditNoteDetailViewData?.productsInfo?.productList?.let {
+                        Column(modifier = Modifier) {
+                            Text(
+                                modifier = Modifier,
+                                text = "Product Details",
+                                style = text18Sp(textColor = ledgerColors.CtaDarkColor),
+                                maxLines = 1
                             )
-                            if (index < products.lastIndex)
-                                Divider(
-                                    modifier = Modifier.padding(vertical = 12.dp),
-                                    color = ledgerColors.CreditViewHeaderDividerBColor,
-                                    thickness = 1.dp
+                            Text(
+                                modifier = Modifier.padding(top = 8.dp),
+                                text = "Items: ${it.size}",
+                                style = textMedium14Sp(textColor = ledgerColors.CtaColor),
+                                maxLines = 1
+                            )
+
+                            SpaceMedium()
+
+                            it.forEachIndexed { index, product ->
+                                ProductView(
+                                    modifier = Modifier.padding(end = 16.dp),
+                                    ledgerColors = ledgerColors,
+                                    name = product.name,
+                                    image = product.fname,
+                                    qty = product.quantity,
+                                    price = product.priceTotal
                                 )
+                                if (index < it.lastIndex)
+                                    Divider(
+                                        modifier = Modifier.padding(vertical = 12.dp),
+                                        color = ledgerColors.CreditViewHeaderDividerBColor,
+                                        thickness = 1.dp
+                                    )
+                            }
                         }
                     }
+
 
                     Column(
                         modifier = Modifier
@@ -205,7 +207,8 @@ fun CreditNoteDetailScreen(
                         Divider(
                             modifier = Modifier
                                 .padding(vertical = 10.dp)
-                                .background(color = ledgerColors.TabBorderColorDefault), thickness = 1.dp
+                                .background(color = ledgerColors.TabBorderColorDefault),
+                            thickness = 1.dp
                         )
 
                         CreditNoteKeyValue(
