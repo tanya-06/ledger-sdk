@@ -62,7 +62,8 @@ class AppChooserActivity : AppCompatActivity() {
                 )
             ),
             bucket = "fnfsandboxec2odoo",
-            appIcon = R.drawable.ic_payment
+            appIcon = R.drawable.ic_payment,
+            debugMode = true
         )
         LedgerSDK.openLedger(
             context = this,
@@ -90,7 +91,8 @@ class AppChooserActivity : AppCompatActivity() {
                 }
             ),
             bucket = "fnfsandboxec2odoo",
-            appIcon = R.drawable.ic_payment
+            appIcon = R.drawable.ic_payment,
+            debugMode = true
         )
         LedgerSDK.openLedger(
             context = this,

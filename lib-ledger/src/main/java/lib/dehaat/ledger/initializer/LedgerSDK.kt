@@ -15,11 +15,13 @@ object LedgerSDK {
         context: Context,
         app: LedgerParentApp,
         bucket: String,
-        @DrawableRes appIcon: Int
+        @DrawableRes appIcon: Int,
+        debugMode: Boolean
     ) {
         currentApp = app
         this.bucket = bucket
         this.appIcon = appIcon
+        this.isDebug = debugMode
         Fresco.initialize(context)
     }
 
@@ -43,4 +45,7 @@ object LedgerSDK {
 
     val isAIMS: Boolean
         get() = currentApp is LedgerParentApp.AIMS
+
+    var isDebug: Boolean = false
+        private set
 }
