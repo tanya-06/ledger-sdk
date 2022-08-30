@@ -8,13 +8,17 @@ import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 fun Header(
     creditSummaryData: CreditSummaryViewData?,
     ledgerColors: LedgerColors,
+    isLmsActivated: () -> Boolean?,
     onClickTotalOutstandingInfo: () -> Unit,
-    onPayNowClick: () -> Unit
+    onPayNowClick: () -> Unit,
+    onPaymentOptionsClick: () -> Unit
 ) {
     CreditSummaryView(
         creditSummaryData = creditSummaryData,
         ledgerColors = ledgerColors,
+        isLmsActivated = isLmsActivated,
         onClickTotalOutstandingInfo = onClickTotalOutstandingInfo,
-        onPayNowClick = onPayNowClick
+        onPayNowClick = onPayNowClick,
+        onPaymentOptionsClick = onPaymentOptionsClick
     )
 }

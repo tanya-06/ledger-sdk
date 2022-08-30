@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Transaction(
-    @Json(name = "id")
+    @Json(name = "ledger_id")
     val ledgerId: String,
     @Json(name = "type")
     val type: String,
@@ -20,5 +20,7 @@ data class Transaction(
     @Json(name = "credit_note_reason")
     val creditNoteReason: String?,
     @Json(name = "payment_mode")
-    val paymentMode: String?
+    val paymentMode: String?,
+    @Json(name = "source")
+    val source: String
 )

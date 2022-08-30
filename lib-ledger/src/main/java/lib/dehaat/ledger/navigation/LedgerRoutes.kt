@@ -12,5 +12,4 @@ sealed class LedgerRoutes(val screen: String) {
 
     object LedgerPaymentDetailScreen :
         LedgerRoutes("ledger_payment_detail_screen")
-
 }

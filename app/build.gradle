@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId "com.dehaat.ledger"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -97,4 +97,13 @@ dependencies {
 
     debugImplementation "com.readystatesoftware.chuck:library:1.1.0"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:1.1.0"
+
+    implementation 'com.github.Dehaat:clean-arch-base:0.0.2'
+    implementation 'com.github.dehaat:dehaat-android-base:v0.0.2-beta-8'
+
+    //AWS
+    def aws_android_sdk = '2.6.31'
+    implementation("com.amazonaws:aws-android-sdk-s3:$aws_android_sdk")
+    implementation("com.amazonaws:aws-android-sdk-cognito:$aws_android_sdk")
+    implementation("com.amazonaws:aws-android-sdk-mobile-client:2.6.15@aar") { transitive = true }
 }

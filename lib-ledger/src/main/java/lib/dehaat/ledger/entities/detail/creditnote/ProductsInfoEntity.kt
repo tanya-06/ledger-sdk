@@ -5,5 +5,5 @@ data class ProductsInfoEntity(
     val gst: String,
     val itemTotal: String,
     val subTotal: String,
-    val productList: List<ProductEntity>
+    val productList: List<ProductEntity>?
 )

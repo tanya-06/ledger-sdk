@@ -31,5 +31,4 @@ abstract class BasePagingSourceWithResponse<D : Any, R>(
         e.printStackTrace()
         LoadResult.Error(e)
     }
-
 }

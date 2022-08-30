@@ -10,3 +10,6 @@ import androidx.compose.ui.unit.dp
 fun SpaceMedium() {
     Spacer(modifier = Modifier.height(16.dp))
 }
+
+@Composable
+fun SpaceSmall12() = Spacer(modifier = Modifier.height(12.dp))

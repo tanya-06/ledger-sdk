@@ -5,12 +5,22 @@ import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetCreditLinesUseCase
 import lib.dehaat.ledger.domain.usecases.GetCreditSummaryUseCase
+import lib.dehaat.ledger.domain.usecases.GetTransactionSummaryUseCase
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
+import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PARTNER_ID
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -20,12 +30,14 @@ import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
-import javax.inject.Inject
+import lib.dehaat.ledger.presentation.model.transactions.toStartAndEndDates
+import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
 class LedgerDetailViewModel @Inject constructor(
     private val getCreditSummaryUseCase: GetCreditSummaryUseCase,
     private val getCreditLinesUseCase: GetCreditLinesUseCase,
+    private val getTransactionSummaryUseCase: GetTransactionSummaryUseCase,
     private val mapper: LedgerViewDataMapper,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
@@ -56,11 +68,13 @@ class LedgerDetailViewModel @Inject constructor(
         )
 
     init {
-        getCreditSummaryFromServer()
+        getLedgerData()
     }
 
-    init {
+    fun getLedgerData() {
+        getCreditSummaryFromServer()
         getCreditLinesFromServer()
+        getTransactionSummaryFromServer()
     }
 
     private fun getCreditLinesFromServer() {
@@ -115,22 +129,45 @@ class LedgerDetailViewModel @Inject constructor(
         }
     }
 
+    fun getTransactionSummaryFromServer(daysToFilter: DaysToFilter? = null) = callInViewModelScope {
+        callingAPI()
+        val dates = daysToFilter?.toStartAndEndDates()
+        val response = getTransactionSummaryUseCase.invoke(partnerId, dates?.first, dates?.second)
+        calledAPI()
+        processTransactionSummaryResponse(response)
+    }
+
+    private fun processTransactionSummaryResponse(
+        result: APIResultEntity<TransactionSummaryEntity?>
+    ) = result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
+        it?.let { entity ->
+            val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
+            viewModelState.update { ledgerDetailViewModelState ->
+                ledgerDetailViewModelState.copy(
+                    isLoading = false,
+                    transactionSummaryViewData = transactionSummaryViewData
+                )
+            }
+        }
+    }
+
     private fun sendShowSnackBarEvent(message: String) {
+        updateAPIFailure()
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }
     }
 
-    private fun calledAPI() {
-        viewModelState.update {
-            it.copy(isLoading = false)
-        }
+    private fun updateAPIFailure() = viewModelState.update {
+        it.copy(isError = true)
     }
 
-    private fun callingAPI() {
-        viewModelState.update {
-            it.copy(isLoading = true)
-        }
+    private fun calledAPI() = updateProgressDialog(false)
+
+    private fun callingAPI() = updateProgressDialog(true)
+
+    fun updateProgressDialog(show: Boolean) = viewModelState.update {
+        it.copy(isLoading = show)
     }
 
     private fun getOverAllSummaryData(creditSummaryViewData: CreditSummaryViewData) =
@@ -145,12 +182,28 @@ class LedgerDetailViewModel @Inject constructor(
         }
 
     fun isLMSActivated() =
-        viewModelState.value.creditSummaryViewData?.credit?.externalFinancierSupported ?: false
+        viewModelState.value.creditSummaryViewData?.credit?.externalFinancierSupported
 
     fun openAllOutstandingModal() {
         viewModelState.update {
             it.copy(
                 bottomSheetType = BottomSheetType.OverAllOutStanding(data = viewModelState.value.overAllOutStandingDetailViewData)
+            )
+        }
+    }
+
+    fun closeOutstandingDialog() {
+        viewModelState.update {
+            it.copy(
+                showOutstandingDialog = false
+            )
+        }
+    }
+
+    fun openOutstandingDialog() {
+        viewModelState.update {
+            it.copy(
+                showOutstandingDialog = true
             )
         }
     }
@@ -187,6 +240,10 @@ class LedgerDetailViewModel @Inject constructor(
         }
     }
 
+    fun showDaysRangeFilterDialog(show: Boolean) = viewModelState.update {
+        it.copy(showFilterRangeDialog = show)
+    }
+
     fun updateSelectedFilter(selectedFilter: DaysToFilter) {
         viewModelState.update {
             it.copy(selectedDaysFilter = selectedFilter)
@@ -194,18 +251,5 @@ class LedgerDetailViewModel @Inject constructor(
         callInViewModelScope {
             _selectedDaysToFilterEvent.emit(selectedFilter)
         }
-    }
-}
-
-fun <D> APIResultEntity<D>.processAPIResponseWithFailureSnackBar(
-    onFailure: (message: String) -> Unit,
-    handleSuccess: (data: D) -> Unit
-) {
-    when (this) {
-        is APIResultEntity.Success -> handleSuccess(this.data)
-        is APIResultEntity.Failure.ErrorException -> onFailure(
-            this.exceptionError.message ?: ""
-        )
-        is APIResultEntity.Failure.ErrorFailure -> onFailure(this.responseMessage)
     }
 }
