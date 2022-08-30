@@ -47,7 +47,6 @@ class DownloadFileUtil @Inject constructor(
         } else {
             s3Client.setRegion(Region.getRegion(Regions.AP_SOUTHEAST_1))
         }
-        s3Client.setRegion(Region.getRegion(Regions.AP_SOUTHEAST_1))
         return s3Client
     }
 

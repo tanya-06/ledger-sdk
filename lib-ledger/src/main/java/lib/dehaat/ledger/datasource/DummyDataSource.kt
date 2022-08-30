@@ -77,15 +77,13 @@ object DummyDataSource {
         )
     }
     private val dbaApp by lazy {
-        LedgerParentApp.DBA(
-            ledgerCallBack = LedgerCallBack({}, {}, { _, _ -> }, { context, path -> null }
-            )
-        )
+        LedgerParentApp.DBA(ledgerCallBack = LedgerCallBack({}, {}, { _, _ -> }, { _, _ -> null }))
     }
+
     private val aimsApp by lazy {
         LedgerParentApp.AIMS(
             downloadInvoiceClick = {},
-            downloadInvoiceIntent = { context, path -> null }
+            downloadInvoiceIntent = { _, _ -> null }
         )
     }
 
@@ -93,13 +91,15 @@ object DummyDataSource {
         context,
         dbaApp,
         "bucket",
-        R.drawable.ic_info_icon
+        R.drawable.ic_info_icon,
+        true
     )
 
     fun initAIMS(context: Context) = LedgerSDK.init(
         context,
         aimsApp,
         "bucket",
-        R.drawable.ic_info_icon
+        R.drawable.ic_info_icon,
+        true
     )
 }
