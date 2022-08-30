@@ -1,6 +1,5 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice.ui
 
-import android.os.Environment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,7 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import java.io.File
+import com.dehaat.androidbase.helper.showToast
+import lib.dehaat.ledger.R
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -57,12 +58,7 @@ fun InvoiceDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
     val invoiceData = uiState.invoiceDetailDataViewData
     val scrollState = rememberScrollState()
-    val downloadDirectory = File(
-        LocalContext.current.getExternalFilesDir(
-            Environment.DIRECTORY_DOWNLOADS
-        ),
-        "DeHaat"
-    ).apply { mkdir() }
+    val context = LocalContext.current
 
     CommonContainer(
         title = "Invoice Detail",
@@ -377,10 +373,19 @@ fun InvoiceDetailScreen(
                         Text(
                             modifier = Modifier
                                 .clickable {
-                                    viewModel.downloadInvoice(
-                                        downloadDirectory,
-                                        onDownloadInvoiceClick
-                                    )
+                                    LedgerSDK
+                                        .getFile(context)
+                                        ?.let {
+                                            viewModel.downloadInvoice(
+                                                it,
+                                                onDownloadInvoiceClick
+                                            )
+                                        } ?: kotlin.run {
+                                        context.showToast(R.string.tech_problem)
+                                        LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
+                                            Exception("Unable to create file")
+                                        )
+                                    }
                                 }
                                 .padding(top = 16.dp)
                                 .background(shape = RoundedCornerShape(40.dp), color = Color.White)

@@ -58,7 +58,8 @@ class AppChooserActivity : AppCompatActivity() {
                             ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
                             -PendingIntent.FLAG_ONE_SHOT
                         )
-                    }
+                    },
+                    exceptionHandler = {}
                 )
             ),
             bucket = "fnfsandboxec2odoo",
@@ -93,7 +94,8 @@ class AppChooserActivity : AppCompatActivity() {
                         ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
                         -PendingIntent.FLAG_ONE_SHOT
                     )
-                }
+                },
+                exceptionHandler = {}
             ),
             bucket = "fnfsandboxec2odoo",
             appIcon = R.drawable.ic_payment,
