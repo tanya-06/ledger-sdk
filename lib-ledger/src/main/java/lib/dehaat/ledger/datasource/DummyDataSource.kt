@@ -77,13 +77,22 @@ object DummyDataSource {
         )
     }
     private val dbaApp by lazy {
-        LedgerParentApp.DBA(ledgerCallBack = LedgerCallBack({}, {}, { _, _ -> }, { _, _ -> null }))
+        LedgerParentApp.DBA(
+            ledgerCallBack = LedgerCallBack(
+                {},
+                {},
+                { _, _ -> },
+                { _, _ -> null },
+                {}
+            )
+        )
     }
 
     private val aimsApp by lazy {
         LedgerParentApp.AIMS(
             downloadInvoiceClick = {},
-            downloadInvoiceIntent = { _, _ -> null }
+            downloadInvoiceIntent = { _, _ -> null },
+            exceptionHandler = {}
         )
     }
 

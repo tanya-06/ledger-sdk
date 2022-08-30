@@ -183,7 +183,7 @@ class InvoiceDetailViewModel @Inject constructor(
     ) = callInViewModelScope {
         updateProgressDialog(true)
         downloadFileUtil.downloadFile(
-            downloadDirectory,
+            File(downloadDirectory, "$identityId.pdf"),
             identityId,
             LedgerSDK.bucket
         )?.setTransferListener(

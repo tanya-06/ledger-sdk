@@ -60,7 +60,7 @@ class LedgerDetailActivity : ComponentActivity() {
                 LedgerNavigation(
                     dcName = args.dcName,
                     partnerId = args.partnerId,
-                    ledgerColors = LedgerSDK.currentApp.ledgerColors,
+                    ledgerColors = LedgerSDK.currentApp?.ledgerColors,
                     resultLauncher = resultLauncher,
                     finishActivity = { finish() },
                     viewModel = viewModel,

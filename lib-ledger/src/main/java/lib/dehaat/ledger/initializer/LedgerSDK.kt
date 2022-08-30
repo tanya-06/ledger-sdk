@@ -32,12 +32,16 @@ object LedgerSDK {
         partnerId: String,
         dcName: String,
         language: String? = null
-    ) = LedgerDetailActivity.Companion.Args(
-        partnerId = partnerId,
-        dcName = dcName,
-        language = language
-    ).also {
-        context.startActivity(it.build(context))
+    ) = if (isCurrentAppAvailable()) {
+        LedgerDetailActivity.Companion.Args(
+            partnerId = partnerId,
+            dcName = dcName,
+            language = language
+        ).also {
+            context.startActivity(it.build(context))
+        }
+    } else {
+        throw Exception("Ledger not initialised Exception")
     }
 
     val isDBA: Boolean
