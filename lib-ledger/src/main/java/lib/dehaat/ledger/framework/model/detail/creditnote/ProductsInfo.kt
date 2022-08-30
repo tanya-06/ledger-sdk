@@ -14,5 +14,5 @@ data class ProductsInfo(
     @Json(name = "sub_total")
     val subTotal: String,
     @Json(name = "product_list")
-    val productList: List<Product>
+    val productList: List<Product>?
 )

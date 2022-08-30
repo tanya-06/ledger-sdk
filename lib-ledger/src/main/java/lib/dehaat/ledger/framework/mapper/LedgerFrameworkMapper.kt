@@ -182,7 +182,7 @@ class LedgerFrameworkMapper @Inject constructor() {
             gst = gst,
             itemTotal = itemTotal,
             subTotal = subTotal,
-            productList = productList.map {
+            productList = productList?.map {
                 getCreditNoteDetailProductEntity(it)
             }
         )

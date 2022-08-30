@@ -161,7 +161,7 @@ class LedgerViewDataMapper @Inject constructor() {
             gst = gst,
             itemTotal = itemTotal,
             subTotal = subTotal,
-            productList = productList.map {
+            productList = productList?.map {
                 getCreditNoteDetailProductViewData(it)
             }
         )
