@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.dehaat.androidbase.helper.showToast
 import kotlinx.coroutines.flow.SharedFlow
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.common.UiEvent
 
 @Composable
@@ -25,7 +26,11 @@ fun HandleAPIErrors(
         ).collect { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
-                    context.showToast(errorMessage)
+                    if (LedgerSDK.isDebug) {
+                        context.showToast(event.message)
+                    } else {
+                        context.showToast(errorMessage)
+                    }
                 }
                 else -> Unit
             }
