@@ -31,6 +31,7 @@ fun HandleAPIErrors(
                     } else {
                         context.showToast(errorMessage)
                     }
+                    LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(Exception(event.message))
                 }
                 else -> Unit
             }

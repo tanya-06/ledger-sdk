@@ -58,19 +58,25 @@ class AppChooserActivity : AppCompatActivity() {
                             ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
                             -PendingIntent.FLAG_ONE_SHOT
                         )
-                    }
+                    },
+                    exceptionHandler = {}
                 )
             ),
             bucket = "fnfsandboxec2odoo",
             appIcon = R.drawable.ic_payment,
             debugMode = true
         )
-        LedgerSDK.openLedger(
-            context = this,
-            partnerId = "123456",
-            dcName = "DC DBA",
-            language = "en"
-        )
+
+        try {
+            LedgerSDK.openLedger(
+                context = this,
+                partnerId = "123456",
+                dcName = "DC DBA",
+                language = "en"
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun openAIMS() {
@@ -88,18 +94,23 @@ class AppChooserActivity : AppCompatActivity() {
                         ).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) },
                         -PendingIntent.FLAG_ONE_SHOT
                     )
-                }
+                },
+                exceptionHandler = {}
             ),
             bucket = "fnfsandboxec2odoo",
             appIcon = R.drawable.ic_payment,
             debugMode = true
         )
-        LedgerSDK.openLedger(
-            context = this,
-            partnerId = "123456",
-            dcName = "DC AIMS",
-            language = "hi"
-        )
+        try {
+            LedgerSDK.openLedger(
+                context = this,
+                partnerId = "123456",
+                dcName = "DC AIMS",
+                language = "hi"
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun showToast(msg: String) {

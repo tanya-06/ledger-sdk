@@ -112,7 +112,7 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     fun downloadInvoice(
-        downloadDirectory: File,
+        file: File,
         invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
         invoiceDownloadData.partnerId = ledgerId
@@ -122,7 +122,7 @@ class InvoiceDetailViewModel @Inject constructor(
             else -> null
         }
         identityId?.let {
-            getDownloadInvoice(it, source, downloadDirectory, invoiceDownloadStatus)
+            getDownloadInvoice(it, source, file, invoiceDownloadStatus)
         }
     }
 
@@ -133,7 +133,7 @@ class InvoiceDetailViewModel @Inject constructor(
     private fun getDownloadInvoice(
         identityId: String,
         source: String,
-        downloadDirectory: File,
+        file: File,
         invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
         updateProgressDialog(true)
@@ -147,9 +147,9 @@ class InvoiceDetailViewModel @Inject constructor(
                             base64 = invoiceDownloadDataEntity.pdf.orEmpty(),
                             fileType = invoiceDownloadDataEntity.docType,
                             fileName = identityId,
-                            dir = downloadDirectory
+                            dir = file
                         )?.let {
-                            updateDownloadPathAndProgress(downloadDirectory, identityId)
+                            updateDownloadPathAndProgress(file, identityId)
                             invoiceDownloadStatus(invoiceDownloadData)
                         } ?: kotlin.run {
                             invoiceDownloadData.isFailed = true
@@ -162,7 +162,7 @@ class InvoiceDetailViewModel @Inject constructor(
                             ?: return@processAPIResponseWithFailureSnackBar
                         downloadFile(
                             invoiceDownloadDataEntity.fileName,
-                            downloadDirectory,
+                            file,
                             invoiceDownloadStatus
                         )
                     }
@@ -178,12 +178,12 @@ class InvoiceDetailViewModel @Inject constructor(
 
     private fun downloadFile(
         identityId: String,
-        downloadDirectory: File,
+        file: File,
         invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
         updateProgressDialog(true)
         downloadFileUtil.downloadFile(
-            downloadDirectory,
+            File(file, "$identityId.pdf"),
             identityId,
             LedgerSDK.bucket
         )?.setTransferListener(
@@ -191,7 +191,7 @@ class InvoiceDetailViewModel @Inject constructor(
                 override fun onStateChanged(id: Int, state: TransferState?) {
                     if (state == TransferState.COMPLETED) {
                         updateProgressDialog(false)
-                        updateDownloadPathAndProgress(downloadDirectory, identityId)
+                        updateDownloadPathAndProgress(file, identityId)
                         invoiceDownloadStatus(invoiceDownloadData)
                     }
                 }
@@ -205,7 +205,7 @@ class InvoiceDetailViewModel @Inject constructor(
                 override fun onError(id: Int, ex: Exception?) {
                     ex?.printStackTrace()
                     invoiceDownloadData.isFailed = true
-                    updateDownloadPathAndProgress(downloadDirectory, identityId)
+                    updateDownloadPathAndProgress(file, identityId)
                     invoiceDownloadStatus(invoiceDownloadData)
                     updateProgressDialog(false)
                 }

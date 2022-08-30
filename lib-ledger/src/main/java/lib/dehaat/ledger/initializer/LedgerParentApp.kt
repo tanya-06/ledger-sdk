@@ -2,6 +2,7 @@ package lib.dehaat.ledger.initializer
 
 import lib.dehaat.ledger.initializer.callbacks.DownloadInvoiceSuccess
 import lib.dehaat.ledger.initializer.callbacks.DownloadInvoiceIntent
+import lib.dehaat.ledger.initializer.callbacks.ExceptionHandler
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
 import lib.dehaat.ledger.initializer.themes.AIMSColors
 import lib.dehaat.ledger.initializer.themes.DBAColors
@@ -14,13 +15,15 @@ sealed class LedgerParentApp(
     class AIMS(
         downloadInvoiceClick: DownloadInvoiceSuccess,
         downloadInvoiceIntent: DownloadInvoiceIntent,
-        ledgerColors: LedgerColors = AIMSColors()
+        ledgerColors: LedgerColors = AIMSColors(),
+        exceptionHandler: ExceptionHandler
     ) : LedgerParentApp(
         LedgerCallBack(
             onClickPayNow = {},
             onDownloadInvoiceSuccess = downloadInvoiceClick,
             onPaymentOptionsClick = { _, _ -> },
-            downloadInvoiceIntent = downloadInvoiceIntent
+            downloadInvoiceIntent = downloadInvoiceIntent,
+            exceptionHandler = exceptionHandler
         ),
         ledgerColors
     )

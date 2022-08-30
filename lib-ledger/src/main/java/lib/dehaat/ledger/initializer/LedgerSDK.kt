@@ -1,8 +1,10 @@
 package lib.dehaat.ledger.initializer
 
 import android.content.Context
+import android.os.Environment
 import androidx.annotation.DrawableRes
 import com.facebook.drawee.backends.pipeline.Fresco
+import java.io.File
 import lib.dehaat.ledger.presentation.ledger.LedgerDetailActivity
 
 object LedgerSDK {
@@ -27,17 +29,36 @@ object LedgerSDK {
 
     fun isCurrentAppAvailable() = ::currentApp.isInitialized && ::bucket.isInitialized
 
+    @Throws(Exception::class)
     fun openLedger(
         context: Context,
         partnerId: String,
         dcName: String,
         language: String? = null
-    ) = LedgerDetailActivity.Companion.Args(
-        partnerId = partnerId,
-        dcName = dcName,
-        language = language
-    ).also {
-        context.startActivity(it.build(context))
+    ) = if (isCurrentAppAvailable()) {
+        LedgerDetailActivity.Companion.Args(
+            partnerId = partnerId,
+            dcName = dcName,
+            language = language
+        ).also {
+            context.startActivity(it.build(context))
+        }
+    } else {
+        throw Exception("Ledger not initialised Exception")
+    }
+
+    fun getFile(context: Context): File? = try {
+        File(
+            context.getExternalFilesDir(
+                Environment.DIRECTORY_DOWNLOADS
+            ),
+            "DeHaat"
+        ).apply { mkdir() }
+    } catch (e: Exception) {
+        if (::currentApp.isInitialized) {
+            currentApp.ledgerCallBack.exceptionHandler(e)
+        }
+        null
     }
 
     val isDBA: Boolean
