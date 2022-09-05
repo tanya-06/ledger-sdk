@@ -73,6 +73,12 @@ class LedgerCreditViewModel @Inject constructor(
     }
 
     private fun sendShowSnackBarEvent(message: String) {
+        viewModelState.update {
+            it.copy(
+                isError = true,
+                isLoading = false
+            )
+        }
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }

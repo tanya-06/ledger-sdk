@@ -108,7 +108,10 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     private fun updateAPIFailure() = viewModelState.update {
-        it.copy(isError = true)
+        it.copy(
+            isError = true,
+            isLoading = false
+        )
     }
 
     fun downloadInvoice(

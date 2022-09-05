@@ -62,7 +62,7 @@ class AppChooserActivity : AppCompatActivity() {
                     exceptionHandler = {}
                 )
             ),
-            bucket = "fnfsandboxec2odoo",
+            bucket = "fnftestec2odoo",
             appIcon = R.drawable.ic_payment,
             debugMode = true
         )
@@ -97,7 +97,7 @@ class AppChooserActivity : AppCompatActivity() {
                 },
                 exceptionHandler = {}
             ),
-            bucket = "fnfsandboxec2odoo",
+            bucket = "fnftestec2odoo",
             appIcon = R.drawable.ic_payment,
             debugMode = true
         )

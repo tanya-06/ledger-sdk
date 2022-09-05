@@ -93,7 +93,10 @@ class PaymentDetailViewModel @Inject constructor(
     }
 
     private fun updateAPIFailure() = viewModelState.update {
-        it.copy(isError = true)
+        it.copy(
+            isError = true,
+            isLoading = false
+        )
     }
 
     fun updateProgressDialog(show: Boolean) = viewModelState.update {
