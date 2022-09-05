@@ -28,7 +28,11 @@ class NotificationHandler @Inject constructor(
     }
 
     private fun createNotificationManager() {
-        notificationManager = context.getSystemService(NotificationManager::class.java)
+        notificationManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            context.getSystemService(NotificationManager::class.java)
+        } else {
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        }
     }
 
     private fun createNotificationChannel() {

@@ -146,6 +146,9 @@ class LedgerTransactionViewModel @Inject constructor(
     }
 
     private fun sendShowSnackBarEvent(message: String) {
+        viewModelState.update {
+            it.copy(isLoading = false)
+        }
         viewModelScope.launch {
             _uiEvent.emit(UiEvent.ShowSnackbar(message))
         }

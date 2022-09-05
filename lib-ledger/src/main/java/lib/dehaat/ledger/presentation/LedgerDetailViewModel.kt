@@ -159,7 +159,10 @@ class LedgerDetailViewModel @Inject constructor(
     }
 
     private fun updateAPIFailure() = viewModelState.update {
-        it.copy(isError = true)
+        it.copy(
+            isError = true,
+            isLoading = false
+        )
     }
 
     private fun calledAPI() = updateProgressDialog(false)
