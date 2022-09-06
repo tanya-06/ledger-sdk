@@ -170,7 +170,7 @@ fun LedgerDetailScreen2(
                         }
                     },
                     content = {
-                        val pagerState = rememberPagerState(pageCount = 2)
+                        val pagerState = rememberPagerState()
                         LaunchedEffect(key1 = pagerState) {
                             snapshotFlow { pagerState.currentPage }.collect { currentPage ->
                                 bottomBarVisibility.value = currentPage == 0
@@ -187,7 +187,8 @@ fun LedgerDetailScreen2(
                                     .weight(1f)
                                     .background(color = ledgerColors.TransactionAndCreditScreenBGColor),
                                 state = pagerState,
-                                verticalAlignment = Alignment.Top
+                                verticalAlignment = Alignment.Top,
+                                count = 2
                             ) { index ->
                                 when (index) {
                                     1 -> CreditsScreen(
