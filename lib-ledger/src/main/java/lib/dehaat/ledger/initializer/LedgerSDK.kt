@@ -8,9 +8,10 @@ import java.io.File
 import lib.dehaat.ledger.presentation.ledger.LedgerDetailActivity
 
 object LedgerSDK {
-    lateinit var currentApp: LedgerParentApp
-    lateinit var bucket: String
-    var appIcon: Int = 0
+    internal lateinit var currentApp: LedgerParentApp
+    internal lateinit var bucket: String
+    internal var locale: String = "en"
+    internal var appIcon: Int = 0
         private set
 
     fun init(
@@ -34,13 +35,16 @@ object LedgerSDK {
         context: Context,
         partnerId: String,
         dcName: String,
+        isDCFinanced: Boolean,
         language: String? = null
     ) = if (isCurrentAppAvailable()) {
         LedgerDetailActivity.Companion.Args(
             partnerId = partnerId,
             dcName = dcName,
+            isDCFinanced = isDCFinanced,
             language = language
         ).also {
+            language?.let { lang -> locale = lang }
             context.startActivity(it.build(context))
         }
     } else {

@@ -103,7 +103,7 @@ class LedgerDetailViewModel @Inject constructor(
     private fun getCreditSummaryFromServer() {
         callInViewModelScope {
             callingAPI()
-            val response = getCreditSummaryUseCase.invoke(partnerId = partnerId)
+            val response = getCreditSummaryUseCase.getCreditSummary(partnerId = partnerId)
             calledAPI()
             processCreditSummaryResponse(response)
         }

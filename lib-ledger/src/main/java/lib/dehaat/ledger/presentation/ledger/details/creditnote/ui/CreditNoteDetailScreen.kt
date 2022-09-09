@@ -18,12 +18,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -52,7 +54,7 @@ fun CreditNoteDetailScreen(
     val scrollState = rememberScrollState()
 
     CommonContainer(
-        title = "Credit Note Detail",
+        title = stringResource(id = R.string.credit_note_details),
         onBackPress = onBackPress,
     ) {
         when {
@@ -62,7 +64,7 @@ fun CreditNoteDetailScreen(
                 }
             }
             uiState.isError -> {
-                NoDataFound()
+                NoDataFound {}
             }
             else -> {
                 Column(

@@ -1,10 +1,18 @@
 package lib.dehaat.ledger.util
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.dehaat.androidbase.helper.showToast
@@ -38,3 +46,12 @@ fun HandleAPIErrors(
         }
     }
 }
+
+fun Modifier.clickableWithCorners(
+    borderSize: Dp,
+    backgroundColor: Color = Color.White,
+    onClick: () -> Unit
+) = this
+    .background(shape = RoundedCornerShape(borderSize), color = backgroundColor)
+    .clip(RoundedCornerShape(borderSize))
+    .clickable(onClick = onClick)

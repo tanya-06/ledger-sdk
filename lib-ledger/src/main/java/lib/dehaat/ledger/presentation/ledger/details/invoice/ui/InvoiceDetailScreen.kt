@@ -71,7 +71,7 @@ fun InvoiceDetailScreen(
                 }
             }
             uiState.isError -> {
-                NoDataFound()
+                NoDataFound{}
             }
             else -> {
                 Column(

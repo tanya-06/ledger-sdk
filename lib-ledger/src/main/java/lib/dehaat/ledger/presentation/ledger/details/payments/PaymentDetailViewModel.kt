@@ -1,6 +1,7 @@
 package lib.dehaat.ledger.presentation.ledger.details.payments
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
@@ -18,7 +19,6 @@ import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetPaymentDetailUseCase
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
-import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PAYMENT_MODE
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.details.payments.state.PaymentDetailViewModelState
@@ -79,7 +79,11 @@ class PaymentDetailViewModel @Inject constructor(
             it?.let { entity ->
                 val paymentDetailViewData = mapper.toPaymentDetailSummaryViewData(entity.summary)
                 viewModelState.update {
-                    it.copy(isLoading = false, paymentDetailSummaryViewData = paymentDetailViewData)
+                    it.copy(
+                        isLoading = false,
+                        isSuccess = true,
+                        paymentDetailSummaryViewData = paymentDetailViewData
+                    )
                 }
             }
         }
@@ -104,9 +108,12 @@ class PaymentDetailViewModel @Inject constructor(
     }
 
     companion object {
+        private const val KEY_PAYMENT_MODE = "KEY_PAYMENT_MODE"
         fun getArgs(data: TransactionViewData) = Bundle().apply {
             putString(KEY_LEDGER_ID, data.ledgerId)
             putString(KEY_PAYMENT_MODE, data.paymentMode)
         }
+
+        fun getBundle(ledgerId: String) = bundleOf(Pair(KEY_LEDGER_ID, ledgerId))
     }
 }

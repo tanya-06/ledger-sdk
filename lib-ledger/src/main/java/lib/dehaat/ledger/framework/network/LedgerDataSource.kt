@@ -24,6 +24,15 @@ class LedgerDataSource @Inject constructor(
         it?.data?.let { data -> mapper.toCreditSummaryDataEntity(data) }
     }
 
+    override suspend fun getCreditSummaryV2(
+        partnerId: String
+    ) = callAPI(
+        dispatcher,
+        { apiService.getV2CreditSummary(partnerId) }
+    ) {
+        it?.data?.credit?.let { data -> mapper.toCreditSummaryEntity(data) }
+    }
+
     override suspend fun getTransactionSummary(
         partnerId: String,
         fromDate: Long?,
@@ -57,6 +66,27 @@ class LedgerDataSource @Inject constructor(
         it?.transactionsData?.let { data -> mapper.toTransactionsDataEntity(data) } ?: emptyList()
     }
 
+    override suspend fun getTransactionsV2(
+        partnerId: String,
+        limit: Int,
+        offset: Int,
+        fromDate: Long?,
+        toDate: Long?
+    ) = callAPI(
+        dispatcher,
+        {
+            apiService.getTransactionsV2(
+                partnerId = partnerId,
+                fromDate = fromDate,
+                toDate = toDate,
+                limit = limit,
+                offset = offset
+            )
+        }
+    ) {
+        it?.data?.let { data -> mapper.toTransactionsEntity(data) } ?: emptyList()
+    }
+
     override suspend fun getCreditLines(
         partnerId: String
     ) = callAPI(
@@ -72,6 +102,15 @@ class LedgerDataSource @Inject constructor(
         { apiService.getInvoiceDetail(ledgerId) }
     ) {
         it?.invoiceDetailData?.let { data -> mapper.toInvoiceDetailDataEntity(data) }
+    }
+
+    override suspend fun getInvoiceDetails(
+        ledgerId: String
+    ) = callAPI(
+        dispatcher,
+        { apiService.getInvoiceDetails(ledgerId) }
+    ) {
+        it?.data?.let { data -> mapper.toInvoiceDetailEntity(data) }
     }
 
     override suspend fun getInvoiceDownload(
@@ -100,6 +139,37 @@ class LedgerDataSource @Inject constructor(
         { apiService.getCreditNoteDetail(ledgerId) }
     ) {
         it?.creditNoteDetailData?.let { data -> mapper.toCreditNoteDetailDataEntity(data) }
+    }
+
+    override suspend fun getCreditNoteDetailV2(
+        ledgerId: String
+    ) = callAPI(
+        dispatcher,
+        { apiService.getCreditNoteDetailV2(ledgerId) }
+    ) {
+        it?.data?.let { data -> mapper.toCreditNoteDetailsEntity(data) }
+    }
+
+    override suspend fun getInvoices(
+        partnerId: String,
+        limit: Int,
+        offset: Int,
+        isInterestApproached: Boolean
+    ) = callAPI(
+        dispatcher,
+        {
+            apiService.getInvoiceList(
+                partnerId, limit, offset, if (isInterestApproached) {
+                    "interest_approached_invoices"
+                } else {
+                    "interest_approaching_invoices"
+                }
+            )
+        }
+    ) {
+        it?.data?.let { data ->
+            mapper.toInterestApproachedInvoiceListEntity(data)
+        }
     }
 
     private suspend fun <D, C> callAPI(
