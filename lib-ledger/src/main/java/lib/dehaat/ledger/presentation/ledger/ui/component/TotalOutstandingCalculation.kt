@@ -30,6 +30,7 @@ import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
+import lib.dehaat.ledger.presentation.model.transactions.getNumberOfDays
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.Primary20
@@ -40,8 +41,6 @@ import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.util.getAmountInRupees
-import kotlin.math.abs
-import kotlin.math.ceil
 
 @Preview(
     name = "TotalOutstandingCalculation Preview",
@@ -49,9 +48,10 @@ import kotlin.math.ceil
 )
 @Composable
 private fun TotalOutstandingCalculationPreview() = LedgerTheme {
+    val daysToFilter = DaysToFilter.SevenDays
     TotalOutstandingCalculation(
         DummyDataSource.summaryViewData,
-        DaysToFilter.SevenDays
+        Pair(daysToFilter, daysToFilter.getNumberOfDays())
     )
 }
 
@@ -61,16 +61,17 @@ private fun TotalOutstandingCalculationPreview() = LedgerTheme {
 )
 @Composable
 private fun TotalOutstandingCalculationFilteredPreview() = LedgerTheme {
+    val daysToFilter = DaysToFilter.All
     TotalOutstandingCalculation(
         DummyDataSource.summaryViewData,
-        DaysToFilter.All
+        Pair(daysToFilter, daysToFilter.getNumberOfDays())
     )
 }
 
 @Composable
 fun TotalOutstandingCalculation(
     summaryViewData: SummaryViewData?,
-    daysToFilter: DaysToFilter
+    daysToFilter: Pair<DaysToFilter, Int?>
 ) = Card(
     modifier = Modifier
         .fillMaxWidth(),
@@ -84,7 +85,7 @@ fun TotalOutstandingCalculation(
             .padding(horizontal = 20.dp),
     ) {
         summaryViewData?.let {
-            if (daysToFilter != DaysToFilter.All) {
+            if (daysToFilter.first != DaysToFilter.All) {
                 CalculationWithoutWeeklyInterest(summaryViewData, daysToFilter)
             } else {
                 CalculationWithWeeklyInterest(summaryViewData)
@@ -203,7 +204,7 @@ private fun CalculationWithWeeklyInterest(
 @Composable
 private fun CalculationWithoutWeeklyInterest(
     summaryViewData: SummaryViewData,
-    daysToFilter: DaysToFilter
+    daysToFilter: Pair<DaysToFilter, Int?>
 ) = Column(modifier = Modifier.fillMaxWidth()) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -218,7 +219,7 @@ private fun CalculationWithoutWeeklyInterest(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        daysToFilter.getNumberOfDays()?.let {
+        daysToFilter.second?.let {
             Text(
                 text = stringResource(
                     id = R.string.filtered_total_outstanding_calculation_method,
@@ -275,15 +276,4 @@ private fun CalculationWithoutWeeklyInterest(
     }
 
     VerticalSpacer(height = 9.dp)
-}
-
-private fun DaysToFilter.getNumberOfDays(): Int? = when (this) {
-    DaysToFilter.SevenDays -> 7
-    DaysToFilter.OneMonth -> 30
-    DaysToFilter.ThreeMonth -> 90
-    is DaysToFilter.CustomDays -> {
-        val time = abs(this.toDateMilliSec - this.fromDateMilliSec)
-        ceil(((((time / 1000) / 60) / 60) / 24).toDouble()).toInt()
-    }
-    else -> null
 }

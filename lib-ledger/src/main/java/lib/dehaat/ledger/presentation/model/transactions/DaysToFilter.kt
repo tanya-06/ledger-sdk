@@ -1,5 +1,8 @@
 package lib.dehaat.ledger.presentation.model.transactions
 
+import kotlin.math.abs
+import kotlin.math.ceil
+
 sealed class DaysToFilter {
     object All : DaysToFilter()
     object SevenDays : DaysToFilter()
@@ -28,6 +31,17 @@ fun DaysToFilter.toStartAndEndDates(): Pair<Long, Long>? = when (this) {
         val pastDaySec = fromDateMilliSec / 1000
         Pair(pastDaySec, currentDaySec)
     }
+}
+
+fun DaysToFilter.getNumberOfDays(): Int? = when (this) {
+    DaysToFilter.SevenDays -> 7
+    DaysToFilter.OneMonth -> 30
+    DaysToFilter.ThreeMonth -> 90
+    is DaysToFilter.CustomDays -> {
+        val time = abs(this.toDateMilliSec - this.fromDateMilliSec)
+        ceil(((((time / 1000) / 60) / 60) / 24).toDouble()).toInt()
+    }
+    else -> null
 }
 
 private fun calculateTimeInMillisecond(dayCount: Int): Pair<Long, Long> {

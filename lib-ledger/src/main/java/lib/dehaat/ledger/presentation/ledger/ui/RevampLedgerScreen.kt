@@ -47,6 +47,7 @@ import lib.dehaat.ledger.presentation.ledger.ui.component.LedgerHeaderScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.TotalOutstandingCalculation
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
+import lib.dehaat.ledger.presentation.model.transactions.getNumberOfDays
 import lib.dehaat.ledger.resources.Background
 import lib.dehaat.ledger.util.getAmountInRupeesWithoutDecimal
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
@@ -71,13 +72,15 @@ fun RevampLedgerScreen(
     val nestedScrollViewState = rememberNestedScrollViewState()
     var outstandingCalculationVisibility by rememberSaveable { mutableStateOf(false) }
     outstandingCalculationVisibility = !sheetState.isVisible && uiState.state == UIState.SUCCESS
-    var filter: DaysToFilter by remember { mutableStateOf(DaysToFilter.All) }
+    var filter: Pair<DaysToFilter, Int?> by remember {
+        mutableStateOf(Pair(DaysToFilter.All, null))
+    }
     LaunchedEffect(Unit) {
         viewModel.selectedDaysToFilterEvent.flowWithLifecycle(
             lifecycleOwner.lifecycle,
             Lifecycle.State.STARTED
         ).collect { event ->
-            filter = event
+            filter = Pair(event, event.getNumberOfDays())
         }
     }
 
