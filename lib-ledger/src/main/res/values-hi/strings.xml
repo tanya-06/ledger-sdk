@@ -8,6 +8,7 @@
 
     <string name="total_outstanding_details">कुल बकाया विवरण</string>
     <string name="total_outstanding_calculation_method">कुल बकाया कैल्क्युलेशन विधि:</string>
+    <string name="filtered_total_outstanding_calculation_method">पिछले %d दिन के लेनदेन का सारांश:</string>
     <string name="total_outstanding_footer">कुल\nबकाया</string>
     <string name="total_purchase_rs">कुल ख़रीदी (₹)</string>
     <string name="interest_rs">ब्याज (₹)</string>
