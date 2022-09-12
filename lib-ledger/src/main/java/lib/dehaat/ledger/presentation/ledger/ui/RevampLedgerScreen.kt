@@ -14,14 +14,19 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
@@ -41,8 +46,8 @@ import lib.dehaat.ledger.presentation.ledger.revamp.state.transactions.ui.Transa
 import lib.dehaat.ledger.presentation.ledger.ui.component.LedgerHeaderScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.TotalOutstandingCalculation
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
+import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.resources.Background
-import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.getAmountInRupeesWithoutDecimal
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
 import moe.tlaster.nestedscrollview.rememberNestedScrollViewState
@@ -58,6 +63,7 @@ fun RevampLedgerScreen(
     onError: (Exception) -> Unit,
     onBackPress: () -> Unit
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -65,6 +71,15 @@ fun RevampLedgerScreen(
     val nestedScrollViewState = rememberNestedScrollViewState()
     var outstandingCalculationVisibility by rememberSaveable { mutableStateOf(false) }
     outstandingCalculationVisibility = !sheetState.isVisible && uiState.state == UIState.SUCCESS
+    var filter: DaysToFilter by remember { mutableStateOf(DaysToFilter.All) }
+    LaunchedEffect(Unit) {
+        viewModel.selectedDaysToFilterEvent.flowWithLifecycle(
+            lifecycleOwner.lifecycle,
+            Lifecycle.State.STARTED
+        ).collect { event ->
+            filter = event
+        }
+    }
 
     CommonContainer(
         title = viewModel.dcName,
@@ -79,7 +94,7 @@ fun RevampLedgerScreen(
             ) {
                 TotalOutstandingCalculation(
                     uiState.summaryViewData,
-                    true
+                    filter
                 )
             }
         }

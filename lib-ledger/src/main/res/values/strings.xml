@@ -28,6 +28,7 @@
 
     <string name="total_outstanding_details">Total Outstanding Details</string>
     <string name="total_outstanding_calculation_method">Total Outstanding Calculation Method:</string>
+    <string name="filtered_total_outstanding_calculation_method">Last %d days transactions</string>
     <string name="total_outstanding_footer">Total\nO/S</string>
     <string name="total_purchase_rs">Total Purchase (₹)</string>
     <string name="interest_rs">Interest (₹)</string>
