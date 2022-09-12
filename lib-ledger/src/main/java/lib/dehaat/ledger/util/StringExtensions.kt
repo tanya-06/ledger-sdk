@@ -11,8 +11,21 @@ fun String?.getAmountInRupeesWithoutDecimal(): String {
 
 fun String?.getAmountInRupees(): String {
     val value = this?.toDoubleOrNull()
-    val amount = String.format("%s%s", "₹", formatDecimal(value))
-    return if (amount.endsWith(".00")) amount.substringBeforeLast(".00") else amount
+    val isNegativeValue = value?.let { it < 0 } ?: false
+    if (isNegativeValue) {
+        value?.let {
+            val amount = it * -1
+            return String.format("%s%s", "- ₹", formatDecimal(amount))
+                .getAmountWithoutTrailingZeroes()
+        }
+    }
+    return String.format("%s%s", "₹", formatDecimal(value)).getAmountWithoutTrailingZeroes()
+}
+
+private fun String.getAmountWithoutTrailingZeroes() = if (this.endsWith(".00")) {
+    this.substringBeforeLast(".00")
+} else {
+    this
 }
 
 fun String?.getAmountInRupeesOrDash(): String = this?.let {

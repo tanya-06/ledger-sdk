@@ -28,6 +28,7 @@ import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValueInSumm
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
+import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
 import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.getAmountInRupees
@@ -53,8 +54,8 @@ fun PaymentDetailScreen(
                     viewModel.updateProgressDialog(false)
                 }
             }
-            uiState.isError -> {
-                NoDataFound()
+            uiState.state is UIState.ERROR -> {
+                NoDataFound{}
             }
             else -> {
                 Column(

@@ -33,6 +33,62 @@ fun navigateToPaymentDetailScreen(
     args = args
 )
 
+fun navigateToOutstandingDetailPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.TotalOutstandingDetailScreen.screen,
+    args = args
+)
+
+fun navigateToInvoiceListPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.InvoiceListScreen.screen,
+    args = args
+)
+
+fun navigateToAvailableCreditLimitDetailPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    LedgerRoutes.TotalAvailableCreditLimitScreen.screen,
+    args = args
+)
+
+fun navigateToRevampInvoiceDetailPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.RevampLedgerInvoiceDetailScreen.screen,
+    args = args
+)
+
+fun navigateToRevampCreditNoteDetailPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.RevampLedgerCreditNoteDetailScreen.screen,
+    args = args
+)
+
+fun navigateToRevampPaymentDetailPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.RevampLedgerPaymentDetailScreen.screen,
+    args = args
+)
+
+fun navigateToRevampWeeklyInterestDetailPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.RevampLedgerWeeklyInterestDetailScreen.screen,
+    args = args
+)
+
 fun NavController.navigateTo(
     route: String,
     args: Bundle,

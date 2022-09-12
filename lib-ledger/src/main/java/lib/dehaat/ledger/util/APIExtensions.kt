@@ -15,24 +15,12 @@ fun <D> APIResultEntity<D>.processAPIResponseWithFailureSnackBar(
 ) = when (this) {
     is APIResultEntity.Success -> handleSuccess(this.data)
     is APIResultEntity.Failure.ErrorException -> onFailure(
-        getErrorMessage(exceptionError.message ?: "", this.apiExtraInfo)
+        getErrorMessage(exceptionError.message ?: "", apiExtraInfo)
     )
     is APIResultEntity.Failure.ErrorFailure -> onFailure(
-        getErrorMessage(responseMessage, this.apiExtraInfo)
+        getErrorMessage(responseMessage, apiExtraInfo)
     )
 }
-
-fun getErrorMessage(message: String, extraInfo: ApiExtraInfo?) = extraInfo?.let {
-    buildString {
-        append(message)
-        it[API_REQUEST_TRACE_ID]?.let {
-            append("\n$API_REQUEST_TRACE_ID - $it")
-        }
-        it[IB_REQUEST_IDENTIFIER]?.let {
-            append("\n$IB_REQUEST_IDENTIFIER - $it")
-        }
-    }
-} ?: message
 
 fun APIResultEntity.Failure.getFailureError() = when (this) {
     is APIResultEntity.Failure.ErrorException -> this.exceptionError.message.nullToValue("API Exception")
@@ -53,3 +41,15 @@ fun parseAPIErrorBody(
         jsonAdapter.fromJson(errorBody)?.error?.message ?: defaultError
     }
 } ?: defaultError
+
+fun getErrorMessage(message: String, extraInfo: ApiExtraInfo?) = extraInfo?.let {
+    buildString {
+        append(message)
+        it[API_REQUEST_TRACE_ID]?.let {
+            append("\n$API_REQUEST_TRACE_ID - $it")
+        }
+        it[IB_REQUEST_IDENTIFIER]?.let {
+            append("\n$IB_REQUEST_IDENTIFIER - $it")
+        }
+    }
+} ?: message

@@ -61,6 +61,7 @@ fun LedgerDetailScreen2(
     detailPageNavigationCallback: DetailPageNavigationCallback,
     isLmsActivated: () -> Boolean?,
     onPayNowClick: () -> Unit,
+    onError: (Exception) -> Unit,
     onPaymentOptionsClick: () -> Unit
 ) {
     HandleAPIErrors(viewModel.uiEvent)
@@ -78,7 +79,12 @@ fun LedgerDetailScreen2(
             filtered = { startDate, endDate ->
                 if (startDate != null && endDate != null) {
                     viewModel.updateSelectedFilter(DaysToFilter.CustomDays(startDate, endDate))
-                    viewModel.getTransactionSummaryFromServer(DaysToFilter.CustomDays(startDate, endDate))
+                    viewModel.getTransactionSummaryFromServer(
+                        DaysToFilter.CustomDays(
+                            startDate,
+                            endDate
+                        )
+                    )
                 }
                 viewModel.showDaysRangeFilterDialog(false)
             }
@@ -214,6 +220,7 @@ fun LedgerDetailScreen2(
                                         openRangeFilter = {
                                             viewModel.showDaysRangeFilterDialog(true)
                                         },
+                                        onError = onError,
                                         isLmsActivated = isLmsActivated
                                     )
                                 }

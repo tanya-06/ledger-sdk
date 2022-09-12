@@ -44,9 +44,12 @@ class AppChooserActivity : AppCompatActivity() {
             LedgerParentApp.DBA(
                 ledgerCallBack = LedgerCallBack(
                     onClickPayNow = { showToast(it.toString()) },
+                    onRevampPayNowClick = {
+                        showToast("summaryViewData?.minInterestAmountDue ${it.toString()}")
+                    },
                     onDownloadInvoiceSuccess = { showToast(it.toString()) },
-                    onPaymentOptionsClick = { creditSummaryViewData, resultLauncher ->
-                        showToast(creditSummaryViewData.toString())
+                    onPaymentOptionsClick = { resultLauncher ->
+                        showToast(resultLauncher.toString())
                     },
                     downloadInvoiceIntent = { context, path ->
                         PendingIntent.getActivity(
@@ -62,8 +65,8 @@ class AppChooserActivity : AppCompatActivity() {
                     exceptionHandler = {}
                 )
             ),
-            bucket = "fnftestec2odoo",
-            appIcon = R.drawable.ic_payment,
+            bucket = "fnfsandboxec2odoo",
+            appIcon = R.drawable.ic_info_icon,
             debugMode = true
         )
 
@@ -72,6 +75,7 @@ class AppChooserActivity : AppCompatActivity() {
                 context = this,
                 partnerId = "123456",
                 dcName = "DC DBA",
+                isDCFinanced = true,
                 language = "en"
             )
         } catch (e: Exception) {
@@ -97,8 +101,8 @@ class AppChooserActivity : AppCompatActivity() {
                 },
                 exceptionHandler = {}
             ),
-            bucket = "fnftestec2odoo",
-            appIcon = R.drawable.ic_payment,
+            bucket = "fnfsandboxec2odoo",
+            appIcon = R.drawable.ic_info_icon,
             debugMode = true
         )
         try {
@@ -106,6 +110,7 @@ class AppChooserActivity : AppCompatActivity() {
                 context = this,
                 partnerId = "123456",
                 dcName = "DC AIMS",
+                isDCFinanced = true,
                 language = "hi"
             )
         } catch (e: Exception) {

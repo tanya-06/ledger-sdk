@@ -53,6 +53,12 @@ class LedgerDetailActivity : ComponentActivity() {
             return
         }
 
+        if (args.partnerId.isEmpty() && LedgerSDK.isDebug) {
+            showToast("PartnerId missing (check dehaat-center-API)")
+            finish()
+            return
+        }
+
         AWSMobileClient.getInstance().initialize(this).execute()
 
         setContent {
@@ -60,6 +66,7 @@ class LedgerDetailActivity : ComponentActivity() {
                 LedgerNavigation(
                     dcName = args.dcName,
                     partnerId = args.partnerId,
+                    isDCFinanced = args.isDCFinanced,
                     ledgerColors = LedgerSDK.currentApp.ledgerColors,
                     resultLauncher = resultLauncher,
                     finishActivity = { finish() },
@@ -112,16 +119,20 @@ class LedgerDetailActivity : ComponentActivity() {
     }
 
     companion object {
+        private const val KEY_DC_FINANCED = "KEY_DC_FINANCED"
+        private const val KEY_APP_LANGUAGE = "KEY_APP_LANGUAGE"
 
         fun getArgs(intent: Intent) = Args(
             partnerId = intent.getStringExtra(LedgerConstants.KEY_PARTNER_ID) ?: "",
             dcName = intent.getStringExtra(LedgerConstants.KEY_DC_NAME) ?: "",
-            language = intent.getStringExtra(LedgerConstants.KEY_APP_LANGUAGE)
+            isDCFinanced = intent.getBooleanExtra(KEY_DC_FINANCED, false),
+            language = intent.getStringExtra(KEY_APP_LANGUAGE)
         )
 
         data class Args(
             val partnerId: String,
             val dcName: String,
+            val isDCFinanced: Boolean,
             val language: String?
         ) {
             fun build(context: Context) = Intent(
@@ -130,7 +141,8 @@ class LedgerDetailActivity : ComponentActivity() {
             ).apply {
                 putExtra(LedgerConstants.KEY_PARTNER_ID, partnerId)
                 putExtra(LedgerConstants.KEY_DC_NAME, dcName)
-                putExtra(LedgerConstants.KEY_APP_LANGUAGE, language)
+                putExtra(KEY_DC_FINANCED, isDCFinanced)
+                putExtra(KEY_APP_LANGUAGE, language)
             }
         }
     }

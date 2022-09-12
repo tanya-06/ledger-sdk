@@ -22,7 +22,6 @@ import lib.dehaat.ledger.domain.usecases.GetInvoiceDetailUseCase
 import lib.dehaat.ledger.domain.usecases.GetInvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.presentation.LedgerConstants.KEY_ERP_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_SOURCE
 import lib.dehaat.ledger.presentation.common.BaseViewModel
@@ -83,7 +82,7 @@ class InvoiceDetailViewModel @Inject constructor(
     private fun getInvoiceDetailFromServer() {
         callInViewModelScope {
             callingAPI()
-            val response = getInvoiceDetailUseCase.invoke(ledgerId)
+            val response = getInvoiceDetailUseCase.getInvoiceDetail(ledgerId)
             calledAPI()
             processInvoiceDetailResponse(response)
         }
@@ -235,6 +234,7 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     companion object {
+        private const val KEY_ERP_ID = "KEY_ERP_ID"
         fun getArgs(data: TransactionViewData) = Bundle().apply {
             putString(KEY_LEDGER_ID, data.ledgerId)
             putString(KEY_ERP_ID, data.erpId)
