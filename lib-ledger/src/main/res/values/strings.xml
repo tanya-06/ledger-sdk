@@ -27,10 +27,12 @@
 
 
     <string name="total_outstanding_details">Total Outstanding Details</string>
-    <string name="total_outstanding_calculation_method">Total Outstanding Calculation Method:</string>
+    <string name="total_outstanding_calculation_method">Total Outstanding Calculation Method</string>
+    <string name="total_purchase_calculation_method">Total Purchase Calculation Method</string>
     <string name="filtered_total_outstanding_calculation_method">Last %d days transactions</string>
+    <string name="last_n_days">Last %d days</string>
     <string name="total_outstanding_footer">Total\nO/S</string>
-    <string name="total_purchase_rs">Total Purchase (₹)</string>
+    <string name="total_purchase_rs">Purchase (₹)</string>
     <string name="interest_rs">Interest (₹)</string>
     <string name="payment_rs">Payment (₹)</string>
     <string name="view_details">View Details</string>
@@ -57,7 +59,7 @@
     <string name="total_credit_note_amount">Total Credit Note Amount</string>
     <string name="total_credit_limit">Total credit Limit</string>
     <string name="total_outstanding_plus_products_to_be_deliver">Total Outstanding + Orders to be Delivered</string>
-    <string name="total_credit_limit_calculation_method">Total Credit Limit Calculation Method:</string>
+    <string name="total_credit_limit_calculation_method">Total Credit Limit Calculation Method</string>
     <string name="permanent_credit_limit">Permanent Credit Limit</string>
     <string name="buffer_limit">Buffer Limit(Temporary)</string>
     <string name="how_does_payment_increase_credit_limit">How does payment increase the available credit limit?</string>
@@ -77,6 +79,7 @@
     <string name="reference_id">Reference I.D.</string>
     <string name="interest_amount_ledger">Interest Amount</string>
     <string name="daily_interest_details">Daily Interest Details</string>
+    <string name="financing_fee">Financing Fee</string>
     <string name="invoice_list">Invoice List</string>
     <string name="invoice_on_which_interest_is_charged">Invoices on which Interest is charged</string>
     <string name="invoice_on_which_interest_going_to_charged">Invoices on which interest is going to be charged</string>

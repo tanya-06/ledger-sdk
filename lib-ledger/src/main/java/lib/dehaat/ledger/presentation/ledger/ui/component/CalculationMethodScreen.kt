@@ -67,6 +67,7 @@ fun CalculationMethodScreen(
     ) {
         Row(
             modifier = Modifier
+                .padding(top = 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {

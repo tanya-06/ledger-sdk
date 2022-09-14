@@ -4,6 +4,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -472,6 +474,22 @@ fun textParagraphT2Highlight(
 )
 
 @Composable
+fun spanParagraphT2Highlight(
+    textColor: Color = TextBlack,
+    fontSize: TextUnit = 14.sp,
+    fontWeight: FontWeight = FontWeight.Medium,
+    lineHeight: TextUnit = 20.sp,
+    textDecoration: TextDecoration? = null,
+    fontFamily: FontFamily = notoSansDisplayMedium
+) = SpanStyle(
+    color = textColor,
+    fontSize = fontSize,
+    fontWeight = fontWeight,
+    textDecoration = textDecoration,
+    fontFamily = fontFamily
+)
+
+@Composable
 fun textParagraphT3(
     textColor: Color = TextBlack,
     fontSize: TextUnit = 12.sp,
@@ -535,6 +553,22 @@ fun textButtonB2(
     fontSize = fontSize,
     fontWeight = fontWeight,
     lineHeight = lineHeight,
+    textDecoration = textDecoration,
+    fontFamily = fontFamily
+)
+
+@Composable
+fun spanButtonB2(
+    textColor: Color = TextBlack,
+    fontSize: TextUnit = 14.sp,
+    fontWeight: FontWeight = FontWeight.SemiBold,
+    lineHeight: TextUnit = 18.sp,
+    textDecoration: TextDecoration? = null,
+    fontFamily: FontFamily = notoSansSemiBold
+) = SpanStyle(
+    color = textColor,
+    fontSize = fontSize,
+    fontWeight = fontWeight,
     textDecoration = textDecoration,
     fontFamily = fontFamily
 )

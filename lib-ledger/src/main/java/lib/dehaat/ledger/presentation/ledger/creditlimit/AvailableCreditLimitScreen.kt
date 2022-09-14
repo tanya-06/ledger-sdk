@@ -28,7 +28,7 @@ import lib.dehaat.ledger.resources.textParagraphT1Highlight
     showBackground = true
 )
 @Composable
-fun AvailableCreditLimitScreenPreview() = LedgerTheme {
+private fun AvailableCreditLimitScreenPreview() = LedgerTheme {
     AvailableCreditLimitScreen("₹40,000") {}
 }
 

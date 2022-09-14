@@ -91,7 +91,9 @@ object Utils {
             { _: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
                 val calendar = Calendar.getInstance()
                 calendar[year, monthOfYear] = dayOfMonth
-                selectedDate(dateFormat.format(calendar.time), calendar.time.time)
+                val date = dateFormat.format(calendar.time)
+                val epochDate = sdf.parse(date)?.time ?: 0
+                selectedDate(date, epochDate)
             }, cal[Calendar.YEAR], cal[Calendar.MONTH], cal[Calendar.DAY_OF_MONTH]
         )
         datePickerDialog.datePicker.maxDate = System.currentTimeMillis()

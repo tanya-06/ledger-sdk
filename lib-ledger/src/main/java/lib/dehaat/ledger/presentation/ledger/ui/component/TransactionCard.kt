@@ -86,6 +86,18 @@ private fun TransactionCardInterestPreview() = LedgerTheme {
     ) {}
 }
 
+@Preview(
+    name = "TransactionCard Financing Fee Preview",
+    showBackground = true
+)
+@Composable
+private fun TransactionCardFinancingFeePreview() = LedgerTheme {
+    TransactionCard(
+        transactionType = TransactionType.FinancingFee(),
+        transaction = DummyDataSource.invoiceTransaction
+    ) {}
+}
+
 @Composable
 fun TransactionCard(
     transactionType: TransactionType,
@@ -195,6 +207,13 @@ sealed class TransactionType(@StringRes val name: Int, val type: String) {
     ) : TransactionType(
         name = interestName, type = interestType
     )
+
+    data class FinancingFee(
+        val financingFeeName: Int = R.string.financing_fee,
+        val financingFeeType: String = "FINANCING_FEE"
+    ) : TransactionType(
+        name = financingFeeName, type = financingFeeType
+    )
 }
 
 @DrawableRes
@@ -203,6 +222,7 @@ fun TransactionType.getIcon() = when (this) {
     is TransactionType.CreditNote -> R.drawable.ic_transactions_credit_note
     is TransactionType.Payment -> R.drawable.ic_transactions_payment
     is TransactionType.Interest -> R.drawable.ic_transactions_interest
+    is TransactionType.FinancingFee -> R.drawable.ic_revamp_invoice
 }
 
 fun TransactionType.amountColor() = when (this) {
@@ -210,6 +230,7 @@ fun TransactionType.amountColor() = when (this) {
     is TransactionType.Interest -> Pumpkin120
     is TransactionType.CreditNote -> SeaGreen110
     is TransactionType.Payment -> SeaGreen110
+    is TransactionType.FinancingFee -> Pumpkin120
 }
 
 private fun TransactionType.getAmount(amount: String) = when (this) {
@@ -217,4 +238,5 @@ private fun TransactionType.getAmount(amount: String) = when (this) {
     is TransactionType.Interest -> "+ $amount"
     is TransactionType.CreditNote -> "- $amount"
     is TransactionType.Payment -> "- $amount"
+    is TransactionType.FinancingFee -> "+ $amount"
 }
