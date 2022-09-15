@@ -46,7 +46,7 @@ fun TransactionListHeader(
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    FilterHeader(onFilterClick)
+    FilterHeader(filters, onFilterClick)
 
     ledgerViewModel.getSelectedDates(filters)?.let {
         SelectedFilters(

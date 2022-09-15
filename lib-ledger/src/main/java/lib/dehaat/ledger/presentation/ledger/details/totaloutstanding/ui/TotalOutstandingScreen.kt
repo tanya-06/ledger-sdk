@@ -133,7 +133,7 @@ private fun OutstandingScreen(
     CalculationMethodScreen(
         backgroundColor = SeaGreen10,
         dividerColor = SeaGreen20,
-        title = stringResource(id = R.string.total_outstanding_calculation_method),
+        title = stringResource(id = R.string.total_purchase_calculation_method),
         first = Pair(
             stringResource(id = R.string.purchases_till_date),
             viewState.purchaseAmountTillDate.getAmountInRupees()

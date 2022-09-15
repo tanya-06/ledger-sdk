@@ -7,8 +7,10 @@
     <string name="to_">to</string>
 
     <string name="total_outstanding_details">कुल बकाया विवरण</string>
-    <string name="total_outstanding_calculation_method">कुल बकाया कैल्क्युलेशन विधि:</string>
-    <string name="filtered_total_outstanding_calculation_method">पिछले %d दिन के लेनदेन का सारांश:</string>
+    <string name="total_outstanding_calculation_method">कुल बकाया कैल्क्युलेशन विधि</string>
+    <string name="total_purchase_calculation_method">कुल ख़रीदी कैल्क्युलेशन विधि</string>
+    <string name="filtered_total_outstanding_calculation_method">पिछले %d दिन के लेनदेन का सारांश</string>
+    <string name="last_n_days">पिछले %d दिन</string>
     <string name="total_outstanding_footer">कुल\nबकाया</string>
     <string name="total_purchase_rs">कुल ख़रीदी (₹)</string>
     <string name="interest_rs">ब्याज (₹)</string>
@@ -37,7 +39,7 @@
     <string name="total_credit_note_amount">कुल क्रेडिट नोट राशि</string>
     <string name="total_credit_limit">कुल क्रेडिट लिमिट\n</string>
     <string name="total_outstanding_plus_products_to_be_deliver">कुल बकाया + डिलिवर होने वाले ऑर्डर</string>
-    <string name="total_credit_limit_calculation_method">कुल क्रेडिट लिमिट कैल्क्युलेशन विधि:</string>
+    <string name="total_credit_limit_calculation_method">कुल क्रेडिट लिमिट कैल्क्युलेशन विधि</string>
     <string name="permanent_credit_limit">पर्मानेंट क्रेडिट लिमिट</string>
     <string name="buffer_limit">बफ़र लिमिट(टेम्परेरी)</string>
     <string name="how_does_payment_increase_credit_limit">भुगतान से कैसे बढ़ती है उपलब्ध क्रेडिट लिमिट?</string>
@@ -57,6 +59,7 @@
     <string name="reference_id">रेफ़्रेन्स आई.डी.</string>
     <string name="interest_amount_ledger">ब्याज राशि</string>
     <string name="daily_interest_details">दैनिक ब्याज विवरण</string>
+    <string name="financing_fee">फ़ायनैन्सिंग फ़ी</string>
     <string name="invoice_list">इनवॉइस लिस्ट</string>
     <string name="invoice_on_which_interest_is_charged">इनवॉइस जिन पर ब्याज लग रहा है</string>
     <string name="invoice_on_which_interest_going_to_charged">2 दिन में ब्याज शुरू होगा</string>
@@ -69,7 +72,7 @@
     <string name="gst">जी.ऐस.टी</string>
     <string name="total_amount">कुल राशि</string>
     <string name="invoice_amount">इनवॉइस राशि</string>
-    <string name="invoice_id">इनवॉइस आई डी</string>
+    <string name="invoice_id">इन्वॉस आईडी</string>
     <string name="invoice_date">इनवॉइस तिथि</string>
     <string name="interest_start_date">ब्याज शुरू तिथि</string>
     <string name="interest_start_dates">ब्याज शुरू तिथि: %s</string>
@@ -86,7 +89,7 @@
     <string name="credit_note_details">क्रेडिट नोट विवरण</string>
     <string name="credit_note_amount">क्रेडिट नोट राशि</string>
     <string name="credit_note_creation_date">प्राप्ति तिथि</string>
-    <string name="download_invoice">"डाउनलोड इनवॉइस "</string>
+    <string name="download_invoice">"इन्वॉस डाउनलोड करे"</string>
     <string name="from_to">%1s से %2s</string>
     <string name="outstanding_amount_rs">बकाया राशि: %s</string>
     <string name="until_today">%s से आज तक</string>

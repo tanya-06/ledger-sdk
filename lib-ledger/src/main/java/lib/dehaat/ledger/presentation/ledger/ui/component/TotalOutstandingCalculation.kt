@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
+import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
@@ -125,7 +126,6 @@ private fun CalculationWithWeeklyInterest(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Text(
-            modifier = Modifier.weight(0.5f),
             text = stringResource(id = R.string.total_outstanding_footer),
             style = textParagraphT2Highlight(Neutral90),
             textAlign = TextAlign.Center
@@ -144,6 +144,7 @@ private fun CalculationWithWeeklyInterest(
                 contentDescription = stringResource(id = R.string.accessibility_icon),
                 tint = Pumpkin120
             )
+            HorizontalSpacer(width = 4.dp)
             Column(verticalArrangement = Arrangement.SpaceEvenly) {
                 Text(
                     text = stringResource(id = R.string.total_purchase_rs),
@@ -167,10 +168,12 @@ private fun CalculationWithWeeklyInterest(
                     style = textCaptionCP1(Pumpkin120)
                 )
                 Text(
-                    text = summaryViewData?.interestTillDate.getAmountInRupees(),
+                    text = summaryViewData.interestTillDate.getAmountInRupees(),
                     style = textParagraphT2(Pumpkin120)
                 )
             }
+
+            HorizontalSpacer(width = 4.dp)
             Icon(
                 painter = painterResource(id = R.drawable.ic_right_bracket),
                 contentDescription = stringResource(id = R.string.accessibility_icon),
@@ -179,7 +182,7 @@ private fun CalculationWithWeeklyInterest(
         }
 
         Icon(
-            modifier = Modifier.padding(horizontal = 4.dp),
+            modifier = Modifier.padding(horizontal = 8.dp),
             painter = painterResource(id = R.drawable.ledger_minus),
             contentDescription = stringResource(id = R.string.accessibility_icon),
             tint = SeaGreen110
@@ -194,7 +197,7 @@ private fun CalculationWithWeeklyInterest(
                 style = textCaptionCP1(SeaGreen110)
             )
             Text(
-                text = summaryViewData?.paymentAmountTillDate.getAmountInRupees(),
+                text = summaryViewData.paymentAmountTillDate.getAmountInRupees(),
                 style = textParagraphT2(SeaGreen110)
             )
         }

@@ -96,11 +96,18 @@ fun TransactionsScreen(
                                 transaction = transaction
                             ) {
                                 detailPageNavigationCallback.navigateToRevampWeeklyInterestDetailPage(
-                                    InterestDetailScreenArgs.getBundle(transaction, ledgerViewModel.uiState.value.summaryViewData)
+                                    InterestDetailScreenArgs.getBundle(
+                                        transaction,
+                                        ledgerViewModel.uiState.value.summaryViewData
+                                    )
                                 )
                             }
                         }
                     }
+                    TransactionType.FinancingFee().financingFeeType -> TransactionCard(
+                        transactionType = TransactionType.FinancingFee(),
+                        transaction = transaction
+                    ) {}
                 }
             }
         }
