@@ -65,13 +65,15 @@ fun TransactionsScreen(
                         transactionType = TransactionType.Invoice(),
                         transaction = transaction
                     ) {
-                        detailPageNavigationCallback.navigateToRevampInvoiceDetailPage(
-                            RevampInvoiceDetailViewModel.getBundle(
-                                transaction.ledgerId,
-                                transaction.source,
-                                transaction.erpId
+                        transaction.erpId?.let { erpId ->
+                            detailPageNavigationCallback.navigateToRevampInvoiceDetailPage(
+                                RevampInvoiceDetailViewModel.getBundle(
+                                    ledgerId = transaction.ledgerId,
+                                    source = transaction.source,
+                                    erpId = erpId
+                                )
                             )
-                        )
+                        }
                     }
                     TransactionType.CreditNote().creditNoteType -> TransactionCard(
                         transactionType = TransactionType.CreditNote(),
