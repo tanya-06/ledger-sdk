@@ -163,7 +163,8 @@ object DummyDataSource {
                 onDownloadInvoiceSuccess = {},
                 onPaymentOptionsClick = {},
                 downloadInvoiceIntent = { _, _ -> null },
-                exceptionHandler = {}
+                exceptionHandler = {},
+                firebaseScreenLogger = { _, _ -> }
             )
         )
     }
@@ -172,7 +173,8 @@ object DummyDataSource {
         LedgerParentApp.AIMS(
             downloadInvoiceClick = {},
             downloadInvoiceIntent = { _, _ -> null },
-            exceptionHandler = {}
+            exceptionHandler = {},
+            firebaseScreenLogger = { _, _ -> }
         )
     }
 
