@@ -3,6 +3,7 @@ package com.dehaat.ledger
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -62,7 +63,10 @@ class AppChooserActivity : AppCompatActivity() {
                             -PendingIntent.FLAG_ONE_SHOT
                         )
                     },
-                    exceptionHandler = {}
+                    exceptionHandler = {},
+                    firebaseScreenLogger = { _, route ->
+                        Log.d("TAG", "openDBA: $route")
+                    }
                 )
             ),
             bucket = "fnfsandboxec2odoo",
@@ -99,7 +103,10 @@ class AppChooserActivity : AppCompatActivity() {
                         -PendingIntent.FLAG_ONE_SHOT
                     )
                 },
-                exceptionHandler = {}
+                exceptionHandler = {},
+                firebaseScreenLogger = { _, route ->
+                    Log.d("TAG", "openAIMS: $route")
+                }
             ),
             bucket = "fnfsandboxec2odoo",
             appIcon = R.drawable.ic_info_icon,

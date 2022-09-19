@@ -92,17 +92,21 @@ fun TransactionsListScreen(
         ) {
             items(transactions) { data ->
                 data?.let {
-                    TransactionInvoiceItem(data = it, ledgerColors = ledgerColors) {
-                        when (data.type) {
+                    TransactionInvoiceItem(data = it, ledgerColors = ledgerColors) { transaction ->
+                        when (transaction.type) {
                             TransactionType.PAYMENT -> detailPageNavigationCallback.navigateToPaymentDetailPage(
-                                PaymentDetailViewModel.getArgs(it)
+                                PaymentDetailViewModel.getArgs(transaction)
                             )
                             TransactionType.CREDIT_NOTE -> detailPageNavigationCallback.navigateToCreditNoteDetailPage(
-                                CreditNoteDetailViewModel.getArgs(it)
+                                CreditNoteDetailViewModel.getArgs(transaction)
                             )
-                            TransactionType.INVOICE -> detailPageNavigationCallback.navigateToInvoiceDetailPage(
-                                InvoiceDetailViewModel.getArgs(it)
-                            )
+                            TransactionType.INVOICE -> {
+                                transaction.erpId?.let {
+                                    detailPageNavigationCallback.navigateToInvoiceDetailPage(
+                                        InvoiceDetailViewModel.getArgs(transaction)
+                                    )
+                                }
+                            }
                             else -> Unit
                         }
                     }
@@ -116,7 +120,7 @@ fun TransactionsListScreen(
                         item { ShowProgress(ledgerColors) }
                     }
                     loadState.append is LoadState.NotLoading && loadState.append.endOfPaginationReached && itemCount == 0 -> {
-                        item { NoDataFound{} }
+                        item { NoDataFound {} }
                     }
                 }
             }

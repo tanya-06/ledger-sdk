@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.util
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,13 +12,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDeepLink
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.dehaat.androidbase.helper.showToast
 import kotlinx.coroutines.flow.SharedFlow
 import lib.dehaat.ledger.initializer.LedgerSDK
+import lib.dehaat.ledger.initializer.callbacks.FirebaseScreenLogger
 import lib.dehaat.ledger.presentation.common.UiEvent
 
 @Composable
@@ -55,3 +61,14 @@ fun Modifier.clickableWithCorners(
     .background(shape = RoundedCornerShape(borderSize), color = backgroundColor)
     .clip(RoundedCornerShape(borderSize))
     .clickable(onClick = onClick)
+
+fun NavGraphBuilder.navBaseComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    logScreenName: FirebaseScreenLogger,
+    content: @Composable (NavBackStackEntry) -> Unit
+) = composable(route, arguments, deepLinks) {
+    logScreenName(LocalContext.current, route)
+    content(it)
+}

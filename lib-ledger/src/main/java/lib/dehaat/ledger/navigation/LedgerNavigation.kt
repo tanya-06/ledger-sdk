@@ -8,7 +8,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
@@ -38,6 +37,7 @@ import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.ui.RevampCr
 import lib.dehaat.ledger.presentation.ledger.ui.LedgerDetailScreen2
 import lib.dehaat.ledger.presentation.ledger.ui.RevampLedgerScreen
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
+import lib.dehaat.ledger.util.navBaseComposable
 
 @Composable
 fun LedgerNavigation(
@@ -62,14 +62,15 @@ fun LedgerNavigation(
             LedgerRoutes.LedgerDetailScreen.screen
         }
     ) {
-        composable(
+        navBaseComposable(
             route = LedgerRoutes.LedgerDetailScreen.screen,
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_PARTNER_ID) {
                     type = NavType.StringType
                     defaultValue = partnerId
                 }
-            )
+            ),
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
             viewModel.dcName = dcName
             LedgerDetailScreen2(
@@ -90,7 +91,7 @@ fun LedgerNavigation(
             )
         }
 
-        composable(
+        navBaseComposable(
             route = LedgerRoutes.RevampLedgerScreen.screen,
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_PARTNER_ID) {
@@ -101,7 +102,8 @@ fun LedgerNavigation(
                     type = NavType.StringType
                     defaultValue = dcName
                 }
-            )
+            ),
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
             val revampLedgerViewModel = hiltViewModel<RevampLedgerViewModel>()
             RevampLedgerScreen(
@@ -115,8 +117,9 @@ fun LedgerNavigation(
             )
         }
 
-        composable(
-            route = LedgerRoutes.TotalOutstandingDetailScreen.screen
+        navBaseComposable(
+            route = LedgerRoutes.TotalOutstandingDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
             val outstandingArgs = it.arguments?.let { args -> TotalOutstandingScreenArgs(args) }
             TotalOutstandingScreen(
@@ -127,7 +130,10 @@ fun LedgerNavigation(
             }
         }
 
-        composable(LedgerRoutes.InvoiceListScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.InvoiceListScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val invoiceListViewModel = hiltViewModel<InvoiceListViewModel>()
             InvoiceListScreen(
                 viewModel = invoiceListViewModel,
@@ -139,7 +145,10 @@ fun LedgerNavigation(
             }
         }
 
-        composable(LedgerRoutes.TotalAvailableCreditLimitScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.TotalAvailableCreditLimitScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val uiState = it.arguments?.let { args -> AvailableCreditLimitScreenArgs(args) }
             AvailableCreditLimitDetailsScreen(
                 uiState = uiState?.getArgs(),
@@ -149,7 +158,10 @@ fun LedgerNavigation(
             }
         }
 
-        composable(LedgerRoutes.LedgerInvoiceDetailScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.LedgerInvoiceDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val invoiceDetailViewModel = hiltViewModel<InvoiceDetailViewModel>()
             invoiceDetailViewModel.setIsLmsActivated(viewModel.isLMSActivated())
 
@@ -163,7 +175,10 @@ fun LedgerNavigation(
             )
         }
 
-        composable(LedgerRoutes.RevampLedgerInvoiceDetailScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.RevampLedgerInvoiceDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val invoiceDetailViewModel = hiltViewModel<RevampInvoiceDetailViewModel>()
             RevampInvoiceDetailScreen(
                 viewModel = invoiceDetailViewModel,
@@ -175,7 +190,10 @@ fun LedgerNavigation(
             }
         }
 
-        composable(LedgerRoutes.LedgerCreditNoteDetailScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.LedgerCreditNoteDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val creditNoteDetailViewModel = hiltViewModel<CreditNoteDetailViewModel>()
 
             CreditNoteDetailScreen(
@@ -187,7 +205,10 @@ fun LedgerNavigation(
 
         }
 
-        composable(LedgerRoutes.RevampLedgerCreditNoteDetailScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.RevampLedgerCreditNoteDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val creditNoteDetailsViewModel = hiltViewModel<CreditNoteDetailsViewModel>()
             RevampCreditNoteDetailsScreen(
                 viewModel = creditNoteDetailsViewModel,
@@ -198,7 +219,10 @@ fun LedgerNavigation(
             }
         }
 
-        composable(LedgerRoutes.LedgerPaymentDetailScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.LedgerPaymentDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val paymentDetailViewModel = hiltViewModel<PaymentDetailViewModel>()
             paymentDetailViewModel.setIsLmsActivated(viewModel.isLMSActivated())
 
@@ -210,7 +234,10 @@ fun LedgerNavigation(
             }
         }
 
-        composable(LedgerRoutes.RevampLedgerPaymentDetailScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.RevampLedgerPaymentDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val paymentDetailViewModel = hiltViewModel<PaymentDetailViewModel>()
             RevampPaymentDetailScreen(
                 viewModel = paymentDetailViewModel,
@@ -221,7 +248,10 @@ fun LedgerNavigation(
             }
         }
 
-        composable(LedgerRoutes.RevampLedgerWeeklyInterestDetailScreen.screen) {
+        navBaseComposable(
+            route = LedgerRoutes.RevampLedgerWeeklyInterestDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
             val interestViewData = it.arguments?.let { args -> InterestDetailScreenArgs(args) }
             InterestDetailScreen(
                 ledgerColors = ledgerColors,
