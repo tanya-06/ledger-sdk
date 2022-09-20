@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.mapper
 
+import com.dehaat.androidbase.helper.isNotNull
 import javax.inject.Inject
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditEntity
@@ -20,6 +21,7 @@ import lib.dehaat.ledger.entities.revamp.invoicelist.InvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditViewData
@@ -81,13 +83,18 @@ class LedgerViewDataMapper @Inject constructor() {
     }
 
     fun toTransactionEntity(data: List<TransactionEntityV2>) = data.map {
+        val interestStartDate = if (it.type == TransactionType.Invoice().type) {
+            null
+        } else {
+            it.interestStartDate
+        }
         TransactionViewDataV2(
             amount = it.amount,
             creditNoteReason = it.creditNoteReason,
             date = it.date,
             erpId = it.erpId,
             interestEndDate = it.interestEndDate,
-            interestStartDate = it.interestStartDate,
+            interestStartDate = interestStartDate,
             ledgerId = it.ledgerId,
             locusId = it.locusId,
             partnerId = it.partnerId,
@@ -213,7 +220,9 @@ class LedgerViewDataMapper @Inject constructor() {
                 invoiceDate = summary.invoiceDate,
                 invoiceId = summary.invoiceId,
                 processingFee = summary.processingFee,
-                totalOutstandingAmount = summary.totalOutstandingAmount
+                totalOutstandingAmount = summary.totalOutstandingAmount,
+                fullPaymentComplete = summary.interestStartDate.isNotNull() && summary.totalOutstandingAmount?.toDoubleOrNull() == 0.0,
+                showInterestStartDate = false
             )
         )
     }

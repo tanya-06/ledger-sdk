@@ -8,5 +8,7 @@ data class SummaryViewDataV2(
     val invoiceDate: Long,
     val invoiceId: String,
     val processingFee: String?,
-    val totalOutstandingAmount: String?
+    val totalOutstandingAmount: String?,
+    val fullPaymentComplete: Boolean,
+    val showInterestStartDate: Boolean
 )

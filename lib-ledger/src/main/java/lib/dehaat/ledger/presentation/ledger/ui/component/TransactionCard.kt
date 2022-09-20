@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Neutral60
@@ -160,14 +161,14 @@ fun TransactionCard(
                     style = textCaptionCP1(Neutral60)
                 )
 
-                if (transactionType is TransactionType.Invoice && transaction.interestStartDate != null) {
+                transaction.interestStartDate?.let {
                     Text(
                         modifier = Modifier
                             .background(color = Warning10, RoundedCornerShape(8.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         text = stringResource(
                             id = R.string.interest_start_dates,
-                            transaction.interestStartDate.toDateMonthYear()
+                            it.toDateMonthYear()
                         ),
                         style = textCaptionCP1(Neutral80)
                     )
@@ -175,7 +176,7 @@ fun TransactionCard(
             }
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
+    VerticalSpacer(height = 16.dp)
     Divider()
 }
 
