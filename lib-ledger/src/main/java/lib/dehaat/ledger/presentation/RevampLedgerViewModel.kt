@@ -14,19 +14,26 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import lib.dehaat.ledger.domain.usecases.GetCreditSummaryUseCase
+import lib.dehaat.ledger.domain.usecases.GetTransactionSummaryUseCase
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
+import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.entities.transactionsummary.revamp.TransactionSummaryEntityV2
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.LedgerViewModelState
+import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.TransactionViewModelState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.availablecreditlimit.AvailableCreditLimitViewState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.outstandingcreditlimit.OutstandingCreditLimitViewState
+import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.mapper.ViewDataMapper
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
+import lib.dehaat.ledger.presentation.model.transactions.toStartAndEndDates
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
 class RevampLedgerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCreditSummaryUseCase: GetCreditSummaryUseCase,
+    private val getTransactionSummaryUseCase: GetTransactionSummaryUseCase,
     private val mapper: ViewDataMapper
 ) : BaseViewModel() {
 
@@ -37,6 +44,7 @@ class RevampLedgerViewModel @Inject constructor(
     val selectedDaysToFilterEvent: SharedFlow<DaysToFilter> get() = _selectedDaysToFilterEvent
 
     private val viewModelState = MutableStateFlow(LedgerViewModelState())
+    private val transactionsViewModelState = MutableStateFlow(TransactionViewModelState())
 
     val uiState = viewModelState
         .map { it.toUIState() }
@@ -44,6 +52,14 @@ class RevampLedgerViewModel @Inject constructor(
             viewModelScope,
             SharingStarted.Eagerly,
             viewModelState.value.toUIState()
+        )
+
+    val transactionUIState = transactionsViewModelState
+        .map { it.toUIState() }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            transactionsViewModelState.value.toUIState()
         )
 
     var availableCreditLimitViewState: AvailableCreditLimitViewState? = null
@@ -54,6 +70,7 @@ class RevampLedgerViewModel @Inject constructor(
 
     init {
         getCreditSummaryFromServer()
+        getTransactionSummaryFromServer()
     }
 
     fun showFilterBottomSheet() = viewModelState.update {
@@ -62,6 +79,28 @@ class RevampLedgerViewModel @Inject constructor(
 
     fun hideFilterBottomSheet() = viewModelState.update {
         it.copy(showFilterSheet = false)
+    }
+
+    fun getTransactionSummaryFromServer(daysToFilter: DaysToFilter? = null) = callInViewModelScope {
+        callingAPI()
+        val dates = daysToFilter?.toStartAndEndDates()
+        val response = getTransactionSummaryUseCase.getTransactionSummaryV2(partnerId, dates?.first, dates?.second)
+        calledAPI()
+        processTransactionSummaryResponse(response)
+    }
+
+    private fun processTransactionSummaryResponse(
+        result: APIResultEntity<TransactionSummaryEntityV2?>
+    ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) {
+        it?.let { entity ->
+            val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
+            transactionsViewModelState.update { ledgerDetailViewModelState ->
+                ledgerDetailViewModelState.copy(
+                    isLoading = false,
+                    summary = transactionSummaryViewData
+                )
+            }
+        }
     }
 
     private fun getCreditSummaryFromServer() {

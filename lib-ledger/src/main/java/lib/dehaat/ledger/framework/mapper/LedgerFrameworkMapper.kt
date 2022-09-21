@@ -26,6 +26,7 @@ import lib.dehaat.ledger.entities.revamp.invoicelist.InvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.entities.transactionsummary.revamp.TransactionSummaryEntityV2
 import lib.dehaat.ledger.framework.model.creditlines.CreditLine
 import lib.dehaat.ledger.framework.model.creditlines.CreditLineData
 import lib.dehaat.ledger.framework.model.creditsummary.Credit
@@ -49,6 +50,7 @@ import lib.dehaat.ledger.framework.model.revamp.transactions.TransactionData
 import lib.dehaat.ledger.framework.model.transactions.Transaction
 import lib.dehaat.ledger.framework.model.transactions.TransactionsData
 import lib.dehaat.ledger.framework.model.transactionsummary.TransactionDetailData
+import lib.dehaat.ledger.framework.model.transactionsummary.TransactionDetailDataV2
 
 typealias NetworkPaymentDetailSummary = lib.dehaat.ledger.framework.model.detail.payment.Summary
 typealias EntityPaymentDetailSummary = lib.dehaat.ledger.entities.detail.payment.SummaryEntity
@@ -98,6 +100,16 @@ class LedgerFrameworkMapper @Inject constructor() {
 		TransactionSummaryEntity(
 			purchaseAmount = purchaseAmount,
 			paymentAmount = paymentAmount
+		)
+	}
+
+	fun toTransactionSummaryDataEntityV2(
+		transactionDetailData: TransactionDetailDataV2
+	) = with(transactionDetailData) {
+		TransactionSummaryEntityV2(
+			purchaseAmount = purchaseAmount,
+			paymentAmount = paymentAmount,
+			interestAmount = interestAmount
 		)
 	}
 

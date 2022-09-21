@@ -28,6 +28,7 @@ import lib.dehaat.ledger.resources.Background
 import lib.dehaat.ledger.resources.BlueGreen10
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Mustard10
+import lib.dehaat.ledger.resources.Neutral100
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.spanButtonB2
@@ -192,11 +193,11 @@ fun InterestDetailScreen(
 
 @Composable
 private fun getInformationalString() = buildAnnotatedString {
-    withStyle(spanButtonB2(Color(0XFF333333))) {
+    withStyle(spanButtonB2(Neutral100)) {
         append(stringResource(id = R.string.information_))
     }
     append(" ")
-    withStyle(spanParagraphT2Highlight(Color(0XFF333333))) {
+    withStyle(spanParagraphT2Highlight(Neutral100)) {
         append(stringResource(id = R.string.weekly_interest_information))
     }
 }

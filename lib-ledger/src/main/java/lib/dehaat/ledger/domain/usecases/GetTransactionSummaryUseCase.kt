@@ -6,9 +6,15 @@ import lib.dehaat.ledger.domain.ILedgerRepository
 class GetTransactionSummaryUseCase @Inject constructor(
     private val repo: ILedgerRepository
 ) {
-    suspend operator fun invoke(
+    suspend fun getTransactionSummary(
         partnerId: String,
         fromDate: Long?,
         toDate: Long?
     ) = repo.getTransactionSummary(partnerId, fromDate, toDate)
+
+    suspend fun getTransactionSummaryV2(
+        partnerId: String,
+        fromDate: Long?,
+        toDate: Long?
+    ) = repo.getTransactionSummaryV2(partnerId, fromDate, toDate)
 }

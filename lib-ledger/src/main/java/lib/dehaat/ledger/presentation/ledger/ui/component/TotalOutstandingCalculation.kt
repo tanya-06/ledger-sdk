@@ -17,22 +17,22 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource
+import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
-import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
+import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
+import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.TransactionSummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
-import lib.dehaat.ledger.presentation.model.transactions.getNumberOfDays
-import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.Primary20
 import lib.dehaat.ledger.resources.Pumpkin120
@@ -43,35 +43,9 @@ import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.util.getAmountInRupees
 
-@Preview(
-    name = "TotalOutstandingCalculation Preview",
-    showBackground = true
-)
-@Composable
-private fun TotalOutstandingCalculationPreview() = LedgerTheme {
-    val daysToFilter = DaysToFilter.SevenDays
-    TotalOutstandingCalculation(
-        DummyDataSource.summaryViewData,
-        Pair(daysToFilter, daysToFilter.getNumberOfDays())
-    )
-}
-
-@Preview(
-    name = "TotalOutstandingCalculation filtered Preview",
-    showBackground = true
-)
-@Composable
-private fun TotalOutstandingCalculationFilteredPreview() = LedgerTheme {
-    val daysToFilter = DaysToFilter.All
-    TotalOutstandingCalculation(
-        DummyDataSource.summaryViewData,
-        Pair(daysToFilter, daysToFilter.getNumberOfDays())
-    )
-}
-
 @Composable
 fun TotalOutstandingCalculation(
-    summaryViewData: SummaryViewData?,
+    viewModel: RevampLedgerViewModel,
     daysToFilter: Pair<DaysToFilter, Int?>
 ) = Card(
     modifier = Modifier
@@ -80,16 +54,20 @@ fun TotalOutstandingCalculation(
     backgroundColor = Color.White,
     elevation = 8.dp
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-    ) {
-        summaryViewData?.let {
-            if (daysToFilter.first != DaysToFilter.All) {
-                CalculationWithoutWeeklyInterest(summaryViewData, daysToFilter)
-            } else {
-                CalculationWithWeeklyInterest(summaryViewData)
+    val uiState by viewModel.transactionUIState.collectAsState()
+
+    if (uiState.state is UIState.SUCCESS) {
+        uiState.summaryViewData?.let {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+            ) {
+                if (daysToFilter.first != DaysToFilter.All) {
+                    CalculationWithoutWeeklyInterest(it, daysToFilter)
+                } else {
+                    CalculationWithWeeklyInterest(it)
+                }
             }
         }
     }
@@ -97,7 +75,7 @@ fun TotalOutstandingCalculation(
 
 @Composable
 private fun CalculationWithWeeklyInterest(
-    summaryViewData: SummaryViewData
+    summaryViewData: TransactionSummaryViewData
 ) = Column(modifier = Modifier.fillMaxWidth()) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -151,7 +129,7 @@ private fun CalculationWithWeeklyInterest(
                     style = textCaptionCP1(Pumpkin120)
                 )
                 Text(
-                    text = summaryViewData.totalPurchaseAmount.getAmountInRupees(),
+                    text = summaryViewData.purchaseAmount.getAmountInRupees(),
                     style = textParagraphT2(Pumpkin120)
                 )
             }
@@ -168,7 +146,7 @@ private fun CalculationWithWeeklyInterest(
                     style = textCaptionCP1(Pumpkin120)
                 )
                 Text(
-                    text = summaryViewData.interestTillDate.getAmountInRupees(),
+                    text = summaryViewData.interestAmount.getAmountInRupees(),
                     style = textParagraphT2(Pumpkin120)
                 )
             }
@@ -197,7 +175,7 @@ private fun CalculationWithWeeklyInterest(
                 style = textCaptionCP1(SeaGreen110)
             )
             Text(
-                text = summaryViewData.paymentAmountTillDate.getAmountInRupees(),
+                text = summaryViewData.paymentAmount.getAmountInRupees(),
                 style = textParagraphT2(SeaGreen110)
             )
         }
@@ -206,7 +184,7 @@ private fun CalculationWithWeeklyInterest(
 
 @Composable
 private fun CalculationWithoutWeeklyInterest(
-    summaryViewData: SummaryViewData,
+    summaryViewData: TransactionSummaryViewData,
     daysToFilter: Pair<DaysToFilter, Int?>
 ) = Column(modifier = Modifier.fillMaxWidth()) {
     Row(
@@ -250,7 +228,7 @@ private fun CalculationWithoutWeeklyInterest(
                 style = textCaptionCP1(Pumpkin120)
             )
             Text(
-                text = summaryViewData.totalPurchaseAmount.getAmountInRupees(),
+                text = summaryViewData.purchaseAmount.getAmountInRupees(),
                 style = textParagraphT2(Pumpkin120)
             )
         }
@@ -272,7 +250,7 @@ private fun CalculationWithoutWeeklyInterest(
                 style = textCaptionCP1(SeaGreen110)
             )
             Text(
-                text = summaryViewData.paymentAmountTillDate.getAmountInRupees(),
+                text = summaryViewData.paymentAmount.getAmountInRupees(),
                 style = textParagraphT2(SeaGreen110)
             )
         }

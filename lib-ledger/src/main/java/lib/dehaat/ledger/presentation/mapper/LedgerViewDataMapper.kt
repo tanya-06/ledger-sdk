@@ -85,7 +85,7 @@ class LedgerViewDataMapper @Inject constructor() {
     fun toTransactionEntity(data: List<TransactionEntityV2>) = data.map {
         val interestStartDate = if (
             it.type == TransactionType.Invoice().type ||
-            it.type == TransactionType.Interest().type
+            it.type == TransactionType.FinancingFee().type
         ) {
             null
         } else {
