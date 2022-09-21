@@ -7,6 +7,7 @@ import com.dehaat.androidbase.network.api.makeAPICall
 import javax.inject.Inject
 import lib.dehaat.ledger.data.source.ILedgerDataSource
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.entities.transactionsummary.revamp.TransactionSummaryEntityV2
 import lib.dehaat.ledger.framework.mapper.LedgerFrameworkMapper
 import lib.dehaat.ledger.presentation.LedgerConstants.API_REQUEST_TRACE_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.IB_REQUEST_IDENTIFIER
@@ -42,6 +43,17 @@ class LedgerDataSource @Inject constructor(
         { apiService.getTransactionSummary(partnerId, fromDate, toDate) }
     ) {
         it?.transactionDetailData?.let { data -> mapper.toTransactionSummaryDataEntity(data) }
+    }
+
+    override suspend fun getTransactionSummaryV2(
+        partnerId: String,
+        fromDate: Long?,
+        toDate: Long?
+    ): APIResultEntity<TransactionSummaryEntityV2?> = callAPI(
+        dispatcher,
+        { apiService.getTransactionSummaryV2(partnerId, fromDate, toDate) }
+    ) {
+        it?.transactionDetailData?.let { data -> mapper.toTransactionSummaryDataEntityV2(data) }
     }
 
     override suspend fun getTransactions(

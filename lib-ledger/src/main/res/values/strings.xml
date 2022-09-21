@@ -120,6 +120,8 @@
     <string name="close_list">Close List</string>
     <string name="interest_arrears">Interest Outstanding</string>
     <string name="total_interest_payment">Total Interest Payment</string>
+    <string name="information_">Info:</string>
+    <string name="weekly_interest_information">Interest charged up to 30 days on all your invoices will be returned as credit note.</string>
 
 
     <string name="accessibility_icon">Accessibility Icon</string>

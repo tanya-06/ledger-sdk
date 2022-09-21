@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
@@ -26,8 +28,11 @@ import lib.dehaat.ledger.resources.Background
 import lib.dehaat.ledger.resources.BlueGreen10
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Mustard10
+import lib.dehaat.ledger.resources.Neutral100
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
+import lib.dehaat.ledger.resources.spanButtonB2
+import lib.dehaat.ledger.resources.spanParagraphT2Highlight
 import lib.dehaat.ledger.resources.textHeadingH3
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
@@ -175,7 +180,25 @@ fun InterestDetailScreen(
                     }
                 }
             }*/
+
+            VerticalSpacer(height = 16.dp)
+
+            Text(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                text = getInformationalString()
+            )
         }
+    }
+}
+
+@Composable
+private fun getInformationalString() = buildAnnotatedString {
+    withStyle(spanButtonB2(Neutral100)) {
+        append(stringResource(id = R.string.information_))
+    }
+    append(" ")
+    withStyle(spanParagraphT2Highlight(Neutral100)) {
+        append(stringResource(id = R.string.weekly_interest_information))
     }
 }
 

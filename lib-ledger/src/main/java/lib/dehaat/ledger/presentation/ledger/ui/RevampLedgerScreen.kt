@@ -81,6 +81,7 @@ fun RevampLedgerScreen(
             lifecycleOwner.lifecycle,
             Lifecycle.State.STARTED
         ).collect { event ->
+            viewModel.getTransactionSummaryFromServer(event)
             filter = Pair(event, event.getNumberOfDays())
         }
     }
@@ -97,7 +98,7 @@ fun RevampLedgerScreen(
                 exit = shrinkVertically(animationSpec = tween(500))
             ) {
                 TotalOutstandingCalculation(
-                    uiState.summaryViewData,
+                    viewModel,
                     filter
                 )
             }

@@ -1,9 +1,20 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -35,7 +46,18 @@ import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.revamp.invoice.CreditNoteViewData
 import lib.dehaat.ledger.presentation.model.revamp.invoice.ProductsInfoViewDataV2
 import lib.dehaat.ledger.presentation.model.revamp.invoice.SummaryViewDataV2
-import lib.dehaat.ledger.resources.*
+import lib.dehaat.ledger.resources.Background
+import lib.dehaat.ledger.resources.Error100
+import lib.dehaat.ledger.resources.Neutral60
+import lib.dehaat.ledger.resources.Neutral80
+import lib.dehaat.ledger.resources.Neutral90
+import lib.dehaat.ledger.resources.Primary80
+import lib.dehaat.ledger.resources.SeaGreen100
+import lib.dehaat.ledger.resources.Success10
+import lib.dehaat.ledger.resources.textButtonB2
+import lib.dehaat.ledger.resources.textCaptionCP1
+import lib.dehaat.ledger.resources.textParagraphT1Highlight
+import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.clickableWithCorners
 import lib.dehaat.ledger.util.getAmountInRupees
@@ -61,25 +83,25 @@ fun RevampInvoiceDetailScreen(
     ) {
         when (uiState.state) {
             UIState.SUCCESS -> {
-                InvoiceDetailScreen(
-                    uiState.invoiceDetailsViewData?.summary,
-                    uiState.invoiceDetailsViewData?.creditNotes,
-                    uiState.invoiceDetailsViewData?.productsInfo
-                ) {
-                    LedgerSDK
-                        .getFile(context)
-                        ?.let {
+                uiState.invoiceDetailsViewData?.let {
+                    InvoiceDetailScreen(
+                        it.summary,
+                        it.creditNotes,
+                        it.productsInfo
+                    ) {
+                        LedgerSDK.getFile(context)?.let { file ->
                             viewModel.downloadInvoice(
-                                it,
+                                file,
                                 onDownloadInvoiceClick
                             )
                         } ?: run {
-                        context.showToast(R.string.tech_problem)
-                        LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
-                            Exception("Unable to create file")
-                        )
+                            context.showToast(R.string.tech_problem)
+                            LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
+                                Exception("Unable to create file")
+                            )
+                        }
                     }
-                }
+                } ?: NoDataFound((uiState.state as? UIState.ERROR)?.message, onError)
             }
             UIState.LOADING -> {
                 ShowProgressDialog(ledgerColors) {
@@ -95,63 +117,33 @@ fun RevampInvoiceDetailScreen(
 
 @Composable
 private fun InvoiceDetailScreen(
-    summary: SummaryViewDataV2?,
-    creditNotes: List<CreditNoteViewData>?,
-    productsInfo: ProductsInfoViewDataV2?,
-    onDownloadInvoiceClick: (String) -> Unit
+    summary: SummaryViewDataV2,
+    creditNotes: List<CreditNoteViewData>,
+    productsInfo: ProductsInfoViewDataV2,
+    onDownloadInvoiceClick: () -> Unit
 ) = Column(
     modifier = Modifier
         .fillMaxWidth()
         .verticalScroll(rememberScrollState())
 ) {
-    val unDeliveredInvoice = summary?.interestStartDate == null
-    val deliveredInvoice = summary?.interestStartDate != null
-    val interestPaid = deliveredInvoice && summary?.totalOutstandingAmount?.toDoubleOrNull() == 0.0
-    val interestRunning = summary?.interestBeingCharged == true
-    val interestStarting = summary?.interestBeingCharged == false
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
             .padding(horizontal = 20.dp)
     ) {
-        VerticalSpacer(height = 24.dp)
-        when {
-            interestRunning -> summary?.interestDays?.let {
-                InvoiceInformationChip(
-                    title = stringResource(
-                        id = R.string.interest_running,
-                        it.toString()
-                    ),
-                    backgroundColor = Error10,
-                    textColor = Error100
-                )
-            }
-            interestStarting -> summary?.interestDays?.let {
-                InvoiceInformationChip(
-                    title = if (it == 0) {
-                        stringResource(R.string.interest_charged_from_tomorrow)
-                    } else {
-                        stringResource(
-                            id = R.string.interest_starting,
-                            it.toString()
-                        )
-                    },
-                    backgroundColor = Pumpkin10,
-                    textColor = Pumpkin120
-                )
-            }
-            interestPaid -> {
-                InvoiceInformationChip(
-                    title = stringResource(id = R.string.full_payment_complete),
-                    backgroundColor = Success10,
-                    textColor = Neutral90
-                )
-            }
-            else -> Unit
+        if (summary.fullPaymentComplete) {
+
+            VerticalSpacer(height = 24.dp)
+
+            InvoiceInformationChip(
+                title = stringResource(id = R.string.full_payment_complete),
+                backgroundColor = Success10,
+                textColor = Neutral90
+            )
         }
 
-        summary?.totalOutstandingAmount?.let {
+        summary.totalOutstandingAmount?.let {
             if (summary.interestBeingCharged == true && summary.invoiceAmount != it && it.toDoubleOrNull() != 0.0) {
                 VerticalSpacer(height = 20.dp)
                 RevampKeyValuePair(
@@ -171,7 +163,7 @@ private fun InvoiceDetailScreen(
         RevampKeyValuePair(
             pair = Pair(
                 stringResource(id = R.string.invoice_amount),
-                summary?.invoiceAmount.getAmountInRupees()
+                summary.invoiceAmount.getAmountInRupees()
             ),
             style = Pair(
                 textParagraphT2Highlight(Neutral90),
@@ -183,7 +175,7 @@ private fun InvoiceDetailScreen(
         RevampKeyValuePair(
             pair = Pair(
                 stringResource(id = R.string.invoice_id),
-                summary?.invoiceId ?: ""
+                summary.invoiceId
             ),
             style = Pair(
                 textParagraphT2Highlight(Neutral80),
@@ -195,7 +187,7 @@ private fun InvoiceDetailScreen(
         RevampKeyValuePair(
             pair = Pair(
                 stringResource(id = R.string.invoice_date),
-                summary?.invoiceDate.toDateMonthYear()
+                summary.invoiceDate.toDateMonthYear()
             ),
             style = Pair(
                 textParagraphT2Highlight(Neutral80),
@@ -203,18 +195,20 @@ private fun InvoiceDetailScreen(
             )
         )
 
-        summary?.interestStartDate?.let {
-            VerticalSpacer(height = 12.dp)
-            RevampKeyValuePair(
-                pair = Pair(
-                    stringResource(id = R.string.interest_start_date),
-                    it.toDateMonthYear()
-                ),
-                style = Pair(
-                    textParagraphT2Highlight(Neutral80),
-                    textButtonB2(Neutral90)
+        if (summary.showInterestStartDate) {
+            summary.interestStartDate?.let {
+                VerticalSpacer(height = 12.dp)
+                RevampKeyValuePair(
+                    pair = Pair(
+                        stringResource(id = R.string.interest_start_date),
+                        it.toDateMonthYear()
+                    ),
+                    style = Pair(
+                        textParagraphT2Highlight(Neutral80),
+                        textButtonB2(Neutral90)
+                    )
                 )
-            )
+            }
         }
 
         VerticalSpacer(height = 16.dp)
@@ -222,7 +216,7 @@ private fun InvoiceDetailScreen(
 
     VerticalSpacer(height = 16.dp)
 
-    if (!creditNotes.isNullOrEmpty()) {
+    if (creditNotes.isNotEmpty()) {
         CreditNoteDetails(creditNotes)
 
         VerticalSpacer(height = 16.dp)
@@ -230,11 +224,7 @@ private fun InvoiceDetailScreen(
 
     ProductDetailsScreen(productsInfo)
 
-    DownloadInvoiceButton {
-        summary?.invoiceId?.let {
-            onDownloadInvoiceClick(it)
-        }
-    }
+    DownloadInvoiceButton(onDownloadInvoiceClick)
 }
 
 @Composable

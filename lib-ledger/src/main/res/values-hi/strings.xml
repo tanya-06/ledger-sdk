@@ -114,6 +114,8 @@
     <string name="information">जानकारी</string>
     <string name="okay">ठीक है</string>
     <string name="outstanding">बकाया</string>
+    <string name="information_">जानकारी:</string>
+    <string name="weekly_interest_information">आपके सभी इनवॉइस पर ३० दिन तक जितना ब्याज लगा है वह क्रेडिट नोट के रूप में वापिस मिलेगा।</string>
 
     <string name="sanctioned_credit_limit">स्वीकृत क्रेडिट सीमा</string>
     <string name="initialise_ledger">कृपया वर्तमान ऐप के साथ लेजर एसडीके प्रारंभ करें।</string>

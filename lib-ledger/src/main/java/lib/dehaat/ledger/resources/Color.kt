@@ -28,6 +28,7 @@ val Neutral60 = Color(0XFF808080)
 val Neutral70 = Color(0XFF666666)
 val Neutral80 = Color(0XFF4D4D4D)
 val Neutral90 = Color(0XFF2F2F2F)
+val Neutral100 = Color(0XFF101010)
 
 val Pumpkin10 = Color(0XFFFFEEE5)
 val Pumpkin120 = Color(0XFFBF4B0A)

@@ -120,10 +120,10 @@ fun getAmountColor(type: String, ledgerColors: LedgerColors) = when (type) {
 
 @Composable
 private fun provideTransactionIcon(type: String) = when (type) {
-    TransactionType.INVOICE -> R.drawable.ic_transactions_invoice
+    TransactionType.INVOICE -> R.drawable.ic_revamp_invoice
     TransactionType.PAYMENT -> R.drawable.ic_transactions_interest
-    TransactionType.CREDIT_NOTE -> R.drawable.ic_transaction_credit_note
-    else -> R.drawable.ic_transactions_invoice
+    TransactionType.CREDIT_NOTE -> R.drawable.ic_transactions_credit_note
+    else -> R.drawable.ic_revamp_invoice
 }
 
 @Composable

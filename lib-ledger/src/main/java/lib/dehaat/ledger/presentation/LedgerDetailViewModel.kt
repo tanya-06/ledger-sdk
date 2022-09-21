@@ -132,7 +132,7 @@ class LedgerDetailViewModel @Inject constructor(
     fun getTransactionSummaryFromServer(daysToFilter: DaysToFilter? = null) = callInViewModelScope {
         callingAPI()
         val dates = daysToFilter?.toStartAndEndDates()
-        val response = getTransactionSummaryUseCase.invoke(partnerId, dates?.first, dates?.second)
+        val response = getTransactionSummaryUseCase.getTransactionSummary(partnerId, dates?.first, dates?.second)
         calledAPI()
         processTransactionSummaryResponse(response)
     }
