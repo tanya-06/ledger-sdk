@@ -154,10 +154,7 @@ fun TransactionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = when (transactionType) {
-                        is TransactionType.Interest -> stringResource(R.string.till_date)
-                        else -> transaction.date.toDateMonthYear()
-                    },
+                    text = transaction.date.toDateMonthYear(),
                     style = textCaptionCP1(Neutral60)
                 )
 
