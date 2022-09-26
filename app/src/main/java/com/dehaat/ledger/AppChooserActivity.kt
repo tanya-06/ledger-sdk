@@ -63,7 +63,9 @@ class AppChooserActivity : AppCompatActivity() {
                             -PendingIntent.FLAG_ONE_SHOT
                         )
                     },
-                    exceptionHandler = {},
+                    exceptionHandler = {
+                        Log.d("LEDGER_ERROR_LOGGER", "${it.localizedMessage}")
+                    },
                     firebaseScreenLogger = { _, route ->
                         Log.d("TAG", "openDBA: $route")
                     }
@@ -103,7 +105,9 @@ class AppChooserActivity : AppCompatActivity() {
                         -PendingIntent.FLAG_ONE_SHOT
                     )
                 },
-                exceptionHandler = {},
+                exceptionHandler = {
+                    Log.d("LEDGER_ERROR_LOGGER", "${it.localizedMessage}")
+                },
                 firebaseScreenLogger = { _, route ->
                     Log.d("TAG", "openAIMS: $route")
                 }

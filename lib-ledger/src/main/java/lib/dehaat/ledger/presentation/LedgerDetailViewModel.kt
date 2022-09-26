@@ -110,21 +110,19 @@ class LedgerDetailViewModel @Inject constructor(
     }
 
     private fun processCreditSummaryResponse(result: APIResultEntity<CreditSummaryEntity?>) {
-        result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
-            it?.let { creditSummaryEntity ->
-                val creditSummaryViewData = mapper.toCreditSummaryViewData(creditSummaryEntity)
-                callInViewModelScope {
-                    _totalAvailableCreditLimit.emit(creditSummaryViewData.credit.totalAvailableCreditLimit)
-                }
-                viewModelState.update { it ->
-                    it.copy(
-                        isLoading = false,
-                        creditSummaryViewData = creditSummaryViewData,
-                        overAllOutStandingDetailViewData = getOverAllSummaryData(
-                            creditSummaryViewData
-                        )
+        result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) { creditSummaryEntity ->
+            val creditSummaryViewData = mapper.toCreditSummaryViewData(creditSummaryEntity)
+            callInViewModelScope {
+                _totalAvailableCreditLimit.emit(creditSummaryViewData.credit.totalAvailableCreditLimit)
+            }
+            viewModelState.update {
+                it.copy(
+                    isLoading = false,
+                    creditSummaryViewData = creditSummaryViewData,
+                    overAllOutStandingDetailViewData = getOverAllSummaryData(
+                        creditSummaryViewData
                     )
-                }
+                )
             }
         }
     }
@@ -139,15 +137,13 @@ class LedgerDetailViewModel @Inject constructor(
 
     private fun processTransactionSummaryResponse(
         result: APIResultEntity<TransactionSummaryEntity?>
-    ) = result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
-        it?.let { entity ->
-            val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
-            viewModelState.update { ledgerDetailViewModelState ->
-                ledgerDetailViewModelState.copy(
-                    isLoading = false,
-                    transactionSummaryViewData = transactionSummaryViewData
-                )
-            }
+    ) = result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) { entity ->
+        val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
+        viewModelState.update { ledgerDetailViewModelState ->
+            ledgerDetailViewModelState.copy(
+                isLoading = false,
+                transactionSummaryViewData = transactionSummaryViewData
+            )
         }
     }
 

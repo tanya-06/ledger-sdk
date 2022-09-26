@@ -75,16 +75,14 @@ class PaymentDetailViewModel @Inject constructor(
     }
 
     private fun processPaymentDetailResponse(result: APIResultEntity<PaymentDetailEntity?>) {
-        result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
-            it?.let { entity ->
-                val paymentDetailViewData = mapper.toPaymentDetailSummaryViewData(entity.summary)
-                viewModelState.update {
-                    it.copy(
-                        isLoading = false,
-                        isSuccess = true,
-                        paymentDetailSummaryViewData = paymentDetailViewData
-                    )
-                }
+        result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) { entity ->
+            val paymentDetailViewData = mapper.toPaymentDetailSummaryViewData(entity.summary)
+            viewModelState.update {
+                it.copy(
+                    isLoading = false,
+                    isSuccess = true,
+                    paymentDetailSummaryViewData = paymentDetailViewData
+                )
             }
         }
     }

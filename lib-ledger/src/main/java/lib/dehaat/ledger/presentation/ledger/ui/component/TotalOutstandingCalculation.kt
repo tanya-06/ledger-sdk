@@ -41,7 +41,6 @@ import lib.dehaat.ledger.resources.TextLightGrey
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
-import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun TotalOutstandingCalculation(
@@ -129,7 +128,7 @@ private fun CalculationWithWeeklyInterest(
                     style = textCaptionCP1(Pumpkin120)
                 )
                 Text(
-                    text = summaryViewData.purchaseAmount.getAmountInRupees(),
+                    text = summaryViewData.purchaseAmount,
                     style = textParagraphT2(Pumpkin120)
                 )
             }
@@ -146,7 +145,7 @@ private fun CalculationWithWeeklyInterest(
                     style = textCaptionCP1(Pumpkin120)
                 )
                 Text(
-                    text = summaryViewData.interestAmount.getAmountInRupees(),
+                    text = summaryViewData.interestAmount,
                     style = textParagraphT2(Pumpkin120)
                 )
             }
@@ -175,7 +174,7 @@ private fun CalculationWithWeeklyInterest(
                 style = textCaptionCP1(SeaGreen110)
             )
             Text(
-                text = summaryViewData.paymentAmount.getAmountInRupees(),
+                text = summaryViewData.paymentAmount,
                 style = textParagraphT2(SeaGreen110)
             )
         }
@@ -228,7 +227,7 @@ private fun CalculationWithoutWeeklyInterest(
                 style = textCaptionCP1(Pumpkin120)
             )
             Text(
-                text = summaryViewData.purchaseAmount.getAmountInRupees(),
+                text = summaryViewData.purchaseAmount,
                 style = textParagraphT2(Pumpkin120)
             )
         }
@@ -250,7 +249,7 @@ private fun CalculationWithoutWeeklyInterest(
                 style = textCaptionCP1(SeaGreen110)
             )
             Text(
-                text = summaryViewData.paymentAmount.getAmountInRupees(),
+                text = summaryViewData.paymentAmount,
                 style = textParagraphT2(SeaGreen110)
             )
         }

@@ -52,16 +52,14 @@ class CreditNoteDetailsViewModel @Inject constructor(
     }
 
     private fun processCreditNoteDetailResponse(result: APIResultEntity<CreditNoteDetailEntity?>) {
-        result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { entity ->
-            entity?.let { creditSummaryEntity ->
-                val viewData = mapper.toCreditNoteDetailsDataEntity(creditSummaryEntity)
-                viewModelState.update {
-                    it.copy(
-                        isLoading = false,
-                        isSuccess = true,
-                        viewData = viewData
-                    )
-                }
+        result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { creditSummaryEntity ->
+            val viewData = mapper.toCreditNoteDetailsDataEntity(creditSummaryEntity)
+            viewModelState.update {
+                it.copy(
+                    isLoading = false,
+                    isSuccess = true,
+                    viewData = viewData
+                )
             }
         }
     }

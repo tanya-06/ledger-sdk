@@ -100,8 +100,7 @@
     <string name="close_list">लिस्ट बंद करें</string>
     <string name="interest_arrears">ब्याज बकाया</string>
     <string name="total_interest_payment">कुल ब्याज भुगतान</string>
-    <string name="till_date">आज तक</string>
-
+    <string name="weekly_interest_till_date">आज तक</string>
     <string name="accessibility_icon">Accessibility Icon</string>
     <string name="to">%s से %s</string>
     <string name="pay_now_text">अभी भुगतान करें</string>

@@ -13,7 +13,6 @@ import lib.dehaat.ledger.framework.model.revamp.invoicelist.ResponseInvoiceList
 import lib.dehaat.ledger.framework.model.revamp.transactions.ResponseTransaction
 import lib.dehaat.ledger.framework.model.transactions.ResponseTransactions
 import lib.dehaat.ledger.framework.model.transactionsummary.ResponseTransactionSummary
-import lib.dehaat.ledger.framework.model.transactionsummary.ResponseTransactionSummaryV2
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -42,7 +41,7 @@ interface LedgerAPIService {
         @Query("partner_id") partnerId: String,
         @Query("from_date") fromDate: Long?,
         @Query("to_date") toDate: Long?
-    ): Response<ResponseTransactionSummaryV2>
+    ): Response<ResponseTransactionSummary>
 
     @GET("/finance/accounting/transactions")
     suspend fun getTransactions(

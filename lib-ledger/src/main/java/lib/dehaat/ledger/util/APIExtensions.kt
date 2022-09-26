@@ -6,14 +6,19 @@ import com.dehaat.androidbase.helper.tryCatchWithReturn
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import lib.dehaat.ledger.framework.model.BaseAPIErrorResponse
+import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.LedgerConstants.API_REQUEST_TRACE_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.IB_REQUEST_IDENTIFIER
 
-fun <D> APIResultEntity<D>.processAPIResponseWithFailureSnackBar(
+fun <D> APIResultEntity<D?>.processAPIResponseWithFailureSnackBar(
     onFailure: (message: String) -> Unit,
     handleSuccess: (data: D) -> Unit
 ) = when (this) {
-    is APIResultEntity.Success -> handleSuccess(this.data)
+    is APIResultEntity.Success -> {
+        this.data?.let {
+            handleSuccess(it)
+        } ?: onFailure(LedgerConstants.EMPTY_API_RESPONSE)
+    }
     is APIResultEntity.Failure.ErrorException -> onFailure(
         getErrorMessage(exceptionError.message ?: "", apiExtraInfo)
     )

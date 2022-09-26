@@ -125,5 +125,5 @@
 
 
     <string name="accessibility_icon">Accessibility Icon</string>
-    <string name="till_date">till date</string>
+    <string name="weekly_interest_till_date">Till today</string>
 </resources>
