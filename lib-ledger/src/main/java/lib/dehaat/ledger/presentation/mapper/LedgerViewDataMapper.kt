@@ -379,7 +379,7 @@ class LedgerViewDataMapper @Inject constructor() {
         )
     }
 
-    fun toInvoiceListViewData(entity: List<InvoiceListEntity>?) = entity?.map {
+    fun toInvoiceListViewData(entity: List<InvoiceListEntity>) = entity.map {
         InvoiceListViewData(
             amount = it.amount,
             date = it.date,

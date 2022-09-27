@@ -14,7 +14,6 @@ import lib.dehaat.ledger.entities.revamp.invoicelist.InvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.entities.transactionsummary.revamp.TransactionSummaryEntityV2
 
 interface ILedgerRepository {
 
@@ -32,7 +31,7 @@ interface ILedgerRepository {
         partnerId: String,
         fromDate: Long?,
         toDate: Long?
-    ): APIResultEntity<TransactionSummaryEntityV2?>
+    ): APIResultEntity<TransactionSummaryEntity?>
 
     suspend fun getTransactions(
         partnerId: String,

@@ -153,8 +153,13 @@ fun TransactionCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val date = if (transactionType is TransactionType.Interest) {
+                    stringResource(id = R.string.weekly_interest_till_date)
+                } else {
+                    transaction.date.toDateMonthYear()
+                }
                 Text(
-                    text = transaction.date.toDateMonthYear(),
+                    text = date,
                     style = textCaptionCP1(Neutral60)
                 )
 

@@ -8,11 +8,18 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import java.io.File
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetInvoiceDetailUseCase
-import lib.dehaat.ledger.domain.usecases.GetInvoiceDownloadUseCase
+import lib.dehaat.ledger.domain.usecases.InvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.revamp.invoice.InvoiceDataEntity
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.LedgerConstants
@@ -20,12 +27,11 @@ import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.revamp.state.invoice.InvoiceDetailsViewModelState
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
+import lib.dehaat.ledger.presentation.model.invoicedownload.DownloadSource
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.invoicedownload.ProgressData
 import lib.dehaat.ledger.util.DownloadFileUtil
-import lib.dehaat.ledger.util.FileUtils
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
-import java.io.File
 
 @HiltViewModel
 class RevampInvoiceDetailViewModel @Inject constructor(
@@ -33,7 +39,7 @@ class RevampInvoiceDetailViewModel @Inject constructor(
     private val getInvoiceDetailUseCase: GetInvoiceDetailUseCase,
     private val mapper: LedgerViewDataMapper,
     private val downloadFileUtil: DownloadFileUtil,
-    private val getInvoiceDownloadUseCase: GetInvoiceDownloadUseCase,
+    private val invoiceDownloadUseCase: InvoiceDownloadUseCase,
 ) : BaseViewModel() {
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
@@ -68,15 +74,13 @@ class RevampInvoiceDetailViewModel @Inject constructor(
     }
 
     private fun processInvoiceDetailResponse(result: APIResultEntity<InvoiceDataEntity?>) {
-        result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { entity ->
-            entity?.let { invoiceDataEntity ->
-                val invoiceDetailsViewData = mapper.toInvoiceDetailsViewData(invoiceDataEntity)
-                viewModelState.update {
-                    it.copy(
-                        isSuccess = true,
-                        invoiceDetailsViewData = invoiceDetailsViewData
-                    )
-                }
+        result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { invoiceDataEntity ->
+            val invoiceDetailsViewData = mapper.toInvoiceDetailsViewData(invoiceDataEntity)
+            viewModelState.update {
+                it.copy(
+                    isSuccess = true,
+                    invoiceDetailsViewData = invoiceDetailsViewData
+                )
             }
         }
     }
@@ -104,58 +108,22 @@ class RevampInvoiceDetailViewModel @Inject constructor(
     ) = callInViewModelScope {
         invoiceDownloadData.partnerId = ledgerId
         val identityId = when (source) {
-            "SAP" -> erpId?.substringAfterLast('$')
-            "ODOO" -> erpId
+            DownloadSource.SAP -> erpId?.substringAfterLast('$')
+            DownloadSource.ODOO -> erpId
             else -> null
         }
         identityId?.let {
-            getDownloadInvoice(it, source, file, invoiceDownloadStatus)
-        }
-    }
-
-    private fun getDownloadInvoice(
-        identityId: String,
-        source: String,
-        file: File,
-        invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
-    ) = callInViewModelScope {
-        updateProgressDialog(true)
-        val result = getInvoiceDownloadUseCase.invoke(identityId, source)
-        result.processAPIResponseWithFailureSnackBar(::sendShowSnackBarEvent) {
-            it?.let { invoiceDownloadDataEntity ->
-                when (invoiceDownloadDataEntity.source) {
-                    "SAP" -> {
-                        updateProgressDialog(false)
-                        FileUtils.getFileFromBase64(
-                            base64 = invoiceDownloadDataEntity.pdf.orEmpty(),
-                            fileType = invoiceDownloadDataEntity.docType,
-                            fileName = identityId,
-                            dir = file
-                        )?.let {
-                            updateDownloadPathAndProgress(file, identityId)
-                            invoiceDownloadStatus(invoiceDownloadData)
-                        } ?: kotlin.run {
-                            invoiceDownloadData.isFailed = true
-                            invoiceDownloadStatus(invoiceDownloadData)
-                        }
-                    }
-                    "ODOO" -> {
-                        updateProgressDialog(false)
-                        invoiceDownloadDataEntity.fileName
-                            ?: return@processAPIResponseWithFailureSnackBar
-                        downloadFile(
-                            invoiceDownloadDataEntity.fileName,
-                            file,
-                            invoiceDownloadStatus
-                        )
-                    }
-                    else -> {
-                        invoiceDownloadData.isFailed = true
-                        invoiceDownloadStatus(invoiceDownloadData)
-                        updateProgressDialog(false)
-                    }
-                }
-            }
+            invoiceDownloadUseCase.getDownloadInvoice(
+                it,
+                source,
+                file,
+                invoiceDownloadData,
+                invoiceDownloadStatus,
+                ::updateProgressDialog,
+                ::sendShowSnackBarEvent,
+                ::updateDownloadPathAndProgress,
+                ::downloadFile
+            )
         }
     }
 

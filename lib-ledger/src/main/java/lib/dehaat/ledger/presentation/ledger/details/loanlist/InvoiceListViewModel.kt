@@ -97,7 +97,7 @@ class InvoiceListViewModel @Inject constructor(
         val viewData = mapper.toInvoiceListViewData(entity)
         val data =
             viewModelState.value.interestApproachedInvoices?.toMutableList() ?: mutableListOf()
-        viewData?.let { list -> data.addAll(list) }
+        data.addAll(viewData)
         viewModelState.update {
             it.copy(
                 interestApproachedInvoices = data,
@@ -106,12 +106,10 @@ class InvoiceListViewModel @Inject constructor(
                 isLoading = false
             )
         }
-        viewData?.let {
-            if (it.size == 10) {
-                approachedOffset += 1
-            } else {
-                viewModelState.update { state -> state.copy(interestApproachedExhausted = true) }
-            }
+        if (viewData.size == 10) {
+            approachedOffset += 1
+        } else {
+            viewModelState.update { state -> state.copy(interestApproachedExhausted = true) }
         }
     }
 
@@ -121,7 +119,7 @@ class InvoiceListViewModel @Inject constructor(
         val viewData = mapper.toInvoiceListViewData(entity)
         val data =
             viewModelState.value.interestApproachingInvoices?.toMutableList() ?: mutableListOf()
-        viewData?.let { list -> data.addAll(list) }
+        data.addAll(viewData)
         viewModelState.update {
             it.copy(
                 interestApproachingInvoices = data,
@@ -130,12 +128,10 @@ class InvoiceListViewModel @Inject constructor(
                 isLoading = false
             )
         }
-        viewData?.let {
-            if (it.size == 10) {
-                approachingOffset += 1
-            } else {
-                viewModelState.update { state -> state.copy(interestApproachingExhausted = true) }
-            }
+        if (viewData.size == 10) {
+            approachingOffset += 1
+        } else {
+            viewModelState.update { state -> state.copy(interestApproachingExhausted = true) }
         }
     }
 

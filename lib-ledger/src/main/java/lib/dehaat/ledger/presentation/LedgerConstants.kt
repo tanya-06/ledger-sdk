@@ -7,4 +7,5 @@ object LedgerConstants {
     const val KEY_SOURCE = "KEY_SOURCE"
     const val API_REQUEST_TRACE_ID = "api-request-trace-id"
     const val IB_REQUEST_IDENTIFIER = "IB-Request-Identifier"
+    const val EMPTY_API_RESPONSE = "Null / EMPTY API response"
 }

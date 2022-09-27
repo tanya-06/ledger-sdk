@@ -17,13 +17,11 @@ import lib.dehaat.ledger.domain.usecases.GetCreditSummaryUseCase
 import lib.dehaat.ledger.domain.usecases.GetTransactionSummaryUseCase
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.entities.transactionsummary.revamp.TransactionSummaryEntityV2
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.LedgerViewModelState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.TransactionViewModelState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.availablecreditlimit.AvailableCreditLimitViewState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.outstandingcreditlimit.OutstandingCreditLimitViewState
-import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.mapper.ViewDataMapper
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.presentation.model.transactions.toStartAndEndDates
@@ -90,16 +88,14 @@ class RevampLedgerViewModel @Inject constructor(
     }
 
     private fun processTransactionSummaryResponse(
-        result: APIResultEntity<TransactionSummaryEntityV2?>
-    ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) {
-        it?.let { entity ->
-            val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
-            transactionsViewModelState.update { ledgerDetailViewModelState ->
-                ledgerDetailViewModelState.copy(
-                    isLoading = false,
-                    summary = transactionSummaryViewData
-                )
-            }
+        result: APIResultEntity<TransactionSummaryEntity?>
+    ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { entity ->
+        val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
+        transactionsViewModelState.update { ledgerDetailViewModelState ->
+            ledgerDetailViewModelState.copy(
+                isLoading = false,
+                summary = transactionSummaryViewData
+            )
         }
     }
 
@@ -114,19 +110,17 @@ class RevampLedgerViewModel @Inject constructor(
 
     private fun processCreditSummaryResponse(
         result: APIResultEntity<CreditSummaryEntityV2?>
-    ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) {
-        it?.let { creditSummaryEntity ->
-            val creditSummaryViewData = mapper.toCreditSummaryViewData(creditSummaryEntity)
-            availableCreditLimitViewState =
-                mapper.toAvailableCreditLimitViewState(creditSummaryEntity)
-            outstandingCreditLimitViewState =
-                mapper.toOutstandingCreditLimitViewState(creditSummaryEntity)
-            viewModelState.update { state ->
-                state.copy(
-                    summaryViewData = creditSummaryViewData,
-                    isSuccess = true
-                )
-            }
+    ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { creditSummaryEntity ->
+        val creditSummaryViewData = mapper.toCreditSummaryViewData(creditSummaryEntity)
+        availableCreditLimitViewState =
+            mapper.toAvailableCreditLimitViewState(creditSummaryEntity)
+        outstandingCreditLimitViewState =
+            mapper.toOutstandingCreditLimitViewState(creditSummaryEntity)
+        viewModelState.update { state ->
+            state.copy(
+                summaryViewData = creditSummaryViewData,
+                isSuccess = true
+            )
         }
     }
 
