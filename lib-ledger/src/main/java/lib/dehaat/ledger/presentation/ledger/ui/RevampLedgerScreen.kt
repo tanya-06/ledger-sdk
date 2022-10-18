@@ -92,15 +92,17 @@ fun RevampLedgerScreen(
         scaffoldState = scaffoldState,
         backgroundColor = Background,
         bottomBar = {
-            AnimatedVisibility(
-                visible = outstandingCalculationVisibility,
-                enter = expandVertically(animationSpec = tween(500)),
-                exit = shrinkVertically(animationSpec = tween(500))
-            ) {
-                TotalOutstandingCalculation(
-                    viewModel,
-                    filter
-                )
+            if (uiState.summaryViewData?.externalFinancierSupported == false) {
+                AnimatedVisibility(
+                    visible = outstandingCalculationVisibility,
+                    enter = expandVertically(animationSpec = tween(500)),
+                    exit = shrinkVertically(animationSpec = tween(500))
+                ) {
+                    TotalOutstandingCalculation(
+                        viewModel,
+                        filter
+                    )
+                }
             }
         }
     ) {

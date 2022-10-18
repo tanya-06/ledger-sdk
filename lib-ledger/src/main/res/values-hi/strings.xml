@@ -57,7 +57,7 @@
     <string name="payment_date">भुगतान तिथि</string>
     <string name="payment_method">भुगतान विधि</string>
     <string name="reference_id">रेफ़्रेन्स आई.डी.</string>
-    <string name="interest_amount_ledger">ब्याज राशि</string>
+    <string name="interest_amount_ledger">ब्याज</string>
     <string name="daily_interest_details">दैनिक ब्याज विवरण</string>
     <string name="financing_fee">फ़ायनैन्सिंग फ़ी</string>
     <string name="invoice_list">इनवॉइस लिस्ट</string>
@@ -81,7 +81,7 @@
     <string name="pay_till_date">%s तक भुगतान करें</string>
     <string name="your_advance_amount">%s आपका एडवांस राशि है</string>
     <string name="credit_note_ledger">क्रेडिट नोट: %s</string>
-    <string name="payment">भुगतान</string>
+    <string name="ledger_payment">भुगतान</string>
     <string name="till_today">%s से आज तक</string>
     <string name="interest_running">%s दिन से ब्याज चल रहा है</string>
     <string name="interest_starting">%s दिन में ब्याज शुरू होगा</string>

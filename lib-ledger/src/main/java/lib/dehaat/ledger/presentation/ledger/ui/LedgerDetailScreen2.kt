@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,7 +73,8 @@ fun LedgerDetailScreen2(
         initialValue = ModalBottomSheetValue.Hidden
     )
 
-    val bottomBarVisibility = rememberSaveable { mutableStateOf(true) }
+    var bottomBarVisibility by rememberSaveable { mutableStateOf(true) }
+
     if (uiState.isFilteringWithRange) {
         RangeFilterDialog(
             ledgerColors = ledgerColors,
@@ -106,12 +108,14 @@ fun LedgerDetailScreen2(
         onBackPress = onBackPress,
         scaffoldState = scaffoldState,
         bottomBar = {
-            AnimatedVisibility(
-                visible = bottomBarVisibility.value,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                TransactionSummary(viewModel, ledgerColors)
+            if (uiState.creditSummaryViewData?.credit?.externalFinancierSupported == false) {
+                AnimatedVisibility(
+                    visible = bottomBarVisibility,
+                    enter = expandVertically(),
+                    exit = shrinkVertically()
+                ) {
+                    TransactionSummary(viewModel, ledgerColors)
+                }
             }
         }
     ) {
@@ -179,7 +183,7 @@ fun LedgerDetailScreen2(
                         val pagerState = rememberPagerState()
                         LaunchedEffect(key1 = pagerState) {
                             snapshotFlow { pagerState.currentPage }.collect { currentPage ->
-                                bottomBarVisibility.value = currentPage == 0
+                                bottomBarVisibility = currentPage == 0
                             }
                         }
                         Column(modifier = Modifier.background(ledgerColors.TransactionAndCreditScreenBGColor)) {
