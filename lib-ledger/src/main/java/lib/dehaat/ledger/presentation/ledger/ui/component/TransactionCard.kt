@@ -198,7 +198,7 @@ sealed class TransactionType(@StringRes val name: Int, val type: String) {
     )
 
     data class Payment(
-        val paymentName: Int = R.string.payment,
+        val paymentName: Int = R.string.ledger_payment,
         val paymentType: String = "PAYMENT"
     ) : TransactionType(
         name = paymentName, type = paymentType

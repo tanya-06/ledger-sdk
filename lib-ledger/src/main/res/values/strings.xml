@@ -77,7 +77,7 @@
     <string name="payment_date">Payment Date</string>
     <string name="payment_method">Payment Method</string>
     <string name="reference_id">Reference I.D.</string>
-    <string name="interest_amount_ledger">Interest Amount</string>
+    <string name="interest_amount_ledger">Interest</string>
     <string name="daily_interest_details">Daily Interest Details</string>
     <string name="financing_fee">Financing Fee</string>
     <string name="invoice_list">Invoice List</string>
@@ -101,7 +101,7 @@
     <string name="pay_till_date">Pay by %s</string>
     <string name="your_advance_amount">%s is your advance amount</string>
     <string name="credit_note_ledger">Credit Note: %s</string>
-    <string name="payment">Payment</string>
+    <string name="ledger_payment">Payment</string>
     <string name="till_today">%s till today</string>
     <string name="interest_running">Interest already charged from %s days</string>
     <string name="interest_starting">Interest going to be started in %s days</string>

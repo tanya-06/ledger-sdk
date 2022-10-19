@@ -254,8 +254,7 @@ fun LedgerNavigation(
         ) {
             val interestViewData = it.arguments?.let { args -> InterestDetailScreenArgs(args) }
             InterestDetailScreen(
-                ledgerColors = ledgerColors,
-                interestViewData = interestViewData?.getArgs()
+	            interestViewData = interestViewData?.getArgs()
             ) {
                 navController.popBackStack()
             }

@@ -20,8 +20,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.themes.DBAColors
-import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.resources.Background
@@ -45,14 +43,12 @@ import lib.dehaat.ledger.util.getAmountInRupees
 @Composable
 private fun InterestDetailScreenPreview() = LedgerTheme {
     InterestDetailScreen(
-        ledgerColors = DBAColors(),
         interestViewData = null
     ) {}
 }
 
 @Composable
 fun InterestDetailScreen(
-    ledgerColors: LedgerColors,
     interestViewData: InterestViewData?,
     onBackPress: () -> Unit
 ) {

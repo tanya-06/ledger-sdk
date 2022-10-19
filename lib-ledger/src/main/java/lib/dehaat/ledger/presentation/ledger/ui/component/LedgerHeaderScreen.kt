@@ -31,7 +31,6 @@ import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textHeadingH3
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
 import lib.dehaat.ledger.resources.textParagraphT2
-import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.getAmountInRupeesWithoutDecimal
 
 @Preview(
@@ -100,7 +99,9 @@ fun LedgerHeaderScreen(
             )
         )
 
-        ViewDetails(onTotalOutstandingDetailsClick)
+        if (summaryViewData?.externalFinancierSupported == false) {
+            ViewDetails(onTotalOutstandingDetailsClick)
+        }
     }
 
     if (totalOutstandingAmount < 0) {
