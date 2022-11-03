@@ -45,7 +45,7 @@ import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
-import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.InvoiceInformationChip
+import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.InformationChip
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.InvoiceListViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.invoicelist.InvoiceLoadingState
@@ -379,7 +379,7 @@ private fun InvoiceWithAccumulatedInterest(
                     style = textCaptionCP1(Neutral60)
                 )
 
-                InvoiceInformationChip(
+                InformationChip(
                     title = stringResource(
                         id = R.string.invoice_amount_rs,
                         invoiceListViewData.amount.getAmountInRupees()
@@ -443,7 +443,7 @@ fun InvoiceWithUpcomingInterest(
                     style = textCaptionCP1(Neutral60)
                 )
 
-                InvoiceInformationChip(
+                InformationChip(
                     title = invoiceListViewData.interestDays?.let {
                         if (it == 0) {
                             stringResource(id = R.string.interest_charged_from_tomorrow)

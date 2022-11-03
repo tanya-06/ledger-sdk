@@ -45,6 +45,7 @@ import lib.dehaat.ledger.presentation.model.revamp.invoice.SummaryViewDataV2
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.presentation.model.transactionsummary.TransactionSummaryViewData
+import lib.dehaat.ledger.util.getAmountInRupees
 
 typealias ViewDataPaymentDetailSummary = lib.dehaat.ledger.presentation.model.detail.payment.PaymentDetailSummaryViewData
 typealias EntityPaymentDetailSummary = lib.dehaat.ledger.entities.detail.payment.SummaryEntity
@@ -62,6 +63,9 @@ class LedgerViewDataMapper @Inject constructor() {
             credit = toCreditSummaryCreditViewData(credit),
             overdue = toCreditSummaryOverDueViewData(overdue),
             info = toCreditSummaryInfoViewData(info),
+            isOrderingBlocked = (overdue.totalOverdueAmount.toDoubleOrNull() ?: 0.0).isGreaterThanZero(),
+            isCreditLimitExhausted = (credit.totalAvailableCreditLimit.toDoubleOrNull() ?: 0.0).isSmallerThanZero(),
+            isOverdueLimitExhausted = (overdue.totalOverdueAmount.toDoubleOrNull() ?: 0.0).isGreaterThanZero()
         )
     }
 
@@ -360,10 +364,20 @@ class LedgerViewDataMapper @Inject constructor() {
     private fun toCreditSummaryOverDueViewData(data: OverdueEntity) = with(data) {
         OverdueViewData(
             totalOverdueLimit = totalOverdueLimit,
-            totalOverdueAmount = totalOverdueAmount,
+            totalOverdueAmount = getTotalOverdueAmount(data),
             minPaymentAmount = minPaymentAmount,
             minPaymentDueDate = minPaymentDueDate
         )
+    }
+
+    private fun getTotalOverdueAmount(
+        data: OverdueEntity
+    ) = data.totalOverdueAmount.toDoubleOrNull()?.let {
+        if (it.isGreaterThanZero()) {
+            data.totalOverdueAmount.getAmountInRupees()
+        } else {
+            null
+        }
     }
 
     private fun toCreditSummaryCreditViewData(data: CreditEntity) = with(data) {
@@ -394,4 +408,8 @@ class LedgerViewDataMapper @Inject constructor() {
             interestDays = it.interestDays
         )
     }
+
+    private fun Double.isGreaterThanZero() = this > 0.0
+
+    private fun Double.isSmallerThanZero() = this < 0.0
 }
