@@ -42,7 +42,7 @@ object DummyDataSource {
     private val overdueViewData by lazy {
         OverdueViewData(
             totalOverdueLimit = "1000",
-            totalOverdueAmount = "1000",
+            totalOverdueAmount = "₹ 450",
             minPaymentAmount = "1000",
             minPaymentDueDate = 78
         )
@@ -70,7 +70,10 @@ object DummyDataSource {
         CreditSummaryViewData(
             creditViewData,
             overdueViewData,
-            infoViewData
+            infoViewData,
+            isOrderingBlocked = true,
+            isCreditLimitExhausted = true,
+            isOverdueLimitExhausted = true
         )
     }
     val creditLineViewData by lazy {

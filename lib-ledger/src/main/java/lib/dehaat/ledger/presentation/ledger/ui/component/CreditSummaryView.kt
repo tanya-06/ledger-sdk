@@ -3,14 +3,18 @@ package lib.dehaat.ledger.presentation.ledger.ui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.AIMSColors
@@ -18,6 +22,7 @@ import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.PayNowButton
 import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.PaymentOptionsButton
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
+import lib.dehaat.ledger.resources.Error90
 
 @Preview(
     name = "Credit Summary AIMS",
@@ -74,6 +79,17 @@ fun CreditSummaryView(
             )
             .fillMaxWidth()
     ) {
+
+        if (creditSummaryData?.isOrderingBlocked == true) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Error90)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                text = stringResource(R.string.ordering_is_blocked),
+                color = Color.White
+            )
+        }
 
         HeaderTotalOutstanding(
             creditSummaryData = creditSummaryData,

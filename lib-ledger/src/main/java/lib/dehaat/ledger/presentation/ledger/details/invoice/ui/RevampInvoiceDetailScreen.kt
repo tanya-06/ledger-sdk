@@ -137,7 +137,7 @@ private fun InvoiceDetailScreen(
 
             VerticalSpacer(height = 24.dp)
 
-            InvoiceInformationChip(
+            InformationChip(
                 title = stringResource(id = R.string.full_payment_complete),
                 backgroundColor = Success10,
                 textColor = Neutral90

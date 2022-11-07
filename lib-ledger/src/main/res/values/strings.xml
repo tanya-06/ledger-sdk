@@ -122,8 +122,12 @@
     <string name="total_interest_payment">Total Interest Payment</string>
     <string name="information_">Info:</string>
     <string name="weekly_interest_information">Interest charged up to 30 days on all your invoices will be returned as credit note.</string>
+    <string name="includes_overdue_amount">Includes overdue amount of</string>
 
 
     <string name="accessibility_icon">Accessibility Icon</string>
     <string name="weekly_interest_till_date">Till today</string>
+    <string name="credit_limit_exhausted">Credit Limit Exhausted</string>
+    <string name="overdue_limit_exhausted">Overdue limit exhausted</string>
+    <string name="ordering_is_blocked">Your ordering is blocked. Pay immediately</string>
 </resources>
