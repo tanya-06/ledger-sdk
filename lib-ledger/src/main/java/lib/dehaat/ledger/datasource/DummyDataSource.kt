@@ -115,7 +115,8 @@ object DummyDataSource {
             locusId = "locusId",
             creditNoteReason = "creditNoteReason",
             paymentMode = "paymentMode",
-            source = "SAP"
+            source = "SAP",
+            unrealizedPayment = false
         )
     }
 
@@ -132,7 +133,8 @@ object DummyDataSource {
         paymentMode = "CASH",
         source = "SAP",
         sourceNo = "",
-        type = "INVOICE"
+        type = "INVOICE",
+        unrealizedPayment = false
     )
 
     val paymentDetailSummaryViewData = PaymentDetailSummaryViewData(

@@ -14,4 +14,6 @@
     <string name="information">माहिती</string>
     <string name="okay">ओके</string>
     <string name="outstanding">थकबाकी</string>
+    <string name="payment_will_be_processed_within_1_2_days">Payment will be processed within 1–2 days</string>
+    <string name="under_process">Under Process</string>
 </resources>

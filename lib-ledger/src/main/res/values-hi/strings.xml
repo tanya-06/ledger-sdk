@@ -121,4 +121,6 @@
     <string name="tech_problem">तकनीकी समस्या आई, कुछ देर बाद पुन: प्रयास करें</string>
     <string name="invoice_download_success">चालान सफलतापूर्वक डाउनलोड किया गया</string>
     <string name="invoice_download_in_progress">चालान डाउनलोड हो रहा है</string>
+    <string name="payment_will_be_processed_within_1_2_days">आपका भुगतान १-२ दिन में प्रॉसेस हो जाएगा</string>
+    <string name="under_process">अंडर प्रॉसेस</string>
 </resources>

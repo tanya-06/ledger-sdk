@@ -2,11 +2,7 @@ package lib.dehaat.ledger.presentation.ledger.details.payments.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,13 +25,7 @@ import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
 import lib.dehaat.ledger.presentation.model.detail.payment.PaymentDetailSummaryViewData
-import lib.dehaat.ledger.resources.Background
-import lib.dehaat.ledger.resources.LedgerTheme
-import lib.dehaat.ledger.resources.Neutral80
-import lib.dehaat.ledger.resources.Neutral90
-import lib.dehaat.ledger.resources.textHeadingH3
-import lib.dehaat.ledger.resources.textParagraphT1Highlight
-import lib.dehaat.ledger.resources.textParagraphT2Highlight
+import lib.dehaat.ledger.resources.*
 import lib.dehaat.ledger.util.getAmountInRupees
 
 @Preview(
@@ -64,7 +54,7 @@ fun RevampPaymentDetailScreen(
     ) {
         when (uiState.state) {
             UIState.SUCCESS -> {
-                PaymentDetails(paymentSummary)
+                PaymentDetails(paymentSummary, viewModel.unrealizedPayment)
             }
             UIState.LOADING -> {
                 ShowProgressDialog(ledgerColors) {
@@ -80,7 +70,8 @@ fun RevampPaymentDetailScreen(
 
 @Composable
 private fun PaymentDetails(
-    paymentSummary: PaymentDetailSummaryViewData?
+    paymentSummary: PaymentDetailSummaryViewData?,
+    unrealizedPayment: Boolean? = false
 ) = Column(
     modifier = Modifier.fillMaxWidth()
 ) {
@@ -168,6 +159,24 @@ private fun PaymentDetails(
                 text = paymentSummary?.referenceId ?: "",
                 style = textParagraphT2Highlight(Neutral80)
             )
+        }
+        VerticalSpacer(height = 16.dp)
+        if (unrealizedPayment == true) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = stringResource(id = R.string.information),
+                    style = textParagraphT2Highlight(Neutral100)
+                )
+                Text(
+                    text = stringResource(R.string.payment_will_be_processed_within_1_2_days),
+                    style = textParagraphT2Highlight(Neutral100),
+                    modifier = Modifier.padding(start = 20.dp)
+
+                )
+            }
         }
     }
 }

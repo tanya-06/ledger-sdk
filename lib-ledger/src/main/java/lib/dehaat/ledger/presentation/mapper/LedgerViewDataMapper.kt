@@ -1,7 +1,6 @@
 package lib.dehaat.ledger.presentation.mapper
 
 import com.dehaat.androidbase.helper.isNotNull
-import javax.inject.Inject
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
@@ -37,15 +36,12 @@ import lib.dehaat.ledger.presentation.model.detail.invoice.OverdueInfoViewData
 import lib.dehaat.ledger.presentation.model.invoicelist.InvoiceListViewData
 import lib.dehaat.ledger.presentation.model.revamp.creditnote.CreditNoteDetailsViewData
 import lib.dehaat.ledger.presentation.model.revamp.creditnote.CreditNoteSummaryViewData
-import lib.dehaat.ledger.presentation.model.revamp.invoice.CreditNoteViewData
-import lib.dehaat.ledger.presentation.model.revamp.invoice.InvoiceDetailsViewData
-import lib.dehaat.ledger.presentation.model.revamp.invoice.ProductViewDataV2
-import lib.dehaat.ledger.presentation.model.revamp.invoice.ProductsInfoViewDataV2
-import lib.dehaat.ledger.presentation.model.revamp.invoice.SummaryViewDataV2
+import lib.dehaat.ledger.presentation.model.revamp.invoice.*
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.presentation.model.transactionsummary.TransactionSummaryViewData
 import lib.dehaat.ledger.util.getAmountInRupees
+import javax.inject.Inject
 
 typealias ViewDataPaymentDetailSummary = lib.dehaat.ledger.presentation.model.detail.payment.PaymentDetailSummaryViewData
 typealias EntityPaymentDetailSummary = lib.dehaat.ledger.entities.detail.payment.SummaryEntity
@@ -63,9 +59,12 @@ class LedgerViewDataMapper @Inject constructor() {
             credit = toCreditSummaryCreditViewData(credit),
             overdue = toCreditSummaryOverDueViewData(overdue),
             info = toCreditSummaryInfoViewData(info),
-            isOrderingBlocked = (overdue.totalOverdueAmount.toDoubleOrNull() ?: 0.0).isGreaterThanZero(),
-            isCreditLimitExhausted = (credit.totalAvailableCreditLimit.toDoubleOrNull() ?: 0.0).isSmallerThanZero(),
-            isOverdueLimitExhausted = (overdue.totalOverdueAmount.toDoubleOrNull() ?: 0.0).isGreaterThanZero()
+            isOrderingBlocked = (overdue.totalOverdueAmount.toDoubleOrNull()
+                ?: 0.0).isGreaterThanZero(),
+            isCreditLimitExhausted = (credit.totalAvailableCreditLimit.toDoubleOrNull()
+                ?: 0.0).isSmallerThanZero(),
+            isOverdueLimitExhausted = (overdue.totalOverdueAmount.toDoubleOrNull()
+                ?: 0.0).isGreaterThanZero()
         )
     }
 
@@ -109,7 +108,8 @@ class LedgerViewDataMapper @Inject constructor() {
             paymentMode = it.paymentMode,
             source = it.source,
             sourceNo = it.sourceNo,
-            type = it.type
+            type = it.type,
+            unrealizedPayment = it.unrealizedPayment
         )
     }
 
@@ -334,7 +334,8 @@ class LedgerViewDataMapper @Inject constructor() {
             locusId = locusId,
             creditNoteReason = creditNoteReason,
             paymentMode = paymentMode,
-            source = source
+            source = source,
+            unrealizedPayment = unrealizedPayment
         )
     }
 

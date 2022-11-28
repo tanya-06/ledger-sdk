@@ -13,5 +13,6 @@ data class TransactionEntityV2(
     val paymentMode: String?,
     val source: String,
     val sourceNo: String?,
-    val type: String
+    val type: String,
+    val unrealizedPayment: Boolean?
 )

@@ -9,5 +9,6 @@ data class TransactionEntity(
     val locusId: String?,
     val creditNoteReason: String?,
     val paymentMode: String?,
-    val source: String
+    val source: String,
+    val unrealizedPayment: Boolean?,
 )

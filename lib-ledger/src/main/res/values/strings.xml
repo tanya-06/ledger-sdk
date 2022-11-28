@@ -130,4 +130,6 @@
     <string name="credit_limit_exhausted">Credit Limit Exhausted</string>
     <string name="overdue_limit_exhausted">Overdue limit exhausted</string>
     <string name="ordering_is_blocked">Your ordering is blocked. Pay immediately</string>
+    <string name="payment_will_be_processed_within_1_2_days">Payment will be processed within 1–2 days</string>
+    <string name="under_process">Under Process</string>
 </resources>

@@ -5,14 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -29,14 +22,7 @@ import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
-import lib.dehaat.ledger.resources.LedgerTheme
-import lib.dehaat.ledger.resources.Neutral60
-import lib.dehaat.ledger.resources.Neutral80
-import lib.dehaat.ledger.resources.Pumpkin120
-import lib.dehaat.ledger.resources.SeaGreen110
-import lib.dehaat.ledger.resources.Warning10
-import lib.dehaat.ledger.resources.textCaptionCP1
-import lib.dehaat.ledger.resources.textParagraphT1Highlight
+import lib.dehaat.ledger.resources.*
 import lib.dehaat.ledger.util.getAmountInRupees
 
 @Preview(
@@ -174,6 +160,16 @@ fun TransactionCard(
                         ),
                         style = textCaptionCP1(Neutral80)
                     )
+                }
+                transaction.unrealizedPayment?.let {
+                    if (it)
+                        Text(
+                            modifier = Modifier
+                                .background(color = Neutral10, RoundedCornerShape(8.dp))
+                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                            text = stringResource(R.string.under_process),
+                            style = textCaptionCP1(Neutral70)
+                        )
                 }
             }
         }

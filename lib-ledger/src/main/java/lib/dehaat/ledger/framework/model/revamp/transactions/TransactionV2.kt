@@ -31,5 +31,7 @@ data class TransactionV2(
     @Json(name = "source_no")
     val sourceNo: String?,
     @Json(name = "type")
-    val type: String
+    val type: String,
+    @Json(name = "unrealized_payment")
+    val unrealizedPayment: Boolean?
 )
