@@ -64,7 +64,8 @@ object DummyDataSource {
         totalPurchaseAmount = "",
         undeliveredInvoiceAmount = "",
         totalInterestOutstanding = "",
-        totalInterestPaid = ""
+        totalInterestPaid = "",
+        minimumRepaymentAmount = ""
     )
     val creditSummaryViewData by lazy {
         CreditSummaryViewData(

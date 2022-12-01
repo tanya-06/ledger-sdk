@@ -160,20 +160,29 @@ private fun PaymentDetails(
                 style = textParagraphT2Highlight(Neutral80)
             )
         }
+    }
+    if (unrealizedPayment == true) {
         VerticalSpacer(height = 16.dp)
-        if (unrealizedPayment == true) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(horizontal = 20.dp)
+                .padding(top = 12.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(id = R.string.information),
+                    text = stringResource(id = R.string.information_),
                     style = textParagraphT2Highlight(Neutral100)
                 )
                 Text(
                     text = stringResource(R.string.payment_will_be_processed_within_1_2_days),
                     style = textParagraphT2Highlight(Neutral100),
-                    modifier = Modifier.padding(start = 20.dp)
+                    modifier = Modifier.padding(start = 10.dp)
 
                 )
             }

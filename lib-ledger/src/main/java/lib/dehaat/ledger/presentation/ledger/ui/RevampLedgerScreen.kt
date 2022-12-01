@@ -9,20 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
@@ -38,8 +27,7 @@ import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.FilterScreen
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
-import lib.dehaat.ledger.presentation.ledger.creditlimit.AvailableCreditLimitScreen
-import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.AvailableCreditLimitScreenArgs
+import lib.dehaat.ledger.presentation.ledger.creditlimit.AvailableCreditLimitNudgeScreen
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.InvoiceListViewModel
 import lib.dehaat.ledger.presentation.ledger.details.totaloutstanding.TotalOutstandingScreenArgs
 import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
@@ -141,6 +129,11 @@ fun RevampLedgerScreen(
                         state = nestedScrollViewState,
                         header = {
                             Column {
+                                uiState.summaryViewData?.let {
+                                    if (it.totalAvailableCreditLimit.toDouble() < 0.0)
+                                        AvailableCreditLimitNudgeScreen(it.minimumRepaymentAmount.getAmountInRupeesWithoutDecimal())
+                                    SpaceMedium()
+                                }
                                 LedgerHeaderScreen(
                                     summaryViewData = uiState.summaryViewData,
                                     saveInterest = true,
@@ -162,18 +155,6 @@ fun RevampLedgerScreen(
                                     },
                                     onOtherPaymentModeClick = onOtherPaymentModeClick
                                 )
-
-                                SpaceMedium()
-
-                                uiState.summaryViewData?.totalAvailableCreditLimit?.let { amount ->
-                                    AvailableCreditLimitScreen(amount.getAmountInRupeesWithoutDecimal()) {
-                                        detailPageNavigationCallback.navigateToAvailableCreditLimitDetailPage(
-                                            AvailableCreditLimitScreenArgs.getBundle(viewModel.availableCreditLimitViewState)
-                                        )
-                                    }
-                                }
-
-                                SpaceMedium()
                             }
                         },
                         content = {

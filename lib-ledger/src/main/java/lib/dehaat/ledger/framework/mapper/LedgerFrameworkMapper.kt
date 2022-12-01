@@ -84,7 +84,8 @@ class LedgerFrameworkMapper @Inject constructor() {
             totalPurchaseAmount,
             undeliveredInvoiceAmount,
             totalInterestOutstanding.orEmpty(),
-            totalInterestPaid.orEmpty()
+            totalInterestPaid.orEmpty(),
+            minimumRepaymentAmount.orEmpty()
         )
     }
 

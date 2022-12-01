@@ -18,4 +18,5 @@ data class SummaryViewData(
     val undeliveredInvoiceAmount: String,
     val totalInterestOutstanding: String,
     val totalInterestPaid: String,
+    val minimumRepaymentAmount: String,
 )

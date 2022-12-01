@@ -17,5 +17,6 @@ data class CreditSummaryEntityV2(
     val totalPurchaseAmount: String,
     val undeliveredInvoiceAmount: String,
     val totalInterestOutstanding: String,
-    val totalInterestPaid: String
+    val totalInterestPaid: String,
+    val minimumRepaymentAmount: String
 )
