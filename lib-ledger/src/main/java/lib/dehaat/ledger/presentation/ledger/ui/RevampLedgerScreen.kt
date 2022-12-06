@@ -131,8 +131,10 @@ fun RevampLedgerScreen(
                             Column {
                                 uiState.summaryViewData?.let {
                                     if (it.totalAvailableCreditLimit.toDouble() < 0.0)
-                                        AvailableCreditLimitNudgeScreen(it.minimumRepaymentAmount.getAmountInRupeesWithoutDecimal())
-                                    SpaceMedium()
+                                        it.minimumRepaymentAmount?.let {
+                                            AvailableCreditLimitNudgeScreen(it.getAmountInRupeesWithoutDecimal())
+                                            SpaceMedium()
+                                        }
                                 }
                                 LedgerHeaderScreen(
                                     summaryViewData = uiState.summaryViewData,
