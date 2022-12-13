@@ -19,4 +19,7 @@ data class SummaryViewData(
     val totalInterestOutstanding: String,
     val totalInterestPaid: String,
     val minimumRepaymentAmount: String?,
+    val forwardOverdueAmount: String,
+    val forwardOverdueDate: String,
+    val isOrderingBlocked: Boolean
 )

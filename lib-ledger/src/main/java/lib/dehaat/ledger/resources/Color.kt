@@ -15,6 +15,7 @@ val BlueGreen10 = Color(0XFFE5FAFF)
 
 val BorderColor = Color(0XFFE0E0E0)
 
+val Error110 = Color(0XFFA6000E)
 val Error100 = Color(0XFFBF0010)
 val Error90 = Color(0XFFD91625)
 val Error10 = Color(0xFFFFEEEF)
@@ -36,6 +37,7 @@ val Neutral100 = Color(0XFF101010)
 val Pumpkin10 = Color(0XFFFFEEE5)
 val Pumpkin120 = Color(0XFFBF4B0A)
 
+val Primary10 = Color(0XFFEAFBF1)
 val Primary20 = Color(0XFFCCEFDB)
 val Primary80 = Color(0XFF1F9954)
 
@@ -54,3 +56,6 @@ val Background = Color(0XFFE9E6E6)
 val ColorFFEBEC = Color(0XFFFFEBEC)
 val Color3985BF = Color(0xff3985BF)
 val Color3BC6CA = Color(0xff3BC6CA)
+
+val ColorBF4B0A = Color(0XFFBF4B0A)
+val ColorFFF5F5 = Color(0XFFFFF5F5)

@@ -18,5 +18,9 @@ data class CreditSummaryEntityV2(
     val undeliveredInvoiceAmount: String,
     val totalInterestOutstanding: String,
     val totalInterestPaid: String,
-    val minimumRepaymentAmount: String?
+    val minimumRepaymentAmount: String?,
+    val overdueAmount: String,
+    val totalOverdueLimit: String,
+    val forwardOverdueAmount: String,
+    val forwardOverdueDate: Long
 )

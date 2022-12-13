@@ -54,7 +54,7 @@ object DummyDataSource {
         interestTillDate = "40000",
         minInterestAmountDue = "",
         minInterestOutstandingDate = 7,
-        minOutstandingAmountDue = "",
+        minOutstandingAmountDue = "100",
         paymentAmountTillDate = "",
         permanentCreditLimit = "",
         purchaseAmountTillDate = "",
@@ -65,8 +65,12 @@ object DummyDataSource {
         undeliveredInvoiceAmount = "",
         totalInterestOutstanding = "",
         totalInterestPaid = "",
-        minimumRepaymentAmount = ""
+        minimumRepaymentAmount = "",
+        forwardOverdueAmount = "1004",
+        forwardOverdueDate = "26/10/2012",
+        isOrderingBlocked = true
     )
+
     val creditSummaryViewData by lazy {
         CreditSummaryViewData(
             creditViewData,

@@ -78,24 +78,28 @@ class LedgerFrameworkMapper @Inject constructor() {
 
     fun toCreditSummaryEntity(credit: CreditV2) = with(credit) {
         CreditSummaryEntityV2(
-            bufferLimit,
-            creditNoteAmountTillDate,
-            externalFinancierSupported,
-            interestTillDate,
-            minInterestAmountDue,
-            minInterestOutstandingDate,
-            minOutstandingAmountDue,
-            paymentAmountTillDate,
-            permanentCreditLimit,
-            purchaseAmountTillDate,
-            totalAvailableCreditLimit,
-            totalCreditLimit,
-            totalOutstandingAmount,
-            totalPurchaseAmount,
-            undeliveredInvoiceAmount,
-            totalInterestOutstanding.orEmpty(),
-            totalInterestPaid.orEmpty(),
-            minimumRepaymentAmount
+            bufferLimit = bufferLimit,
+            creditNoteAmountTillDate = creditNoteAmountTillDate,
+            externalFinancierSupported = externalFinancierSupported,
+            interestTillDate = interestTillDate,
+            minInterestAmountDue = minInterestAmountDue,
+            minInterestOutstandingDate = minInterestOutstandingDate,
+            minOutstandingAmountDue = minOutstandingAmountDue,
+            paymentAmountTillDate = paymentAmountTillDate,
+            permanentCreditLimit = permanentCreditLimit,
+            purchaseAmountTillDate = purchaseAmountTillDate,
+            totalAvailableCreditLimit = totalAvailableCreditLimit,
+            totalCreditLimit = totalCreditLimit,
+            totalOutstandingAmount = totalOutstandingAmount,
+            totalPurchaseAmount = totalPurchaseAmount,
+            undeliveredInvoiceAmount = undeliveredInvoiceAmount,
+            totalInterestOutstanding = totalInterestOutstanding.orEmpty(),
+            totalInterestPaid = totalInterestPaid.orEmpty(),
+            minimumRepaymentAmount = minimumRepaymentAmount,
+            overdueAmount = overdueAmount,
+            totalOverdueLimit = totalOverdueLimit,
+            forwardOverdueAmount = forwardOverdueAmount,
+            forwardOverdueDate = forwardOverdueDate
         )
     }
 

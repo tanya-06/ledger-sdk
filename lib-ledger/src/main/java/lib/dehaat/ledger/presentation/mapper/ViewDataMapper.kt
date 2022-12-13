@@ -10,29 +10,35 @@ import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewDat
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.TransactionSummaryViewData
 import lib.dehaat.ledger.util.getRoundedAmountInRupees
 import javax.inject.Inject
+import lib.dehaat.ledger.initializer.toDateMonthName
+import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
+import lib.dehaat.ledger.util.getAmountInRupees
 
 class ViewDataMapper @Inject constructor() {
 
     fun toCreditSummaryViewData(entity: CreditSummaryEntityV2) = with(entity) {
         SummaryViewData(
-            bufferLimit,
-            creditNoteAmountTillDate,
-            externalFinancierSupported,
-            interestTillDate,
-            minInterestAmountDue,
-            minInterestOutstandingDate,
-            minOutstandingAmountDue,
-            paymentAmountTillDate,
-            permanentCreditLimit,
-            purchaseAmountTillDate,
-            totalAvailableCreditLimit,
-            totalCreditLimit,
-            totalOutstandingAmount,
-            totalPurchaseAmount,
-            undeliveredInvoiceAmount,
-            totalInterestOutstanding,
-            totalInterestPaid,
-            minimumRepaymentAmount
+            bufferLimit = bufferLimit,
+            creditNoteAmountTillDate = creditNoteAmountTillDate,
+            externalFinancierSupported = externalFinancierSupported,
+            interestTillDate = interestTillDate,
+            minInterestAmountDue = minInterestAmountDue,
+            minInterestOutstandingDate = minInterestOutstandingDate,
+            minOutstandingAmountDue = minOutstandingAmountDue,
+            paymentAmountTillDate = paymentAmountTillDate,
+            permanentCreditLimit = permanentCreditLimit,
+            purchaseAmountTillDate = purchaseAmountTillDate,
+            totalAvailableCreditLimit = totalAvailableCreditLimit,
+            totalCreditLimit = totalCreditLimit,
+            totalOutstandingAmount = totalOutstandingAmount,
+            totalPurchaseAmount = totalPurchaseAmount,
+            undeliveredInvoiceAmount = undeliveredInvoiceAmount,
+            totalInterestOutstanding = totalInterestOutstanding,
+            totalInterestPaid = totalInterestPaid,
+            minimumRepaymentAmount = minimumRepaymentAmount,
+            forwardOverdueAmount = forwardOverdueAmount.getAmountInRupees(),
+            forwardOverdueDate = forwardOverdueDate.toDateMonthName(),
+            isOrderingBlocked = overdueAmount.toDoubleOrNull().orZero() > totalOverdueLimit.toDoubleOrNull().orZero()
         )
     }
 

@@ -148,7 +148,6 @@ fun RevampLedgerScreen(
                                 }
                                 LedgerHeaderScreen(
                                     summaryViewData = uiState.summaryViewData,
-                                    saveInterest = true,
                                     showPayNowButton = LedgerSDK.isDBA,
                                     onPayNowClick = onPayNowClick,
                                     onTotalOutstandingDetailsClick = {
