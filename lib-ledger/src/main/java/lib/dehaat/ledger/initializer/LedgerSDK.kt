@@ -17,6 +17,7 @@ object LedgerSDK {
     internal var locale: String = "en"
     internal var appIcon: Int = 0
         private set
+    internal var showOutstandingTooltip = false
 
     fun init(
         context: Context,
@@ -39,7 +40,8 @@ object LedgerSDK {
         partnerId: String,
         dcName: String,
         isDCFinanced: Boolean,
-        language: String? = null
+        language: String? = null,
+        showOutstandingTooltip: Boolean
     ) = if (isCurrentAppAvailable()) {
         LedgerDetailActivity.Companion.Args(
             partnerId = partnerId,
@@ -49,6 +51,7 @@ object LedgerSDK {
         ).also {
             language?.let { lang -> locale = lang }
             context.startActivity(it.build(context))
+            this.showOutstandingTooltip = showOutstandingTooltip
         }
     } else {
         throw Exception("Ledger not initialised Exception")

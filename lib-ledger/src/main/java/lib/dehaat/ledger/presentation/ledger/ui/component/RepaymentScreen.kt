@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
@@ -63,7 +64,7 @@ fun RepaymentScreen(
 		modifier = Modifier
 			.fillMaxWidth()
 	) {
-		var toolTipVisibility by remember { mutableStateOf(false) }
+		var toolTipVisibility by remember { mutableStateOf(LedgerSDK.showOutstandingTooltip) }
 		var viewOffset by remember { mutableStateOf(ViewOffset()) }
 
 		Column(
