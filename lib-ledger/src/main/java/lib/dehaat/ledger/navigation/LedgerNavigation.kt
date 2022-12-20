@@ -111,7 +111,7 @@ fun LedgerNavigation(
                 ledgerColors = ledgerColors,
                 onBackPress = finishActivity,
                 detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
-                onPayNowClick = { ledgerCallbacks.onRevampPayNowClick(it) },
+                onPayNowClick = { ledgerCallbacks.onPaymentOptionsClick(resultLauncher) },
                 onOtherPaymentModeClick = { ledgerCallbacks.onPaymentOptionsClick(resultLauncher) },
                 onError = { ledgerCallbacks.exceptionHandler(it) }
             )
@@ -254,7 +254,7 @@ fun LedgerNavigation(
         ) {
             val interestViewData = it.arguments?.let { args -> InterestDetailScreenArgs(args) }
             InterestDetailScreen(
-	            interestViewData = interestViewData?.getArgs(),
+                interestViewData = interestViewData?.getArgs(),
                 ledgerColors = ledgerColors
             ) {
                 navController.popBackStack()

@@ -34,7 +34,6 @@ import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.transactions.ui.TransactionsScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.LedgerHeaderScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.TotalOutstandingCalculation
-import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.presentation.model.transactions.getNumberOfDays
 import lib.dehaat.ledger.resources.Background
@@ -48,7 +47,7 @@ fun RevampLedgerScreen(
     viewModel: RevampLedgerViewModel,
     ledgerColors: LedgerColors,
     detailPageNavigationCallback: DetailPageNavigationCallback,
-    onPayNowClick: (SummaryViewData?) -> Unit,
+    onPayNowClick: () -> Unit,
     onOtherPaymentModeClick: () -> Unit,
     onError: (Exception) -> Unit,
     onBackPress: () -> Unit
@@ -132,15 +131,18 @@ fun RevampLedgerScreen(
                                 uiState.summaryViewData?.let {
                                     if (it.totalAvailableCreditLimit.toDouble() < 0.0)
                                         it.minimumRepaymentAmount?.let {
-                                            AvailableCreditLimitNudgeScreen(it.getAmountInRupeesWithoutDecimal())
-                                            SpaceMedium()
+                                            if (it.toDouble() > 0.0) {
+                                                AvailableCreditLimitNudgeScreen(
+                                                    it.getAmountInRupeesWithoutDecimal())
+                                                SpaceMedium()
+                                            }
                                         }
                                 }
                                 LedgerHeaderScreen(
                                     summaryViewData = uiState.summaryViewData,
                                     saveInterest = true,
                                     showPayNowButton = LedgerSDK.isDBA,
-                                    onPayNowClick = { onPayNowClick(uiState.summaryViewData) },
+                                    onPayNowClick = onPayNowClick,
                                     onTotalOutstandingDetailsClick = {
                                         detailPageNavigationCallback.navigateToOutstandingDetailPage(
                                             TotalOutstandingScreenArgs.getBundle(viewModel.outstandingCreditLimitViewState)

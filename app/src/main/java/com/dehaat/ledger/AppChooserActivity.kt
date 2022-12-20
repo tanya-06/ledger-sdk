@@ -41,8 +41,8 @@ class AppChooserActivity : AppCompatActivity() {
             LedgerParentApp.DBA(
                 ledgerCallBack = LedgerCallBack(
                     onClickPayNow = { showToast(it.toString()) },
-                    onRevampPayNowClick = {
-                        showToast("summaryViewData?.minInterestAmountDue ${it.toString()}")
+                    onRevampPayNowClick = { resultLauncher ->
+                        showToast(resultLauncher.toString())
                     },
                     onDownloadInvoiceSuccess = { showToast(it.toString()) },
                     onPaymentOptionsClick = { resultLauncher ->

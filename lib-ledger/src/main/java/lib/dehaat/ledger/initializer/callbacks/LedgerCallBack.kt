@@ -9,7 +9,6 @@ import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 
 typealias PayNowClick = (creditSummaryViewData: CreditSummaryViewData?) -> Unit
-typealias RevampPayNowClick = (SummaryViewData?) -> Unit
 typealias DownloadInvoiceIntent = (Context, String) -> PendingIntent?
 typealias DownloadInvoiceSuccess = (invoiceDownloadData: InvoiceDownloadData) -> Unit
 typealias ExceptionHandler = (ex: Exception) -> Unit
@@ -21,7 +20,7 @@ typealias PaymentOptionsClick = (
 
 data class LedgerCallBack(
     val onClickPayNow: PayNowClick,
-    val onRevampPayNowClick: RevampPayNowClick,
+    val onRevampPayNowClick: PaymentOptionsClick,
     val onDownloadInvoiceSuccess: DownloadInvoiceSuccess,
     val onPaymentOptionsClick: PaymentOptionsClick,
     val downloadInvoiceIntent: DownloadInvoiceIntent,
