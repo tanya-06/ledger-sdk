@@ -86,7 +86,7 @@ fun RepaymentScreen(
 
 					HorizontalSpacer(width = 4.dp)
 
-					Text(text = "Your Ordering is blocked", style = textParagraphT1(Error110))
+					Text(text = stringResource(R.string.your_ordering_is_blocked_ledger), style = textParagraphT1(Error110))
 				}
 
 				VerticalSpacer(height = 16.dp)
@@ -101,7 +101,7 @@ fun RepaymentScreen(
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
 				Text(
-					text = "Minimum Repayment Amount",
+					text = stringResource(R.string.minimum_repayment_amount),
 					style = textParagraphT1(Neutral90)
 				)
 
@@ -114,7 +114,7 @@ fun RepaymentScreen(
 								y = it.boundsInParent().bottomCenter.y
 							)
 						},
-					text = if (summaryViewData.isOrderingBlocked) "200" else summaryViewData.forwardOverdueAmount,
+					text = summaryViewData.forwardOverdueAmount,
 					style = textButtonB1(
 						textColor = Neutral90,
 						textDecoration = TextDecoration.Underline
@@ -156,8 +156,8 @@ fun RepaymentScreen(
 					},
 				offset = toolTipOffSet,
 				title = if (summaryViewData.isOrderingBlocked)
-					"ओवरडयू लिमिट पार होने की वजह से ऑर्डरिंग ब्लॉक्ड है।"
-				else "यह राशि आपकी ओवरडयू राशि है। ऑर्डरिंग ब्लॉक होने से बचने के लिए जल्द भुगतान करें।",
+					stringResource(R.string.ordering_blocked_due_to_overdue)
+				else stringResource(R.string.this_is_your_overdue_amount),
 				shape = shape
 			) {
 				toolTipVisibility = false

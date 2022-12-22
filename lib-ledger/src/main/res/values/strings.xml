@@ -157,4 +157,8 @@
     <string name="ledger_interest_being_charged">Interest is being charged on this invoice</string>
     <string name="ledger_to">%s to %s</string>
     <string name="weekly_interest_till_date_">Till %s</string>
+    <string name="your_ordering_is_blocked_ledger">Your Ordering is blocked</string>
+    <string name="minimum_repayment_amount">Minimum Repayment Amount</string>
+    <string name="this_is_your_overdue_amount">This is your overdue Amount. Pay on time to avoid order blocking</string>
+    <string name="ordering_blocked_due_to_overdue">This is your overdue Amount. Pay early to avoid getting your ordering blocked.</string>
 </resources>

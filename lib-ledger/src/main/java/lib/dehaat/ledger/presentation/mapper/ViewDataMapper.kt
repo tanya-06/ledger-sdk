@@ -36,7 +36,7 @@ class ViewDataMapper @Inject constructor() {
             totalInterestOutstanding = totalInterestOutstanding,
             totalInterestPaid = totalInterestPaid,
             minimumRepaymentAmount = minimumRepaymentAmount,
-            forwardOverdueAmount = forwardOverdueAmount.getAmountInRupees(),
+            forwardOverdueAmount = forwardOverdueAmount.getRoundedAmountInRupees(),
             forwardOverdueDate = forwardOverdueDate.toDateMonthName(),
             isOrderingBlocked = overdueAmount.toDoubleOrNull().orZero() > totalOverdueLimit.toDoubleOrNull().orZero()
         )
