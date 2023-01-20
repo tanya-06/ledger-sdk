@@ -60,6 +60,8 @@
     <string name="interest_amount_ledger">ब्याज</string>
     <string name="daily_interest_details">दैनिक ब्याज विवरण</string>
     <string name="financing_fee">फ़ायनैन्सिंग फ़ी</string>
+    <string name="debit_note">डेबिट नोट</string>
+    <string name="debit_entry">भुगतान वापसी</string>
     <string name="invoice_list">इनवॉइस लिस्ट</string>
     <string name="invoice_on_which_interest_is_charged">इनवॉइस जिन पर ब्याज लग रहा है</string>
     <string name="invoice_on_which_interest_going_to_charged">2 दिन में ब्याज शुरू होगा</string>

@@ -109,6 +109,14 @@ fun TransactionsScreen(
                         transactionType = TransactionType.FinancingFee(),
                         transaction = transaction
                     ) {}
+                    TransactionType.DebitNote().type -> TransactionCard(
+                        transactionType = TransactionType.DebitNote(),
+                        transaction = transaction
+                    ) {}
+                    TransactionType.DebitEntry().type -> TransactionCard(
+                        transactionType = TransactionType.DebitEntry(),
+                        transaction = transaction
+                    ) {}
                 }
             }
         }

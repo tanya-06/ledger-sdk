@@ -213,6 +213,20 @@ sealed class TransactionType(@StringRes val name: Int, val type: String) {
     ) : TransactionType(
         name = financingFeeName, type = financingFeeType
     )
+
+    data class DebitNote(
+        val financingFeeName: Int = R.string.debit_note,
+        val financingFeeType: String = "DEBIT_NOTE"
+    ) : TransactionType(
+        name = financingFeeName, type = financingFeeType
+    )
+
+    data class DebitEntry(
+        val financingFeeName: Int = R.string.debit_entry,
+        val financingFeeType: String = "DEBIT_ENTRY"
+    ) : TransactionType(
+        name = financingFeeName, type = financingFeeType
+    )
 }
 
 @DrawableRes
@@ -222,6 +236,8 @@ fun TransactionType.getIcon() = when (this) {
     is TransactionType.Payment -> R.drawable.ic_transactions_payment
     is TransactionType.Interest -> R.drawable.ic_transactions_interest
     is TransactionType.FinancingFee -> R.drawable.ic_revamp_invoice
+    is TransactionType.DebitNote -> R.drawable.ledger_debit_note
+    is TransactionType.DebitEntry -> R.drawable.ledger_debit_note
 }
 
 fun TransactionType.amountColor() = when (this) {
@@ -230,6 +246,8 @@ fun TransactionType.amountColor() = when (this) {
     is TransactionType.CreditNote -> SeaGreen110
     is TransactionType.Payment -> SeaGreen110
     is TransactionType.FinancingFee -> Pumpkin120
+    is TransactionType.DebitNote -> Pumpkin120
+    is TransactionType.DebitEntry -> Pumpkin120
 }
 
 private fun TransactionType.getAmount(amount: String) = when (this) {
@@ -238,4 +256,6 @@ private fun TransactionType.getAmount(amount: String) = when (this) {
     is TransactionType.CreditNote -> "- $amount"
     is TransactionType.Payment -> "- $amount"
     is TransactionType.FinancingFee -> "+ $amount"
+    is TransactionType.DebitNote -> "+ $amount"
+    is TransactionType.DebitEntry -> "+ $amount"
 }
