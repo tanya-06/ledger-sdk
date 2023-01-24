@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.transactions.ui.component
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +30,7 @@ import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
+import lib.dehaat.ledger.resources.Pumpkin120
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
 import lib.dehaat.ledger.util.getAmountInRupees
@@ -115,6 +119,8 @@ fun TransactionInvoiceItem(
 
 fun getAmountColor(type: String, ledgerColors: LedgerColors) = when (type) {
     TransactionType.INVOICE -> ledgerColors.TransactionAmountColor
+    TransactionType.DEBIT_NOTE -> Pumpkin120
+    TransactionType.DEBIT_ENTRY -> Pumpkin120
     else -> ledgerColors.DownloadInvoiceColor
 }
 
@@ -123,6 +129,8 @@ private fun provideTransactionIcon(type: String) = when (type) {
     TransactionType.INVOICE -> R.drawable.ic_revamp_invoice
     TransactionType.PAYMENT -> R.drawable.ic_transactions_interest
     TransactionType.CREDIT_NOTE -> R.drawable.ic_transactions_credit_note
+    TransactionType.DEBIT_NOTE -> R.drawable.ledger_debit_note
+    TransactionType.DEBIT_ENTRY -> R.drawable.ledger_debit_note
     else -> R.drawable.ic_revamp_invoice
 }
 
@@ -131,6 +139,8 @@ private fun provideTransactionLabel(type: String) = when (type) {
     TransactionType.INVOICE -> "Invoice"
     TransactionType.PAYMENT -> "Payment"
     TransactionType.CREDIT_NOTE -> "Credit Note"
+    TransactionType.DEBIT_NOTE -> "Debit Note"
+    TransactionType.DEBIT_ENTRY -> "Payment Refund"
     else -> "Transaction"
 }
 
