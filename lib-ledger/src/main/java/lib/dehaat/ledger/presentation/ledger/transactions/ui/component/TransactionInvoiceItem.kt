@@ -136,11 +136,11 @@ private fun provideTransactionIcon(type: String) = when (type) {
 
 @Composable
 private fun provideTransactionLabel(type: String) = when (type) {
-    TransactionType.INVOICE -> "Invoice"
-    TransactionType.PAYMENT -> "Payment"
-    TransactionType.CREDIT_NOTE -> "Credit Note"
-    TransactionType.DEBIT_NOTE -> "Debit Note"
-    TransactionType.DEBIT_ENTRY -> "Payment Refund"
+    TransactionType.INVOICE -> stringResource(id = R.string.invoice)
+    TransactionType.PAYMENT -> stringResource(id = R.string.ledger_payment)
+    TransactionType.CREDIT_NOTE -> stringResource(id = R.string.credit_note_ledger)
+    TransactionType.DEBIT_NOTE -> stringResource(id = R.string.debit_note)
+    TransactionType.DEBIT_ENTRY -> stringResource(id = R.string.debit_entry)
     else -> "Transaction"
 }
 
