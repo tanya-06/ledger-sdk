@@ -49,6 +49,7 @@ import lib.dehaat.ledger.presentation.model.revamp.invoice.ProductsInfoViewDataV
 import lib.dehaat.ledger.presentation.model.revamp.invoice.SummaryViewDataV2
 import lib.dehaat.ledger.resources.Background
 import lib.dehaat.ledger.resources.BlueGreen10
+import lib.dehaat.ledger.resources.ColorFFEBEC
 import lib.dehaat.ledger.resources.Error100
 import lib.dehaat.ledger.resources.FrenchBlue10
 import lib.dehaat.ledger.resources.Neutral30
@@ -137,6 +138,16 @@ private fun InvoiceDetailScreen(
 		.fillMaxWidth()
 		.verticalScroll(rememberScrollState())
 ) {
+	if (summary.showInterestDetails) {
+		Text(
+			modifier = Modifier
+				.fillMaxWidth()
+				.background(ColorFFEBEC)
+				.padding(horizontal = 16.dp, vertical = 12.dp),
+			text = stringResource(R.string.ledger_interest_being_charged),
+			style = textParagraphT2Highlight(Neutral90)
+		)
+	}
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -361,6 +372,53 @@ private fun InvoiceDetailScreen(
 			VerticalSpacer(height = 16.dp)
 		}
 
+	}
+
+	if (summary.showPaymentComplete) {
+		VerticalSpacer(height = 16.dp)
+		Column(
+			modifier = Modifier
+				.fillMaxWidth()
+				.background(Color.White)
+		) {
+			Row(
+				modifier = Modifier
+					.padding(horizontal = 20.dp)
+					.padding(top = 20.dp, bottom = 12.dp),
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Image(
+					painter = painterResource(id = R.drawable.ic_ledger_interest),
+					contentDescription = ""
+				)
+				HorizontalSpacer(8.dp)
+
+				Text(
+					text = stringResource(R.string.ledger_interest_details),
+					style = textSubHeadingS3(Neutral80)
+				)
+			}
+			Divider()
+
+			VerticalSpacer(height = 12.dp)
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 20.dp),
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.SpaceBetween
+			) {
+				Text(
+					text = stringResource(R.string.ledger_total_interest_charged),
+					style = textParagraphT2(Neutral90)
+				)
+				Text(
+					text = summary.totalInterestCharged,
+					style = textParagraphT2Highlight(Neutral90)
+				)
+			}
+			VerticalSpacer(height = 16.dp)
+		}
 	}
 
 	if (creditNotes.isNotEmpty()) {

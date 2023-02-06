@@ -41,7 +41,7 @@ fun formatDecimal(value: Double?, fractionDigitCount: Int = 2): String {
 
 val sdf = SimpleDateFormat("dd-MMM-yyyy", NumberUtilities.locale)
 
-fun Long.isSmallerThanCurrentDate(): Boolean {
+fun Long.isSmallerThanOrEqualToCurrentDate(): Boolean {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     val currentDate = dateFormat.format(Calendar.getInstance().time)
@@ -51,10 +51,27 @@ fun Long.isSmallerThanCurrentDate(): Boolean {
     val d2 = dateFormat.parse(date)
     d1?.let {
         d2?.let {
-            return d1 > d2
+            return d1 >= d2
         }
     } ?: run {
         return false
+    }
+}
+
+fun Long.isGreaterThanOrEqualToCurrentDate(): Boolean {
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    val currentDate = dateFormat.format(Calendar.getInstance().time)
+    val date = dateFormat.format(this * 1000)
+
+    val d1 = dateFormat.parse(currentDate)
+    val d2 = dateFormat.parse(date)
+    d1?.let {
+        d2?.let {
+            return d1 <= d2
+        }
+    } ?: run {
+        return true
     }
 }
 

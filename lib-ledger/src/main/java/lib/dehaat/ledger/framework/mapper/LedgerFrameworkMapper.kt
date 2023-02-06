@@ -136,7 +136,8 @@ class LedgerFrameworkMapper @Inject constructor() {
             source = it.source,
             sourceNo = it.sourceNo,
             type = it.type,
-            unrealizedPayment = it.unrealizedPayment
+            unrealizedPayment = it.unrealizedPayment,
+            isInterestSubVented = it.isInterestSubVented
         )
     }
 

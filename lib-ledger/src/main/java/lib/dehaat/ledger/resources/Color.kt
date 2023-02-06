@@ -51,3 +51,4 @@ val Success10 = Color(0XFFE6FFCC)
 
 val Warning10 = Color(0XFFFFF4E5)
 val Background = Color(0XFFE9E6E6)
+val ColorFFEBEC = Color(0XFFFFEBEC)

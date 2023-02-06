@@ -21,13 +21,16 @@ import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
 import lib.dehaat.ledger.entities.revamp.invoice.InvoiceDataEntity
 import lib.dehaat.ledger.entities.revamp.invoice.ProductEntityV2
 import lib.dehaat.ledger.entities.revamp.invoice.ProductsInfoEntityV2
+import lib.dehaat.ledger.entities.revamp.invoice.SummaryEntityV2
 import lib.dehaat.ledger.entities.revamp.invoicelist.InvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.ABSEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.initializer.isSmallerThanCurrentDate
+import lib.dehaat.ledger.initializer.isGreaterThanOrEqualToCurrentDate
+import lib.dehaat.ledger.initializer.isSmallerThanOrEqualToCurrentDate
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
+import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.abs.ABSTransactionViewData
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
@@ -99,14 +102,15 @@ class LedgerViewDataMapper @Inject constructor() {
 	}
 
 	fun toTransactionEntity(data: List<TransactionEntityV2>) = data.map {
-		val interestStartDate = if (
-			it.type == TransactionType.Invoice().type ||
-			it.type == TransactionType.FinancingFee().type ||
-			it.type == TransactionType.Interest().type
-		) {
-			null
-		} else {
-			it.interestStartDate
+		val interestStartDate = when (it.type) {
+			TransactionType.Invoice().type -> it.interestStartDate
+			TransactionType.CreditNote().type -> it.interestStartDate
+			TransactionType.Payment().type -> it.interestStartDate
+			TransactionType.Interest().type -> null
+			TransactionType.FinancingFee().type -> null
+			TransactionType.DebitNote().type -> it.interestStartDate
+			TransactionType.DebitEntry().type -> it.interestStartDate
+			else -> it.interestStartDate
 		}
 		TransactionViewDataV2(
 			amount = it.amount,
@@ -233,30 +237,38 @@ class LedgerViewDataMapper @Inject constructor() {
 				)
 			},
 			productsInfo = getProductInfoViewData(productsInfo),
-			summary = with(summary) {
-				SummaryViewDataV2(
-					interestBeingCharged = interestBeingCharged,
-					interestDays = interestDays,
-					interestStartDate = if (isInterestSubVented.isTrue()) interestStartDate else null,
-					invoiceAmount = invoiceAmount,
-					invoiceDate = invoiceDate,
-					invoiceId = invoiceId,
-					processingFee = processingFee,
-					totalOutstandingAmount = totalOutstandingAmount,
-					fullPaymentComplete = false,
-					totalInterestCharged = totalInterestCharged?.toString().getAmountInRupees(),
-					totalInterestPaid = totalInterestPaid?.toString().getAmountInRupees(),
-					totalInterestOutstanding = totalInterestOutstanding?.toString()
-						.getAmountInRupees(),
-					showProcessingLabel = isInterestSubVented.isTrue() &&
-							interestStartDate?.isSmallerThanCurrentDate().isTrue() &&
-							interestBeingCharged.isFalse(),
-					showInterestWillBeStartingLabel = isInterestSubVented.isFalse(),
-					showInterestDetails = isInterestSubVented.isTrue() &&
-							interestStartDate?.isSmallerThanCurrentDate().isTrue() &&
-							interestBeingCharged.isTrue()
-				)
-			}
+			summary = getSummaryViewData(summary)
+		)
+	}
+
+	private fun getSummaryViewData(
+		summary: SummaryEntityV2
+	) = with(summary) {
+		SummaryViewDataV2(
+			interestBeingCharged = false,
+			interestDays = interestDays,
+			interestStartDate = if (isInterestSubVented.isTrue()) interestStartDate else null,
+			invoiceAmount = invoiceAmount,
+			invoiceDate = invoiceDate,
+			invoiceId = invoiceId,
+			processingFee = processingFee,
+			totalOutstandingAmount = totalOutstandingAmount,
+			fullPaymentComplete = false,
+			totalInterestCharged = totalInterestCharged?.toString().getAmountInRupees(),
+			totalInterestPaid = totalInterestPaid?.toString().getAmountInRupees(),
+			totalInterestOutstanding = totalInterestOutstanding?.toString()
+				.getAmountInRupees(),
+			showProcessingLabel = isInterestSubVented.isTrue() &&
+					interestStartDate?.isGreaterThanOrEqualToCurrentDate().isTrue() &&
+					totalInterestCharged.orZero() <= 0,
+			showInterestWillBeStartingLabel = isInterestSubVented.isFalse(),
+			showInterestDetails = isInterestSubVented.isTrue() &&
+					interestStartDate?.isSmallerThanOrEqualToCurrentDate().isTrue() &&
+					interestBeingCharged.isTrue() &&
+					totalInterestOutstanding.orZero() > 0,
+			showPaymentComplete = isInterestSubVented.isTrue() &&
+					totalInterestCharged.orZero() > 0 &&
+					totalInterestOutstanding.orZero() <= 0.0
 		)
 	}
 
