@@ -1,6 +1,7 @@
 package lib.dehaat.ledger.framework.mapper
 
 import com.dehaat.androidbase.helper.orFalse
+import javax.inject.Inject
 import lib.dehaat.ledger.entities.abs.ABSTransactionEntity
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditEntity
@@ -54,7 +55,6 @@ import lib.dehaat.ledger.framework.model.transactions.TransactionsData
 import lib.dehaat.ledger.framework.model.transactionsummary.ABSData
 import lib.dehaat.ledger.framework.model.transactionsummary.TransactionDetailData
 import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
-import javax.inject.Inject
 
 typealias NetworkPaymentDetailSummary = lib.dehaat.ledger.framework.model.detail.payment.Summary
 typealias EntityPaymentDetailSummary = lib.dehaat.ledger.entities.detail.payment.SummaryEntity
@@ -197,7 +197,11 @@ class LedgerFrameworkMapper @Inject constructor() {
                     invoiceDate = invoiceDate,
                     invoiceId = invoiceId,
                     processingFee = processingFee,
-                    totalOutstandingAmount = totalOutstandingAmount
+                    totalOutstandingAmount = totalOutstandingAmount,
+                    totalInterestCharged = totalInterestCharged,
+                    totalInterestPaid = totalInterestPaid,
+                    totalInterestOutstanding = totalInterestOutstanding,
+                    isInterestSubVented = isInterestSubVented
                 )
             }
         )

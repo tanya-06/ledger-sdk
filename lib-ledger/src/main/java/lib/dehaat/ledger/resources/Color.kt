@@ -19,11 +19,13 @@ val Error100 = Color(0XFFBF0010)
 val Error90 = Color(0XFFD91625)
 val Error10 = Color(0xFFFFEEEF)
 
+val FrenchBlue10 = Color(0XFFE5F2FF)
 val FrenchBlue120 = Color(0XFF1F5C99)
 
 val Mustard10 = Color(0XFFFFFBE5)
 
 val Neutral10 = Color(0XFFF2F2F2)
+val Neutral30 = Color(0XFFCCCCCC)
 val Neutral50 = Color(0XFF999999)
 val Neutral60 = Color(0XFF808080)
 val Neutral70 = Color(0XFF666666)
@@ -41,6 +43,9 @@ val SeaGreen10 = Color(0XFFEAFBF1)
 val SeaGreen20 = Color(0XFFCCEFDB)
 val SeaGreen100 = Color(0xFF0F8040)
 val SeaGreen110 = Color(0XFF00662C)
+
+val Secondary10 = Color(0XFFFFEEE5)
+val Secondary120 = Color(0XFFBF4B0A)
 
 val Success10 = Color(0XFFE6FFCC)
 

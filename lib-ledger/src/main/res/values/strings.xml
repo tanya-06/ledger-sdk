@@ -146,4 +146,10 @@
     <string name="advance_balance">Advance balance</string>
     <string name="advance_bal_note">Advance balance will be kept blocked until ordering opens.\nIt will be adjusted with outstanding once ordering window will open.</string>
     <string name="amount_is_blocked">Advance amount is blocked until ordering for scheme opens</string>
+    <string name="ledger_interest_details">Interest Details</string>
+    <string name="ledger_total_interest_charged">Total Interest Charged</string>
+    <string name="ledger_invoice_in_processing">As the Invoice is in processing, Interest is not being charged currently.</string>
+    <string name="ledger_interest_charged_upto_days">Interest charged up to 30 days from Invoice date will be refunded to you in the form of a credit note.</string>
+    <string name="ledger_interest_paid">Interest Paid</string>
+    <string name="ledger_interest_outstanding">Interest Outstanding</string>
 </resources>
