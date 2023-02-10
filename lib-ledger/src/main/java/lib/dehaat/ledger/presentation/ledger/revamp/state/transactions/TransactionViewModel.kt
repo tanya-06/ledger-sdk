@@ -13,7 +13,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.framework.network.BasePagingSourceWithResponse
@@ -44,6 +49,15 @@ class TransactionViewModel @Inject constructor(
     var transactionsList: Flow<PagingData<TransactionViewDataV2>>
         private set
 
+    private val viewModelState = MutableStateFlow(TransactionViewModelState())
+    val uiState = viewModelState
+        .map { it.toUIState() }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            viewModelState.value.toUIState()
+        )
+
     init {
         transactionsList = getTransactionPaging()
     }
@@ -60,8 +74,17 @@ class TransactionViewModel @Inject constructor(
                 processTransactionListResponse(response)
             },
             onResponse = { _, _ -> },
-            parseDataList = {
-                mapper.toTransactionEntity(it)
+            parseDataList = { transactionEntity ->
+                if (viewModelState.value.showWeeklyInterestDecreasingLabel.not()) {
+                    viewModelState.update {
+                        it.copy(
+                            showWeeklyInterestDecreasingLabel = mapper.getWeeklyInterestLabel(
+                                transactionEntity
+                            )
+                        )
+                    }
+                }
+                mapper.toTransactionEntity(transactionEntity)
             }
         ) {}
 

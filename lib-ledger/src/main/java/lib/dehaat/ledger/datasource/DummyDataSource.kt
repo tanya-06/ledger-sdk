@@ -135,7 +135,10 @@ object DummyDataSource {
         source = "SAP",
         sourceNo = "",
         type = "INVOICE",
-        unrealizedPayment = false
+        unrealizedPayment = false,
+        fromDate = "45/Dec/2022",
+        toDate = "46/Dec/2022",
+        adjustmentAmount = 400.00
     )
 
     val paymentDetailSummaryViewData = PaymentDetailSummaryViewData(
