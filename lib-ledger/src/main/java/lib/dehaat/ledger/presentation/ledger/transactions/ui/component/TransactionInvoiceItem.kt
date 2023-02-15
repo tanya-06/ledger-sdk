@@ -138,7 +138,7 @@ private fun provideTransactionIcon(type: String) = when (type) {
 private fun provideTransactionLabel(type: String) = when (type) {
     TransactionType.INVOICE -> stringResource(id = R.string.invoice)
     TransactionType.PAYMENT -> stringResource(id = R.string.ledger_payment)
-    TransactionType.CREDIT_NOTE -> stringResource(id = R.string.credit_note_ledger)
+    TransactionType.CREDIT_NOTE -> stringResource(id = R.string.ledger_credit_note)
     TransactionType.DEBIT_NOTE -> stringResource(id = R.string.debit_note)
     TransactionType.DEBIT_ENTRY -> stringResource(id = R.string.debit_entry)
     else -> "Transaction"

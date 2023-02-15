@@ -33,5 +33,7 @@ data class TransactionV2(
     @Json(name = "type")
     val type: String,
     @Json(name = "unrealized_payment")
-    val unrealizedPayment: Boolean?
+    val unrealizedPayment: Boolean?,
+    @Json(name = "is_invoice_subvented")
+    val isInterestSubVented: Boolean?
 )

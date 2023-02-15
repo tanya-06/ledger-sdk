@@ -103,6 +103,7 @@
     <string name="pay_till_date">Pay by %s</string>
     <string name="your_advance_amount">%s is your advance amount</string>
     <string name="credit_note_ledger">Credit Note: %s</string>
+    <string name="ledger_credit_note">Credit Note</string>
     <string name="ledger_payment">Payment</string>
     <string name="till_today">%s till today</string>
     <string name="interest_running">Interest already charged from %s days</string>
@@ -146,4 +147,11 @@
     <string name="advance_balance">Advance balance</string>
     <string name="advance_bal_note">Advance balance will be kept blocked until ordering opens.\nIt will be adjusted with outstanding once ordering window will open.</string>
     <string name="amount_is_blocked">Advance amount is blocked until ordering for scheme opens</string>
+    <string name="ledger_interest_details">Interest Details</string>
+    <string name="ledger_total_interest_charged">Total Interest Charged</string>
+    <string name="ledger_invoice_in_processing">Interest will be charged soon, please pay early to avoid interest.</string>
+    <string name="ledger_interest_charged_upto_days">Interest charged up to 30 days from Invoice date will be refunded to you in the form of a credit note.</string>
+    <string name="ledger_interest_paid">Interest Paid</string>
+    <string name="ledger_interest_outstanding">Interest Outstanding</string>
+    <string name="ledger_interest_being_charged">Interest is being charged on this invoice</string>
 </resources>

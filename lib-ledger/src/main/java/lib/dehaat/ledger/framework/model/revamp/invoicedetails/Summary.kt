@@ -20,5 +20,13 @@ data class Summary(
     @Json(name = "processing_fee")
     val processingFee: String?,
     @Json(name = "total_outstanding_amount")
-    val totalOutstandingAmount: String?
+    val totalOutstandingAmount: String?,
+    @Json(name = "total_interest_charged")
+    val totalInterestCharged: Double?,
+    @Json(name = "total_interest_paid")
+    val totalInterestPaid: Double?,
+    @Json(name = "total_interest_outstanding")
+    val totalInterestOutstanding: Double?,
+    @Json(name = "is_invoice_subvented")
+    val isInterestSubVented: Boolean?
 )

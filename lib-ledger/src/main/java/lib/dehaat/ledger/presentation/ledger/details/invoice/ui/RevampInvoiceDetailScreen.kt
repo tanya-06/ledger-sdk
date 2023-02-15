@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,291 +48,495 @@ import lib.dehaat.ledger.presentation.model.revamp.invoice.CreditNoteViewData
 import lib.dehaat.ledger.presentation.model.revamp.invoice.ProductsInfoViewDataV2
 import lib.dehaat.ledger.presentation.model.revamp.invoice.SummaryViewDataV2
 import lib.dehaat.ledger.resources.Background
+import lib.dehaat.ledger.resources.BlueGreen10
+import lib.dehaat.ledger.resources.ColorFFEBEC
 import lib.dehaat.ledger.resources.Error100
+import lib.dehaat.ledger.resources.FrenchBlue10
+import lib.dehaat.ledger.resources.Neutral30
 import lib.dehaat.ledger.resources.Neutral60
+import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.Primary80
 import lib.dehaat.ledger.resources.SeaGreen100
+import lib.dehaat.ledger.resources.Secondary10
+import lib.dehaat.ledger.resources.Secondary120
 import lib.dehaat.ledger.resources.Success10
 import lib.dehaat.ledger.resources.textButtonB2
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
+import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
+import lib.dehaat.ledger.resources.textSubHeadingS3
+import lib.dehaat.ledger.util.DottedShape
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.clickableWithCorners
 import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun RevampInvoiceDetailScreen(
-    viewModel: RevampInvoiceDetailViewModel,
-    ledgerColors: LedgerColors,
-    onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit,
-    onError: (Exception) -> Unit,
-    onBackPress: () -> Unit
+	viewModel: RevampInvoiceDetailViewModel,
+	ledgerColors: LedgerColors,
+	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit,
+	onError: (Exception) -> Unit,
+	onBackPress: () -> Unit
 ) {
-    HandleAPIErrors(viewModel.uiEvent)
-    val uiState by viewModel.uiState.collectAsState()
-    val context = LocalContext.current
-    CommonContainer(
-        title = stringResource(id = R.string.invoice_details),
-        onBackPress = onBackPress,
-        backgroundColor = Background,
-        ledgerColors = ledgerColors,
-        bottomBar = {
-            AnimatedVisibility(visible = false) {}
-        }
-    ) {
-        when (uiState.state) {
-            UIState.SUCCESS -> {
-                uiState.invoiceDetailsViewData?.let {
-                    InvoiceDetailScreen(
-                        it.summary,
-                        it.creditNotes,
-                        it.productsInfo
-                    ) {
-                        LedgerSDK.getFile(context)?.let { file ->
-                            viewModel.downloadInvoice(
-                                file,
-                                onDownloadInvoiceClick
-                            )
-                        } ?: run {
-                            context.showToast(R.string.tech_problem)
-                            LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
-                                Exception("Unable to create file")
-                            )
-                        }
-                    }
-                } ?: NoDataFound((uiState.state as? UIState.ERROR)?.message, onError)
-            }
-            UIState.LOADING -> {
-                ShowProgressDialog(ledgerColors) {
-                    viewModel.updateProgressDialog(false)
-                }
-            }
-            is UIState.ERROR -> {
-                NoDataFound((uiState.state as? UIState.ERROR)?.message, onError)
-            }
-        }
-    }
+	HandleAPIErrors(viewModel.uiEvent)
+	val uiState by viewModel.uiState.collectAsState()
+	val context = LocalContext.current
+	CommonContainer(
+		title = stringResource(id = R.string.invoice_details),
+		onBackPress = onBackPress,
+		backgroundColor = Background,
+		ledgerColors = ledgerColors,
+		bottomBar = {
+			AnimatedVisibility(visible = false) {}
+		}
+	) {
+		when (uiState.state) {
+			UIState.SUCCESS -> {
+				uiState.invoiceDetailsViewData?.let {
+					InvoiceDetailScreen(
+						it.summary,
+						it.creditNotes,
+						it.productsInfo
+					) {
+						LedgerSDK.getFile(context)?.let { file ->
+							viewModel.downloadInvoice(
+								file,
+								onDownloadInvoiceClick
+							)
+						} ?: run {
+							context.showToast(R.string.tech_problem)
+							LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
+								Exception("Unable to create file")
+							)
+						}
+					}
+				} ?: NoDataFound((uiState.state as? UIState.ERROR)?.message, onError)
+			}
+			UIState.LOADING -> {
+				ShowProgressDialog(ledgerColors) {
+					viewModel.updateProgressDialog(false)
+				}
+			}
+			is UIState.ERROR -> {
+				NoDataFound((uiState.state as? UIState.ERROR)?.message, onError)
+			}
+		}
+	}
 }
 
 @Composable
 private fun InvoiceDetailScreen(
-    summary: SummaryViewDataV2,
-    creditNotes: List<CreditNoteViewData>,
-    productsInfo: ProductsInfoViewDataV2,
-    onDownloadInvoiceClick: () -> Unit
+	summary: SummaryViewDataV2,
+	creditNotes: List<CreditNoteViewData>,
+	productsInfo: ProductsInfoViewDataV2,
+	onDownloadInvoiceClick: () -> Unit
 ) = Column(
-    modifier = Modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
+	modifier = Modifier
+		.fillMaxWidth()
+		.verticalScroll(rememberScrollState())
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(horizontal = 20.dp)
-    ) {
-        if (summary.fullPaymentComplete) {
+	if (summary.showInterestDetails) {
+		Text(
+			modifier = Modifier
+				.fillMaxWidth()
+				.background(ColorFFEBEC)
+				.padding(horizontal = 16.dp, vertical = 12.dp),
+			text = stringResource(R.string.ledger_interest_being_charged),
+			style = textParagraphT2Highlight(Neutral90)
+		)
+	}
+	Column(
+		modifier = Modifier
+			.fillMaxWidth()
+			.background(Color.White)
+			.padding(horizontal = 20.dp)
+	) {
+		if (summary.fullPaymentComplete) {
 
-            VerticalSpacer(height = 24.dp)
+			VerticalSpacer(height = 24.dp)
 
-            InformationChip(
-                title = stringResource(id = R.string.full_payment_complete),
-                backgroundColor = Success10,
-                textColor = Neutral90
-            )
-        }
+			InformationChip(
+				title = stringResource(id = R.string.full_payment_complete),
+				backgroundColor = Success10,
+				textColor = Neutral90
+			)
+		}
 
-        summary.totalOutstandingAmount?.let {
-            if (summary.interestBeingCharged == true && summary.invoiceAmount != it && it.toDoubleOrNull() != 0.0) {
-                VerticalSpacer(height = 20.dp)
-                RevampKeyValuePair(
-                    pair = Pair(
-                        stringResource(id = R.string.outstanding_amount),
-                        it.getAmountInRupees()
-                    ),
-                    style = Pair(
-                        textParagraphT2Highlight(Error100),
-                        textButtonB2(Error100)
-                    )
-                )
-            }
-        }
+		summary.totalOutstandingAmount?.let {
+			if (summary.interestBeingCharged == true && summary.invoiceAmount != it && it.toDoubleOrNull() != 0.0) {
+				VerticalSpacer(height = 20.dp)
+				RevampKeyValuePair(
+					pair = Pair(
+						stringResource(id = R.string.outstanding_amount),
+						it.getAmountInRupees()
+					),
+					style = Pair(
+						textParagraphT2Highlight(Error100),
+						textButtonB2(Error100)
+					)
+				)
+			}
+		}
 
-        VerticalSpacer(height = 12.dp)
-        RevampKeyValuePair(
-            pair = Pair(
-                stringResource(id = R.string.invoice_amount),
-                summary.invoiceAmount.getAmountInRupees()
-            ),
-            style = Pair(
-                textParagraphT2Highlight(Neutral90),
-                textButtonB2(Neutral90)
-            )
-        )
+		VerticalSpacer(height = 12.dp)
+		RevampKeyValuePair(
+			pair = Pair(
+				stringResource(id = R.string.invoice_amount),
+				summary.invoiceAmount.getAmountInRupees()
+			),
+			style = Pair(
+				textParagraphT2Highlight(Neutral90),
+				textButtonB2(Neutral90)
+			)
+		)
 
-        VerticalSpacer(height = 12.dp)
-        RevampKeyValuePair(
-            pair = Pair(
-                stringResource(id = R.string.invoice_id),
-                summary.invoiceId
-            ),
-            style = Pair(
-                textParagraphT2Highlight(Neutral80),
-                textParagraphT2Highlight(Neutral90)
-            )
-        )
+		VerticalSpacer(height = 12.dp)
+		RevampKeyValuePair(
+			pair = Pair(
+				stringResource(id = R.string.invoice_id),
+				summary.invoiceId
+			),
+			style = Pair(
+				textParagraphT2Highlight(Neutral80),
+				textParagraphT2Highlight(Neutral90)
+			)
+		)
 
-        VerticalSpacer(height = 12.dp)
-        RevampKeyValuePair(
-            pair = Pair(
-                stringResource(id = R.string.invoice_date),
-                summary.invoiceDate.toDateMonthYear()
-            ),
-            style = Pair(
-                textParagraphT2Highlight(Neutral80),
-                textButtonB2(Neutral90)
-            )
-        )
+		VerticalSpacer(height = 12.dp)
+		RevampKeyValuePair(
+			pair = Pair(
+				stringResource(id = R.string.invoice_date),
+				summary.invoiceDate.toDateMonthYear()
+			),
+			style = Pair(
+				textParagraphT2Highlight(Neutral80),
+				textButtonB2(Neutral90)
+			)
+		)
 
-        if (summary.showInterestStartDate) {
-            summary.interestStartDate?.let {
-                VerticalSpacer(height = 12.dp)
-                RevampKeyValuePair(
-                    pair = Pair(
-                        stringResource(id = R.string.interest_start_date),
-                        it.toDateMonthYear()
-                    ),
-                    style = Pair(
-                        textParagraphT2Highlight(Neutral80),
-                        textButtonB2(Neutral90)
-                    )
-                )
-            }
-        }
+		summary.interestStartDate?.let {
+			VerticalSpacer(height = 12.dp)
+			RevampKeyValuePair(
+				pair = Pair(
+					stringResource(id = R.string.interest_start_date),
+					it.toDateMonthYear()
+				),
+				style = Pair(
+					textParagraphT2Highlight(Neutral80),
+					textButtonB2(Neutral90)
+				)
+			)
+		}
 
-        VerticalSpacer(height = 16.dp)
-    }
+		if (summary.showProcessingLabel) {
+			VerticalSpacer(height = 8.dp)
 
-    VerticalSpacer(height = 16.dp)
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.background(Secondary10, shape = RoundedCornerShape(8.dp))
+					.padding(8.dp),
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Image(
+					modifier = Modifier.size(72.dp),
+					painter = painterResource(id = R.drawable.ic_savings_piggy),
+					contentDescription = ""
+				)
+				HorizontalSpacer(8.dp)
 
-    if (creditNotes.isNotEmpty()) {
-        CreditNoteDetails(creditNotes)
+				Text(
+					text = stringResource(R.string.ledger_invoice_in_processing),
+					style = textParagraphT2Highlight(Secondary120)
+				)
+			}
+		}
 
-        VerticalSpacer(height = 16.dp)
-    }
+		if (summary.showInterestWillBeStartingLabel) {
+			VerticalSpacer(height = 8.dp)
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.border(width = 1.dp, shape = RoundedCornerShape(8.dp), color = FrenchBlue10)
+					.background(color = BlueGreen10, shape = RoundedCornerShape(8.dp))
+					.padding(12.dp)
+			) {
+				Text(
+					modifier = Modifier.weight(1F),
+					text = stringResource(R.string.ledger_interest_charged_upto_days),
+					style = textParagraphT2Highlight(Neutral70)
+				)
+				HorizontalSpacer(8.dp)
+				Image(
+					modifier = Modifier.size(24.dp),
+					painter = painterResource(id = R.drawable.ic_idea_bulb),
+					contentDescription = ""
+				)
+			}
+		}
 
-    ProductDetailsScreen(productsInfo)
+		VerticalSpacer(height = 16.dp)
+	}
 
-    DownloadInvoiceButton(onDownloadInvoiceClick)
+	if (summary.showInterestDetails) {
+
+		VerticalSpacer(height = 16.dp)
+		Column(
+			modifier = Modifier
+				.fillMaxWidth()
+				.background(Color.White)
+		) {
+			Row(
+				modifier = Modifier
+					.padding(horizontal = 20.dp)
+					.padding(top = 20.dp, bottom = 12.dp),
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Image(
+					painter = painterResource(id = R.drawable.ic_ledger_interest),
+					contentDescription = ""
+				)
+				HorizontalSpacer(8.dp)
+
+				Text(
+					text = stringResource(R.string.ledger_interest_details),
+					style = textSubHeadingS3(Neutral80)
+				)
+			}
+			Divider()
+
+			VerticalSpacer(height = 12.dp)
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 20.dp),
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.SpaceBetween
+			) {
+				Text(
+					text = stringResource(R.string.ledger_total_interest_charged),
+					style = textParagraphT2(Neutral90)
+				)
+				Text(
+					text = summary.totalInterestCharged,
+					style = textParagraphT2Highlight(Neutral90)
+				)
+			}
+
+			VerticalSpacer(height = 8.dp)
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 20.dp),
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.SpaceBetween
+			) {
+				Text(
+					text = stringResource(R.string.ledger_interest_paid),
+					style = textParagraphT2(Neutral90)
+				)
+				Text(text = summary.totalInterestPaid, style = textParagraphT2Highlight(Neutral90))
+			}
+
+			VerticalSpacer(height = 8.dp)
+			Divider(
+				modifier = Modifier
+					.padding(horizontal = 20.dp)
+					.background(color = Neutral30, shape = DottedShape(8.dp))
+			)
+			VerticalSpacer(height = 8.dp)
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 20.dp),
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.SpaceBetween
+			) {
+				Text(
+					text = stringResource(R.string.ledger_interest_outstanding),
+					style = textSubHeadingS3(Neutral90)
+				)
+				Text(text = summary.totalInterestOutstanding, style = textSubHeadingS3(Neutral90))
+			}
+
+			VerticalSpacer(height = 8.dp)
+			Divider(
+				modifier = Modifier
+					.padding(horizontal = 20.dp)
+					.background(color = Neutral30, shape = DottedShape(8.dp))
+			)
+
+			VerticalSpacer(height = 16.dp)
+		}
+
+	}
+
+	if (summary.showPaymentComplete) {
+		VerticalSpacer(height = 16.dp)
+		Column(
+			modifier = Modifier
+				.fillMaxWidth()
+				.background(Color.White)
+		) {
+			Row(
+				modifier = Modifier
+					.padding(horizontal = 20.dp)
+					.padding(top = 20.dp, bottom = 12.dp),
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Image(
+					painter = painterResource(id = R.drawable.ic_ledger_interest),
+					contentDescription = ""
+				)
+				HorizontalSpacer(8.dp)
+
+				Text(
+					text = stringResource(R.string.ledger_interest_details),
+					style = textSubHeadingS3(Neutral80)
+				)
+			}
+			Divider()
+
+			VerticalSpacer(height = 12.dp)
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 20.dp),
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.SpaceBetween
+			) {
+				Text(
+					text = stringResource(R.string.ledger_total_interest_charged),
+					style = textParagraphT2(Neutral90)
+				)
+				Text(
+					text = summary.totalInterestCharged,
+					style = textParagraphT2Highlight(Neutral90)
+				)
+			}
+			VerticalSpacer(height = 16.dp)
+		}
+	}
+
+	if (creditNotes.isNotEmpty()) {
+		VerticalSpacer(height = 16.dp)
+		CreditNoteDetails(creditNotes)
+
+	}
+	VerticalSpacer(height = 16.dp)
+
+	ProductDetailsScreen(productsInfo)
+
+	DownloadInvoiceButton(onDownloadInvoiceClick)
 }
 
 @Composable
 private fun CreditNoteDetails(
-    creditNotes: List<CreditNoteViewData>
+	creditNotes: List<CreditNoteViewData>
 ) = Column(
-    modifier = Modifier.background(Color.White)
+	modifier = Modifier.background(Color.White)
 ) {
-    VerticalSpacer(height = 20.dp)
-    Text(
-        modifier = Modifier.padding(horizontal = 20.dp),
-        text = stringResource(id = R.string.credit_note_received)
-    )
+	VerticalSpacer(height = 20.dp)
+	Text(
+		modifier = Modifier.padding(horizontal = 20.dp),
+		text = stringResource(id = R.string.credit_note_received)
+	)
 
-    VerticalSpacer(height = 12.dp)
+	VerticalSpacer(height = 12.dp)
 
-    Divider()
+	Divider()
 
-    creditNotes.forEach {
-        CreditNoteCard(it)
-    }
+	creditNotes.forEach {
+		CreditNoteCard(it)
+	}
 }
 
 @Composable
 private fun CreditNoteCard(
-    creditNote: CreditNoteViewData
+	creditNote: CreditNoteViewData
 ) = Column(
-    modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 20.dp)
+	modifier = Modifier
+		.fillMaxWidth()
+		.padding(horizontal = 20.dp)
 ) {
-    Spacer(modifier = Modifier.height(12.dp))
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Image(
-            modifier = Modifier
-                .height(32.dp)
-                .width(32.dp),
-            painter = painterResource(id = R.drawable.ic_transactions_credit_note),
-            contentDescription = stringResource(id = R.string.accessibility_icon)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(
-                        id = R.string.credit_note_ledger,
-                        creditNote.creditNoteType
-                    ),
-                    style = textParagraphT1Highlight(Neutral80)
-                )
-                Text(
-                    text = creditNote.creditNoteAmount.getAmountInRupees(),
-                    style = textParagraphT1Highlight(Neutral80)
-                )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = creditNote.creditNoteDate.toDateMonthYear(),
-                style = textCaptionCP1(Neutral60)
-            )
-        }
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    Divider()
+	Spacer(modifier = Modifier.height(12.dp))
+	Row(modifier = Modifier.fillMaxWidth()) {
+		Image(
+			modifier = Modifier
+				.height(32.dp)
+				.width(32.dp),
+			painter = painterResource(id = R.drawable.ic_transactions_credit_note),
+			contentDescription = stringResource(id = R.string.accessibility_icon)
+		)
+		Spacer(modifier = Modifier.width(8.dp))
+		Column {
+			Row(
+				modifier = Modifier.fillMaxWidth(),
+				horizontalArrangement = Arrangement.SpaceBetween
+			) {
+				Text(
+					text = stringResource(
+						id = R.string.credit_note_ledger,
+						creditNote.creditNoteType
+					),
+					style = textParagraphT1Highlight(Neutral80)
+				)
+				Text(
+					text = creditNote.creditNoteAmount.getAmountInRupees(),
+					style = textParagraphT1Highlight(Neutral80)
+				)
+			}
+			Spacer(modifier = Modifier.height(4.dp))
+			Text(
+				text = creditNote.creditNoteDate.toDateMonthYear(),
+				style = textCaptionCP1(Neutral60)
+			)
+		}
+	}
+	Spacer(modifier = Modifier.height(16.dp))
+	Divider()
 }
 
 @Composable
 fun DownloadInvoiceButton(
-    onClick: () -> Unit
+	onClick: () -> Unit
 ) = Column(
-    modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
+	modifier = Modifier
+		.fillMaxWidth()
+		.background(Color.White),
+	verticalArrangement = Arrangement.Center,
+	horizontalAlignment = Alignment.CenterHorizontally
 ) {
-    Row(
-        modifier = Modifier
-            .padding(top = 16.dp)
-            .clickableWithCorners(
-                borderSize = 48.dp,
-                onClick = onClick
-            )
-            .border(
-                width = 1.dp,
-                color = Primary80,
-                shape = RoundedCornerShape(48.dp)
-            )
-            .padding(vertical = 16.dp, horizontal = 40.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ledger_download),
-            contentDescription = stringResource(id = R.string.accessibility_icon),
-            tint = SeaGreen100
-        )
-        HorizontalSpacer(width = 6.dp)
-        Text(
-            text = stringResource(id = R.string.download_invoice),
-            color = SeaGreen100
-        )
-    }
+	Row(
+		modifier = Modifier
+			.padding(top = 16.dp)
+			.clickableWithCorners(
+				borderSize = 48.dp,
+				onClick = onClick
+			)
+			.border(
+				width = 1.dp,
+				color = Primary80,
+				shape = RoundedCornerShape(48.dp)
+			)
+			.padding(vertical = 16.dp, horizontal = 40.dp),
+		verticalAlignment = Alignment.CenterVertically,
+		horizontalArrangement = Arrangement.Center
+	) {
+		Icon(
+			painter = painterResource(id = R.drawable.ledger_download),
+			contentDescription = stringResource(id = R.string.accessibility_icon),
+			tint = SeaGreen100
+		)
+		HorizontalSpacer(width = 6.dp)
+		Text(
+			text = stringResource(id = R.string.download_invoice),
+			color = SeaGreen100
+		)
+	}
 
-    VerticalSpacer(height = 16.dp)
+	VerticalSpacer(height = 16.dp)
 }
