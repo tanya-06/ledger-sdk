@@ -112,8 +112,8 @@ fun LedgerNavigation(
                 ledgerColors = ledgerColors,
                 onBackPress = finishActivity,
                 detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
-                onPayNowClick = { ledgerCallbacks.onPaymentOptionsClick(resultLauncher) },
-                onOtherPaymentModeClick = { ledgerCallbacks.onPaymentOptionsClick(resultLauncher) },
+                onPayNowClick = { ledgerCallbacks.onRevampPayNowClick(resultLauncher) },
+                onOtherPaymentModeClick = { ledgerCallbacks.onRevampPayNowClick(resultLauncher) },
                 onError = { ledgerCallbacks.exceptionHandler(it) }
             )
         }
