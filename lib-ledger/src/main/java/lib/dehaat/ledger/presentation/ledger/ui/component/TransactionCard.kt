@@ -139,10 +139,32 @@ fun TransactionCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val date = if (transactionType is TransactionType.Interest) {
-                    stringResource(id = R.string.weekly_interest_till_date)
-                } else {
-                    transaction.date.toDateMonthYear()
+                val date = when (transactionType) {
+                    is TransactionType.Interest -> {
+                        when {
+                            transaction.fromDate == null && transaction.toDate != null -> {
+                                stringResource(
+                                    id = R.string.weekly_interest_till_date_,
+                                    transaction.toDate
+                                )
+                            }
+                            transaction.fromDate == null && transaction.toDate == null -> {
+                                stringResource(id = R.string.weekly_interest_till_date)
+                            }
+                            transaction.fromDate == transaction.toDate && transaction.toDate != null -> {
+                                transaction.toDate
+                            }
+                            transaction.fromDate != null && transaction.toDate != null -> {
+                                stringResource(
+                                    id = R.string.ledger_to,
+                                    transaction.fromDate,
+                                    transaction.toDate
+                                )
+                            }
+                            else -> ""
+                        }
+                    }
+                    else -> transaction.date.toDateMonthYear()
                 }
                 Text(
                     text = date,

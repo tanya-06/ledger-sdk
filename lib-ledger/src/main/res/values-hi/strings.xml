@@ -138,6 +138,7 @@
     <string name="advance_balance">एडवांस बैलेन्स</string>
     <string name="advance_bal_note">एडवाँस बैलेन्स ऑर्डरिंग खुलने तक ब्लॉक रहेगा।\nऑर्डरिंग खुलने पर आपका एडवाँस बकाया राशी में एडजस्ट होजाएगा</string>
     <string name="amount_is_blocked">एडवाँस बैलेन्स ऑर्डर खुलने तक ब्लॉक है</string>
+    <string name="ledger_interest_amount_reduced">आपके द्वारा किए गए भुगतान से आपका ब्याज कम हो गया है</string>
     <string name="ledger_interest_details">ब्याज विवरण</string>
     <string name="ledger_total_interest_charged">इस इनवॉइस पर लगा कुल ब्याज</string>
     <string name="ledger_invoice_in_processing">ब्याज लगना जल्द ही शुरू होगा, जल्द भुगतान करें और ब्याज से बचें।</string>
@@ -145,4 +146,6 @@
     <string name="ledger_interest_paid">कुल ब्याज भुगतान</string>
     <string name="ledger_interest_outstanding">ब्याज बकाया</string>
     <string name="ledger_interest_being_charged">इस इन्वॉस के ऊपर ब्याज लग रहा है</string>
+    <string name="ledger_to">%s से %s</string>
+    <string name="weekly_interest_till_date_">%s तक</string>
 </resources>

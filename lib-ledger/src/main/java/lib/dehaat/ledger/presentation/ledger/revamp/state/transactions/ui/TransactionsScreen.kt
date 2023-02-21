@@ -1,13 +1,20 @@
 package lib.dehaat.ledger.presentation.ledger.revamp.state.transactions.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.core.os.bundleOf
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -23,7 +30,6 @@ import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
-import lib.dehaat.ledger.presentation.ledger.details.interest.InterestDetailScreenArgs
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.CreditNoteDetailsViewModel
@@ -31,7 +37,10 @@ import lib.dehaat.ledger.presentation.ledger.revamp.state.transactions.Transacti
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionCard
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionListHeader
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
-import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
+import lib.dehaat.ledger.resources.Color3985BF
+import lib.dehaat.ledger.resources.Color3BC6CA
+import lib.dehaat.ledger.resources.mediumShape
+import lib.dehaat.ledger.resources.textParagraphT2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,13 +55,36 @@ fun TransactionsScreen(
     val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-    var weeklyInterestVisibility by remember { mutableStateOf(true) }
+    val uiState by viewModel.uiState.collectAsState()
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         stickyHeader {
             TransactionListHeader(
                 ledgerViewModel,
                 showFilterSheet
             ){ detailPageNavigationCallback.navigateToABSDetailPage(it) }
+        }
+        item {
+            if (uiState.showWeeklyInterestDecreasingLabel) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .padding(horizontal = 20.dp, vertical = 12.dp)
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color3985BF,
+                                    Color3BC6CA
+                                )
+                            ),
+                            shape = mediumShape()
+                        )
+                        .padding(vertical = 8.dp),
+                    text = stringResource(R.string.ledger_interest_amount_reduced),
+                    textAlign = TextAlign.Center,
+                    style = textParagraphT2(Color.White)
+                )
+            }
         }
         items(transactions) { transaction ->
             transaction?.let {
@@ -91,19 +123,10 @@ fun TransactionsScreen(
                         )
                     }
                     TransactionType.Interest().interestType -> {
-                        if (weeklyInterestVisibility) {
-                            TransactionCard(
-                                transactionType = TransactionType.Interest(),
-                                transaction = transaction
-                            ) {
-                                detailPageNavigationCallback.navigateToRevampWeeklyInterestDetailPage(
-                                    InterestDetailScreenArgs.getBundle(
-                                        transaction,
-                                        ledgerViewModel.uiState.value.summaryViewData
-                                    )
-                                )
-                            }
-                        }
+                        TransactionCard(
+                            transactionType = TransactionType.Interest(),
+                            transaction = transaction
+                        ) {}
                     }
                     TransactionType.FinancingFee().financingFeeType -> TransactionCard(
                         transactionType = TransactionType.FinancingFee(),
@@ -156,7 +179,6 @@ fun TransactionsScreen(
             lifecycleOwner.lifecycle,
             Lifecycle.State.STARTED
         ).collect { event ->
-            weeklyInterestVisibility = event == DaysToFilter.All
             viewModel.updateSelectedFilter(event)
         }
     }

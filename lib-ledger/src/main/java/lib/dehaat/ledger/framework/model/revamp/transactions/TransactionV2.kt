@@ -35,5 +35,11 @@ data class TransactionV2(
     @Json(name = "unrealized_payment")
     val unrealizedPayment: Boolean?,
     @Json(name = "is_invoice_subvented")
-    val isInterestSubVented: Boolean?
+    val isInterestSubVented: Boolean?,
+    @Json(name = "from_date")
+    val fromDate: Long?,
+    @Json(name = "to_date")
+    val toDate: Long?,
+    @Json(name = "adjustment_amount")
+    val adjustmentAmount: Double?
 )

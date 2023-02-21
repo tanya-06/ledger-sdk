@@ -15,5 +15,7 @@ data class TransactionViewDataV2(
     val sourceNo: String?,
     val type: String,
     val unrealizedPayment: Boolean?,
-
+    val fromDate: String?,
+    val toDate: String?,
+    val adjustmentAmount: Double?
 )

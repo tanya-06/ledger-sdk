@@ -29,6 +29,7 @@ import lib.dehaat.ledger.entities.transactionsummary.ABSEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.initializer.isGreaterThanOrEqualToCurrentDate
 import lib.dehaat.ledger.initializer.isSmallerThanOrEqualToCurrentDate
+import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
 import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.abs.ABSTransactionViewData
@@ -126,7 +127,10 @@ class LedgerViewDataMapper @Inject constructor() {
 			source = it.source,
 			sourceNo = it.sourceNo,
 			type = it.type,
-			unrealizedPayment = it.unrealizedPayment
+			unrealizedPayment = it.unrealizedPayment,
+			fromDate = it.fromDate?.toDateMonthYear(),
+			toDate = it.toDate?.toDateMonthYear(),
+			adjustmentAmount = it.adjustmentAmount
 		)
 	}
 
@@ -465,4 +469,10 @@ class LedgerViewDataMapper @Inject constructor() {
 			schemeName
 		)
 	}
+
+	fun getWeeklyInterestLabel(
+		entity: List<TransactionEntityV2>
+	) = entity.firstOrNull {
+		it.type == TransactionType.Interest().type
+	}?.adjustmentAmount.orZero() > 0
 }

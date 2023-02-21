@@ -15,5 +15,8 @@ data class TransactionEntityV2(
 	val sourceNo: String?,
 	val type: String,
 	val unrealizedPayment: Boolean?,
-	val isInterestSubVented: Boolean?
+	val isInterestSubVented: Boolean?,
+	val fromDate: Long?,
+	val toDate: Long?,
+	val adjustmentAmount: Double?
 )

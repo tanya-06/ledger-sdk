@@ -147,6 +147,7 @@
     <string name="advance_balance">Advance balance</string>
     <string name="advance_bal_note">Advance balance will be kept blocked until ordering opens.\nIt will be adjusted with outstanding once ordering window will open.</string>
     <string name="amount_is_blocked">Advance amount is blocked until ordering for scheme opens</string>
+    <string name="ledger_interest_amount_reduced">Interest amount has been reduced based on your payments</string>
     <string name="ledger_interest_details">Interest Details</string>
     <string name="ledger_total_interest_charged">Total Interest Charged</string>
     <string name="ledger_invoice_in_processing">Interest will be charged soon, please pay early to avoid interest.</string>
@@ -154,4 +155,6 @@
     <string name="ledger_interest_paid">Interest Paid</string>
     <string name="ledger_interest_outstanding">Interest Outstanding</string>
     <string name="ledger_interest_being_charged">Interest is being charged on this invoice</string>
+    <string name="ledger_to">%s to %s</string>
+    <string name="weekly_interest_till_date_">Till %s</string>
 </resources>
