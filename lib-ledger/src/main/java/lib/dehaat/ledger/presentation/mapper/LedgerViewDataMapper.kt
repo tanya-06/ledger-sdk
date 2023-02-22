@@ -265,7 +265,6 @@ class LedgerViewDataMapper @Inject constructor() {
 			showProcessingLabel = isInterestSubVented.isTrue() &&
 					interestStartDate?.isGreaterThanOrEqualToCurrentDate().isTrue() &&
 					totalInterestCharged.orZero() <= 0,
-			showInterestWillBeStartingLabel = isInterestSubVented.isFalse(),
 			showInterestDetails = isInterestSubVented.isTrue() &&
 					interestStartDate?.isSmallerThanOrEqualToCurrentDate().isTrue() &&
 					interestBeingCharged.isTrue() &&

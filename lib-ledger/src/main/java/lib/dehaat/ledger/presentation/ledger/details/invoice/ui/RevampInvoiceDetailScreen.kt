@@ -255,29 +255,6 @@ private fun InvoiceDetailScreen(
 			}
 		}
 
-		if (summary.showInterestWillBeStartingLabel) {
-			VerticalSpacer(height = 8.dp)
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.border(width = 1.dp, shape = RoundedCornerShape(8.dp), color = FrenchBlue10)
-					.background(color = BlueGreen10, shape = RoundedCornerShape(8.dp))
-					.padding(12.dp)
-			) {
-				Text(
-					modifier = Modifier.weight(1F),
-					text = stringResource(R.string.ledger_interest_charged_upto_days),
-					style = textParagraphT2Highlight(Neutral70)
-				)
-				HorizontalSpacer(8.dp)
-				Image(
-					modifier = Modifier.size(24.dp),
-					painter = painterResource(id = R.drawable.ic_idea_bulb),
-					contentDescription = ""
-				)
-			}
-		}
-
 		VerticalSpacer(height = 16.dp)
 	}
 
