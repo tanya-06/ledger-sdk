@@ -14,7 +14,6 @@ data class SummaryViewDataV2(
 	val totalInterestPaid: String,
 	val totalInterestOutstanding: String,
 	val showProcessingLabel: Boolean,
-	val showInterestWillBeStartingLabel: Boolean,
 	val showInterestDetails: Boolean,
 	val showPaymentComplete: Boolean
 )
