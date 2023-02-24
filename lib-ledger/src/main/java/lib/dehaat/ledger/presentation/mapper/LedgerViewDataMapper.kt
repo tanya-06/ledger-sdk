@@ -2,6 +2,7 @@ package lib.dehaat.ledger.presentation.mapper
 
 import com.dehaat.androidbase.helper.isFalse
 import com.dehaat.androidbase.helper.isTrue
+import com.dehaat.androidbase.helper.orZero
 import com.dehaat.androidbase.utils.DateFormat.dd_MMM_yyy
 import com.dehaat.androidbase.utils.DateUtils
 import javax.inject.Inject
@@ -262,6 +263,8 @@ class LedgerViewDataMapper @Inject constructor() {
 			totalInterestPaid = totalInterestPaid?.toString().getAmountInRupees(),
 			totalInterestOutstanding = totalInterestOutstanding?.toString()
 				.getAmountInRupees(),
+			penaltyAmount = if (isInterestSubVented.isTrue() && penaltyAmount.toDoubleOrZero() > 0) penaltyAmount.getAmountInRupees() else null,
+			invoiceAge = invoiceAge.orZero(),
 			showProcessingLabel = isInterestSubVented.isTrue() &&
 					interestStartDate?.isGreaterThanOrEqualToCurrentDate().isTrue() &&
 					totalInterestCharged.orZero() <= 0,

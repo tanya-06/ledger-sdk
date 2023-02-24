@@ -48,13 +48,12 @@ import lib.dehaat.ledger.presentation.model.revamp.invoice.CreditNoteViewData
 import lib.dehaat.ledger.presentation.model.revamp.invoice.ProductsInfoViewDataV2
 import lib.dehaat.ledger.presentation.model.revamp.invoice.SummaryViewDataV2
 import lib.dehaat.ledger.resources.Background
-import lib.dehaat.ledger.resources.BlueGreen10
 import lib.dehaat.ledger.resources.ColorFFEBEC
 import lib.dehaat.ledger.resources.Error100
-import lib.dehaat.ledger.resources.FrenchBlue10
+import lib.dehaat.ledger.resources.Error5
+import lib.dehaat.ledger.resources.Error90
 import lib.dehaat.ledger.resources.Neutral30
 import lib.dehaat.ledger.resources.Neutral60
-import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.Primary80
@@ -62,6 +61,7 @@ import lib.dehaat.ledger.resources.SeaGreen100
 import lib.dehaat.ledger.resources.Secondary10
 import lib.dehaat.ledger.resources.Secondary120
 import lib.dehaat.ledger.resources.Success10
+import lib.dehaat.ledger.resources.mediumShape
 import lib.dehaat.ledger.resources.textButtonB2
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
@@ -69,6 +69,7 @@ import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.resources.textSubHeadingS3
 import lib.dehaat.ledger.util.DottedShape
+import lib.dehaat.ledger.util.GifImage
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.clickableWithCorners
 import lib.dehaat.ledger.util.getAmountInRupees
@@ -231,6 +232,49 @@ private fun InvoiceDetailScreen(
 			)
 		}
 
+		summary.penaltyAmount?.let {
+			VerticalSpacer(height = 12.dp)
+			RevampKeyValuePair(
+				pair = Pair(
+					stringResource(R.string.ledger_penalty_amount),
+					it
+				),
+				style = Pair(
+					textParagraphT2Highlight(Error100),
+					textButtonB2(Error100)
+				)
+			)
+
+			VerticalSpacer(height = 8.dp)
+
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.background(color = Error5, shape = mediumShape())
+					.padding(8.dp),
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				GifImage(
+					modifier = Modifier.size(72.dp),
+					drawable = R.drawable.calendar_animation,
+					contentDescription = ""
+				)
+
+				HorizontalSpacer(width = 8.dp)
+
+				Text(
+					text = stringResource(
+						R.string.ledger_penalty_amount_amount_description,
+						summary.invoiceAge,
+						it
+					),
+					style = textParagraphT2(
+						Error90
+					)
+				)
+			}
+		}
+
 		if (summary.showProcessingLabel) {
 			VerticalSpacer(height = 8.dp)
 
@@ -241,11 +285,12 @@ private fun InvoiceDetailScreen(
 					.padding(8.dp),
 				verticalAlignment = Alignment.CenterVertically
 			) {
-				Image(
+				GifImage(
 					modifier = Modifier.size(72.dp),
-					painter = painterResource(id = R.drawable.ic_savings_piggy),
+					drawable = R.drawable.savings_piggy,
 					contentDescription = ""
 				)
+
 				HorizontalSpacer(8.dp)
 
 				Text(

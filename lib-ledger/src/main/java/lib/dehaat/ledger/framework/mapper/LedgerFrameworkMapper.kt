@@ -208,6 +208,8 @@ class LedgerFrameworkMapper @Inject constructor() {
                     totalInterestCharged = totalInterestCharged,
                     totalInterestPaid = totalInterestPaid,
                     totalInterestOutstanding = totalInterestOutstanding,
+                    penaltyAmount = penaltyAmount,
+                    invoiceAge = invoiceAge,
                     isInterestSubVented = isInterestSubVented
                 )
             }

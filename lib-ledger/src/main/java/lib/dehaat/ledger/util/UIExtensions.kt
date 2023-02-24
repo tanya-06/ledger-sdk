@@ -1,8 +1,12 @@
 package lib.dehaat.ledger.util
 
 import android.content.Context
+import android.os.Build.VERSION.SDK_INT
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +32,11 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
 import com.dehaat.androidbase.helper.showToast
 import kotlinx.coroutines.flow.SharedFlow
 import lib.dehaat.ledger.initializer.LedgerSDK
@@ -104,4 +113,30 @@ data class DottedShape(
         }
         close()
     })
+}
+
+@Composable
+fun GifImage(
+    modifier: Modifier,
+    @DrawableRes drawable: Int,
+    contentDescription: String,
+    context: Context = LocalContext.current
+) {
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            if (SDK_INT >= 28) {
+                add(ImageDecoderDecoder.Factory())
+            } else {
+                add(GifDecoder.Factory())
+            }
+        }
+        .build()
+    Image(
+        painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(context).data(data = drawable).apply(block = {}).build(),
+            imageLoader = imageLoader
+        ),
+        contentDescription = contentDescription,
+        modifier = modifier.fillMaxWidth(),
+    )
 }

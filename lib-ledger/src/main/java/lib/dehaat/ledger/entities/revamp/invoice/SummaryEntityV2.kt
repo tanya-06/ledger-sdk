@@ -12,5 +12,7 @@ data class SummaryEntityV2(
 	val totalInterestCharged: Double?,
 	val totalInterestPaid: Double?,
 	val totalInterestOutstanding: Double?,
+	val penaltyAmount: String?,
+	val invoiceAge: Long?,
 	val isInterestSubVented: Boolean?
 )

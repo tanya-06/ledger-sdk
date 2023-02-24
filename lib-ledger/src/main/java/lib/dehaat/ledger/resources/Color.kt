@@ -19,6 +19,7 @@ val Error110 = Color(0XFFA6000E)
 val Error100 = Color(0XFFBF0010)
 val Error90 = Color(0XFFD91625)
 val Error10 = Color(0xFFFFEEEF)
+val Error5 = Color(0xfffFEBEC)
 
 val FrenchBlue10 = Color(0XFFE5F2FF)
 val FrenchBlue120 = Color(0XFF1F5C99)
