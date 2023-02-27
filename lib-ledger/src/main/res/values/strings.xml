@@ -161,4 +161,5 @@
     <string name="minimum_repayment_amount">Minimum Repayment Amount</string>
     <string name="this_is_your_overdue_amount">This is your overdue Amount. Pay on time to avoid order blocking</string>
     <string name="ordering_blocked_due_to_overdue">This is your overdue Amount. Pay early to avoid getting your ordering blocked.</string>
+    <string name="ledger_pay_immidiately">Pay immediately</string>
 </resources>

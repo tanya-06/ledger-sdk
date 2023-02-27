@@ -67,74 +67,88 @@ fun RepaymentScreen(
 		var toolTipVisibility by remember { mutableStateOf(LedgerSDK.showOutstandingTooltip) }
 		var viewOffset by remember { mutableStateOf(ViewOffset()) }
 
-		Column(
-			modifier = Modifier
-				.fillMaxWidth()
-				.background(if (summaryViewData.isOrderingBlocked) ColorFFF5F5 else Primary10)
-				.padding(horizontal = 20.dp)
-		) {
-			VerticalSpacer(height = 12.dp)
-			if (summaryViewData.isOrderingBlocked) {
-
-				Row(verticalAlignment = Alignment.Bottom) {
-					Icon(
-						modifier = Modifier.size(16.dp),
-						painter = painterResource(id = R.drawable.ic_blocked),
-						contentDescription = "blocked Icon",
-						tint = Error90
-					)
-
-					HorizontalSpacer(width = 4.dp)
-
-					Text(text = stringResource(R.string.your_ordering_is_blocked_ledger), style = textParagraphT1(Error110))
-				}
-
-				VerticalSpacer(height = 16.dp)
-
-				Divider(modifier = Modifier.background(Color.White))
-
-				VerticalSpacer(height = 16.dp)
-			}
-
-			Row(
-				modifier = Modifier.fillMaxWidth(),
-				horizontalArrangement = Arrangement.SpaceBetween
-			) {
-				Text(
-					text = stringResource(R.string.minimum_repayment_amount),
-					style = textParagraphT1(Neutral90)
-				)
-
-				Text(
-					modifier = Modifier
-						.clickable(onClick = onShowInvoiceListDetailsClick)
-						.onGloballyPositioned {
-							viewOffset = viewOffset.copy(
-								x = it.boundsInParent().bottomCenter.x,
-								y = it.boundsInParent().bottomCenter.y
-							)
-						},
-					text = summaryViewData.forwardOverdueAmount,
-					style = textButtonB1(
-						textColor = Neutral90,
-						textDecoration = TextDecoration.Underline
-					)
-				)
-			}
-
-			Text(
-				text = if (summaryViewData.isOrderingBlocked) "जल्द भुगतान करें" else summaryViewData.forwardOverdueDate,
-				style = textCaptionCP1(Neutral70)
-			)
-
+		if (summaryViewData.hideMinimumRepaymentSection) {
 			VerticalSpacer(height = 24.dp)
 
-			PaymentButton(payNowClick = onPayNowClick)
+			Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+				PaymentButton(payNowClick = onPayNowClick)
+			}
 
 			VerticalSpacer(height = 16.dp)
+		} else {
+			Column(
+				modifier = Modifier
+					.fillMaxWidth()
+					.background(if (summaryViewData.isOrderingBlocked) ColorFFF5F5 else Primary10)
+					.padding(horizontal = 20.dp)
+			) {
+				VerticalSpacer(height = 12.dp)
+				if (summaryViewData.isOrderingBlocked) {
+
+					Row(verticalAlignment = Alignment.Bottom) {
+						Icon(
+							modifier = Modifier.size(16.dp),
+							painter = painterResource(id = R.drawable.ic_blocked),
+							contentDescription = "blocked Icon",
+							tint = Error90
+						)
+
+						HorizontalSpacer(width = 4.dp)
+
+						Text(
+							text = stringResource(R.string.your_ordering_is_blocked_ledger),
+							style = textParagraphT1(Error110)
+						)
+					}
+
+					VerticalSpacer(height = 16.dp)
+
+					Divider(modifier = Modifier.background(Color.White))
+
+					VerticalSpacer(height = 16.dp)
+				}
+
+				Row(
+					modifier = Modifier.fillMaxWidth(),
+					horizontalArrangement = Arrangement.SpaceBetween
+				) {
+					Text(
+						text = stringResource(R.string.minimum_repayment_amount),
+						style = textParagraphT1(Neutral90)
+					)
+
+					Text(
+						modifier = Modifier
+							.clickable(onClick = onShowInvoiceListDetailsClick)
+							.onGloballyPositioned {
+								viewOffset = viewOffset.copy(
+									x = it.boundsInParent().bottomCenter.x,
+									y = it.boundsInParent().bottomCenter.y
+								)
+							},
+						text = summaryViewData.minimumRepaymentAmount,
+						style = textButtonB1(
+							textColor = Neutral90,
+							textDecoration = TextDecoration.Underline
+						)
+					)
+				}
+
+				Text(
+					text = if (summaryViewData.isOrderingBlocked) stringResource(R.string.ledger_pay_immidiately) else summaryViewData.repaymentDate,
+					style = textCaptionCP1(Neutral70)
+				)
+
+				VerticalSpacer(height = 24.dp)
+
+				PaymentButton(payNowClick = onPayNowClick)
+
+				VerticalSpacer(height = 16.dp)
+			}
+
 		}
 
-		if (toolTipVisibility) {
+		if (toolTipVisibility && summaryViewData.showToolTipInformation) {
 			var toolTipOffSet by remember { mutableStateOf(ToolTipOffSet()) }
 			val density = LocalDensity.current
 			val shape = TooltipShape(

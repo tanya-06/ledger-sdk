@@ -42,7 +42,7 @@ data class CreditV2(
     @Json(name = "minimum_repayment_amount")
     val minimumRepaymentAmount: String?,
     @Json(name = "repayment_date")
-    val repaymentDate: Double?,
+    val repaymentDate: Long?,
     @Json(name = "overdue_amount")
     val overdueAmount: String?,
     @Json(name = "overdue_credit_limit")

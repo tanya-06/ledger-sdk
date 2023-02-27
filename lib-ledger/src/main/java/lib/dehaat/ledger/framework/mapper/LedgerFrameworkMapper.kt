@@ -96,10 +96,9 @@ class LedgerFrameworkMapper @Inject constructor() {
             totalInterestOutstanding = totalInterestOutstanding.orEmpty(),
             totalInterestPaid = totalInterestPaid.orEmpty(),
             minimumRepaymentAmount = minimumRepaymentAmount,
+            repaymentDate = repaymentDate,
             overdueAmount = overdueAmount,
-            totalOverdueLimit = totalOverdueLimit,
-            forwardOverdueAmount = forwardOverdueAmount,
-            forwardOverdueDate = forwardOverdueDate
+            overdueCreditLimit = overdueCreditLimit
         )
     }
 

@@ -18,8 +18,9 @@ data class SummaryViewData(
     val undeliveredInvoiceAmount: String,
     val totalInterestOutstanding: String,
     val totalInterestPaid: String,
-    val minimumRepaymentAmount: String?,
-    val forwardOverdueAmount: String,
-    val forwardOverdueDate: String,
-    val isOrderingBlocked: Boolean
+    val minimumRepaymentAmount: String,
+    val repaymentDate: String,
+    val isOrderingBlocked: Boolean,
+    val hideMinimumRepaymentSection: Boolean,
+    val showToolTipInformation: Boolean
 )

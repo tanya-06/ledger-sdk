@@ -6,6 +6,7 @@ import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.formatDecimal
 import java.text.NumberFormat
 import java.util.*
+import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 
 fun String?.nullToValue(value: String = "--") = this ?: value
 
@@ -54,3 +55,7 @@ fun String.formatAmount() = tryCatchWithReturn(this) {
     formatter.maximumFractionDigits = 2
     return formatter.format(toDouble())
 }
+
+fun String?.toDoubleOrZero(): Double = this?.let {
+    it.toDoubleOrNull().orZero()
+}.orZero()

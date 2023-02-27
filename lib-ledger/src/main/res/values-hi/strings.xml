@@ -152,4 +152,5 @@
     <string name="minimum_repayment_amount">न्यूनतम भुगतान राशि</string>
     <string name="this_is_your_overdue_amount">यह राशि आपकी ओवरडयू राशि है। ऑर्डरिंग ब्लॉक होने से बचने के लिए जल्द भुगतान करें।</string>
     <string name="ordering_blocked_due_to_overdue">ओवरडयू लिमिट पार होने की वजह से ऑर्डरिंग ब्लॉक्ड है।</string>
+    <string name="ledger_pay_immidiately">जल्द भुगतान करें</string>
 </resources>
