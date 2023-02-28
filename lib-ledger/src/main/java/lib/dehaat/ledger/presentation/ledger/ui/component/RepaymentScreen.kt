@@ -38,7 +38,7 @@ import lib.dehaat.ledger.resources.Error110
 import lib.dehaat.ledger.resources.Error90
 import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral90
-import lib.dehaat.ledger.resources.Primary10
+import lib.dehaat.ledger.resources.Warning10
 import lib.dehaat.ledger.resources.textButtonB1
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1
@@ -79,7 +79,7 @@ fun RepaymentScreen(
 			Column(
 				modifier = Modifier
 					.fillMaxWidth()
-					.background(if (summaryViewData.isOrderingBlocked) ColorFFF5F5 else Primary10)
+					.background(if (summaryViewData.isOrderingBlocked) ColorFFF5F5 else Warning10)
 					.padding(horizontal = 20.dp)
 			) {
 				VerticalSpacer(height = 12.dp)
@@ -119,7 +119,6 @@ fun RepaymentScreen(
 
 					Text(
 						modifier = Modifier
-							.clickable(onClick = onShowInvoiceListDetailsClick)
 							.onGloballyPositioned {
 								viewOffset = viewOffset.copy(
 									x = it.boundsInParent().bottomCenter.x,
@@ -135,7 +134,14 @@ fun RepaymentScreen(
 				}
 
 				Text(
-					text = if (summaryViewData.isOrderingBlocked) stringResource(R.string.ledger_pay_immidiately) else summaryViewData.repaymentDate,
+					text = if (summaryViewData.isOrderingBlocked) {
+						stringResource(R.string.ledger_pay_immidiately)
+					} else {
+						stringResource(
+							id = R.string.weekly_interest_till_date_,
+							summaryViewData.repaymentDate
+						)
+					},
 					style = textCaptionCP1(Neutral70)
 				)
 

@@ -66,9 +66,10 @@ object DummyDataSource {
         totalInterestOutstanding = "",
         totalInterestPaid = "",
         minimumRepaymentAmount = "",
-        forwardOverdueAmount = "1004",
-        forwardOverdueDate = "26/10/2012",
-        isOrderingBlocked = true
+        isOrderingBlocked = true,
+        hideMinimumRepaymentSection = true,
+        repaymentDate = "",
+        showToolTipInformation = true
     )
 
     val creditSummaryViewData by lazy {
