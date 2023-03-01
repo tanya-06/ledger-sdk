@@ -27,6 +27,10 @@ data class Summary(
     val totalInterestPaid: Double?,
     @Json(name = "total_interest_outstanding")
     val totalInterestOutstanding: Double?,
+    @Json(name = "penalty_charged")
+    val penaltyAmount: String?,
+    @Json(name = "invoice_age")
+    val invoiceAge: Long?,
     @Json(name = "is_invoice_subvented")
     val isInterestSubVented: Boolean?
 )

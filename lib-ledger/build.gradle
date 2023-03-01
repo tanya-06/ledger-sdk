@@ -107,6 +107,10 @@ dependencies {
     implementation("com.amazonaws:aws-android-sdk-s3:$aws_android_sdk")
     implementation("com.amazonaws:aws-android-sdk-cognito:$aws_android_sdk")
     implementation("com.amazonaws:aws-android-sdk-mobile-client:2.6.15@aar") { transitive = true }
+
+    // coil
+    implementation "io.coil-kt:coil-compose:2.1.0"
+    implementation "io.coil-kt:coil-gif:2.1.0"
 }
 
 afterEvaluate {

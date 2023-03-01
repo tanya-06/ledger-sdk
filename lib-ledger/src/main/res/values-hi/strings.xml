@@ -153,4 +153,6 @@
     <string name="this_is_your_overdue_amount">यह राशि आपकी ओवरडयू राशि है। ऑर्डरिंग ब्लॉक होने से बचने के लिए जल्द भुगतान करें।</string>
     <string name="ordering_blocked_due_to_overdue">ओवरडयू लिमिट पार होने की वजह से ऑर्डरिंग ब्लॉक्ड है।</string>
     <string name="ledger_pay_immidiately">जल्द भुगतान करें</string>
+    <string name="ledger_penalty_amount">पेनल्टी राशि</string>
+    <string name="ledger_penalty_amount_amount_description">इस ऑर्डर का पूर्ण भुगतान %1s दिन से नहीं करने के कारण %2s पेनल्टी लगायी गयी है।</string>
 </resources>

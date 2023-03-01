@@ -13,6 +13,8 @@ data class SummaryViewDataV2(
 	val totalInterestCharged: String,
 	val totalInterestPaid: String,
 	val totalInterestOutstanding: String,
+	val penaltyAmount: String?,
+	val invoiceAge: Long,
 	val showProcessingLabel: Boolean,
 	val showInterestDetails: Boolean,
 	val showPaymentComplete: Boolean
