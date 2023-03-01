@@ -78,7 +78,8 @@ class AppChooserActivity : AppCompatActivity() {
                 partnerId = "123456",
                 dcName = "DC DBA",
                 isDCFinanced = true,
-                language = "en"
+                language = "en",
+                showOutstandingTooltip = true
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -118,7 +119,8 @@ class AppChooserActivity : AppCompatActivity() {
                 partnerId = "123456",
                 dcName = "DC AIMS",
                 isDCFinanced = false,
-                language = "hi"
+                language = "hi",
+                showOutstandingTooltip = true
             )
         } catch (e: Exception) {
             e.printStackTrace()
