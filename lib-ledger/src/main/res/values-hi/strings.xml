@@ -148,4 +148,9 @@
     <string name="ledger_interest_being_charged">इस इन्वॉस के ऊपर ब्याज लग रहा है</string>
     <string name="ledger_to">%s से %s</string>
     <string name="weekly_interest_till_date_">%s तक</string>
+    <string name="your_ordering_is_blocked_ledger">आपकी ऑर्डरिंग ब्लॉक्ड है।</string>
+    <string name="minimum_repayment_amount">न्यूनतम भुगतान राशि</string>
+    <string name="this_is_your_overdue_amount">यह राशि आपकी ओवरडयू राशि है। ऑर्डरिंग ब्लॉक होने से बचने के लिए जल्द भुगतान करें।</string>
+    <string name="ordering_blocked_due_to_overdue">ओवरडयू लिमिट पार होने की वजह से ऑर्डरिंग ब्लॉक्ड है।</string>
+    <string name="ledger_pay_immidiately">जल्द भुगतान करें</string>
 </resources>
