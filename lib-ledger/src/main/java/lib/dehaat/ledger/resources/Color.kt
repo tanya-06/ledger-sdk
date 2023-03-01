@@ -41,6 +41,7 @@ val Pumpkin120 = Color(0XFFBF4B0A)
 val Primary10 = Color(0XFFEAFBF1)
 val Primary20 = Color(0XFFCCEFDB)
 val Primary80 = Color(0XFF1F9954)
+val Primary110 = Color(0XFF00662C)
 
 val SeaGreen10 = Color(0XFFEAFBF1)
 val SeaGreen20 = Color(0XFFCCEFDB)

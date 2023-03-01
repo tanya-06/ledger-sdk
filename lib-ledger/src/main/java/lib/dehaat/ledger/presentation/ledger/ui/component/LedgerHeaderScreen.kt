@@ -90,9 +90,7 @@ fun LedgerHeaderScreen(
             )
         )
 
-        if (summaryViewData?.externalFinancierSupported == false) {
-            ViewDetails(onTotalOutstandingDetailsClick)
-        }
+        ViewDetails(onTotalOutstandingDetailsClick)
     }
 
     if (totalOutstandingAmount < 0) {

@@ -164,4 +164,20 @@
     <string name="ledger_pay_immidiately">Pay immediately</string>
     <string name="ledger_penalty_amount">Penalty amount</string>
     <string name="ledger_penalty_amount_amount_description">A penalty of %2s has been imposed as complete payment for this order has not been done since %1s days.</string>
+    <string name="ledger_outstanding_calculation">View Outstanding Calculation Details</string>
+    <string name="ledger_total_outstanding">Total Outstanding (₹)</string>
+    <string name="ledger_total_payment">Total Payment (₹)</string>
+    <string name="ledger_total_purchase">Total Purchases (₹)</string>
+    <string name="ledger_total_calculation">Total Purchases Calculation</string>
+    <string name="ledger_total_invoice_amount">Invoice Amount</string>
+    <string name="ledger_total_debit_note_amount">Debit Note Amount</string>
+    <string name="ledger_credit_note_amount">Credit Note Amount</string>
+    <string name="ledger_outstanding_interest_amount">Interest Outstanding</string>
+    <string name="ledger_credit_note_interst_returned_amount">Interest Refund Credit Note Amount</string>
+    <string name="ledger_paid_interest_amount">Interest Paid</string>
+    <string name="ledger_total_purchases">Total Purchases</string>
+    <string name="ledger_total_payment_calculation">Total Payment Calculation</string>
+    <string name="ledger_total_payment_made_by_you">Payment Till Date</string>
+    <string name="ledger_paid_refund">Payment Refunded to you</string>
+    <string name="ledger_total_paid">Total Payment</string>
 </resources>

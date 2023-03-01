@@ -92,10 +92,12 @@ class RevampLedgerViewModel @Inject constructor(
         result: APIResultEntity<TransactionSummaryEntity?>
     ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { entity ->
         val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
+        val outstandingCalculationUiState = mapper.toOutstandingCalculationViewData(entity)
         transactionsViewModelState.update { ledgerDetailViewModelState ->
             ledgerDetailViewModelState.copy(
                 isLoading = false,
-                summary = transactionSummaryViewData
+                summary = transactionSummaryViewData,
+                outstandingCalculationUiState = outstandingCalculationUiState
             )
         }
     }

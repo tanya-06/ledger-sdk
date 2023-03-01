@@ -90,3 +90,17 @@ fun CustomAppBar(
         }
     }
 }
+
+@Composable
+fun SpaceMedium() {
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+fun SpaceSmall12() = Spacer(modifier = Modifier.height(12.dp))
+
+@Composable
+fun HorizontalSpacer(width: Dp) = Spacer(modifier = Modifier.width(width))
+
+@Composable
+fun VerticalSpacer(height: Dp) = Spacer(modifier = Modifier.height(height))
