@@ -11,6 +11,8 @@ import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.TransactionSummaryViewData
 import lib.dehaat.ledger.util.getRoundedAmountInRupees
+import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
+import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.toDoubleOrZero
 
 class ViewDataMapper @Inject constructor() {
@@ -75,5 +77,23 @@ class ViewDataMapper @Inject constructor() {
 
     private fun toABSViewData(abs: ABSEntity?) = abs?.run {
         ABSViewData(amount, lastMoveScheme, showBanner)
+    }
+
+    fun toOutstandingCalculationViewData(entity: TransactionSummaryEntity) = with(entity) {
+        OutstandingCalculationUiState(
+            totalOutstanding = (purchaseAmount.toDoubleOrZero() - netPaymentAmount.toDoubleOrZero()).toString()
+                .getAmountInRupees(),
+            totalPurchase = purchaseAmount.getAmountInRupees(),
+            totalPayment = netPaymentAmount.getAmountInRupees(),
+            totalInvoiceAmount = totalInvoiceAmount.getAmountInRupees(),
+            totalCreditNoteAmount = creditNoteAmount.getAmountInRupees(),
+            outstandingInterestAmount = interestOutstanding.getAmountInRupees(),
+            paidInterestAmount = interestPaid.getAmountInRupees(),
+            creditNoteAmount = totalInterestRefundAmount.getAmountInRupees(),
+            totalDebitNoteAmount = debitNodeAmount.getAmountInRupees(),
+            paidAmount = paymentAmount.getAmountInRupees(),
+            paidRefund = debitEntryAmount.getAmountInRupees(),
+            totalPaid = netPaymentAmount.getAmountInRupees()
+        )
     }
 }

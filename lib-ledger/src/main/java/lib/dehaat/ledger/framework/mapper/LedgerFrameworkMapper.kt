@@ -109,6 +109,15 @@ class LedgerFrameworkMapper @Inject constructor() {
             purchaseAmount = purchaseAmount,
             paymentAmount = paymentAmount,
             interestAmount = interestAmount,
+            totalInvoiceAmount = totalInvoiceAmount,
+            creditNoteAmount = creditNoteAmount,
+            debitNodeAmount = debitNodeAmount,
+            totalInterestRefundAmount = totalInterestRefundAmount,
+            financingFeeAmount = financingFeeAmount,
+            interestPaid = interestPaid,
+            interestOutstanding = interestOutstanding,
+            debitEntryAmount = debitEntryAmount,
+            netPaymentAmount = netPaymentAmount,
             abs = toABSEntity(abs)
         )
     }

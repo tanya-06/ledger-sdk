@@ -12,7 +12,25 @@ data class TransactionDetailData(
     @Json(name = "interest_amount")
     val interestAmount: String?,
     @Json(name = "abs")
-    val abs: ABSData?
+    val abs: ABSData?,
+    @Json(name = "total_invoice_amount")
+    val totalInvoiceAmount: String?,
+    @Json(name = "credit_note_amount")
+    val creditNoteAmount: String?,
+    @Json(name = "debit_note_amount")
+    val debitNodeAmount: String?,
+    @Json(name = "total_interest_refund_amount")
+    val totalInterestRefundAmount: String?,
+    @Json(name = "finance_fee_amount")
+    val financingFeeAmount: String?,
+    @Json(name = "interest_paid")
+    val interestPaid: String?,
+    @Json(name = "interest_outstanding")
+    val interestOutstanding: String?,
+    @Json(name = "debit_entry_amount")
+    val debitEntryAmount: String?,
+    @Json(name = "net_payment_amount")
+    val netPaymentAmount: String
 )
 
 @JsonClass(generateAdapter = true)

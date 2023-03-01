@@ -266,8 +266,8 @@ class LedgerViewDataMapper @Inject constructor() {
 			penaltyAmount = if (isInterestSubVented.isTrue() && penaltyAmount.toDoubleOrZero() > 0) penaltyAmount.getAmountInRupees() else null,
 			invoiceAge = invoiceAge.orZero(),
 			showProcessingLabel = isInterestSubVented.isTrue() &&
-					interestStartDate?.isGreaterThanOrEqualToCurrentDate().isTrue() &&
-					totalInterestCharged.orZero() <= 0,
+					interestStartDate?.isSmallerThanOrEqualToCurrentDate().isTrue() &&
+					interestBeingCharged.isFalse(),
 			showInterestDetails = isInterestSubVented.isTrue() &&
 					interestStartDate?.isSmallerThanOrEqualToCurrentDate().isTrue() &&
 					interestBeingCharged.isTrue() &&

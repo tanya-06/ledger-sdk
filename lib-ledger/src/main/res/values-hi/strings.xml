@@ -155,4 +155,20 @@
     <string name="ledger_pay_immidiately">जल्द भुगतान करें</string>
     <string name="ledger_penalty_amount">पेनल्टी राशि</string>
     <string name="ledger_penalty_amount_amount_description">इस ऑर्डर का पूर्ण भुगतान %1s दिन से नहीं करने के कारण %2s पेनल्टी लगायी गयी है।</string>
+    <string name="ledger_outstanding_calculation">कुल बकाया कैल्क्युलेशन विधि देखें</string>
+    <string name="ledger_total_outstanding">कुल बकाया (₹)</string>
+    <string name="ledger_total_payment">कुल भुगतान (₹)</string>
+    <string name="ledger_total_purchase">कुल ख़रीदी (₹)</string>
+    <string name="ledger_total_calculation">कुल ख़रीदी कैल्क्युलेशन</string>
+    <string name="ledger_total_invoice_amount">कुल इनवॉइस राशि</string>
+    <string name="ledger_total_debit_note_amount">कुल डेबिट नोट राशि</string>
+    <string name="ledger_credit_note_amount">कुल क्रेडिट नोट राशि</string>
+    <string name="ledger_outstanding_interest_amount">बकाया ब्याज राशि</string>
+    <string name="ledger_credit_note_interst_returned_amount">क्रेडिट नोट राशि(ब्याज वापसी)</string>
+    <string name="ledger_paid_interest_amount">चुकायी गयी ब्याज राशि</string>
+    <string name="ledger_total_purchases">कुल ख़रीदी</string>
+    <string name="ledger_total_payment_calculation">कुल भुगतान कैल्क्युलेशन</string>
+    <string name="ledger_total_payment_made_by_you">आपके द्वारा किया गया कुल भुगतान</string>
+    <string name="ledger_paid_refund">भुगतान रीफ़ंड</string>
+    <string name="ledger_total_paid">कुल भुगतान</string>
 </resources>
