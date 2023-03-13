@@ -22,5 +22,11 @@ data class SummaryViewData(
     val repaymentDate: String,
     val isOrderingBlocked: Boolean,
     val hideMinimumRepaymentSection: Boolean,
-    val showToolTipInformation: Boolean
+    val showToolTipInformation: Boolean,
+    val creditLineStatus: String?,
+    val creditLineSubStatus: String,
+    val agedOutstandingAmount: String,
+    val repaymentUnblockAmount: String,
+    val repaymentUnblockDays: Long,
+    val isCreditLineOnHold: Boolean
 )

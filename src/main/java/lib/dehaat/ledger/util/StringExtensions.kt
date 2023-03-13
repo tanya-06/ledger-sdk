@@ -9,18 +9,6 @@ import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 
 fun String?.nullToValue(value: String = "--") = this ?: value
 
-fun String?.getAmountInRupeesWithoutDecimal(): String {
-    val value = this?.toDoubleOrNull()
-    val isNegativeValue = value?.let { it < 0 } ?: false
-    if (isNegativeValue) {
-        value?.let {
-            val amount = it * -1
-            return String.format("%s%s", "- ₹", formatDecimal(amount, 0))
-        }
-    }
-    return String.format("%s%s", "₹", formatDecimal(value, 0))
-}
-
 fun String?.getAmountInRupees(): String {
     val value = this?.toDoubleOrNull()
     val isNegativeValue = value?.let { it < 0 } ?: false
@@ -34,16 +22,16 @@ fun String?.getAmountInRupees(): String {
     return String.format("%s%s", "₹", formatDecimal(value)).getAmountWithoutTrailingZeroes()
 }
 
-fun String?.getRoundedAmountInRupees(): String {
+fun String?.getRoundedAmountInRupees(precision: Int = 0): String {
     val value = this?.toDoubleOrNull()
     val isNegativeValue = value?.let { it < 0 } ?: false
     if (isNegativeValue) {
         value?.let {
             val amount = it * -1
-            return String.format("%s%s", "- ₹", formatDecimal(amount, 0))
+            return String.format("%s%s", "- ₹", formatDecimal(amount, precision))
         }
     }
-    return String.format("%s%s", "₹", formatDecimal(value, 0))
+    return String.format("%s%s", "₹", formatDecimal(value, precision))
 }
 
 private fun String.getAmountWithoutTrailingZeroes() = if (this.endsWith(".00")) {

@@ -21,5 +21,10 @@ data class CreditSummaryEntityV2(
 	val minimumRepaymentAmount: String?,
 	val repaymentDate: Long?,
 	val overdueAmount: String?,
-	val overdueCreditLimit: String?
+	val overdueCreditLimit: String?,
+	val creditLineStatus: String?,
+	val creditLineSubStatus: String,
+	val agedOutstandingAmount: Double?,
+	val repaymentUnblockAmount: Double?,
+	val repaymentUnblockDays: Long?
 )

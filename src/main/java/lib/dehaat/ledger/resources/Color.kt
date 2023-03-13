@@ -54,6 +54,7 @@ val Secondary120 = Color(0XFFBF4B0A)
 val Success10 = Color(0XFFE6FFCC)
 
 val Warning10 = Color(0XFFFFF4E5)
+val Warning20 = Color(0XFFFFDFB2)
 val Background = Color(0XFFE9E6E6)
 val ColorFFEBEC = Color(0XFFFFEBEC)
 val Color3985BF = Color(0xff3985BF)

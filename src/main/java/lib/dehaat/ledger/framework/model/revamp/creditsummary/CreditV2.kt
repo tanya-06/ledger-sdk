@@ -46,5 +46,15 @@ data class CreditV2(
     @Json(name = "overdue_amount")
     val overdueAmount: String?,
     @Json(name = "overdue_credit_limit")
-    val overdueCreditLimit: String?
+    val overdueCreditLimit: String?,
+    @Json(name = "credit_line_status")
+    val creditLineStatus: String?,
+    @Json(name = "credit_line_sub_status")
+    val creditLineSubStatus: String,
+    @Json(name = "aged_outstanding_amount")
+    val agedOutstandingAmount: Double?,
+    @Json(name = "repayment_unblock_amount")
+    val repaymentUnblockAmount: Double?,
+    @Json(name = "repayment_unblock_days")
+    val repaymentUnblockDays: Long?
 )

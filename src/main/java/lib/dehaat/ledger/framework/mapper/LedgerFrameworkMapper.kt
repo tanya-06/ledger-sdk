@@ -99,7 +99,12 @@ class LedgerFrameworkMapper @Inject constructor() {
             minimumRepaymentAmount = minimumRepaymentAmount,
             repaymentDate = repaymentDate,
             overdueAmount = overdueAmount,
-            overdueCreditLimit = overdueCreditLimit
+            overdueCreditLimit = overdueCreditLimit,
+            creditLineStatus = creditLineStatus,
+            creditLineSubStatus = creditLineSubStatus,
+            agedOutstandingAmount = agedOutstandingAmount,
+            repaymentUnblockAmount = repaymentUnblockAmount,
+            repaymentUnblockDays = repaymentUnblockDays
         )
     }
 

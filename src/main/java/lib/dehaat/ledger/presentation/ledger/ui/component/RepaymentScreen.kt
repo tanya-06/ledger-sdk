@@ -44,6 +44,7 @@ import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1
 import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.util.getRoundedAmountInRupees
+import lib.dehaat.ledger.util.toDoubleOrZero
 import lib.dehaat.ledger.util.tooltip.ToolTipOffSet
 import lib.dehaat.ledger.util.tooltip.ToolTipScreen
 import lib.dehaat.ledger.util.tooltip.TooltipShape
@@ -83,7 +84,9 @@ fun RepaymentScreen(
 					.background(if (summaryViewData.isOrderingBlocked) ColorFFF5F5 else Warning10)
 					.padding(horizontal = 20.dp)
 			) {
-				VerticalSpacer(height = 12.dp)
+				if (summaryViewData.isCreditLineOnHold || summaryViewData.isOrderingBlocked) {
+					VerticalSpacer(height = 12.dp)
+				}
 				if (summaryViewData.isOrderingBlocked) {
 
 					Row(verticalAlignment = Alignment.Bottom) {
@@ -109,42 +112,44 @@ fun RepaymentScreen(
 					VerticalSpacer(height = 16.dp)
 				}
 
-				Row(
-					modifier = Modifier.fillMaxWidth(),
-					horizontalArrangement = Arrangement.SpaceBetween
-				) {
-					Text(
-						text = stringResource(R.string.minimum_repayment_amount),
-						style = textParagraphT1(Neutral90)
-					)
+				if (summaryViewData.isCreditLineOnHold && summaryViewData.minimumRepaymentAmount.toDoubleOrZero() > 0) {
+					Row(
+						modifier = Modifier.fillMaxWidth(),
+						horizontalArrangement = Arrangement.SpaceBetween
+					) {
+						Text(
+							text = stringResource(R.string.minimum_repayment_amount),
+							style = textParagraphT1(Neutral90)
+						)
+
+						Text(
+							modifier = Modifier
+								.onGloballyPositioned {
+									viewOffset = viewOffset.copy(
+										x = it.boundsInParent().bottomCenter.x,
+										y = it.boundsInParent().bottomCenter.y
+									)
+								},
+							text = summaryViewData.minimumRepaymentAmount.getRoundedAmountInRupees(),
+							style = textButtonB1(
+								textColor = Neutral90,
+								textDecoration = TextDecoration.Underline
+							)
+						)
+					}
 
 					Text(
-						modifier = Modifier
-							.onGloballyPositioned {
-								viewOffset = viewOffset.copy(
-									x = it.boundsInParent().bottomCenter.x,
-									y = it.boundsInParent().bottomCenter.y
-								)
-							},
-						text = summaryViewData.minimumRepaymentAmount.getRoundedAmountInRupees(),
-						style = textButtonB1(
-							textColor = Neutral90,
-							textDecoration = TextDecoration.Underline
-						)
+						text = if (summaryViewData.isOrderingBlocked) {
+							stringResource(R.string.ledger_pay_immidiately)
+						} else {
+							stringResource(
+								id = R.string.weekly_interest_till_date_,
+								summaryViewData.repaymentDate
+							)
+						},
+						style = textCaptionCP1(Neutral70)
 					)
 				}
-
-				Text(
-					text = if (summaryViewData.isOrderingBlocked) {
-						stringResource(R.string.ledger_pay_immidiately)
-					} else {
-						stringResource(
-							id = R.string.weekly_interest_till_date_,
-							summaryViewData.repaymentDate
-						)
-					},
-					style = textCaptionCP1(Neutral70)
-				)
 
 				if (LedgerSDK.isDBA) {
 					VerticalSpacer(height = 24.dp)
@@ -152,9 +157,10 @@ fun RepaymentScreen(
 					PaymentButton(payNowClick = onPayNowClick)
 				}
 
-				VerticalSpacer(height = 16.dp)
+				if (summaryViewData.isCreditLineOnHold || summaryViewData.isOrderingBlocked) {
+					VerticalSpacer(height = 16.dp)
+				}
 			}
-
 		}
 
 		if (toolTipVisibility && summaryViewData.showToolTipInformation) {
@@ -189,7 +195,6 @@ fun RepaymentScreen(
 	}
 
 	if (LedgerSDK.isDBA) {
-
 		VerticalSpacer(height = 20.dp)
 
 		Text(

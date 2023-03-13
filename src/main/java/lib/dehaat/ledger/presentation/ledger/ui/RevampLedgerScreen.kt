@@ -26,7 +26,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -45,25 +44,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.framework.model.outstanding.OutstandingData
-import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
-import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.FilterScreen
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
-import lib.dehaat.ledger.presentation.ledger.creditlimit.AvailableCreditLimitNudgeScreen
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.InvoiceListViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.LedgerUIState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.transactions.ui.TransactionsScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.LedgerHeaderScreen
-import lib.dehaat.ledger.presentation.ledger.ui.component.OutStandingPaymentView
 import lib.dehaat.ledger.presentation.ledger.ui.component.TotalOutstandingCalculation
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.presentation.model.transactions.getNumberOfDays
@@ -78,8 +72,6 @@ import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.resources.textSubHeadingS3
 import lib.dehaat.ledger.util.DottedShape
-import lib.dehaat.ledger.util.getAmountInRupeesWithoutDecimal
-import lib.dehaat.ledger.util.toDoubleOrZero
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
 import moe.tlaster.nestedscrollview.rememberNestedScrollViewState
 
@@ -184,24 +176,7 @@ fun RevampLedgerScreen(
 					VerticalNestedScrollView(
 						state = nestedScrollViewState,
 						header = {
-							val outstanding by LedgerSDK.outstandingDataFlow.collectAsState(
-								OutstandingData(false)
-							)
 							Column {
-								if (outstanding.showDialog) {
-									OutStandingPaymentView(outstanding.amount)
-								}
-								uiState.summaryViewData?.let {
-									if (it.totalAvailableCreditLimit.toDoubleOrZero() < 0.0)
-										it.minimumRepaymentAmount?.let {
-											if (it.toDoubleOrZero() > 0.0) {
-												AvailableCreditLimitNudgeScreen(
-													it.getAmountInRupeesWithoutDecimal()
-												)
-												SpaceMedium()
-											}
-										}
-								}
 								LedgerHeaderScreen(
 									summaryViewData = uiState.summaryViewData,
 									onPayNowClick = onPayNowClick,

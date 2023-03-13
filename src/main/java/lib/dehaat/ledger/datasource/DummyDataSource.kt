@@ -69,7 +69,13 @@ object DummyDataSource {
         isOrderingBlocked = true,
         hideMinimumRepaymentSection = true,
         repaymentDate = "",
-        showToolTipInformation = true
+        showToolTipInformation = true,
+        creditLineStatus = "",
+        creditLineSubStatus = "",
+        agedOutstandingAmount = "0.0",
+        repaymentUnblockDays = 0,
+        repaymentUnblockAmount = "0.0",
+        isCreditLineOnHold = true
     )
 
     val creditSummaryViewData by lazy {
