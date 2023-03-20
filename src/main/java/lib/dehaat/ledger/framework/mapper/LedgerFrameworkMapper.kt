@@ -378,7 +378,14 @@ class LedgerFrameworkMapper @Inject constructor() {
             creditNoteReason = creditNoteReason,
             paymentMode = paymentMode,
             source = source,
-            unrealizedPayment = unrealizedPayment
+            unrealizedPayment = unrealizedPayment,
+            interestStartDate = interestStartDate,
+            interestEndDate = interestEndDate,
+            partnerId = partnerId,
+            sourceNo = sourceNo,
+            fromDate = fromDate,
+            toDate = toDate,
+            adjustmentAmount = adjustmentAmount
         )
     }
 

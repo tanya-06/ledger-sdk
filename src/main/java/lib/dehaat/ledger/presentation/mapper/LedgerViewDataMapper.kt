@@ -378,7 +378,14 @@ class LedgerViewDataMapper @Inject constructor() {
 			creditNoteReason = creditNoteReason,
 			paymentMode = paymentMode,
 			source = source,
-			unrealizedPayment = unrealizedPayment
+			unrealizedPayment = unrealizedPayment,
+			interestEndDate = interestEndDate,
+			interestStartDate = interestStartDate,
+			partnerId = partnerId,
+			sourceNo = sourceNo,
+			fromDate = fromDate.toDateMonthYear(),
+			toDate = toDate.toDateMonthYear(),
+			adjustmentAmount = adjustmentAmount
 		)
 	}
 

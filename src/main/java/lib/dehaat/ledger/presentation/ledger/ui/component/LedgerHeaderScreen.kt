@@ -34,7 +34,6 @@ import lib.dehaat.ledger.util.getAmountInRupeesWithoutDecimal
 private fun LedgerHeaderScreenPreview() {
     LedgerHeaderScreen(
         summaryViewData = DummyDataSource.summaryViewData,
-        showPayNowButton = true,
         onPayNowClick = {},
         onTotalOutstandingDetailsClick = {},
         onShowInvoiceListDetailsClick = {}
@@ -49,7 +48,6 @@ private fun LedgerHeaderScreenPreview() {
 private fun LedgerHeaderScreenAIMSPreview() {
     LedgerHeaderScreen(
         summaryViewData = DummyDataSource.summaryViewData,
-        showPayNowButton = false,
         onPayNowClick = {},
         onTotalOutstandingDetailsClick = {},
         onShowInvoiceListDetailsClick = {}
@@ -59,7 +57,6 @@ private fun LedgerHeaderScreenAIMSPreview() {
 @Composable
 fun LedgerHeaderScreen(
     summaryViewData: SummaryViewData?,
-    showPayNowButton: Boolean,
     onPayNowClick: () -> Unit,
     onTotalOutstandingDetailsClick: () -> Unit,
     onShowInvoiceListDetailsClick: () -> Unit,
@@ -108,14 +105,12 @@ fun LedgerHeaderScreen(
 
     VerticalSpacer(height = 12.dp)
 
-    if (showPayNowButton) {
-        summaryViewData?.let {
-            RepaymentScreen(
-                summaryViewData = it,
-                onPayNowClick = onPayNowClick,
-                onOtherPaymentModeClick = onOtherPaymentModeClick,
-                onShowInvoiceListDetailsClick = onShowInvoiceListDetailsClick
-            )
-        }
+    summaryViewData?.let {
+        RepaymentScreen(
+            summaryViewData = it,
+            onPayNowClick = onPayNowClick,
+            onOtherPaymentModeClick = onOtherPaymentModeClick,
+            onShowInvoiceListDetailsClick = onShowInvoiceListDetailsClick
+        )
     }
 }

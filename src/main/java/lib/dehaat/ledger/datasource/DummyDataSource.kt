@@ -122,7 +122,14 @@ object DummyDataSource {
             creditNoteReason = "creditNoteReason",
             paymentMode = "paymentMode",
             source = "SAP",
-            unrealizedPayment = false
+            unrealizedPayment = false,
+            interestEndDate = 0L,
+            interestStartDate = 0L,
+            partnerId = "",
+            sourceNo = null,
+            fromDate = null,
+            toDate = null,
+            adjustmentAmount = null
         )
     }
 
