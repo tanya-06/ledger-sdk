@@ -6,4 +6,6 @@ object TransactionType {
 	const val PAYMENT = "PAYMENT"
 	const val DEBIT_NOTE = "DEBIT_NOTE"
 	const val DEBIT_ENTRY = "DEBIT_ENTRY"
+	const val INTEREST = "INTEREST"
+	const val FINANCING_FEE = "FINANCING_FEE"
 }

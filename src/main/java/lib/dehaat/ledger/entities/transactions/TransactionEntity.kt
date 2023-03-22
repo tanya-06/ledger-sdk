@@ -11,4 +11,11 @@ data class TransactionEntity(
     val paymentMode: String?,
     val source: String,
     val unrealizedPayment: Boolean?,
+    val interestEndDate: Long?,
+    val interestStartDate: Long?,
+    val partnerId: String,
+    val sourceNo: String?,
+    val fromDate: Long?,
+    val toDate: Long?,
+    val adjustmentAmount: Double?
 )

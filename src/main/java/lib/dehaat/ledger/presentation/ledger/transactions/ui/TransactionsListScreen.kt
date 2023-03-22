@@ -42,6 +42,13 @@ import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionT
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.AbsBanner
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.TransactionInvoiceItem
 import lib.dehaat.ledger.presentation.ledger.ui.component.FilterStrip
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionCard
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.DebitEntry
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.DebitNote
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.FinancingFee
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.Interest
+import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
+import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.presentation.model.transactions.toStartAndEndDates
 import lib.dehaat.ledger.resources.textBold14Sp
 
@@ -101,22 +108,43 @@ fun TransactionsListScreen(
 		) {
 			items(transactions) { data ->
 				data?.let {
-					TransactionInvoiceItem(data = it, ledgerColors = ledgerColors) { transaction ->
-						when (transaction.type) {
-							TransactionType.PAYMENT -> detailPageNavigationCallback.navigateToPaymentDetailPage(
-								PaymentDetailViewModel.getArgs(transaction)
-							)
-							TransactionType.CREDIT_NOTE -> detailPageNavigationCallback.navigateToCreditNoteDetailPage(
-								CreditNoteDetailViewModel.getArgs(transaction)
-							)
-							TransactionType.INVOICE -> {
-								transaction.erpId?.let {
-									detailPageNavigationCallback.navigateToInvoiceDetailPage(
-										InvoiceDetailViewModel.getArgs(transaction)
-									)
+					when (it.type) {
+						TransactionType.INTEREST -> TransactionCard(
+							transactionType = Interest(),
+							transaction = it.toTransactionViewDataV2()
+						) {}
+						TransactionType.FINANCING_FEE -> TransactionCard(
+							transactionType = FinancingFee(),
+							transaction = it.toTransactionViewDataV2()
+						) {}
+						TransactionType.DEBIT_NOTE -> TransactionCard(
+							transactionType = DebitNote(),
+							transaction = it.toTransactionViewDataV2()
+						) {}
+						TransactionType.DEBIT_ENTRY -> TransactionCard(
+							transactionType = DebitEntry(),
+							transaction = it.toTransactionViewDataV2()
+						) {}
+						else -> TransactionInvoiceItem(
+							data = it,
+							ledgerColors = ledgerColors
+						) { transaction ->
+							when (transaction.type) {
+								TransactionType.PAYMENT -> detailPageNavigationCallback.navigateToPaymentDetailPage(
+									PaymentDetailViewModel.getArgs(transaction)
+								)
+								TransactionType.CREDIT_NOTE -> detailPageNavigationCallback.navigateToCreditNoteDetailPage(
+									CreditNoteDetailViewModel.getArgs(transaction)
+								)
+								TransactionType.INVOICE -> {
+									transaction.erpId?.let {
+										detailPageNavigationCallback.navigateToInvoiceDetailPage(
+											InvoiceDetailViewModel.getArgs(transaction)
+										)
+									}
 								}
+								else -> Unit
 							}
-							else -> Unit
 						}
 					}
 					Divider(color = Color.Transparent, thickness = 8.dp)
@@ -160,4 +188,26 @@ fun TransactionsListScreen(
 			viewModel.applyDaysFilter(event)
 		}
 	}
+}
+
+private fun TransactionViewData.toTransactionViewDataV2() = with(this) {
+	TransactionViewDataV2(
+		amount = amount,
+		creditNoteReason = creditNoteReason,
+		date = date,
+		erpId = erpId,
+		interestEndDate = interestEndDate,
+		interestStartDate = interestStartDate,
+		ledgerId = ledgerId,
+		locusId = locusId?.toIntOrNull(),
+		partnerId = partnerId,
+		paymentMode = paymentMode,
+		source = source,
+		sourceNo = sourceNo,
+		type = type,
+		unrealizedPayment = unrealizedPayment,
+		fromDate = fromDate,
+		toDate = toDate,
+		adjustmentAmount = adjustmentAmount
+	)
 }

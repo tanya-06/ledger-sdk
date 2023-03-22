@@ -24,5 +24,19 @@ data class Transaction(
     @Json(name = "source")
     val source: String,
     @Json(name = "unrealized_payment")
-    val unrealizedPayment: Boolean?
+    val unrealizedPayment: Boolean?,
+    @Json(name = "interest_end_date")
+    val interestEndDate: Long?,
+    @Json(name = "interest_start_date")
+    val interestStartDate: Long?,
+    @Json(name = "partner_id")
+    val partnerId: String,
+    @Json(name = "source_no")
+    val sourceNo: String?,
+    @Json(name = "from_date")
+    val fromDate: Long?,
+    @Json(name = "to_date")
+    val toDate: Long?,
+    @Json(name = "adjustment_amount")
+    val adjustmentAmount: Double?
 )
