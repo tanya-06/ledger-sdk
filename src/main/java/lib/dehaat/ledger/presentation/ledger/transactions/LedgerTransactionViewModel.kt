@@ -31,10 +31,12 @@ import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.util.getFailureError
 import javax.inject.Inject
+import lib.dehaat.ledger.domain.usecases.LedgerDownloadUseCase
 
 @HiltViewModel
 class LedgerTransactionViewModel @Inject constructor(
 	private val getTransactionsUseCase: GetTransactionsUseCase,
+	private val ledgerDownloadUseCase: LedgerDownloadUseCase,
 	private val mapper: LedgerViewDataMapper,
 	val ledgerAnalytics: LibLedgerAnalytics,
 	savedStateHandle: SavedStateHandle
@@ -158,5 +160,9 @@ class LedgerTransactionViewModel @Inject constructor(
 
 	private fun refresh() {
 		callInViewModelScope { _uiEvent.emit(UiEvent.RefreshList) }
+	}
+
+	fun downloadLedger() = callInViewModelScope {
+		ledgerDownloadUseCase(partnerId)
 	}
 }

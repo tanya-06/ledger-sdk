@@ -47,6 +47,7 @@ import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.Download
 import lib.dehaat.ledger.framework.model.detail.payment.PaymentDetailData
 import lib.dehaat.ledger.framework.model.revamp.creditnote.CreditNoteDetailsData
 import lib.dehaat.ledger.framework.model.revamp.creditsummary.CreditV2
+import lib.dehaat.ledger.framework.model.revamp.download.ResponseLedgerDownload
 import lib.dehaat.ledger.framework.model.revamp.invoicedetails.InvoiceDataV2
 import lib.dehaat.ledger.framework.model.revamp.invoicelist.InterestInvoice
 import lib.dehaat.ledger.framework.model.revamp.transactions.TransactionData
@@ -459,4 +460,6 @@ class LedgerFrameworkMapper @Inject constructor() {
     private fun toABSTransactionEntity(transaction: ABSTransaction) = with(transaction) {
         ABSTransactionEntity(amount, orderingDate, schemeName)
     }
+
+    fun toLedgerDownloadUrl(response: ResponseLedgerDownload) = response.data.s3Url
 }

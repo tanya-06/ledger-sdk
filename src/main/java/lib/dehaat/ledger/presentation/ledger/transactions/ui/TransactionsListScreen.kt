@@ -81,13 +81,9 @@ fun TransactionsListScreen(
 		FilterStrip(
 			modifier = Modifier.padding(horizontal = 18.dp),
 			ledgerColors = ledgerColors,
-			withPenalty = uiState.onlyPenaltyInvoices,
-			onWithPenaltyChange = {
-				viewModel.applyOnlyPenaltyInvoicesFilter(it)
-			},
 			onDaysToFilterIconClick = openDaysFilter,
 			onDateRangeFilterIconClick = openRangeFilter,
-			isLmsActivated = isLmsActivated
+			onLedgerDownloadClick = viewModel::downloadLedger
 		)
 
 		filterState?.toStartAndEndDates()?.let {

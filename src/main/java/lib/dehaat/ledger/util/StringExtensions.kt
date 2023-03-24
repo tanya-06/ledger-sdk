@@ -1,6 +1,5 @@
 package lib.dehaat.ledger.util
 
-import androidx.compose.ui.Modifier
 import com.dehaat.androidbase.helper.tryCatchWithReturn
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.formatDecimal
@@ -12,6 +11,13 @@ fun String?.nullToValue(value: String = "--") = this ?: value
 
 fun String?.getAmountInRupeesWithoutDecimal(): String {
     val value = this?.toDoubleOrNull()
+    val isNegativeValue = value?.let { it < 0 } ?: false
+    if (isNegativeValue) {
+        value?.let {
+            val amount = it * -1
+            return String.format("%s%s", "- ₹", formatDecimal(amount, 0))
+        }
+    }
     return String.format("%s%s", "₹", formatDecimal(value, 0))
 }
 

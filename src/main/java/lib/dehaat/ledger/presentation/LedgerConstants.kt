@@ -10,4 +10,6 @@ object LedgerConstants {
     const val EMPTY_API_RESPONSE = "Null / EMPTY API response"
     const val UNREALIZED_PAYMENT = "unrealizedPayment"
     const val ABS_AMOUNT = "abs_amount"
+    const val XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    const val PDF_MIME_TYPE = "application/pdf"
 }

@@ -59,9 +59,10 @@ fun TransactionsScreen(
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         stickyHeader {
             TransactionListHeader(
-                ledgerViewModel,
-                showFilterSheet
-            ){ detailPageNavigationCallback.navigateToABSDetailPage(it) }
+                ledgerViewModel = ledgerViewModel,
+                onFilterClick = showFilterSheet,
+                onLedgerDownloadClick = ledgerViewModel::downloadLedger
+            ) { detailPageNavigationCallback.navigateToABSDetailPage(it) }
         }
         item {
             if (uiState.showWeeklyInterestDecreasingLabel) {

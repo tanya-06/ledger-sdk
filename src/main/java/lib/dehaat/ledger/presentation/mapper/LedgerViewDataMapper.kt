@@ -86,7 +86,7 @@ class LedgerViewDataMapper @Inject constructor() {
 	) = with(data) {
 		TransactionSummaryViewData(
 			purchaseAmount = purchaseAmount,
-			paymentAmount = paymentAmount,
+			paymentAmount = netPaymentAmount,
 			abs = toABSViewData(abs)
 		)
 	}

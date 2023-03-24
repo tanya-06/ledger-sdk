@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.data
 
+import com.cleanarch.base.entity.result.api.APIResultEntity
 import javax.inject.Inject
 import lib.dehaat.ledger.data.source.ILedgerDataSource
 import lib.dehaat.ledger.domain.ILedgerRepository
@@ -117,4 +118,10 @@ class LedgerRepository @Inject constructor(private val networkSource: ILedgerDat
         limit: Int,
         offset: Int
     ) = networkSource.getABSTransactions(partnerId, limit, offset)
+
+    override suspend fun downloadLedger(
+        partnerId: String
+    ) = networkSource.downloadLedger(
+        partnerId
+    )
 }

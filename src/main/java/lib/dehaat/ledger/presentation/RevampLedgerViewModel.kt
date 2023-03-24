@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import lib.dehaat.ledger.domain.usecases.GetCreditSummaryUseCase
 import lib.dehaat.ledger.domain.usecases.GetTransactionSummaryUseCase
+import lib.dehaat.ledger.domain.usecases.LedgerDownloadUseCase
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.presentation.common.BaseViewModel
@@ -32,6 +33,7 @@ class RevampLedgerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCreditSummaryUseCase: GetCreditSummaryUseCase,
     private val getTransactionSummaryUseCase: GetTransactionSummaryUseCase,
+    private val ledgerDownloadUseCase: LedgerDownloadUseCase,
     val ledgerAnalytics: LibLedgerAnalytics,
     private val mapper: ViewDataMapper
 ) : BaseViewModel() {
@@ -163,5 +165,11 @@ class RevampLedgerViewModel @Inject constructor(
         val currentDaySec = System.currentTimeMillis() / 1000
         val pastDaySec = currentDaySec.minus(daysSec)
         return Pair(pastDaySec, currentDaySec)
+    }
+
+    fun downloadLedger() = callInViewModelScope {
+        updateProgressDialog(true)
+        ledgerDownloadUseCase(partnerId)
+        updateProgressDialog(false)
     }
 }

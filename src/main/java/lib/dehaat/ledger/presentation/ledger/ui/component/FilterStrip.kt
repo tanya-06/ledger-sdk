@@ -17,23 +17,12 @@ import lib.dehaat.ledger.initializer.themes.LedgerColors
 fun FilterStrip(
     modifier: Modifier = Modifier,
     ledgerColors: LedgerColors,
-    withPenalty: Boolean,
-    onWithPenaltyChange: (Boolean) -> Unit,
     onDaysToFilterIconClick: () -> Unit,
     onDateRangeFilterIconClick: () -> Unit,
-    isLmsActivated: () -> Boolean?
+    onLedgerDownloadClick: () -> Unit
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        /*if (isLmsActivated() == true) {
-            Text(text = "Invoice with Penalty")
-            Switch(
-                modifier = Modifier.padding(start = 12.dp),
-                checked = withPenalty,
-                onCheckedChange = {
-                    onWithPenaltyChange(it)
-                }
-            )
-        }*/
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+        LedgerDownloadButton(onLedgerDownloadClick)
 
         Row(
             modifier = Modifier
