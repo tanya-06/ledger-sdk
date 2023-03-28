@@ -59,7 +59,7 @@
     <string name="reference_id">रेफ़्रेन्स आई.डी.</string>
     <string name="interest_amount_ledger">ब्याज</string>
     <string name="daily_interest_details">दैनिक ब्याज विवरण</string>
-    <string name="financing_fee">फ़ायनैन्सिंग फ़ी</string>
+    <string name="financing_fee">इनवॉइस: फ़ायनैन्सिंग फ़ीस</string>
     <string name="debit_note">डेबिट नोट</string>
     <string name="debit_entry">भुगतान वापसी</string>
     <string name="invoice_list">इनवॉइस लिस्ट</string>
@@ -171,4 +171,5 @@
     <string name="ledger_total_payment_made_by_you">आपके द्वारा किया गया कुल भुगतान</string>
     <string name="ledger_paid_refund">भुगतान रीफ़ंड</string>
     <string name="ledger_total_paid">कुल भुगतान</string>
+    <string name="ledger_download">बहीखाता डाउनलोड करें</string>
 </resources>

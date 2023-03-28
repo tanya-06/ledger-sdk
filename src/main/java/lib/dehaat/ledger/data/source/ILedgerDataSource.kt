@@ -92,4 +92,8 @@ interface ILedgerDataSource {
         limit: Int,
         offset: Int
     ): APIResultEntity<List<ABSTransactionEntity>?>
+
+    suspend fun downloadLedger(
+        partnerId: String
+    ): APIResultEntity<String?>
 }

@@ -253,11 +253,11 @@ sealed class TransactionType(@StringRes val name: Int, val type: String) {
 
 @DrawableRes
 fun TransactionType.getIcon() = when (this) {
-    is TransactionType.Invoice -> R.drawable.ic_revamp_invoice
-    is TransactionType.CreditNote -> R.drawable.ic_transactions_credit_note
-    is TransactionType.Payment -> R.drawable.ic_transactions_payment
-    is TransactionType.Interest -> R.drawable.ic_transactions_interest
-    is TransactionType.FinancingFee -> R.drawable.ic_revamp_invoice
+    is TransactionType.Invoice -> R.drawable.ic_ledger_revamp_invoice
+    is TransactionType.CreditNote -> R.drawable.ic_ledger_revamp_credit_note
+    is TransactionType.Payment -> R.drawable.ic_ledger_revamp_payment
+    is TransactionType.Interest -> R.drawable.ic_ledger_revamp_interest
+    is TransactionType.FinancingFee -> R.drawable.ic_ledger_revamp_invoice
     is TransactionType.DebitNote -> R.drawable.ledger_debit_note
     is TransactionType.DebitEntry -> R.drawable.ledger_debit_note
 }

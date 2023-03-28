@@ -190,6 +190,17 @@ class LedgerDataSource @Inject constructor(
         it?.transactions?.let { transactions -> mapper.toABSTransactionEntityList(transactions) }
     }
 
+    override suspend fun downloadLedger(
+        partnerId: String
+    ) = callAPI(
+        dispatchers = dispatcher,
+        apiCall = {
+            apiService.downloadLedger(partnerId)
+        }
+    ) { response ->
+        response?.let { mapper.toLedgerDownloadUrl(it) }
+    }
+
     private suspend fun <D, C> callAPI(
         dispatchers: IDispatchers,
         apiCall: suspend () -> Response<D>,
