@@ -26,7 +26,19 @@ internal class ViewDataMapperTest {
         val expectedInterestAmount = "₹9"
 
         val transaction = TransactionSummaryEntity(
-            purchaseAmount, paymentAmount, interestAmount
+            purchaseAmount = purchaseAmount,
+            paymentAmount = paymentAmount,
+            interestAmount = interestAmount,
+            totalInvoiceAmount = null,
+            creditNoteAmount = null,
+            debitNodeAmount = null,
+            totalInterestRefundAmount = null,
+            financingFeeAmount = null,
+            interestPaid = null,
+            interestOutstanding = null,
+            debitEntryAmount = null,
+            netPaymentAmount = interestAmount,
+            abs = null
         )
         val viewData = mapper.toTransactionSummaryViewData(transaction)
 
