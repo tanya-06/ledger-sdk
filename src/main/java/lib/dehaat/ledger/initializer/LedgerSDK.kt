@@ -18,6 +18,7 @@ object LedgerSDK {
     internal var appIcon: Int = 0
         private set
     internal var showOutstandingTooltip = false
+    internal var showLedgerDownloadCta = false
 
     fun init(
         context: Context,
@@ -41,8 +42,10 @@ object LedgerSDK {
         dcName: String,
         isDCFinanced: Boolean,
         language: String? = null,
-        showOutstandingTooltip: Boolean
+        showOutstandingTooltip: Boolean,
+        showLedgerDownload: Boolean
     ) = if (isCurrentAppAvailable()) {
+        this.showLedgerDownloadCta = showLedgerDownload
         LedgerDetailActivity.Companion.Args(
             partnerId = partnerId,
             dcName = dcName,

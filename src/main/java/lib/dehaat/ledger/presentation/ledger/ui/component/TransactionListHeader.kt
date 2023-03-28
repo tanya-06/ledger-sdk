@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dehaat.androidbase.helper.isTrue
 import lib.dehaat.ledger.R
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
@@ -69,7 +70,9 @@ fun TransactionListHeader(
 			style = textSubHeadingS3(Neutral80)
 		)
 
-		LedgerDownloadButton(onLedgerDownloadClick)
+		if (LedgerSDK.showLedgerDownloadCta) {
+			LedgerDownloadButton(onLedgerDownloadClick)
+		}
 	}
 
 	Divider()
