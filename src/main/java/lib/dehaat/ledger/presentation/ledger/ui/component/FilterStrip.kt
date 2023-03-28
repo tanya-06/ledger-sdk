@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 
 @Composable
@@ -22,8 +23,9 @@ fun FilterStrip(
     onLedgerDownloadClick: () -> Unit
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-        LedgerDownloadButton(onLedgerDownloadClick)
-
+        if (LedgerSDK.showLedgerDownloadCta) {
+            LedgerDownloadButton(onLedgerDownloadClick)
+        }
         Row(
             modifier = Modifier
                 .weight(1f),
