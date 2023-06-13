@@ -5,10 +5,11 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CreditSummaryData(
-    @Json(name = "credit")
-    val credit: Credit,
-    @Json(name = "overdue")
-    val overdue: Overdue,
-    @Json(name = "info")
-    val info: Info
+	@Json(name = "credit")
+	val credit: Credit,
+	@Json(name = "overdue")
+	val overdue: Overdue,
+	@Json(name = "info")
+	val info: Info
+
 )

@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +30,10 @@ import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.data.dummy.DummyDataSource
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
+import lib.dehaat.ledger.presentation.ledger.annotations.InvoiceStatus
+import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.InvoiceStatusView
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
+import lib.dehaat.ledger.resources.Color20E3E3E3
 import lib.dehaat.ledger.resources.Color3985BF
 import lib.dehaat.ledger.resources.Color3BC6CA
 import lib.dehaat.ledger.resources.FrenchBlue120
@@ -41,7 +45,6 @@ import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Pumpkin120
 import lib.dehaat.ledger.resources.SeaGreen110
 import lib.dehaat.ledger.resources.Secondary120
-import lib.dehaat.ledger.resources.Warning10
 import lib.dehaat.ledger.resources.mediumShape
 import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textCaptionCP1
@@ -288,25 +291,35 @@ fun TransactionCard(
 							style = textCaptionCP1(Neutral70)
 						)
 				}
+				if (transactionType is TransactionType.Invoice && transaction.invoiceStatus != InvoiceStatus.INTEREST_START_DATE) {
+					InvoiceStatusView(
+						status = transaction.invoiceStatus,
+						statusVariable = transaction.statusVariable
+					)
+				}
 			}
 		}
 	}
 	VerticalSpacer(height = 16.dp)
+
 }
 
 @Composable
 private fun TagInterestDateStart(transaction: TransactionViewDataV2) {
 	transaction.interestStartDate?.let {
-		Text(
-			modifier = Modifier
-				.background(color = Warning10, RoundedCornerShape(8.dp))
-				.padding(horizontal = 8.dp, vertical = 4.dp),
-			text = stringResource(
-				id = R.string.interest_start_dates,
-				it.toDateMonthYear()
-			),
-			style = textCaptionCP1(Neutral80)
-		)
+		if (transaction.invoiceStatus == InvoiceStatus.INTEREST_START_DATE) {
+			Text(
+				modifier = Modifier
+					.background(color = Color20E3E3E3, mediumShape())
+					.border(1.dp, Neutral10, mediumShape())
+					.padding(horizontal = 8.dp, vertical = 4.dp),
+				text = stringResource(
+					id = R.string.interest_start_dates,
+					it.toDateMonthYear()
+				),
+				style = textCaptionCP1(Neutral70)
+			)
+		}
 	}
 }
 

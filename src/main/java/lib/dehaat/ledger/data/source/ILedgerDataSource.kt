@@ -9,6 +9,7 @@ import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.invoicedownload.InvoiceDownloadDataEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
+import lib.dehaat.ledger.entities.invoicelist.WidgetInvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.creditnote.CreditNoteDetailsEntity
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.revamp.invoice.InvoiceDataEntity
@@ -101,5 +102,7 @@ interface ILedgerDataSource {
 	suspend fun getDebitRecordDetails(
 		ledgerId: String
 	): APIResultEntity<LedgerDebitDetailEntity?>
+
+    suspend fun getWidgetInvoiceList(partnerId: String, widgetType: String): APIResultEntity<WidgetInvoiceListEntity>
 
 }

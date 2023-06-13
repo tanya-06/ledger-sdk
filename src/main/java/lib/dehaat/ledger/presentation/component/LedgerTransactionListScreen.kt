@@ -346,5 +346,10 @@ private fun TransactionViewData.toTransactionViewDataV2() = TransactionViewDataV
 	adjustmentAmount = adjustmentAmount,
 	schemeName = schemeName,
 	creditAmount = creditAmount,
-	prepaidAmount = prepaidAmount
+	prepaidAmount = prepaidAmount,
+	invoiceStatus = invoiceStatus,
+	statusVariable = statusVariable,
+	totalInvoiceAmount = totalInvoiceAmount,
+	totalInterestCharged = totalInterestCharged,
+	totalRemainingAmount = totalRemainingAmount
 )

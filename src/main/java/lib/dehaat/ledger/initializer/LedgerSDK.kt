@@ -1,6 +1,7 @@
 package lib.dehaat.ledger.initializer
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Environment
 import androidx.annotation.DrawableRes
 import com.dehaat.androidbase.components.SingleEventLiveData
@@ -56,7 +57,9 @@ object LedgerSDK {
         openOrderDetailFragment: (String) -> Unit,
         getWalletFTUEStatus: (String) -> Boolean,
         setWalletFTUEStatus: (String) -> Unit,
-        getWalletHelpVideoId: () -> String
+        getWalletHelpVideoId: () -> String,
+		flowType: String? = null,
+		flowTypeData: Bundle? = null
     ) = if (isCurrentAppAvailable()) {
         this.showLedgerDownloadCta = showLedgerDownload
         this.openOrderDetailFragment = openOrderDetailFragment
@@ -68,7 +71,9 @@ object LedgerSDK {
             partnerId = partnerId,
             dcName = dcName,
             isDCFinanced = isDCFinanced,
-            language = language
+            language = language,
+	        flowType = flowType,
+	        flowTypeData = flowTypeData
         ).also {
             language?.let { lang -> locale = lang }
             context.startActivity(it.build(context))

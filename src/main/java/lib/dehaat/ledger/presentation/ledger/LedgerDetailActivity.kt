@@ -10,20 +10,26 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.dehaat.androidbase.helper.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
-import javax.inject.Inject
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.navigation.LedgerNavigation
 import lib.dehaat.ledger.presentation.LedgerConstants
+import lib.dehaat.ledger.presentation.LedgerConstants.FLOW_TYPE
+import lib.dehaat.ledger.presentation.LedgerConstants.FLOW_TYPE_DATA
 import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
+import lib.dehaat.ledger.presentation.common.NavDoubleType
 import lib.dehaat.ledger.resources.LedgerTheme
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.util.NotificationHandler
+import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LedgerDetailActivity : ComponentActivity() {
@@ -67,18 +73,20 @@ class LedgerDetailActivity : ComponentActivity() {
 
 		AWSMobileClient.getInstance().initialize(this).execute()
 
-        setContent {
-            LedgerTheme {
-                LedgerNavigation(
-                    dcName = args.dcName,
-                    partnerId = args.partnerId,
-                    isDCFinanced = args.isDCFinanced,
-                    ledgerColors = LedgerSDK.currentApp.ledgerColors,
-                    resultLauncher = resultLauncher,
-                    finishActivity = { finish() },
-                    viewModel = viewModel,
-                    ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack,
-                    openOrderDetailFragment = LedgerSDK.openOrderDetailFragment,
+		setContent {
+			LedgerTheme {
+				LedgerNavigation(
+					dcName = args.dcName,
+					partnerId = args.partnerId,
+					isDCFinanced = args.isDCFinanced,
+					ledgerColors = LedgerSDK.currentApp.ledgerColors,
+					resultLauncher = resultLauncher,
+					finishActivity = { finish() },
+					viewModel = viewModel,
+					ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack,
+                    flowType = args.flowType,
+                    flowTypeData = getFlowTypeData(args.flowTypeData ?: bundleOf()),
+					openOrderDetailFragment = LedgerSDK.openOrderDetailFragment,
 					onDownloadClick = {
 						val ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack
 						notificationHandler.notificationBuilder.setSmallIcon(LedgerSDK.appIcon)
@@ -118,6 +126,21 @@ class LedgerDetailActivity : ComponentActivity() {
 		}
 	}
 
+	private fun getFlowTypeData(bundle: Bundle) = bundle.keySet().map {
+		if (it == LedgerConstants.AMOUNT) {
+			navArgument(it) {
+				type = NavDoubleType
+				defaultValue = bundle.getDouble(it)
+			}
+		} else {
+			navArgument(it) {
+				type = NavType.StringType
+				defaultValue = bundle.getString(it)
+				nullable = true
+			}
+		}
+	}
+
 	private fun setLedgerLanguage(appLanguage: String) {
 		val locale = Locale(appLanguage)
 		val res = this.resources
@@ -145,23 +168,29 @@ class LedgerDetailActivity : ComponentActivity() {
 			partnerId = intent.getStringExtra(LedgerConstants.KEY_PARTNER_ID) ?: "",
 			dcName = intent.getStringExtra(LedgerConstants.KEY_DC_NAME) ?: "",
 			isDCFinanced = intent.getBooleanExtra(KEY_DC_FINANCED, false),
-			language = intent.getStringExtra(KEY_APP_LANGUAGE)
-        )
+			language = intent.getStringExtra(KEY_APP_LANGUAGE),
+			flowType = intent.getStringExtra(FLOW_TYPE),
+			flowTypeData = intent.getBundleExtra(FLOW_TYPE_DATA)
+		)
 
 		data class Args(
 			val partnerId: String,
 			val dcName: String,
 			val isDCFinanced: Boolean,
-			val language: String?
-        ) {
-            fun build(context: Context) = Intent(
-                context,
-                LedgerDetailActivity::class.java
-            ).apply {
-                putExtra(LedgerConstants.KEY_PARTNER_ID, partnerId)
-                putExtra(LedgerConstants.KEY_DC_NAME, dcName)
-                putExtra(KEY_DC_FINANCED, isDCFinanced)
-                putExtra(KEY_APP_LANGUAGE, language)
+			val language: String?,
+			val flowType: String?,
+			val flowTypeData: Bundle?
+		) {
+			fun build(context: Context) = Intent(
+				context,
+				LedgerDetailActivity::class.java
+			).apply {
+				putExtra(LedgerConstants.KEY_PARTNER_ID, partnerId)
+				putExtra(LedgerConstants.KEY_DC_NAME, dcName)
+				putExtra(KEY_DC_FINANCED, isDCFinanced)
+				putExtra(KEY_APP_LANGUAGE, language)
+				putExtra(FLOW_TYPE, flowType)
+				putExtra(FLOW_TYPE_DATA, flowTypeData)
             }
         }
     }

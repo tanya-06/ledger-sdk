@@ -12,11 +12,14 @@ import lib.dehaat.ledger.entities.detail.creditnote.ProductEntity
 import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
 import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
+import lib.dehaat.ledger.entities.detail.invoice.InterestOverdueEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
 import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
 import lib.dehaat.ledger.entities.detail.invoice.invoicedownload.InvoiceDownloadDataEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
+import lib.dehaat.ledger.entities.invoicelist.InvoiceEntity
+import lib.dehaat.ledger.entities.invoicelist.WidgetInvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.creditnote.CreditNoteDetailsEntity
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.revamp.invoice.CreditNoteEntity
@@ -41,11 +44,14 @@ import lib.dehaat.ledger.framework.model.detail.creditnote.Product
 import lib.dehaat.ledger.framework.model.detail.creditnote.ProductsInfo
 import lib.dehaat.ledger.framework.model.detail.creditnote.Summary
 import lib.dehaat.ledger.framework.model.detail.debit.ResponseLedgerDebitDetail
+import lib.dehaat.ledger.framework.model.detail.invoice.InterestOverDueData
 import lib.dehaat.ledger.framework.model.detail.invoice.InvoiceDetailData
 import lib.dehaat.ledger.framework.model.detail.invoice.Loan
 import lib.dehaat.ledger.framework.model.detail.invoice.OverdueInfo
 import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.DownloadInvoiceData
 import lib.dehaat.ledger.framework.model.detail.payment.PaymentDetailData
+import lib.dehaat.ledger.framework.model.invoicelist.Invoice
+import lib.dehaat.ledger.framework.model.invoicelist.ResponseWidgetInvoiceList
 import lib.dehaat.ledger.framework.model.revamp.creditnote.CreditNoteDetailsData
 import lib.dehaat.ledger.framework.model.revamp.creditsummary.CreditV2
 import lib.dehaat.ledger.framework.model.revamp.download.ResponseLedgerDownload
@@ -76,7 +82,7 @@ class LedgerFrameworkMapper @Inject constructor() {
 		CreditSummaryEntity(
 			credit = toCreditSummaryCreditEntity(credit),
 			overdue = toCreditSummaryOverDueEntity(overdue),
-			info = toCreditSummaryInfoEntity(info),
+			info = toCreditSummaryInfoEntity(info)
 		)
 	}
 
@@ -113,7 +119,13 @@ class LedgerFrameworkMapper @Inject constructor() {
 			penaltyInterest = ageingBannerMessage?.penaltyInterest,
 			agedOverdueAmount = ageingBannerMessage?.agedOverdueAmount,
 			firstLedgerEntryDate = firstLedgerEntryDate,
-			ledgerEndDate = ledgerEndDate
+			ledgerEndDate = ledgerEndDate,
+            ledgerOverdueAmount = ledgerOverdueAmount,
+            ledgerEarliestOverdueDate = ledgerEarliestOverdueDate,
+            ledgerInterestAmount = ledgerInterestAmount,
+            ledgerEarliestInterestDate = ledgerEarliestInterestDate,
+            overdueStatus = overdueStatus,
+            interestStatus = interestStatus
 		)
 	}
 
@@ -134,10 +146,9 @@ class LedgerFrameworkMapper @Inject constructor() {
 			debitEntryAmount = debitEntryAmount,
 			netPaymentAmount = netPaymentAmount,
 			abs = toABSEntity(abs),
-			prepaidHoldAmount = prepaidHoldAmount,
+		prepaidHoldAmount = prepaidHoldAmount,
 			debitHoldAmount = debitHoldAmount,
-			releasePaymentAmount = release_payment_amount
-		)
+			releasePaymentAmount = release_payment_amount)
 	}
 
 	private fun toABSEntity(abs: ABSData?) =
@@ -181,6 +192,11 @@ class LedgerFrameworkMapper @Inject constructor() {
 			schemeName = it.schemeName,
             creditAmount = it.creditAmount,
             prepaidAmount = it.prepaidAmount,
+            invoiceStatus = it.invoiceStatus,
+            statusVariable = it.statusVariable,
+            totalInvoiceAmount = it.totalInvoiceAmount,
+            totalInterestCharged = it.totalInterestCharged,
+            totalRemainingAmount = it.totalRemainingAmount
         )
     }
 
@@ -212,12 +228,25 @@ class LedgerFrameworkMapper @Inject constructor() {
 		)
 	}
 
+	private fun getInterestOverdueEntity(interestOverdueData: InterestOverDueData?) =
+		interestOverdueData?.run {
+			InterestOverdueEntity(
+				invoiceStatus = invoiceStatus,
+				statusVariable = statusVariable,
+				totalInvoiceAmount = totalInvoiceAmount,
+				totalInterestCharged = totalInterestCharged,
+				totalRemainingAmount = totalRemainingAmount,
+				interestPerDay = interestPerDay
+			)
+		}
+
 	fun toInvoiceDetailDataEntity(data: InvoiceDetailData) = with(data) {
 		InvoiceDetailDataEntity(
 			summary = getInvoiceDetailSummaryEntity(summary),
 			loans = loans?.map { getInvoiceDetailLoanEntity(it) },
 			overdueInfo = getInvoiceDetailOverdueInfoEntity(overdueInfo),
 			productsInfo = getInvoiceDetailProductInfoEntity(productsInfo),
+			interestOverdueEntity = getInterestOverdueEntity(interestOverdueData)
 		)
 	}
 
@@ -250,7 +279,8 @@ class LedgerFrameworkMapper @Inject constructor() {
 					isInterestSubVented = isInterestSubVented
 				)
 			},
-            prepaidAndCreditInfo =  prepaidAndCreditInfoEntity(prepaidAndCreditInfo)
+            prepaidAndCreditInfo =  prepaidAndCreditInfoEntity(prepaidAndCreditInfo),
+            interestOverdueEntity = getInterestOverdueEntity(interestOverdueData)
         )
     }
 
@@ -427,6 +457,11 @@ class LedgerFrameworkMapper @Inject constructor() {
 			schemeName = schemeName,
             creditAmount = creditAmount,
             prepaidAmount = prepaidAmount,
+            invoiceStatus = invoiceStatus,
+            statusVariable = statusVariable,
+            totalInvoiceAmount = totalInvoiceAmount,
+            totalInterestCharged = totalInterestCharged,
+            totalRemainingAmount = totalRemainingAmount
         )
     }
 
@@ -451,7 +486,10 @@ class LedgerFrameworkMapper @Inject constructor() {
 			totalPaymentAmount = totalPaymentAmount,
 			undeliveredInvoiceAmount = undeliveredInvoiceAmount,
 			firstLedgerEntryDate = firstLedgerEntryDate,
-			ledgerEndDate = ledgerEndDate
+			ledgerEndDate = ledgerEndDate,
+            ledgerOverdueAmount = ledgerOverdueAmount,
+            ledgerEarliestOverdueDate = ledgerEarliestOverdueDate,
+            overdueStatus = overdueStatus
 		)
 	}
 
@@ -519,4 +557,33 @@ class LedgerFrameworkMapper @Inject constructor() {
 		name = "",
 		orderRequestId = ""
 	)
+
+    fun toWidgetInvoiceListEntity(responseWidgetInvoiceList: ResponseWidgetInvoiceList?) =
+        responseWidgetInvoiceList?.data?.run {
+            WidgetInvoiceListEntity(
+                interestPerDay,
+                toInvoicesEntity(invoiceList),
+                orderBlockingDays,
+                ledgerStatus,
+                ledgerOverdueAmount
+            )
+        } ?: WidgetInvoiceListEntity(null, emptyList(), null, null, null)
+
+    private fun toInvoicesEntity(invoiceList: List<Invoice>?): List<InvoiceEntity> =
+        invoiceList?.map {
+            toInvoiceEntity(it)
+        }.orEmpty()
+
+    private fun toInvoiceEntity(invoice: Invoice) = with(invoice) {
+        InvoiceEntity(
+            invoiceId,
+            invoiceStatus,
+            invoiceStatusVariable,
+            ledgerId,
+            totalInvoiceAmount,
+            totalRemainingAmount,
+            source.orEmpty(),
+            erpId
+        )
+    }
 }

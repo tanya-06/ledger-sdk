@@ -22,4 +22,9 @@ data class TransactionEntityV2(
 	val schemeName: String?,
 	val creditAmount: String?,
 	val prepaidAmount: String?,
+	val invoiceStatus: String?,
+	val statusVariable: String?,
+	val totalInvoiceAmount: Double?,
+	val totalInterestCharged: Double?,
+	val totalRemainingAmount: Double?
 )

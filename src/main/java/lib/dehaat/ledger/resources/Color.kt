@@ -77,3 +77,11 @@ val ColorF0F8FF = Color(0xFFF0F8FF)
 val ColorECF5FF = Color(0xFFECF5FF)
 val Color2969E = Color(0xFFF2969E)
 val Color80D12E = Color(0xFF80D12E)
+val Secondary110 = Color(0XFFE56117)
+
+val Color20FFDFB2 = Color(0X20FFDFB2)
+val Color20FFD9DC = Color(0X20FFD9DC)
+val Color20CEF2AA = Color(0X20CEF2AA)
+
+val ColorF6F6F6 = Color(0XFFF6F6F6)
+val Color20E3E3E3 = Color(0X20E3E3E3)

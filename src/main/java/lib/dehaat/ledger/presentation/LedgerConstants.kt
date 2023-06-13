@@ -33,6 +33,12 @@ object LedgerConstants {
 	const val FINANCIAL_YEAR = "FY"
 	const val CUSTOM = "Custom"
 	const val IS_WALLET_LEDGER_VIEWED = "isWalletLedgerViewed"
+	const val dd_MMM = "dd MMM"
+	const val FLOW_TYPE = "view_type"
+	const val AMOUNT = "amount"
+	const val DATE = "date"
+	const val BOTTOM_BAR_TYPE = "bottom_bar_type"
+	const val FLOW_TYPE_DATA = "flow_type_data"
 }
 
 object CreditNoteReason {

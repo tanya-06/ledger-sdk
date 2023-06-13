@@ -242,4 +242,36 @@
     <string name="view_statement">View Statement</string>
     <string name="fully_paid">Fully paid</string>
     <string name="pay_from_wallet">Pay from wallet</string>
+    <plurals name="interest_start_after_s_days">
+        <item quantity="one"> Interest starts in %s day</item>
+        <item quantity="other"> Interest starts in %s days</item>
+    </plurals>
+    <plurals name="overdue_after_s_days">
+        <item quantity="one">Overdue in %s day</item>
+        <item quantity="other">Overdue in %s days</item>
+    </plurals>
+    <string name="is_overdue">Overdue</string>
+    <string name="payment_done">Fully paid</string>
+    <string name="interest_applied">Interest started</string>
+
+    <string name="about_to_overdue">About to overdue</string>
+    <string name="overdue_desc">Pay %2$s up to %1$s to avoid ordering from getting blocked</string>
+    <string name="ordering_blocked">Ordering is blocked</string>
+    <string name="ordering_blocked_desc">Some invoices are overdue, Pay %s to resume ordering</string>
+    <string name="interest_desc">Pay ₹%s today and avoid paying additional interest</string>
+    <string name="interest_rate_s_per_day">Interest rate: %s%% per day</string>
+    <string name="remaining_amount">Outstanding %s</string>
+    <string name="s_days_ordering_blocked">Your ordering will be blocked in %s days, make payment asap</string>
+    <string name="amount_paid">Payable Amount %s</string>
+    <string name="pay_today_to_save_interest">Pay today and avoid paying additional interest</string>
+    <string name="pay_before_s_to_save_interest">Pay by %s, avoid paying interest</string>
+    <string name="pay_before_s_avoid_block_ordering">Pay by %s to avoid your ordering from getting blocked</string>
+    <string name="pay_today_unblock_ordering">Pay today to resume ordering</string>
+    <string name="save_from_interest">Avoid interest</string>
+    <string name="save_interest_desc">Pay %2$s by %1$s</string>
+    <string name="interest_amount">Interest Amount</string>
+    <string name="interest_summation">Outstanding Interest + Interest Paid</string>
+    <string name="overdue_date">Overdue Date</string>
+    <string name="item_total">Item Total</string>
+
 </resources>

@@ -8,6 +8,7 @@ import lib.dehaat.ledger.framework.model.detail.debit.ResponseLedgerDebitDetail
 import lib.dehaat.ledger.framework.model.detail.invoice.ResponseInvoiceDetail
 import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.ResponseDownloadInvoice
 import lib.dehaat.ledger.framework.model.detail.payment.ResponsePaymentDetail
+import lib.dehaat.ledger.framework.model.invoicelist.ResponseWidgetInvoiceList
 import lib.dehaat.ledger.framework.model.revamp.creditnote.ResponseCreditNoteDetails
 import lib.dehaat.ledger.framework.model.revamp.creditsummary.ResponseCreditSummaryV2
 import lib.dehaat.ledger.framework.model.revamp.download.ResponseLedgerDownload
@@ -36,7 +37,7 @@ interface LedgerAPIService {
 	@GET("/finance/accounting/ledger/v1/download/{partner_id}")
 	suspend fun downloadLedger(
 		@Path("partner_id") partnerId: String,
-		@Query("from_date") fromDate: Long?,
+	@Query("from_date") fromDate: Long?,
 		@Query("to_date") toDate: Long?,
 		@Query("file_type") format: String
 	): Response<ResponseLedgerDownload>
@@ -129,4 +130,10 @@ interface LedgerAPIService {
 	suspend fun getDebitRecordDetails(
 		@Query("ledger_id") ledgerId: String,
 	): Response<ResponseLedgerDebitDetail>
+
+    @GET("finance/accounting/ledger/interest-and-overdue-invoices/{partner_id}")
+    suspend fun getWidgetInvoiceList(
+        @Path("partner_id") partnerId: String,
+        @Query("type") widgetType: String
+    ): Response<ResponseWidgetInvoiceList>
 }

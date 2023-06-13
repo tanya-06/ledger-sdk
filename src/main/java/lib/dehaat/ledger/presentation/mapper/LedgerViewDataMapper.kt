@@ -16,9 +16,11 @@ import lib.dehaat.ledger.entities.detail.creditnote.ProductEntity
 import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
 import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
+import lib.dehaat.ledger.entities.detail.invoice.InterestOverdueEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
 import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
+import lib.dehaat.ledger.entities.invoicelist.InvoiceEntity
 import lib.dehaat.ledger.entities.revamp.invoice.InvoiceDataEntity
 import lib.dehaat.ledger.entities.revamp.invoice.ProductEntityV2
 import lib.dehaat.ledger.entities.revamp.invoice.ProductsInfoEntityV2
@@ -28,6 +30,7 @@ import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.ABSEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.presentation.LedgerConstants.dd_MMM
 import lib.dehaat.ledger.presentation.ledger.state.LedgerTransactions
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
 import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
@@ -53,6 +56,7 @@ import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewD
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewData
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.presentation.model.transactionsummary.TransactionSummaryViewData
+import lib.dehaat.ledger.presentation.model.widgetinvoicelist.WidgetInvoiceViewData
 import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.isSmallerThanOrEqualToCurrentDate
 import lib.dehaat.ledger.util.toDateMonthYear
@@ -81,7 +85,13 @@ class LedgerViewDataMapper @Inject constructor() {
 			isOrderingBlocked = overdueExhausted,
 			isCreditLimitExhausted = (credit.totalAvailableCreditLimit.toDoubleOrNull()
 				?: 0.0).isSmallerThanZero(),
-			isOverdueLimitExhausted = overdueExhausted
+			isOverdueLimitExhausted = overdueExhausted,
+			showOverdueWidget = info.ledgerOverdueAmount != null && info.overdueStatus == null,
+			showOrderingBlockedWidget = info.ledgerOverdueAmount != null && info.overdueStatus != null,
+			ledgerOverdueAmount = info.ledgerOverdueAmount.orZero(),
+			ledgerEarliestOverdueDate = DateUtils.getDateInFormat(
+				dd_MMM, info.ledgerEarliestOverdueDate?.toFloat().orZero()
+			)
 		)
 	}
 
@@ -145,6 +155,11 @@ class LedgerViewDataMapper @Inject constructor() {
 			schemeName = it.schemeName,
 			creditAmount = it.creditAmount,
 			prepaidAmount = it.prepaidAmount,
+			invoiceStatus = it.invoiceStatus,
+			statusVariable = it.statusVariable,
+			totalInvoiceAmount = it.totalInvoiceAmount,
+			totalInterestCharged = it.totalInterestCharged,
+			totalRemainingAmount = it.totalRemainingAmount
 		)
 	}
 
@@ -180,7 +195,12 @@ class LedgerViewDataMapper @Inject constructor() {
 			adjustmentAmount = it.adjustmentAmount,
 			schemeName = it.schemeName,
 			creditAmount = it.creditAmount,
-			prepaidAmount = it.prepaidAmount
+			prepaidAmount = it.prepaidAmount,
+			invoiceStatus = it.invoiceStatus,
+			statusVariable = it.statusVariable,
+			totalInvoiceAmount = it.totalInvoiceAmount,
+			totalInterestCharged = it.totalInterestCharged,
+			totalRemainingAmount = it.totalRemainingAmount
 		)
 		when (it.type) {
 			LedgerTransactionType.INVOICE -> LedgerTransactions.Invoice(
@@ -326,6 +346,7 @@ class LedgerViewDataMapper @Inject constructor() {
 			loans = loans?.map { getInvoiceDetailLoanViewData(it) },
 			overdueInfo = getInvoiceDetailOverdueViewData(overdueInfo),
 			productsInfo = getInvoiceDetailProductInfoViewData(productsInfo),
+			interestOverdueViewData = getInterestOverdueViewData(interestOverdueEntity)
 		)
 	}
 
@@ -342,6 +363,7 @@ class LedgerViewDataMapper @Inject constructor() {
 			productsInfo = getProductInfoViewData(productsInfo),
 			summary = getSummaryViewData(summary),
 			prepaidAndCreditInfoViewDataV2 = getPrepaidAndCreditInfoViewDataV2(prepaidAndCreditInfo),
+			interestOverdueViewData = getInterestOverdueViewData(interestOverdueEntity)
 		)
 	}
 
@@ -351,6 +373,18 @@ class LedgerViewDataMapper @Inject constructor() {
 			it.creditAmount
 		)
 	}
+
+	private fun getInterestOverdueViewData(interestOverdueEntity: InterestOverdueEntity?) =
+		interestOverdueEntity?.run {
+			InterestOverdueViewData(
+				invoiceStatus,
+				statusVariable,
+				totalInvoiceAmount,
+				totalInterestCharged,
+				totalRemainingAmount,
+				interestPerDay
+			)
+		}
 
 	private fun getSummaryViewData(
 		summary: SummaryEntityV2
@@ -496,6 +530,11 @@ class LedgerViewDataMapper @Inject constructor() {
 			paymentModeWithScheme = schemeName?.let { "$paymentMode; $it" } ?: paymentMode,
 			creditAmount = creditAmount,
 			prepaidAmount = prepaidAmount,
+			invoiceStatus = invoiceStatus,
+			statusVariable = statusVariable,
+			totalInvoiceAmount = totalInvoiceAmount,
+			totalInterestCharged = totalInterestCharged,
+			totalRemainingAmount = totalRemainingAmount
 		)
 	}
 
@@ -606,4 +645,19 @@ class LedgerViewDataMapper @Inject constructor() {
 	) = entity.firstOrNull {
 		it.type == TransactionType.Interest().type
 	}?.adjustmentAmount.orZero() > 0
+
+	fun toWidgetInvoiceListViewData(invoiceList: List<InvoiceEntity>) = invoiceList.map {
+		with(it) {
+			WidgetInvoiceViewData(
+				invoiceId,
+				invoiceStatus,
+				invoiceStatusVariable,
+				ledgerId,
+				totalInvoiceAmount.toString().getAmountInRupees(),
+				totalRemainingAmount.toString().getAmountInRupees(),
+				source,
+				erpId
+			)
+		}
+	}
 }

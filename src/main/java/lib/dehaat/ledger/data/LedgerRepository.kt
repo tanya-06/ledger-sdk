@@ -119,15 +119,19 @@ class LedgerRepository @Inject constructor(private val networkSource: ILedgerDat
 
 	override suspend fun downloadLedger(
 		partnerId: String,
-		fromDate: Long?,
+	fromDate: Long?,
 		toDate: Long?,
-		format: String
-	) = networkSource.downloadLedger(
+		format: String) = networkSource.downloadLedger(
 		partnerId, fromDate, toDate, format
 	)
 
 	override suspend fun getDebitRecordDetails(ledgerId: String) =
 		networkSource.getDebitRecordDetails(
 			ledgerId = ledgerId
-		)
+	)
+
+	override suspend fun getWidgetInvoiceList(
+		partnerId: String,
+		widgetType: String
+	) = networkSource.getWidgetInvoiceList(partnerId, widgetType)
 }

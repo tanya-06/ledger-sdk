@@ -5,6 +5,7 @@ import lib.dehaat.ledger.R
 import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
+import lib.dehaat.ledger.presentation.model.revamp.WidgetsViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 
@@ -18,7 +19,8 @@ data class LedgerHomeScreenViewModelState(
 	val holdAmountViewData: HoldAmountViewData? = null,
 	val isLMSActivated: Boolean = false,
 	val showFirstTimeFTUEDialog: Boolean = false,
-	val dismissFirstTimeFTUEDialog: Boolean = false
+	val dismissFirstTimeFTUEDialog: Boolean = false,
+	val widgetsViewData: WidgetsViewData? = null
 ) {
 	fun toUiState() = HomeScreenUiState(
 		state = when {
@@ -31,7 +33,8 @@ data class LedgerHomeScreenViewModelState(
 		outstandingCalculationUiState = outstandingCalculationUiState,
 		holdAmountViewData = holdAmountViewData,
 		showFirstTimeFTUEDialog = showFirstTimeFTUEDialog,
-		dismissFirstTimeFTUEDialog = dismissFirstTimeFTUEDialog
+		dismissFirstTimeFTUEDialog = dismissFirstTimeFTUEDialog,
+		widgetsViewData = widgetsViewData
 	)
 }
 
@@ -42,7 +45,8 @@ data class HomeScreenUiState(
 	val outstandingCalculationUiState: OutstandingCalculationUiState?,
 	val holdAmountViewData: HoldAmountViewData?,
 	val showFirstTimeFTUEDialog: Boolean,
-	val dismissFirstTimeFTUEDialog: Boolean
+	val dismissFirstTimeFTUEDialog: Boolean,
+	val widgetsViewData: WidgetsViewData?
 )
 
 data class LedgerTotalCalculation(
@@ -164,7 +168,12 @@ sealed class LedgerTransactions(
 					adjustmentAmount = null,
 					schemeName = null,
 					creditAmount = null,
-					prepaidAmount = null
+					prepaidAmount = null,
+					invoiceStatus = null,
+					statusVariable = null,
+					totalInvoiceAmount = null,
+					totalInterestCharged = null,
+					totalRemainingAmount = null
 				)
 			)
 		}
@@ -192,6 +201,11 @@ data class TransactionViewData(
 	val schemeName: String?,
 	val creditAmount: String?,
 	val prepaidAmount: String?,
+	val invoiceStatus: String?,
+	val statusVariable: String?,
+	val totalInvoiceAmount: Double?,
+	val totalInterestCharged: Double?,
+	val totalRemainingAmount: Double?
 )
 
 data class LedgerFilterViewModelState(

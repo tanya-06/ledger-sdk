@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
+import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.LedgerConstants.IS_WALLET_LEDGER_VIEWED
 import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
 import lib.dehaat.ledger.presentation.LedgerTransactionsViewModel
@@ -97,8 +98,17 @@ fun LedgerHomeScreen(
 	val transactionVM: LedgerTransactionsViewModel = hiltViewModel()
 	val transactionUIState by transactionVM.uiState.collectAsState()
 	val downloadLedgerSheet =
-		rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
-	val isWalletLedgerViewed by remember { mutableStateOf(getWalletFTUEStatus(IS_WALLET_LEDGER_VIEWED)) }
+		rememberModalBottomSheetState(
+			initialValue = ModalBottomSheetValue.Hidden,
+			skipHalfExpanded = true
+		)
+	val isWalletLedgerViewed by remember {
+		mutableStateOf(
+			getWalletFTUEStatus(
+				IS_WALLET_LEDGER_VIEWED
+			)
+		)
+	}
 
 	LaunchedEffect(key1 = Unit) {
 		transactionVM.downloadStarted.collectLatest {
@@ -193,6 +203,7 @@ fun LedgerHomeScreen(
 								state = nestedScrollViewState,
 								header = {
 									LedgerHeaderScreen(
+										widgetsViewData = uiState.widgetsViewData,
 										totalOutstandingAmount = uiState.outstandingAmount,
 										onTotalOutstandingClick = {
 											sheetState.toggleBottomSheet(
@@ -200,7 +211,16 @@ fun LedgerHomeScreen(
 												showBottomSheet = true
 											)
 										},
-										onPayNowClick = onPayNowClick
+										onPayNowClick = onPayNowClick,
+										onWidgetClicked = { bundle ->
+											detailPageNavigationCallback.navigateToWidgetInvoiceListScreen(
+												bundle.apply {
+													putString(
+														LedgerConstants.KEY_PARTNER_ID,
+														viewModel.partnerId
+													)
+												})
+										},
 									)
 								},
 								content = {
@@ -249,7 +269,7 @@ fun LedgerHomeScreen(
 	}
 
 	if (!isWalletLedgerViewed) {
-		LaunchedEffect(Unit){
+		LaunchedEffect(Unit) {
 			delay(2000)
 			viewModel.showWalletFTUEBottomSheet()
 		}

@@ -1,5 +1,8 @@
 package lib.dehaat.ledger.presentation.mapper
 
+import com.dehaat.androidbase.helper.orZero
+import com.dehaat.androidbase.utils.DateUtils
+import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.transactionsummary.ABSEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
@@ -8,7 +11,9 @@ import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.availablecredi
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.outstandingcreditlimit.OutstandingCreditLimitViewState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
 import lib.dehaat.ledger.presentation.ledger.state.LedgerTotalCalculation
+import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
+import lib.dehaat.ledger.presentation.model.revamp.WidgetsViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldABSViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
@@ -65,7 +70,19 @@ class ViewDataMapper @Inject constructor() {
 			penaltyInterest = penaltyInterest,
 			agedOverdueAmount = agedOverdueAmount?.toString().getAmountInRupees(),
 			firstLedgerEntryDate = firstLedgerEntryDate,
-			ledgerEndDate = ledgerEndDate
+			ledgerEndDate = ledgerEndDate,
+			showOverdueWidget = ledgerOverdueAmount != null && overdueStatus == null,
+			showOrderingBlockedWidget = ledgerOverdueAmount != null && overdueStatus != null,
+			ledgerOverdueAmount = ledgerOverdueAmount.orZero(),
+			ledgerEarliestOverdueDate = DateUtils.getDateInFormat(
+				LedgerConstants.dd_MMM, ledgerEarliestOverdueDate?.toFloat().orZero()
+			),
+			showInterestWidget = ledgerInterestAmount != null && interestStatus != null,
+			ledgerInterestAmount = ledgerInterestAmount.orZero(),
+			ledgerEarliestInterestDate = DateUtils.getDateInFormat(
+				LedgerConstants.dd_MMM, ledgerEarliestInterestDate?.toFloat().orZero()
+			),
+			showInterestNotStartedWidget = ledgerInterestAmount != null && interestStatus == null
 		)
 	}
 
@@ -160,6 +177,48 @@ class ViewDataMapper @Inject constructor() {
 	}
 
 	fun toHoldAmountViewData(data: TransactionSummaryEntity?) = data?.toHoldAmountViewData()
+	fun toWidgetsViewData(creditSummary: CreditSummaryEntityV2) = with(creditSummary) {
+		WidgetsViewData(
+			creditLineStatus = creditLineStatus,
+			creditLineSubStatus = creditLineSubStatus,
+			agedOutstandingAmount = formatDecimal(agedOutstandingAmount, 0),
+			repaymentUnblockAmount = formatDecimal(repaymentUnblockAmount, 0),
+			ageingBannerPriority = ageingBannerPriority,
+			showOverdueWidget = ledgerOverdueAmount != null && overdueStatus == null,
+			showOrderingBlockedWidget = ledgerOverdueAmount != null && overdueStatus != null,
+			ledgerOverdueAmount = ledgerOverdueAmount.orZero(),
+			ledgerEarliestOverdueDate = DateUtils.getDateInFormat(
+				LedgerConstants.dd_MMM, ledgerEarliestOverdueDate?.toFloat().orZero()
+			),
+			showInterestWidget = ledgerInterestAmount != null && interestStatus != null,
+			ledgerInterestAmount = ledgerInterestAmount.orZero(),
+			ledgerEarliestInterestDate = DateUtils.getDateInFormat(
+				LedgerConstants.dd_MMM, ledgerEarliestInterestDate?.toFloat().orZero()
+			),
+			showInterestNotStartedWidget = ledgerInterestAmount != null && interestStatus == null
+		)
+	}
+
+	fun toWidgetsViewData(creditSummary: CreditSummaryEntity) = with(creditSummary) {
+		WidgetsViewData(
+			creditLineStatus = null,
+			creditLineSubStatus = "",
+			agedOutstandingAmount = "",
+			repaymentUnblockAmount = "",
+			ageingBannerPriority = null,
+			showOverdueWidget = info.ledgerOverdueAmount != null && info.overdueStatus == null,
+			showOrderingBlockedWidget = info.ledgerOverdueAmount != null && info.overdueStatus != null,
+			showInterestWidget = false,
+			ledgerOverdueAmount = info.ledgerOverdueAmount.orZero(),
+			ledgerInterestAmount = 0.0,
+			ledgerEarliestInterestDate = "",
+			showInterestNotStartedWidget = false,
+			ledgerEarliestOverdueDate = DateUtils.getDateInFormat(
+				LedgerConstants.dd_MMM, info.ledgerEarliestOverdueDate?.toFloat().orZero()
+			)
+		)
+	}
+
 }
 
 fun TransactionSummaryEntity.toHoldAmountViewData() = HoldAmountViewData(

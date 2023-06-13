@@ -5,4 +5,5 @@ data class InvoiceDetailsViewData(
     val productsInfo: ProductsInfoViewDataV2,
     val summary: SummaryViewDataV2,
     val prepaidAndCreditInfoViewDataV2: PrepaidAndCreditInfoViewDataV2?,
+    val interestOverdueViewData: InterestOverdueViewData?
 )

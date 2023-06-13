@@ -31,7 +31,7 @@ class LedgerDataSource @Inject constructor(
 		dispatcher,
 		{ apiService.getV2CreditSummary(partnerId) }
 	) {
-		it?.data?.credit?.let { data -> mapper.toCreditSummaryEntity(data) }
+		it?.data?.let { data -> mapper.toCreditSummaryEntity(data.credit) }
 	}
 
 	override suspend fun getTransactionSummary(
@@ -202,7 +202,18 @@ class LedgerDataSource @Inject constructor(
 		response?.let { mapper.toLedgerDownloadUrl(it) }
 	}
 
-	override suspend fun getDebitRecordDetails(ledgerId: String) = callAPI(
+    override suspend fun getWidgetInvoiceList(
+        partnerId: String,
+        widgetType: String
+    ) = callAPI(
+        dispatchers = dispatcher,
+        apiCall = {
+            apiService.getWidgetInvoiceList(partnerId, widgetType)
+        }
+    ) { mapper.toWidgetInvoiceListEntity(it) }
+
+
+    override suspend fun getDebitRecordDetails(ledgerId: String) = callAPI(
 		dispatchers = dispatcher,
 		apiCall = {
 			apiService.getDebitRecordDetails(ledgerId = ledgerId)

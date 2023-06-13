@@ -33,5 +33,13 @@ data class SummaryViewData(
 	val penaltyInterest: Float?,
 	val agedOverdueAmount: String?,
 	val firstLedgerEntryDate: Long?,
-	val ledgerEndDate: Long?
+	val ledgerEndDate: Long?,
+    val showOverdueWidget: Boolean,
+    val showOrderingBlockedWidget: Boolean,
+    val showInterestWidget: Boolean,
+    val ledgerOverdueAmount: Double,
+    val ledgerEarliestOverdueDate: String,
+    val ledgerInterestAmount: Double,
+    val ledgerEarliestInterestDate: String,
+    val showInterestNotStartedWidget: Boolean
 )

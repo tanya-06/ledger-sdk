@@ -5,8 +5,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CreditSummaryDataV2(
-    @Json(name = "credit")
-    val credit: CreditV2
+	@Json(name = "credit")
+	val credit: CreditV2
 )
 
 @JsonClass(generateAdapter = true)

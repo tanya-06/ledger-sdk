@@ -23,6 +23,11 @@ data class TransactionViewDataV2(
 	val schemeName: String?,
 	val creditAmount: String?,
 	val prepaidAmount: String?,
+	val invoiceStatus: String?,
+	val statusVariable: String?,
+	val totalInvoiceAmount: Double?,
+	val totalInterestCharged: Double?,
+	val totalRemainingAmount: Double?
 ) {
 
 	companion object {
@@ -47,6 +52,11 @@ data class TransactionViewDataV2(
 			schemeName = null,
 			creditAmount = null,
 			prepaidAmount = null,
+			invoiceStatus = null,
+			statusVariable = null,
+			totalInvoiceAmount= null,
+			totalInterestCharged = null,
+			totalRemainingAmount = null
 		)
 	}
 }

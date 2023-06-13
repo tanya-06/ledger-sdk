@@ -50,7 +50,7 @@ class LedgerHomeScreenViewModel @Inject constructor(
 		savedStateHandle.get<Boolean>(LedgerConstants.KEY_IS_FINANCED).orFalse()
 	}
 
-	private val partnerId by lazy {
+	val partnerId by lazy {
 		savedStateHandle.get<String>(LedgerConstants.KEY_PARTNER_ID).orEmpty()
 	}
 	val dcName by lazy {
@@ -135,6 +135,7 @@ class LedgerHomeScreenViewModel @Inject constructor(
 		handleSuccess = { creditSummary ->
 			viewModelState.update {
 				it.copy(
+					widgetsViewData = mapper.toWidgetsViewData(creditSummary),
 					outstandingAmount = creditSummary.totalOutstandingAmount,
 					isLMSActivated = creditSummary.externalFinancierSupported,
 					isError = false,
@@ -164,6 +165,7 @@ class LedgerHomeScreenViewModel @Inject constructor(
 		handleSuccess = { creditSummary ->
 			viewModelState.update {
 				it.copy(
+					widgetsViewData = mapper.toWidgetsViewData(creditSummary),
 					outstandingAmount = creditSummary.credit.totalOutstandingAmount,
 					isLMSActivated = creditSummary.credit.externalFinancierSupported,
 					isError = false,

@@ -32,5 +32,11 @@ data class CreditSummaryEntityV2(
 	val penaltyInterest: Float?,
 	val agedOverdueAmount: Double?,
 	val firstLedgerEntryDate: Long?,
-	val ledgerEndDate: Long?
+	val ledgerEndDate: Long?,
+	val ledgerOverdueAmount: Double?,
+	val ledgerEarliestOverdueDate: Double?,
+	val ledgerInterestAmount: Double?,
+	val ledgerEarliestInterestDate: Double?,
+	val overdueStatus: String?,
+	val interestStatus: String?
 )

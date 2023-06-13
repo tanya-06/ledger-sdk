@@ -45,4 +45,14 @@ data class Transaction(
     val creditAmount: String?,
     @Json(name = "prepaid_amount")
     val prepaidAmount: String?,
+    @Json(name = "status")
+    val invoiceStatus: String?,
+    @Json(name = "status_variable")
+    val statusVariable: String?,
+    @Json(name = "total_invoice_amount")
+    val totalInvoiceAmount: Double?,
+    @Json(name = "total_interest_charged")
+    val totalInterestCharged: Double?,
+    @Json(name = "total_remaining_amount")
+    val totalRemainingAmount: Double?
 )

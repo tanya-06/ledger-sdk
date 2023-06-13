@@ -247,6 +247,18 @@ fun text12Sp(
     color = textColor,
 )
 
+@Composable
+fun textMedium12Sp(
+    textColor: Color = TextBlack,
+    fontWeight: FontWeight = FontWeight.Medium,
+    lineHeight: TextUnit = 12.sp
+) = TextStyle(
+    fontSize = 12.sp,
+    lineHeight = lineHeight,
+    fontWeight = fontWeight,
+    color = textColor,
+)
+
 /**
  * Font Styles derived from https://www.figma.com/file/rRPSy4h3oe4aDuBSOJbbG2/F.A.D.S.---Base-Style?node-id=4%3A2
  */

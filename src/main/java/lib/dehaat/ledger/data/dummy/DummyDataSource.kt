@@ -21,18 +21,18 @@ import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 
 object DummyDataSource {
 
-    private val creditViewData by lazy {
-        CreditViewData(
-            externalFinancierSupported = true,
-            totalCreditLimit = "000001",
-            totalAvailableCreditLimit = "-000002",
-            totalOutstandingAmount = "000003",
-            principalOutstandingAmount = "000004",
-            interestOutstandingAmount = "000005",
-            overdueInterestOutstandingAmount = "000006",
-            penaltyOutstandingAmount = "000007"
-        )
-    }
+	private val creditViewData by lazy {
+		CreditViewData(
+			externalFinancierSupported = true,
+			totalCreditLimit = "000001",
+			totalAvailableCreditLimit = "-000002",
+			totalOutstandingAmount = "000003",
+			principalOutstandingAmount = "000004",
+			interestOutstandingAmount = "000005",
+			overdueInterestOutstandingAmount = "000006",
+			penaltyOutstandingAmount = "000007"
+		)
+	}
 
     private val infoViewData by lazy {
         InfoViewData(
@@ -84,47 +84,59 @@ object DummyDataSource {
         penaltyInterest = 0f,
         agedOverdueAmount = null,
         firstLedgerEntryDate = null,
-        ledgerEndDate = null
+        ledgerEndDate = null,
+        showOverdueWidget = true,
+        showOrderingBlockedWidget = false,
+        showInterestWidget = true,
+        ledgerOverdueAmount = 20.0,
+        ledgerEarliestOverdueDate = "30 April",
+        ledgerInterestAmount = 30.0,
+        ledgerEarliestInterestDate = "31 April",
+        showInterestNotStartedWidget = true
     )
 
-    val creditSummaryViewData by lazy {
-        CreditSummaryViewData(
-            creditViewData,
-            overdueViewData,
-            infoViewData,
-            isOrderingBlocked = true,
-            isCreditLimitExhausted = true,
-            isOverdueLimitExhausted = true
-        )
-    }
-    val creditLineViewData by lazy {
-        CreditLineViewData(
-            belongsToGapl = true,
-            lenderViewName = "lenderViewName",
-            creditLimit = "000011",
-            availableCreditLimit = "000012",
-            totalOutstandingAmount = "000013",
-            principalOutstandingAmount = "000014",
-            interestOutstandingAmount = "000015",
-            overdueInterestOutstandingAmount = "000016",
-            penaltyOutstandingAmount = "000017",
-            advanceAmount = "000018"
-        )
-    }
+	val creditSummaryViewData by lazy {
+		CreditSummaryViewData(
+			creditViewData,
+			overdueViewData,
+			infoViewData,
+			isOrderingBlocked = true,
+			isCreditLimitExhausted = true,
+			isOverdueLimitExhausted = true,
+			showOverdueWidget = true,
+			showOrderingBlockedWidget = true,
+			ledgerOverdueAmount = 20.0,
+			ledgerEarliestOverdueDate = "30 April"
+		)
+	}
+	val creditLineViewData by lazy {
+		CreditLineViewData(
+			belongsToGapl = true,
+			lenderViewName = "lenderViewName",
+			creditLimit = "000011",
+			availableCreditLimit = "000012",
+			totalOutstandingAmount = "000013",
+			principalOutstandingAmount = "000014",
+			interestOutstandingAmount = "000015",
+			overdueInterestOutstandingAmount = "000016",
+			penaltyOutstandingAmount = "000017",
+			advanceAmount = "000018"
+		)
+	}
 
-    val invoice = InvoiceListViewData(
-        amount = "20000",
-        date = 6237462923,
-        interestStartDate = 623847623,
-        interestFreePeriodEndDate = 6234786239,
-        ledgerId = "3647",
-        locusId = 3444,
-        outstandingAmount = "26348",
-        partnerId = "26384",
-        source = "SAP",
-        type = "INVOICE",
-        interestDays = 45
-    )
+	val invoice = InvoiceListViewData(
+		amount = "20000",
+		date = 6237462923,
+		interestStartDate = 623847623,
+		interestFreePeriodEndDate = 6234786239,
+		ledgerId = "3647",
+		locusId = 3444,
+		outstandingAmount = "26348",
+		partnerId = "26384",
+		source = "SAP",
+		type = "INVOICE",
+		interestDays = 45
+	)
 
     val transactionViewData by lazy {
         TransactionViewData(
@@ -149,6 +161,11 @@ object DummyDataSource {
             paymentModeWithScheme = "paymentMode",
             creditAmount = null,
             prepaidAmount = null,
+            invoiceStatus = "PAID",
+            statusVariable = "",
+            totalInvoiceAmount = 10.0,
+            totalInterestCharged = 12.0,
+            totalRemainingAmount = 22.4
         )
     }
 
@@ -173,6 +190,11 @@ object DummyDataSource {
         schemeName = null,
         creditAmount = null,
         prepaidAmount = null,
+        invoiceStatus = "PAID",
+        statusVariable = "",
+        totalInvoiceAmount = 10.0,
+        totalInterestCharged = 12.0,
+        totalRemainingAmount = 22.4
     )
 
     val invoiceTransactionFullyPaid = TransactionViewDataV2(
@@ -196,6 +218,11 @@ object DummyDataSource {
         schemeName = "schemeName",
         creditAmount = "101",
         prepaidAmount = "100",
+	    invoiceStatus = "PAID",
+	    statusVariable = "",
+	    totalInvoiceAmount = 10.0,
+	    totalInterestCharged = 12.0,
+	    totalRemainingAmount = 22.4
     )
 
     val debitHoldTransaction = TransactionViewDataV2(
@@ -219,70 +246,75 @@ object DummyDataSource {
         schemeName = null,
         creditAmount = null,
         prepaidAmount = null,
+	    invoiceStatus = "PAID",
+	    statusVariable = "",
+	    totalInvoiceAmount = 10.0,
+	    totalInterestCharged = 12.0,
+	    totalRemainingAmount = 22.4
     )
 
-    val paymentDetailSummaryViewData = PaymentDetailSummaryViewData(
-        referenceId = "refId",
-        timestamp = 78386423894,
-        totalAmount = "1200",
-        mode = "CASH",
-        principalComponent = null,
-        interestComponent = null,
-        overdueInterestComponent = null,
-        penaltyComponent = null,
-        advanceComponent = null,
-        paidTo = null,
-        belongsToGapl = null,
-        schemeName = null
-    )
+	val paymentDetailSummaryViewData = PaymentDetailSummaryViewData(
+		referenceId = "refId",
+		timestamp = 78386423894,
+		totalAmount = "1200",
+		mode = "CASH",
+		principalComponent = null,
+		interestComponent = null,
+		overdueInterestComponent = null,
+		penaltyComponent = null,
+		advanceComponent = null,
+		paidTo = null,
+		belongsToGapl = null,
+		schemeName = null
+	)
 
-    val outstandingCreditLimitViewState = OutstandingCreditLimitViewState(
-        totalOutstandingAmount = "1000",
-        totalPurchaseAmount = "2000",
-        interestTillDate = "3000",
-        paymentAmountTillDate = "5000",
-        purchaseAmountTillDate = "4000",
-        creditNoteAmountTillDate = "6000"
-    )
+	val outstandingCreditLimitViewState = OutstandingCreditLimitViewState(
+		totalOutstandingAmount = "1000",
+		totalPurchaseAmount = "2000",
+		interestTillDate = "3000",
+		paymentAmountTillDate = "5000",
+		purchaseAmountTillDate = "4000",
+		creditNoteAmountTillDate = "6000"
+	)
 
-    private val dbaApp by lazy {
-        LedgerParentApp.DBA(
-            ledgerCallBack = LedgerCallBack(
-                onNonFinancedDCPayNowClick = {},
-                onFinancedDCPayNowClick = {},
-                onDownloadInvoiceSuccess = {},
-                onPaymentOptionsClick = {},
-                downloadInvoiceIntent = { _, _ -> null },
-                exceptionHandler = {},
-                firebaseScreenLogger = { _, _ -> }
-            )
-        )
-    }
+	private val dbaApp by lazy {
+		LedgerParentApp.DBA(
+			ledgerCallBack = LedgerCallBack(
+				onNonFinancedDCPayNowClick = {},
+				onFinancedDCPayNowClick = {},
+				onDownloadInvoiceSuccess = {},
+				onPaymentOptionsClick = {},
+				downloadInvoiceIntent = { _, _ -> null },
+				exceptionHandler = {},
+				firebaseScreenLogger = { _, _ -> }
+			)
+		)
+	}
 
-    private val aimsApp by lazy {
-        LedgerParentApp.AIMS(
-            downloadInvoiceClick = {},
-            downloadInvoiceIntent = { _, _ -> null },
-            exceptionHandler = {},
-            firebaseScreenLogger = { _, _ -> }
-        )
-    }
+	private val aimsApp by lazy {
+		LedgerParentApp.AIMS(
+			downloadInvoiceClick = {},
+			downloadInvoiceIntent = { _, _ -> null },
+			exceptionHandler = {},
+			firebaseScreenLogger = { _, _ -> }
+		)
+	}
 
-    fun initDBA(context: Context) = LedgerSDK.init(
-        context,
-        dbaApp,
-        "bucket",
-        R.drawable.ic_info_icon,
-        true
-    )
+	fun initDBA(context: Context) = LedgerSDK.init(
+		context,
+		dbaApp,
+		"bucket",
+		R.drawable.ic_info_icon,
+		true
+	)
 
-    fun initAIMS(context: Context) = LedgerSDK.init(
-        context,
-        aimsApp,
-        "bucket",
-        R.drawable.ic_info_icon,
-        true
-    )
+	fun initAIMS(context: Context) = LedgerSDK.init(
+		context,
+		aimsApp,
+		"bucket",
+		R.drawable.ic_info_icon,
+		true
+	)
 
     val outstandingCalculationUiState by lazy {
         OutstandingCalculationUiState(

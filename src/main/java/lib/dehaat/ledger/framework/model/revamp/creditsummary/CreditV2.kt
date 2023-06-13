@@ -64,5 +64,17 @@ data class CreditV2(
 	@Json(name = "first_ledger_entry_date")
 	val firstLedgerEntryDate: Long?,
 	@Json(name = "ledger_restricted_download_date")
-	val ledgerEndDate: Long?
+	val ledgerEndDate: Long?,
+    @Json(name = "ledger_overdue_amount")
+    val ledgerOverdueAmount: Double?,
+    @Json(name = "ledger_earliest_overdue_date")
+    val ledgerEarliestOverdueDate: Double?,
+    @Json(name = "ledger_interest_amount")
+    val ledgerInterestAmount: Double?,
+    @Json(name = "ledger_earliest_interest_date")
+    val ledgerEarliestInterestDate: Double?,
+    @Json(name = "overdue_status")
+    val overdueStatus: String?,
+    @Json(name = "interest_status")
+    val interestStatus: String?,
 )

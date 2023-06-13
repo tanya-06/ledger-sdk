@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.ui.component
 
+import android.os.Bundle
 import androidx.compose.runtime.Composable
 import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
@@ -11,7 +12,8 @@ fun Header(
 	isLmsActivated: () -> Boolean?,
 	onClickTotalOutstandingInfo: () -> Unit,
 	onPayNowClick: () -> Unit,
-	onPaymentOptionsClick: () -> Unit
+	onPaymentOptionsClick: () -> Unit,
+    onWidgetClick: (Bundle) -> Unit
 ) {
     CreditSummaryView(
         creditSummaryData = creditSummaryData,
@@ -19,6 +21,7 @@ fun Header(
         isLmsActivated = isLmsActivated,
         onClickTotalOutstandingInfo = onClickTotalOutstandingInfo,
         onPayNowClick = onPayNowClick,
-        onPaymentOptionsClick = onPaymentOptionsClick
+        onPaymentOptionsClick = onPaymentOptionsClick,
+        onWidgetClick = onWidgetClick
     )
 }

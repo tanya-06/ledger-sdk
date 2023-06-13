@@ -84,3 +84,11 @@ fun NavController.navigateTo(
         navigate(route, navOptions, navigatorExtras)
     }
 }
+
+fun navigateToWidgetInvoiceListPage(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.WidgetInvoiceListScreen.screen,
+    args = args
+)

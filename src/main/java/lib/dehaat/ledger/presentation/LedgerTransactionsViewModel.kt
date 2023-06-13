@@ -302,7 +302,12 @@ class LedgerTransactionsViewModel @Inject constructor(
 		adjustmentAmount = adjustmentAmount,
 		schemeName = schemeName,
 		creditAmount = creditAmount,
-		prepaidAmount = prepaidAmount
+		prepaidAmount = prepaidAmount,
+		invoiceStatus = invoiceStatus,
+		statusVariable = statusVariable,
+		totalInvoiceAmount = totalInvoiceAmount,
+		totalInterestCharged = totalInterestCharged,
+		totalRemainingAmount = totalRemainingAmount
 	)
 
 	private fun getFromAndToDate() = when (val filter = _filterViewModelState.value.appliedFilter) {

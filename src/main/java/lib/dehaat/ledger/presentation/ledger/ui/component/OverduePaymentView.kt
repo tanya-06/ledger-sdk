@@ -20,7 +20,6 @@ import lib.dehaat.ledger.data.dummy.DummyDataSource.summaryViewData
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.annotations.AgeingBannerPriority
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
-import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.resources.Error90
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Neutral10
@@ -35,7 +34,7 @@ private fun OverduePaymentPreview() = LedgerTheme {
 		creditLineSubStatus = LedgerConstants.MISCELLANEOUS,
 		agedOutstandingAmount = "100.00",
 		repaymentUnblockAmount = "400.00",
-		summaryViewData = summaryViewData
+		ageingBannerPriority = null
 	)
 }
 
@@ -44,11 +43,11 @@ fun OverduePaymentView(
 	creditLineSubStatus: String,
 	agedOutstandingAmount: String,
 	repaymentUnblockAmount: String,
-	summaryViewData: SummaryViewData
+	ageingBannerPriority: String?
 ) = when (creditLineSubStatus) {
 	LedgerConstants.MISCELLANEOUS -> stringResource(id = R.string.ledger_credit_line_status_miscellaneous)
 	LedgerConstants.AGED_OUTSTANDING -> getOutStandingSubtitle(
-		summaryViewData,
+		ageingBannerPriority,
 		summaryViewData.agedOverdueAmount ?: agedOutstandingAmount
 	)
 
@@ -74,7 +73,7 @@ fun OverduePaymentView(
 			Text(
 				modifier = Modifier.fillMaxWidth(),
 				text = if (creditLineSubStatus == LedgerConstants.AGED_OUTSTANDING) getOutstandingTitle(
-					summaryViewData
+					ageingBannerPriority
 				) else stringResource(R.string.your_ordering_is_blocked),
 				style = textSubHeadingS3(Neutral10)
 			)
@@ -96,10 +95,10 @@ fun OverduePaymentView(
 
 @Composable
 fun getOutStandingSubtitle(
-	summaryViewData: SummaryViewData,
+	ageingBannerPriority: String?,
 	amount: String
 ): String =
-	when (summaryViewData.ageingBannerPriority) {
+	when (ageingBannerPriority) {
 		AgeingBannerPriority.PRIORITY_0 -> stringResource(R.string.defaulted_bank_payments, amount)
 		AgeingBannerPriority.PRIORITY_1 -> stringResource(
 			R.string.pay_amount_to_avoid_negative_impact, amount
@@ -117,8 +116,8 @@ fun getOutStandingSubtitle(
 	}
 
 @Composable
-private fun getOutstandingTitle(summaryViewData: SummaryViewData?) =
-	when (summaryViewData?.ageingBannerPriority) {
+private fun getOutstandingTitle(ageingBannerPriority: String?) =
+	when (ageingBannerPriority) {
 		AgeingBannerPriority.PRIORITY_0 -> stringResource(R.string.cibil_score_decreased)
 		AgeingBannerPriority.PRIORITY_1 -> stringResource(R.string.cibil_score_will_decrease)
 		AgeingBannerPriority.PRIORITY_2 -> stringResource(R.string.penalty_will_be_charged)

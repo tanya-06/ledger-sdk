@@ -5,5 +5,8 @@ data class InfoEntity(
     val totalPaymentAmount: String,
     val undeliveredInvoiceAmount: String,
     val firstLedgerEntryDate: Long?,
-    val ledgerEndDate: Long?
+    val ledgerEndDate: Long?,
+    val ledgerOverdueAmount: Double?,
+    val ledgerEarliestOverdueDate: Double?,
+    val overdueStatus: String?
 )

@@ -173,6 +173,7 @@
     <string name="ledger_download">डाउनलोड स्टेट्मेंट</string>
     <string name="ledger_credit_line_status_miscellaneous">आपकी क्रेडिट लाइन होल्ड पर है।</string>
     <string name="ledger_credit_line_status_aged_outstanding">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान ठीक समय पर नहीं किया है। कृपया तुरंत भुगतान करें।</string>
+
     <string name="ledger_credit_line_status_repayment_frequency">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान नहीं किया है। कृपया तुरंत भुगतान करें</string>
     <string name="ledger_credit_line_status_onboarding_pod">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने अपने दस्तावेज़ जमा नहीं किए हैं। अधिक जानकारी के लिए कृपया अपने बिक्री कार्यकारी से संपर्क करें</string>
     <string name="your_ordering_is_blocked">आपकी ऑर्डरिंग बंद है</string>
@@ -228,4 +229,34 @@
     <string name="ledger_current_year_msg">PDF लेजर %s से %s तक डाउनलोड किया जा सकेगा</string>
     <string name="fully_paid">पूर्ण भुगतान हो चुका है</string>
     <string name="pay_from_wallet">वॉलेट से भुगतान</string>
+    <plurals name="interest_start_after_s_days">
+        <item quantity="one">%s दिन में ब्याज शुरू होगा</item>
+        <item quantity="other">%s दिन में ब्याज शुरू होगा</item>
+    </plurals>
+    <plurals name="overdue_after_s_days">
+        <item quantity="one">%s दिन में ओवरड्यु होगा</item>
+        <item quantity="other">%s दिन में ओवरड्यु होगा</item>
+    </plurals>
+    <string name="is_overdue">ओवरड्यु हो गया है</string>
+    <string name="payment_done">पूर्ण भुगतान हो चुका है</string>
+    <string name="about_to_overdue">ओवरड्यू होने वाला है</string>
+    <string name="overdue_desc">%1$s तक %2$s का भुगतान करें, ऑर्डरिंग ब्लॉक होने से बचें</string>
+    <string name="ordering_blocked">ऑर्डरिंग ब्लॉक्ड है</string>
+    <string name="ordering_blocked_desc">आपके कुछ इनवॉइस ओवर्डू हैं, ऑर्डरिंग पुनः शुरू करने के लिए जल्द %s का भुगतान करें</string>
+    <string name="interest_applied">ब्याज लग रहा है</string>
+    <string name="interest_desc">आज ₹%s  भुगतान करें और अतिरिक्त ब्याज से बचें</string>
+    <string name="interest_rate_s_per_day">ब्याज दर: %s%% प्रति दिन</string>
+    <string name="remaining_amount">बकाया %s</string>
+    <string name="s_days_ordering_blocked">%s दिन में आपकी ऑर्डरिंग ब्लॉक हो जाएगी, जल्द भुगतान करें !</string>
+    <string name="amount_paid">भुगतान राशि %s</string>
+    <string name="pay_today_to_save_interest">आज भुगतान करें, अतिरिक्त ब्याज से बचें</string>
+    <string name="pay_before_s_to_save_interest">%s तक भुगतान करें, ब्याज से बचें</string>
+    <string name="pay_before_s_avoid_block_ordering">%s तक भुगतान करें, ऑर्डरिंग ब्लॉक होने से बचें</string>
+    <string name="pay_today_unblock_ordering">आज ही भुगतान करें, ऑर्डरिंग पुनः शुरू करें</string>
+    <string name="save_from_interest">ब्याज से बचें</string>
+    <string name="save_interest_desc">%1$s तक %2$s का भुगतान करें</string>
+    <string name="interest_amount">ब्याज राशि</string>
+    <string name="interest_summation">(बकाया ब्याज + चुकाया गया ब्याज)</string>
+    <string name="overdue_date">ओवरड्यू तिथि</string>
+    <string name="item_total">कुल आइटम</string>
 </resources>

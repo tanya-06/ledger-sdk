@@ -175,7 +175,8 @@ private fun RevampProductView(
         ) {
             Text(
                 text = product.fname ?: "",
-                style = textParagraphT2Highlight(Neutral80)
+                style = textParagraphT2Highlight(Neutral80),
+                modifier = Modifier.weight(1f)
             )
 
             Text(
