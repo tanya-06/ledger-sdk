@@ -26,9 +26,11 @@ import com.dehaat.androidbase.helper.isTrue
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.presentation.LibLedgerAnalytics
 import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.AbsBanner
+import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewData
 import lib.dehaat.ledger.resources.Neutral60
 import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral80
@@ -41,21 +43,13 @@ import lib.dehaat.ledger.util.clickableWithCorners
 
 @Composable
 fun TransactionListHeader(
-	ledgerViewModel: RevampLedgerViewModel,
-	onFilterClick: () -> Unit,
-	onLedgerDownloadClick: () -> Unit,
-	openABSDetailScreen: (Bundle) -> Unit
+	onLedgerDownloadClick: () -> Unit
 ) = Column(
 	modifier = Modifier
 		.fillMaxWidth()
 		.background(Color.White)
 ) {
-	val transactionUIState by ledgerViewModel.transactionUIState.collectAsState()
-	val uiState = ledgerViewModel.uiState.collectAsState()
-	val filters = uiState.value.appliedFilter
-	val abs = transactionUIState.summaryViewData?.abs
 	Divider()
-
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -74,13 +68,19 @@ fun TransactionListHeader(
 			LedgerDownloadButton(onLedgerDownloadClick)
 		}
 	}
+}
 
-	Divider()
-
-	if (abs?.showBanner.isTrue()) {
-		AbsBanner(abs, ledgerViewModel.ledgerAnalytics,openABSDetailScreen)
-	}
-	Spacer(modifier = Modifier.height(8.dp))
+@Composable
+fun TransactionFilteringHeader(
+	ledgerViewModel: RevampLedgerViewModel,
+	onFilterClick: () -> Unit
+) = Column(
+	modifier = Modifier
+		.fillMaxWidth()
+		.background(Color.White)
+) {
+	val uiState = ledgerViewModel.uiState.collectAsState()
+	val filters = uiState.value.appliedFilter
 
 	FilterHeader(filters, onFilterClick)
 
@@ -128,4 +128,25 @@ fun LedgerDownloadButton(
 		contentDescription = stringResource(id = R.string.accessibility_icon),
 		tint = SeaGreen100
 	)
+}
+
+@Composable
+fun AbsTransactionHeader(
+	abs: ABSViewData?,
+	ledgerAnalytics: LibLedgerAnalytics,
+	openABSDetailScreen: (Bundle) -> Unit
+) = Column(
+	modifier = Modifier
+		.fillMaxWidth()
+		.background(Color.White)
+) {
+	Divider()
+
+	AbsBanner(
+		showAbsBanner = abs?.showBanner.isTrue(),
+		abs = abs,
+		ledgerAnalytics = ledgerAnalytics,
+		openABSDetailPage = openABSDetailScreen
+	)
+	Spacer(modifier = Modifier.height(8.dp))
 }

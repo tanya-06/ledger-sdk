@@ -1,6 +1,5 @@
 package lib.dehaat.ledger.presentation.mapper
 
-import com.dehaat.androidbase.helper.orZero
 import javax.inject.Inject
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.transactionsummary.ABSEntity
@@ -99,19 +98,19 @@ class ViewDataMapper @Inject constructor() {
 
     fun toOutstandingCalculationViewData(entity: TransactionSummaryEntity) = with(entity) {
         OutstandingCalculationUiState(
-            totalOutstanding = (purchaseAmount.toDoubleOrZero() - netPaymentAmount.toDoubleOrZero()).toString()
-                .getRoundedAmountInRupees(),
-            totalPurchase = purchaseAmount.getRoundedAmountInRupees(),
+            totalOutstanding = "+ ${(purchaseAmount.toDoubleOrZero() - netPaymentAmount.toDoubleOrZero()).toString()
+                .getRoundedAmountInRupees()}",
+            totalPurchase = "+ ${purchaseAmount.getRoundedAmountInRupees()}",
             totalPayment = netPaymentAmount.getRoundedAmountInRupees(),
-            totalInvoiceAmount = totalInvoiceAmount.getRoundedAmountInRupees(),
-            totalCreditNoteAmount = creditNoteAmount.getRoundedAmountInRupees(),
-            outstandingInterestAmount = interestOutstanding.getRoundedAmountInRupees(),
-            paidInterestAmount = interestPaid.getRoundedAmountInRupees(),
-            creditNoteAmount = totalInterestRefundAmount.getRoundedAmountInRupees(),
-            totalDebitNoteAmount = debitNodeAmount.getRoundedAmountInRupees(),
-            paidAmount = paymentAmount.getRoundedAmountInRupees(),
-            paidRefund = debitEntryAmount.getRoundedAmountInRupees(),
-            totalPaid = netPaymentAmount.getRoundedAmountInRupees()
+            totalInvoiceAmount = "+ ${totalInvoiceAmount.getRoundedAmountInRupees()}",
+            totalCreditNoteAmount = "- ${creditNoteAmount.getRoundedAmountInRupees()}",
+            outstandingInterestAmount = "+ ${interestOutstanding.getRoundedAmountInRupees()}",
+            paidInterestAmount = "+ ${interestPaid.getRoundedAmountInRupees()}",
+            creditNoteAmount = "- ${totalInterestRefundAmount.getRoundedAmountInRupees()}",
+            totalDebitNoteAmount = "+ ${debitNodeAmount.getRoundedAmountInRupees()}",
+            paidAmount = "+ ${paymentAmount.getRoundedAmountInRupees()}",
+            paidRefund = "+ ${debitEntryAmount.getRoundedAmountInRupees()}",
+            totalPaid = "- ${netPaymentAmount.getRoundedAmountInRupees()}"
         )
     }
 }

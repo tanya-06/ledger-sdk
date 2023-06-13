@@ -14,6 +14,11 @@ fun Long?.toDateMonthName(): String {
     return format("dd MMM", this)
 }
 
+fun Long?.toMonthYearName() = format(
+    dateFormat = "MMMM yyyy",
+    timeInSec = this
+)
+
 fun Long?.toDateMonthYearTime(): String {
     return format("dd/MM/yyyy hh:MM a", this)
 }

@@ -22,6 +22,7 @@ val Error10 = Color(0xFFFFEEEF)
 val Error5 = Color(0xfffFEBEC)
 
 val FrenchBlue10 = Color(0XFFE5F2FF)
+val FrenchBlue20 = Color(0XFFCCE6FF)
 val FrenchBlue120 = Color(0XFF1F5C99)
 
 val Mustard10 = Color(0XFFFFFBE5)
@@ -62,3 +63,5 @@ val Color3BC6CA = Color(0xff3BC6CA)
 
 val ColorBF4B0A = Color(0XFFBF4B0A)
 val ColorFFF5F5 = Color(0XFFFFF5F5)
+val ColorEDFBFF = Color(0XFFEDFBFF)
+val ColorGrey = Color(0Xff7e7e7e)

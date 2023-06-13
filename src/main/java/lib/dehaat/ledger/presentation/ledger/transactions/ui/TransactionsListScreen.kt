@@ -92,10 +92,12 @@ fun TransactionsListScreen(
 	)
 
 	Column {
-		if (abs?.showBanner.isTrue()) {
-			AbsBanner(abs, viewModel.ledgerAnalytics) {
-				detailPageNavigationCallback.navigateToABSDetailPage(it)
-			}
+		AbsBanner(
+			showAbsBanner = abs?.showBanner.isTrue(),
+			abs = abs,
+			ledgerAnalytics = viewModel.ledgerAnalytics
+		) {
+			detailPageNavigationCallback.navigateToABSDetailPage(it)
 		}
 
 		FilterStrip(

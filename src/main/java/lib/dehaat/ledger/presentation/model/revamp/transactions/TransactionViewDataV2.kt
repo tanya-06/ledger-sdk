@@ -1,5 +1,7 @@
 package lib.dehaat.ledger.presentation.model.revamp.transactions
 
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
+
 data class TransactionViewDataV2(
 	val amount: String,
 	val creditNoteReason: String?,
@@ -19,4 +21,28 @@ data class TransactionViewDataV2(
 	val toDate: String?,
 	val adjustmentAmount: Double?,
 	val schemeName: String?,
-)
+) {
+
+	companion object {
+		fun monthlySeparator(month: String)  = TransactionViewDataV2(
+			amount = "",
+			creditNoteReason = null,
+			date = 0L,
+			erpId = null,
+			interestEndDate = null,
+			interestStartDate = null,
+			ledgerId = "",
+			locusId = null,
+			partnerId = "",
+			paymentMode = null,
+			source = "",
+			sourceNo = null,
+			type = TransactionType.MonthSeparator().type,
+			unrealizedPayment = null,
+			fromDate = month,
+			toDate = null,
+			adjustmentAmount = null,
+			schemeName = null
+		)
+	}
+}

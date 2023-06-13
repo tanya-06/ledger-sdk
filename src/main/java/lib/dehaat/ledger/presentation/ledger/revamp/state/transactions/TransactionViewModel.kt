@@ -7,6 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.insertSeparators
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.framework.network.BasePagingSourceWithResponse
+import lib.dehaat.ledger.initializer.toMonthYearName
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -65,7 +67,20 @@ class TransactionViewModel @Inject constructor(
     private fun getTransactionPaging() = Pager(
         config = PagingConfig(pageSize = 1, enablePlaceholders = true),
         pagingSourceFactory = { getPagingSource() }
-    ).flow.cachedIn(viewModelScope)
+    ).flow.map {
+        it.insertSeparators { before, after ->
+            insertSeparators(before?.date.toMonthYearName(), after?.date.toMonthYearName())
+        }
+    }.cachedIn(viewModelScope)
+
+    private fun insertSeparators(
+        before: String,
+        after: String
+    ) = if (before != after) {
+        TransactionViewDataV2.monthlySeparator(after)
+    } else {
+        null
+    }
 
     private fun getPagingSource() =
         object : BasePagingSourceWithResponse<TransactionViewDataV2, List<TransactionEntityV2>>(

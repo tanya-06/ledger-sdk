@@ -22,5 +22,5 @@ fun mediumShape() = MaterialTheme.shapes.medium
 fun largeShape() = MaterialTheme.shapes.large
 
 @Composable
-fun veryLargeShape() = RoundedCornerShape(12.dp)
+fun veryLargeShape() = RoundedCornerShape(16.dp)
 

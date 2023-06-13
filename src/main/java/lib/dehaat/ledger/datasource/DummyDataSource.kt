@@ -6,6 +6,7 @@ import lib.dehaat.ledger.initializer.LedgerParentApp
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.outstandingcreditlimit.OutstandingCreditLimitViewState
+import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditViewData
@@ -223,4 +224,21 @@ object DummyDataSource {
         R.drawable.ic_info_icon,
         true
     )
+
+    val outstandingCalculationUiState by lazy {
+        OutstandingCalculationUiState(
+            "+ 8,24,697",
+            "+ 70,39,503",
+            "- 62,14,806",
+            "+ 74,51,640",
+            "- 69,96,696",
+            "+ 2,88,249",
+            "+ 0",
+            "- 6,96,696",
+            "+ 0",
+            "+ 0",
+            "",
+            ""
+        )
+    }
 }

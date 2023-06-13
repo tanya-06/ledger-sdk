@@ -38,105 +38,106 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.dehaat.androidbase.helper.showToast
+import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.SharedFlow
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.FirebaseScreenLogger
 import lib.dehaat.ledger.presentation.common.UiEvent
-import kotlin.math.roundToInt
 
 @Composable
 fun HandleAPIErrors(
-    uiEvent: SharedFlow<UiEvent>
+	uiEvent: SharedFlow<UiEvent>
 ) {
-    val errorMessage = stringResource(id = com.agridroid.baselib.R.string.tech_prob)
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
-    LaunchedEffect(Unit) {
-        uiEvent.flowWithLifecycle(
-            lifecycleOwner.lifecycle,
-            Lifecycle.State.STARTED
-        ).collect { event ->
-            when (event) {
-                is UiEvent.ShowSnackbar -> {
-                    if (LedgerSDK.isDebug) {
-                        context.showToast(event.message)
-                    } else {
-                        context.showToast(errorMessage)
-                    }
-                    LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(Exception(event.message))
-                }
-                else -> Unit
-            }
-        }
-    }
+	val errorMessage = stringResource(id = com.agridroid.baselib.R.string.tech_prob)
+	val lifecycleOwner = LocalLifecycleOwner.current
+	val context = LocalContext.current
+	LaunchedEffect(Unit) {
+		uiEvent.flowWithLifecycle(
+			lifecycleOwner.lifecycle,
+			Lifecycle.State.STARTED
+		).collect { event ->
+			when (event) {
+				is UiEvent.ShowSnackbar -> {
+					if (LedgerSDK.isDebug) {
+						context.showToast(event.message)
+					} else {
+						context.showToast(errorMessage)
+					}
+					LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(Exception(event.message))
+				}
+
+				else -> Unit
+			}
+		}
+	}
 }
 
 fun Modifier.clickableWithCorners(
-    borderSize: Dp,
-    backgroundColor: Color = Color.White,
-    onClick: () -> Unit
+	borderSize: Dp,
+	backgroundColor: Color = Color.White,
+	onClick: () -> Unit
 ) = this
-    .background(shape = RoundedCornerShape(borderSize), color = backgroundColor)
-    .clip(RoundedCornerShape(borderSize))
-    .clickable(onClick = onClick)
+	.background(shape = RoundedCornerShape(borderSize), color = backgroundColor)
+	.clip(RoundedCornerShape(borderSize))
+	.clickable(onClick = onClick)
 
 fun NavGraphBuilder.navBaseComposable(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
-    deepLinks: List<NavDeepLink> = emptyList(),
-    logScreenName: FirebaseScreenLogger,
-    content: @Composable (NavBackStackEntry) -> Unit
+	route: String,
+	arguments: List<NamedNavArgument> = emptyList(),
+	deepLinks: List<NavDeepLink> = emptyList(),
+	logScreenName: FirebaseScreenLogger,
+	content: @Composable (NavBackStackEntry) -> Unit
 ) = composable(route, arguments, deepLinks) {
-    logScreenName(LocalContext.current, route)
-    content(it)
+	logScreenName(LocalContext.current, route)
+	content(it)
 }
 
 data class DottedShape(
-    val step: Dp,
+	val step: Dp,
 ) : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ) = Outline.Generic(Path().apply {
-        val stepPx = with(density) { step.toPx() }
-        val stepsCount = (size.width / stepPx).roundToInt()
-        val actualStep = size.width / stepsCount
-        val dotSize = Size(width = actualStep / 2, height = size.height)
-        for (i in 0 until stepsCount) {
-            addRect(
-                Rect(
-                    offset = Offset(x = i * actualStep, y = 0f),
-                    size = dotSize
-                )
-            )
-        }
-        close()
-    })
+	override fun createOutline(
+		size: Size,
+		layoutDirection: LayoutDirection,
+		density: Density
+	) = Outline.Generic(Path().apply {
+		val stepPx = with(density) { step.toPx() }
+		val stepsCount = (size.width / stepPx).roundToInt()
+		val actualStep = size.width / stepsCount
+		val dotSize = Size(width = actualStep / 2, height = size.height)
+		for (i in 0 until stepsCount) {
+			addRect(
+				Rect(
+					offset = Offset(x = i * actualStep, y = 0f),
+					size = dotSize
+				)
+			)
+		}
+		close()
+	})
 }
 
 @Composable
 fun GifImage(
-    modifier: Modifier,
-    @DrawableRes drawable: Int,
-    contentDescription: String,
-    context: Context = LocalContext.current
+	modifier: Modifier,
+	@DrawableRes drawable: Int,
+	contentDescription: String,
+	context: Context = LocalContext.current
 ) {
-    val imageLoader = ImageLoader.Builder(context)
-        .components {
-            if (SDK_INT >= 28) {
-                add(ImageDecoderDecoder.Factory())
-            } else {
-                add(GifDecoder.Factory())
-            }
-        }
-        .build()
-    Image(
-        painter = rememberAsyncImagePainter(
-            ImageRequest.Builder(context).data(data = drawable).apply(block = {}).build(),
-            imageLoader = imageLoader
-        ),
-        contentDescription = contentDescription,
-        modifier = modifier.fillMaxWidth(),
-    )
+	val imageLoader = ImageLoader.Builder(context)
+		.components {
+			if (SDK_INT >= 28) {
+				add(ImageDecoderDecoder.Factory())
+			} else {
+				add(GifDecoder.Factory())
+			}
+		}
+		.build()
+	Image(
+		painter = rememberAsyncImagePainter(
+			ImageRequest.Builder(context).data(data = drawable).apply(block = {}).build(),
+			imageLoader = imageLoader
+		),
+		contentDescription = contentDescription,
+		modifier = modifier.fillMaxWidth(),
+	)
 }
