@@ -74,7 +74,7 @@ fun AbsBanner(
 			Spacer(Modifier.weight(1f))
 			if (abs?.amount.orZero() > 0) {
 				Row(modifier = Modifier.clickable {
-					ledgerAnalytics.onABSViewDetailsClicked()
+					ledgerAnalytics.onHoldAmountDetailsClicked()
 					openABSDetailPage(bundleOf(ABS_AMOUNT to abs?.amount.orZero()))
 				}, verticalAlignment = Alignment.CenterVertically) {
 					Text(
@@ -91,7 +91,7 @@ fun AbsBanner(
 			}
 		}
 		LaunchedEffect(Unit) {
-			ledgerAnalytics.onABSWidgetViewed()
+			ledgerAnalytics.onHoldAmountWidgetViewed()
 		}
 	}
 }

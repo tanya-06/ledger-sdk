@@ -11,6 +11,7 @@ import lib.dehaat.ledger.entities.detail.creditnote.CreditNoteDetailEntity
 import lib.dehaat.ledger.entities.detail.creditnote.ProductEntity
 import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
+import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
 import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
@@ -39,6 +40,7 @@ import lib.dehaat.ledger.framework.model.detail.creditnote.CreditNoteDetailData
 import lib.dehaat.ledger.framework.model.detail.creditnote.Product
 import lib.dehaat.ledger.framework.model.detail.creditnote.ProductsInfo
 import lib.dehaat.ledger.framework.model.detail.creditnote.Summary
+import lib.dehaat.ledger.framework.model.detail.debit.ResponseLedgerDebitDetail
 import lib.dehaat.ledger.framework.model.detail.invoice.InvoiceDetailData
 import lib.dehaat.ledger.framework.model.detail.invoice.Loan
 import lib.dehaat.ledger.framework.model.detail.invoice.OverdueInfo
@@ -104,7 +106,8 @@ class LedgerFrameworkMapper @Inject constructor() {
             creditLineSubStatus = creditLineSubStatus,
             agedOutstandingAmount = agedOutstandingAmount,
             repaymentUnblockAmount = repaymentUnblockAmount,
-            repaymentUnblockDays = repaymentUnblockDays
+            repaymentUnblockDays = repaymentUnblockDays,
+            holdAmount = holdAmount
         )
     }
 
@@ -124,7 +127,10 @@ class LedgerFrameworkMapper @Inject constructor() {
             interestOutstanding = interestOutstanding,
             debitEntryAmount = debitEntryAmount,
             netPaymentAmount = netPaymentAmount,
-            abs = toABSEntity(abs)
+            abs = toABSEntity(abs),
+            prepaidHoldAmount = prepaidHoldAmount,
+            debitHoldAmount = debitHoldAmount,
+            releasePaymentAmount = release_payment_amount
         )
     }
 
@@ -477,4 +483,19 @@ class LedgerFrameworkMapper @Inject constructor() {
     }
 
     fun toLedgerDownloadUrl(response: ResponseLedgerDownload) = response.data.s3Url
+	fun toDebitDetail(it: ResponseLedgerDebitDetail) = it.data?.let {
+		LedgerDebitDetailEntity(
+			amount = it.amount ?: "",
+			creationReason = it.creationReason ?: "",
+			date = it.date ?: 0L,
+			name = it.name ?: "",
+			orderRequestId = it.orderRequestId ?: ""
+		)
+	} ?: LedgerDebitDetailEntity(
+		amount = "",
+		creationReason = "",
+		date = 0L,
+		name = "",
+		orderRequestId = ""
+	)
 }

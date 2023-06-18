@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.dehaat.androidbase.helper.isTrue
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.toDateMonthYear
@@ -31,6 +30,9 @@ import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.AbsBanner
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewData
+import lib.dehaat.ledger.presentation.ledger.prepaid.HoldAmountWidget
+import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
+import lib.dehaat.ledger.resources.Neutral10
 import lib.dehaat.ledger.resources.Neutral60
 import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral80
@@ -132,21 +134,23 @@ fun LedgerDownloadButton(
 
 @Composable
 fun AbsTransactionHeader(
-	abs: ABSViewData?,
+	holdAmountData: HoldAmountViewData?,
 	ledgerAnalytics: LibLedgerAnalytics,
-	openABSDetailScreen: (Bundle) -> Unit
+	openHoldAmountDetailScreen: (Bundle) -> Unit
 ) = Column(
 	modifier = Modifier
 		.fillMaxWidth()
 		.background(Color.White)
 ) {
-	Divider()
+	holdAmountData?.let {
+		Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
+		HoldAmountWidget(
+			holdAmount = holdAmountData,
+			ledgerAnalytics,
+			openHoldAmountDetailScreen
+		)
+		Divider(modifier = Modifier.height(16.dp).background(color = Neutral10))
+	}
 
-	AbsBanner(
-		showAbsBanner = abs?.showBanner.isTrue(),
-		abs = abs,
-		ledgerAnalytics = ledgerAnalytics,
-		openABSDetailPage = openABSDetailScreen
-	)
 	Spacer(modifier = Modifier.height(8.dp))
 }

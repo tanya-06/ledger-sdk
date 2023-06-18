@@ -187,4 +187,19 @@
     <string name="your_ordering_is_blocked">Your ordering is blocked</string>
     <string name="colon_value">: %s</string>
     <string name="external_storage_permission_required">Storage Permission Required</string>
+    <string name="ledger_payment_debit_hold">Amount on hold for orders</string>
+    <string name="pay_immidiately_order">Immediate payment order</string>
+    <string name="hold_amount_details">Hold Amount Details</string>
+    <string name="prepaid_order">Prepaid Order</string>
+    <string name="this_amount_will_used_in_order">This amount will be used at the time of order</string>
+    <string name="amount">Amount</string>
+    <string name="date">Date</string>
+    <string name="hold_balance">Hold Balance</string>
+    <string name="abs_amount">ABS- %s</string>
+    <string name="pay_order_amount">Pay Now Order- %s</string>
+    <string name="hold_money_release_info">This amount will be used to pay for the order upon delivery.</string>
+    <string name="ledger_total_debit_hold_amount">Hold Amount(Prepaid)</string>
+    <string name="ledger_payment_released">Payment Released</string>
+    <string name="related_order_id">Related Order ID</string>
+    <string name="hold_payment_released">Release Payment</string>
 </resources>

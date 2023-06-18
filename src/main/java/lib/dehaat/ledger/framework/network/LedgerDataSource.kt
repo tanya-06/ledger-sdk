@@ -6,6 +6,7 @@ import com.dehaat.androidbase.coroutine.IDispatchers
 import com.dehaat.androidbase.network.api.makeAPICall
 import javax.inject.Inject
 import lib.dehaat.ledger.data.source.ILedgerDataSource
+import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.framework.mapper.LedgerFrameworkMapper
 import lib.dehaat.ledger.presentation.LedgerConstants.API_REQUEST_TRACE_ID
@@ -199,6 +200,15 @@ class LedgerDataSource @Inject constructor(
         }
     ) { response ->
         response?.let { mapper.toLedgerDownloadUrl(it) }
+    }
+
+    override suspend fun getDebitRecordDetails(ledgerId: String) = callAPI(
+        dispatchers = dispatcher,
+        apiCall = {
+            apiService.getDebitRecordDetails(ledgerId = ledgerId)
+        }
+    ) { response ->
+        response?.let { mapper.toDebitDetail(it) }
     }
 
     private suspend fun <D, C> callAPI(

@@ -23,5 +23,8 @@ interface DetailPageNavigationCallback {
 
     fun navigateToRevampWeeklyInterestDetailPage(args: Bundle)
 
-    fun navigateToABSDetailPage(args: Bundle)
+    fun navigateToHoldAmountDetailPage(args: Bundle)
+
+    fun navigateToDebitHoldPaymentDetailPage(args: Bundle)
+
 }

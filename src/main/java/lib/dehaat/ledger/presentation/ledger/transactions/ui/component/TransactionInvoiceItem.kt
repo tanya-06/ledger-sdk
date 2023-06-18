@@ -113,10 +113,12 @@ fun TransactionInvoiceItem(
             text = data.amount.getAmountInRupees(),
             style = textBold14Sp(textColor = getAmountColor(data.type, ledgerColors = ledgerColors))
         )
-        Image(
-            painter = painterResource(id = R.drawable.ic_transaction_arrow_right),
-            contentDescription = "Proceed"
-        )
+
+        if (data.type != TransactionType.RELEASE_PAYMENT)
+            Image(
+                painter = painterResource(id = R.drawable.ic_transaction_arrow_right),
+                contentDescription = "Proceed"
+            )
     }
 }
 
@@ -131,6 +133,7 @@ fun getAmountColor(type: String, ledgerColors: LedgerColors) = when (type) {
 private fun provideTransactionIcon(type: String) = when (type) {
     TransactionType.INVOICE -> R.drawable.ic_ledger_revamp_invoice
     TransactionType.PAYMENT -> R.drawable.ic_ledger_revamp_payment
+    TransactionType.RELEASE_PAYMENT -> R.drawable.ic_ledger_revamp_payment
     TransactionType.CREDIT_NOTE -> R.drawable.ic_ledger_revamp_credit_note
     TransactionType.DEBIT_NOTE -> R.drawable.ledger_debit_note
     TransactionType.DEBIT_ENTRY -> R.drawable.ledger_debit_note
@@ -143,6 +146,7 @@ private fun provideTransactionIcon(type: String) = when (type) {
 private fun provideTransactionLabel(type: String) = when (type) {
     TransactionType.INVOICE -> stringResource(id = R.string.invoice)
     TransactionType.PAYMENT -> stringResource(id = R.string.ledger_payment, "")
+    TransactionType.RELEASE_PAYMENT -> stringResource(R.string.hold_payment_released)
     TransactionType.CREDIT_NOTE -> stringResource(id = R.string.ledger_credit_note)
     TransactionType.DEBIT_NOTE -> stringResource(id = R.string.debit_note)
     TransactionType.DEBIT_ENTRY -> stringResource(id = R.string.debit_entry)

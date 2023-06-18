@@ -5,6 +5,7 @@ import lib.dehaat.ledger.entities.abs.ABSTransactionEntity
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
 import lib.dehaat.ledger.entities.detail.creditnote.CreditNoteDetailEntity
+import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.invoicedownload.InvoiceDownloadDataEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
@@ -15,6 +16,9 @@ import lib.dehaat.ledger.entities.revamp.invoicelist.InvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.framework.model.detail.debit.ResponseLedgerDebitDetail
+import retrofit2.Response
+import retrofit2.http.Query
 
 interface ILedgerRepository {
 
@@ -96,5 +100,9 @@ interface ILedgerRepository {
     suspend fun downloadLedger(
         partnerId: String
     ): APIResultEntity<String?>
+
+    suspend fun getDebitRecordDetails(
+        ledgerId: String
+    ): APIResultEntity<LedgerDebitDetailEntity?>
 
 }

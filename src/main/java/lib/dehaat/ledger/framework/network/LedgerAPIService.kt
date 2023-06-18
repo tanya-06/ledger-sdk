@@ -4,6 +4,7 @@ import lib.dehaat.ledger.framework.model.abs.ResponseABSTransactions
 import lib.dehaat.ledger.framework.model.creditlines.ResponseCreditLines
 import lib.dehaat.ledger.framework.model.creditsummary.ResponseCreditSummary
 import lib.dehaat.ledger.framework.model.detail.creditnote.ResponseCreditNoteDetail
+import lib.dehaat.ledger.framework.model.detail.debit.ResponseLedgerDebitDetail
 import lib.dehaat.ledger.framework.model.detail.invoice.ResponseInvoiceDetail
 import lib.dehaat.ledger.framework.model.detail.invoice.invoicedownload.ResponseDownloadInvoice
 import lib.dehaat.ledger.framework.model.detail.payment.ResponsePaymentDetail
@@ -120,4 +121,9 @@ interface LedgerAPIService {
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
     ): Response<ResponseABSTransactions>
+
+    @GET("/finance/debit-record")
+    suspend fun getDebitRecordDetails(
+        @Query("ledger_id") ledgerId: String,
+    ): Response<ResponseLedgerDebitDetail>
 }

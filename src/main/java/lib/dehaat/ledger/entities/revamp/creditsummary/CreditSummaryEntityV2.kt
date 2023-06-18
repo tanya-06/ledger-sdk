@@ -26,5 +26,6 @@ data class CreditSummaryEntityV2(
 	val creditLineSubStatus: String,
 	val agedOutstandingAmount: Double?,
 	val repaymentUnblockAmount: Double?,
-	val repaymentUnblockDays: Long?
+	val repaymentUnblockDays: Long?,
+	val holdAmount: String?,
 )

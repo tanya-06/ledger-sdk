@@ -12,6 +12,8 @@ import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.outstandingcre
 import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewData
+import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldABSViewData
+import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.TransactionSummaryViewData
 import lib.dehaat.ledger.util.getRoundedAmountInRupees
 import lib.dehaat.ledger.util.toDoubleOrZero
@@ -53,7 +55,8 @@ class ViewDataMapper @Inject constructor() {
             creditLineSubStatus = creditLineSubStatus,
             agedOutstandingAmount = formatDecimal(agedOutstandingAmount, 0),
             repaymentUnblockAmount = formatDecimal(repaymentUnblockAmount, 0),
-            isCreditLineOnHold = isCreditLineOnHold
+            isCreditLineOnHold = isCreditLineOnHold,
+            holdAmount = holdAmount
         )
     }
 
@@ -79,14 +82,16 @@ class ViewDataMapper @Inject constructor() {
         )
     }
 
-    fun toTransactionSummaryViewData(
-        entity: TransactionSummaryEntity
-    ) = TransactionSummaryViewData(
-        purchaseAmount = entity.purchaseAmount.getRoundedAmountInRupees(),
-        paymentAmount = entity.paymentAmount.getRoundedAmountInRupees(),
-        interestAmount = entity.interestAmount.getRoundedAmountInRupees(),
-        abs = toABSViewData(entity.abs)
-    )
+	fun toTransactionSummaryViewData(
+		entity: TransactionSummaryEntity
+	) = TransactionSummaryViewData(
+		purchaseAmount = entity.purchaseAmount.getRoundedAmountInRupees(),
+		paymentAmount = entity.paymentAmount.getRoundedAmountInRupees(),
+		interestAmount = entity.interestAmount.getRoundedAmountInRupees(),
+		holdAmountViewData = entity.toHoldAmountViewData(),
+		debitHoldAmount = entity.debitHoldAmount.getAmountInRupees(),
+		releaseAmount = entity.releasePaymentAmount.getAmountInRupees(),
+	)
 
     private fun toABSViewData(abs: ABSEntity?) = abs?.run {
         ABSViewData(
@@ -110,7 +115,25 @@ class ViewDataMapper @Inject constructor() {
             totalDebitNoteAmount = "+ ${debitNodeAmount.getRoundedAmountInRupees()}",
             paidAmount = "+ ${paymentAmount.getRoundedAmountInRupees()}",
             paidRefund = "+ ${debitEntryAmount.getRoundedAmountInRupees()}",
-            totalPaid = "- ${netPaymentAmount.getRoundedAmountInRupees()}"
-        )
+            totalPaid = "- ${netPaymentAmount.getRoundedAmountInRupees()}",
+            debitHold = "+ ${debitHoldAmount.getAmountInRupees()}",
+            paymentReleased = "- ${releasePaymentAmount.getAmountInRupees()}", )
     }
 }
+
+fun TransactionSummaryEntity.toHoldAmountViewData() = HoldAmountViewData(
+	formattedTotalHoldBalance = getTotalHoldBalance(this).getAmountInRupees(),
+	formattedPrepaidHoldAmount = this.prepaidHoldAmount.getAmountInRupees(),
+	absViewData = toHoldABSViewData(abs),
+    prepaidHoldAmount = this.prepaidHoldAmount
+)
+
+private fun getTotalHoldBalance(entity: TransactionSummaryEntity) =
+	(entity.prepaidHoldAmount ?: 0.0).plus(entity.abs?.amount ?: 0.0)
+
+private fun toHoldABSViewData(abs: ABSEntity?) = HoldABSViewData(
+	formattedAbsHoldBalance = abs?.amount.getAmountInRupees(),
+	formattedLastMovedSchemeAmount = abs?.lastMovedSchemeAmount.getAmountInRupees(),
+	showBanner = true == abs?.showBanner,
+    absHoldBalance = abs?.amount
+)

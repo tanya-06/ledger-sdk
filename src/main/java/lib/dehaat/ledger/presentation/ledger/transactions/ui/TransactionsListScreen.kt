@@ -5,9 +5,12 @@ import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
@@ -29,7 +32,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.dehaat.androidbase.helper.isTrue
 import com.dehaat.androidbase.helper.showToast
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.themes.LedgerColors
@@ -40,8 +42,10 @@ import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
 import lib.dehaat.ledger.presentation.ledger.details.creditnote.CreditNoteDetailViewModel
+import lib.dehaat.ledger.presentation.ledger.details.debithold.DebitHoldDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
+import lib.dehaat.ledger.presentation.ledger.prepaid.HoldAmountWidget
 import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewModel
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.component.AbsBanner
@@ -50,6 +54,7 @@ import lib.dehaat.ledger.presentation.ledger.ui.component.FilterStrip
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionCard
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.DebitEntry
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.DebitNote
+import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.DebitHold
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.FinancingFee
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType.Interest
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
@@ -72,7 +77,7 @@ fun TransactionsListScreen(
 	val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
 	val detailPageState by ledgerDetailViewModel.uiState.collectAsState()
 	val filterState = detailPageState.selectedDaysFilter
-	val abs = detailPageState.transactionSummaryViewData?.abs
+	val holdAmountData = detailPageState.transactionSummaryViewData?.holdAmountViewData
 	val lifecycleOwner = LocalLifecycleOwner.current
 	val context = LocalContext.current
 
@@ -98,6 +103,12 @@ fun TransactionsListScreen(
 			ledgerAnalytics = viewModel.ledgerAnalytics
 		) {
 			detailPageNavigationCallback.navigateToABSDetailPage(it)
+		}
+		holdAmountData?.let{
+			HoldAmountWidget(holdAmount = holdAmountData, viewModel.ledgerAnalytics) {
+				detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
+			}
+			Spacer(modifier = Modifier.height(16.dp))
 		}
 
 		FilterStrip(
@@ -149,6 +160,15 @@ fun TransactionsListScreen(
 						TransactionType.DEBIT_ENTRY -> TransactionCard(
 							transactionType = DebitEntry(),
 							transaction = it.toTransactionViewDataV2()
+						)
+						TransactionType.DEBIT_HOLD -> TransactionCard(
+							transactionType = DebitHold(),
+							transaction = it.toTransactionViewDataV2(),
+							modifier = Modifier.clickable {
+								detailPageNavigationCallback.navigateToDebitHoldPaymentDetailPage(
+									DebitHoldDetailViewModel.getDebitHoldArgs(it.ledgerId)
+								)
+							}
 						)
 						else -> TransactionInvoiceItem(
 							data = it,

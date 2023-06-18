@@ -30,7 +30,13 @@ data class TransactionDetailData(
     @Json(name = "debit_entry_amount")
     val debitEntryAmount: String?,
     @Json(name = "net_payment_amount")
-    val netPaymentAmount: String
+    val netPaymentAmount: String,
+    @Json(name = "prepaid_hold_amount")
+    val prepaidHoldAmount: Double?,
+    @Json(name = "debit_hold_amount")
+    val debitHoldAmount: Double?,
+    @Json(name = "release_payment_amount")
+    val release_payment_amount: Double?,
 )
 
 @JsonClass(generateAdapter = true)

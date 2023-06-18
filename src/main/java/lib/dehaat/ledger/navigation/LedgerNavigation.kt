@@ -20,6 +20,7 @@ import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.Availa
 import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.ui.AvailableCreditLimitDetailsScreen
 import lib.dehaat.ledger.presentation.ledger.details.creditnote.CreditNoteDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.creditnote.ui.CreditNoteDetailScreen
+import lib.dehaat.ledger.presentation.ledger.details.debithold.ui.DebitHoldDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.interest.InterestDetailScreenArgs
 import lib.dehaat.ledger.presentation.ledger.details.interest.ui.InterestDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
@@ -37,6 +38,7 @@ import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.CreditNoteD
 import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.ui.RevampCreditNoteDetailsScreen
 import lib.dehaat.ledger.presentation.ledger.ui.LedgerDetailScreen2
 import lib.dehaat.ledger.presentation.ledger.ui.RevampLedgerScreen
+import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.util.navBaseComposable
 
@@ -272,7 +274,23 @@ fun LedgerNavigation(
             ),
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
-            ABSDetailScreen(ledgerColors = ledgerColors, onBackPress = {
+            val prepaidHoldAmount = it.arguments?.getDouble(LedgerConstants.KEY_PREPAID_HOLD_AMOUNT, 0.0).orZero()
+            ABSDetailScreen(prepaidHoldAmount, ledgerColors = ledgerColors, onBackPress = {
+                navController.popBackStack()
+            })
+        }
+
+        navBaseComposable(
+            route = LedgerRoutes.DebitHoldDetailScreen.screen,
+            arguments = listOf(
+                navArgument(LedgerConstants.KEY_PARTNER_ID) {
+                    type = NavType.StringType
+                    defaultValue = partnerId
+                }
+            ),
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
+            DebitHoldDetailScreen(ledgerColors = ledgerColors, onBackPress = {
                 navController.popBackStack()
             })
         }
@@ -333,7 +351,11 @@ fun provideDetailPageNavCallBacks(
         navigateToRevampWeeklyInterestDetailPage(navController, args)
     }
 
-    override fun navigateToABSDetailPage(args: Bundle) {
-        navigateToABSDetailPage(navController, args)
+    override fun navigateToHoldAmountDetailPage(args: Bundle) {
+        navigateToHoldAmountDetailPage(navController, args)
+    }
+
+    override fun navigateToDebitHoldPaymentDetailPage(args: Bundle) {
+        navigateToDebitHoldPaymentDetailPage(navController, args)
     }
 }

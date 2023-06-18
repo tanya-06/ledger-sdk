@@ -13,7 +13,10 @@ data class TransactionSummaryEntity(
 	val interestOutstanding: String?,
 	val debitEntryAmount: String?,
 	val netPaymentAmount: String,
-	val abs: ABSEntity?
+	val abs: ABSEntity?,
+	val prepaidHoldAmount: Double?,
+	val debitHoldAmount: Double?,
+	val releasePaymentAmount: Double?,
 )
 
 data class ABSEntity(

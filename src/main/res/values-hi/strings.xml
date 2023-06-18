@@ -178,4 +178,19 @@
     <string name="your_ordering_is_blocked">आपकी ऑर्डरिंग बंद है</string>
     <string name="colon_value">: %s</string>
     <string name="external_storage_permission_required">स्टोरेज अनुमति आवश्यक है</string>
+    <string name="ledger_payment_debit_hold">ऑर्डर के लिए होल्ड पर राशि</string>
+    <string name="pay_immidiately_order">तुरंत भुगतान ऑर्डर</string>
+    <string name="hold_amount_details">होल्ड राशि विवरण</string>
+    <string name="prepaid_order">प्रीपेड ऑर्डर</string>
+    <string name="this_amount_will_used_in_order">ऑर्डर के वक्त यह राशि का उपयोग हो जाएगा</string>
+    <string name="amount">राशि</string>
+    <string name="date">तिथि</string>
+    <string name="hold_balance">होल्ड बैलेंस</string>
+    <string name="abs_amount">ABS- %s</string>
+    <string name="pay_order_amount">Pay Now Order- %s</string>
+    <string name="hold_money_release_info">डिलीवरी होने पर आपकी यह राशि ऑर्डर के भुगतान में उपयोग होजाएगी ।</string>
+    <string name="ledger_total_debit_hold_amount">होल्ड राशि( प्री पेड )</string>
+    <string name="ledger_payment_released">भुगतान जारी</string>
+    <string name="related_order_id">सम्बंधित ऑर्डर ID</string>
+    <string name="hold_payment_released">भुगतान : होल्ड का पैसा</string>
 </resources>

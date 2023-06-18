@@ -56,5 +56,7 @@ data class CreditV2(
     @Json(name = "repayment_unblock_amount")
     val repaymentUnblockAmount: Double?,
     @Json(name = "repayment_unblock_days")
-    val repaymentUnblockDays: Long?
+    val repaymentUnblockDays: Long?,
+    @Json(name = "hold_amount")
+    val holdAmount: String?,
 )

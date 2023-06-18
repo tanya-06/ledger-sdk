@@ -1,6 +1,6 @@
 package lib.dehaat.ledger.presentation
 
 interface LibLedgerAnalytics {
-	fun onABSWidgetViewed()
-	fun onABSViewDetailsClicked()
+	fun onHoldAmountWidgetViewed()
+	fun onHoldAmountDetailsClicked()
 }

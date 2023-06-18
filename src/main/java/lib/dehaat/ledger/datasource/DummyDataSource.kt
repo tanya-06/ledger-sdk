@@ -5,6 +5,7 @@ import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerParentApp
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
+import lib.dehaat.ledger.presentation.CreditNoteReason
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.outstandingcreditlimit.OutstandingCreditLimitViewState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
 import lib.dehaat.ledger.presentation.model.creditlines.CreditLineViewData
@@ -75,7 +76,8 @@ object DummyDataSource {
         creditLineSubStatus = "",
         agedOutstandingAmount = "0.0",
         repaymentUnblockAmount = "0.0",
-        isCreditLineOnHold = true
+        isCreditLineOnHold = true,
+        holdAmount = "199.00"
     )
 
     val creditSummaryViewData by lazy {
@@ -159,6 +161,27 @@ object DummyDataSource {
         fromDate = "45/Dec/2022",
         toDate = "46/Dec/2022",
         adjustmentAmount = 400.00,
+        schemeName = null
+    )
+
+    val debitHoldTransaction = TransactionViewDataV2(
+        amount = "100",
+        creditNoteReason = CreditNoteReason.PREPAID_ORDER,
+        date = 1658214762,
+        erpId = "2022$$0090000169",
+        interestEndDate = 1658214762,
+        interestStartDate = null,
+        ledgerId = "95",
+        locusId = 4,
+        partnerId = "0010000654",
+        paymentMode = "CASH",
+        source = "SAP",
+        sourceNo = "",
+        type = "DEBIT_HOLD",
+        unrealizedPayment = false,
+        fromDate = "45/Dec/2022",
+        toDate = "46/Dec/2022",
+        adjustmentAmount = 4009999999.10,
         schemeName = null
     )
 

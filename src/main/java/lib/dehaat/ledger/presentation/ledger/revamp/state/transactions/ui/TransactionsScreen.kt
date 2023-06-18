@@ -42,6 +42,7 @@ import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
+import lib.dehaat.ledger.presentation.ledger.details.debithold.DebitHoldDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.CreditNoteDetailsViewModel
@@ -205,6 +206,16 @@ fun TransactionsScreen(
 					TransactionType.MonthSeparator().type -> {
 						MonthlyDivider(transaction.fromDate)
 					}
+
+                    TransactionType.DebitHold().type -> TransactionCard(
+                        transactionType = TransactionType.DebitHold(),
+                        transaction = transaction,
+                        modifier = Modifier.clickable {
+                            detailPageNavigationCallback.navigateToDebitHoldPaymentDetailPage(
+                                DebitHoldDetailViewModel.getDebitHoldArgs(transaction.ledgerId)
+                            )
+                        }
+                    )
 				}
 				if (showDivider(index, transactions)) {
 					Divider(

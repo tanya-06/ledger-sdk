@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.presentation.CreditNoteReason
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
 import lib.dehaat.ledger.resources.LedgerTheme
@@ -36,6 +37,8 @@ import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Pumpkin120
 import lib.dehaat.ledger.resources.SeaGreen110
+import lib.dehaat.ledger.resources.Secondary120
+import lib.dehaat.ledger.resources.TertiaryYellowP20
 import lib.dehaat.ledger.resources.Warning10
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
@@ -112,6 +115,17 @@ fun MonthlyDividerPreview() = LedgerTheme {
 	MonthlyDivider(month = "June 2023")
 }
 
+@Preview(
+    name = "TransactionCard Debit Hold Preview",
+    showBackground = true
+)
+@Composable
+private fun TransactionCardDebitHoldPreview() = LedgerTheme {
+    TransactionCard(
+        transactionType = TransactionType.DebitHold(),
+        transaction = DummyDataSource.debitHoldTransaction
+    )
+}
 @Composable
 fun TransactionCard(
 	transactionType: TransactionType,
@@ -126,7 +140,8 @@ fun TransactionCard(
 	Spacer(modifier = Modifier.height(12.dp))
 	Row(
 		modifier = Modifier
-			.fillMaxWidth()
+			.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
 
 	) {
 
@@ -138,7 +153,7 @@ fun TransactionCard(
 			contentDescription = stringResource(id = R.string.accessibility_icon)
 		)
 		Spacer(modifier = Modifier.width(8.dp))
-		Column {
+		Column (Modifier.weight(1f)){
 			Row(
 				modifier = Modifier.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceBetween
@@ -219,7 +234,22 @@ fun TransactionCard(
 					style = textCaptionCP1(Neutral60)
 				)
 
-				transaction.interestStartDate?.let {
+                transaction.creditNoteReason?.takeIf { it == CreditNoteReason.PREPAID_ORDER }?.let {
+                    Text(
+                        modifier = Modifier
+                            .background(
+                                color = TertiaryYellowP20,
+                                RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 4.dp),
+                        text = stringResource(
+                            id = R.string.pay_immidiately_order
+                        ),
+                        style = textCaptionCP1(Neutral80)
+                    )
+                }
+
+                transaction.interestStartDate?.let {
 					Text(
 						modifier = Modifier
 							.background(color = Warning10, RoundedCornerShape(8.dp))
@@ -299,12 +329,19 @@ sealed class TransactionType(@StringRes val name: Int, val type: String) {
 		name = paymentName, type = paymentType
 	)
 
-	data class Interest(
-		val interestName: Int = R.string.interest_amount_ledger,
-		val interestType: String = "INTEREST"
-	) : TransactionType(
-		name = interestName, type = interestType
-	)
+	data class DebitHold(
+        val paymentName: Int = R.string.ledger_payment_debit_hold,
+        val paymentType: String = "DEBIT_HOLD"
+    ) : TransactionType(
+        name = paymentName, type = paymentType
+    )
+
+    data class Interest(
+        val interestName: Int = R.string.interest_amount_ledger,
+        val interestType: String = "INTEREST"
+    ) : TransactionType(
+        name = interestName, type = interestType
+    )
 
 	data class FinancingFee(
 		val financingFeeName: Int = R.string.financing_fee,
@@ -345,6 +382,7 @@ fun TransactionType.getIcon() = when (this) {
 	is TransactionType.DebitNote -> R.drawable.ledger_debit_note
 	is TransactionType.DebitEntry -> R.drawable.ledger_debit_note
 	is TransactionType.MonthSeparator -> R.drawable.ledger_debit_note
+    is TransactionType.DebitHold -> R.drawable.ic_debit_hold
 }
 
 fun TransactionType.amountColor() = when (this) {
@@ -356,6 +394,7 @@ fun TransactionType.amountColor() = when (this) {
 	is TransactionType.DebitNote -> Pumpkin120
 	is TransactionType.DebitEntry -> Pumpkin120
 	is TransactionType.MonthSeparator -> Pumpkin120
+    is TransactionType.DebitHold -> Secondary120
 }
 
 private fun TransactionType.getAmount(amount: String) = when (this) {
@@ -367,4 +406,5 @@ private fun TransactionType.getAmount(amount: String) = when (this) {
 	is TransactionType.DebitNote -> "+ $amount"
 	is TransactionType.DebitEntry -> "+ $amount"
 	is TransactionType.MonthSeparator -> ""
+    is TransactionType.DebitHold -> "+ $amount"
 }

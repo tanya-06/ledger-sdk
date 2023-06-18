@@ -12,5 +12,7 @@ data class OutstandingCalculationUiState(
 	val totalDebitNoteAmount: String,
 	val paidAmount: String,
 	val paidRefund: String,
-	val totalPaid: String
+	val totalPaid: String,
+	val debitHold: String,
+	val paymentReleased: String,
 )

@@ -24,4 +24,19 @@
     <string name="advance_bal_note">অগ্রীম ব্যালেন্সের অর্ডার খোলা পর্যন্ত ব্লক করা থাকবে।\nঅর্ডারিং খোলার পরে আপনার অগ্রীম বকেয়া টাকার পরিমাণের সাথে অ্যাডজাস্ট করা হয়ে যাবে</string>
     <string name="amount_is_blocked">স্কিমের জন্য অর্ডার না খোলা পর্যন্ত অগ্রিম পরিমাণ ব্লক করা হয়েছে</string>
     <string name="external_storage_permission_required">স্টোরেজ অনুমতির প্রয়োজন আছে</string>
+    <string name="ledger_payment_debit_hold">ऑर्डर के लिए होल्ड पर राशि</string>
+    <string name="pay_immidiately_order">तुरंत भुगतान ऑर्डर</string>
+    <string name="hold_amount_details">होल्ड राशि विवरण</string>
+    <string name="prepaid_order">प्रीपेड ऑर्डर</string>
+    <string name="this_amount_will_used_in_order">ऑर्डर के वक्त यह राशि का उपयोग हो जाएगा</string>
+    <string name="amount">राशि</string>
+    <string name="date">तिथि</string>
+    <string name="hold_balance">होल्ड बैलेंस</string>
+    <string name="abs_amount">ABS- %s</string>
+    <string name="pay_order_amount">Pay Now Order- %s</string>
+    <string name="hold_money_release_info">डिलीवरी होने पर आपकी यह राशि ऑर्डर के भुगतान में उपयोग होजाएगी ।</string>
+    <string name="ledger_total_debit_hold_amount">Hold Amount(Prepaid)</string>
+    <string name="ledger_payment_released">Payment Released</string>
+    <string name="related_order_id">सम्बंधित ऑर्डर ID</string>
+    <string name="hold_payment_released">भुगतान : होल्ड का पैसा</string>
 </resources>

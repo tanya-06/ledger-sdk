@@ -38,7 +38,9 @@ import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
+import lib.dehaat.ledger.presentation.ledger.prepaid.HoldPrepaidAmountDetailWidget
 import lib.dehaat.ledger.presentation.model.abs.ABSTransactionViewData
+import lib.dehaat.ledger.resources.Neutral10
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.TextLightGrey
@@ -50,6 +52,7 @@ import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun ABSDetailScreen(
+    prepaidHoldAmount: Double,
     ledgerColors: LedgerColors,
     onBackPress: () -> Unit,
     viewModel: ABSDetailViewModel = hiltViewModel(),
@@ -58,12 +61,22 @@ fun ABSDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
     val transactions = viewModel.transactions.collectAsLazyPagingItems()
     CommonContainer(
-        title = stringResource(R.string.advanced_balance_details),
+        title = stringResource(R.string.hold_balance),
         onBackPress = onBackPress,
         ledgerColors = ledgerColors,
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        backgroundColor = Neutral10,
     ) {
-        ABSTransactions(transactions, uiState.amount, ledgerColors.AbsAmountColor)
+        Column {
+            HoldPrepaidAmountDetailWidget(prepaidHoldAmount)
+            Spacer(modifier = Modifier.height(22.dp))
+            ABSTransactions(
+                modifier = Modifier.background(Color.White),
+                transactions,
+                uiState.amount,
+                ledgerColors.AbsAmountColor
+            )
+        }
         ShowProgress(ledgerColors, uiState.isLoading)
         ShowSnackBar(viewModel.uiEvent, scaffoldState)
     }
@@ -71,11 +84,12 @@ fun ABSDetailScreen(
 
 @Composable
 private fun ABSTransactions(
+    modifier: Modifier = Modifier,
     transactions: LazyPagingItems<ABSTransactionViewData>,
     amount: Double,
     absAmountColor: Color
 ) {
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         item {
             ABSTransactionsHeader(amount)
         }

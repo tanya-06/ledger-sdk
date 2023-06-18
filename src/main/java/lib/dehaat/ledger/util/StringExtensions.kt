@@ -9,6 +9,17 @@ import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 
 fun String?.nullToValue(value: String = "--") = this ?: value
 
+fun Double?.getAmountInRupees(): String {
+    val isNegativeValue = this?.let { it < 0 } ?: false
+    if (isNegativeValue) {
+        this?.let {
+            val amount = it * -1
+            return String.format("%s%s", "- ₹", formatDecimal(amount))
+                .getAmountWithoutTrailingZeroes()
+        }
+    }
+    return String.format("%s%s", "₹", formatDecimal(this)).getAmountWithoutTrailingZeroes()
+}
 fun String?.getAmountInRupees(): String {
     val value = this?.toDoubleOrNull()
     val isNegativeValue = value?.let { it < 0 } ?: false

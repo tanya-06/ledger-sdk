@@ -5,6 +5,7 @@ import lib.dehaat.ledger.entities.abs.ABSTransactionEntity
 import lib.dehaat.ledger.entities.creditlines.CreditLineEntity
 import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
 import lib.dehaat.ledger.entities.detail.creditnote.CreditNoteDetailEntity
+import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.invoicedownload.InvoiceDownloadDataEntity
 import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
@@ -96,4 +97,9 @@ interface ILedgerDataSource {
     suspend fun downloadLedger(
         partnerId: String
     ): APIResultEntity<String?>
+
+    suspend fun getDebitRecordDetails(
+        ledgerId: String
+    ): APIResultEntity<LedgerDebitDetailEntity?>
+
 }

@@ -19,4 +19,9 @@ object LedgerConstants {
 	const val ON_BOARDING_POD = "ONBOARDING POD"
 	const val ACTIVE = "ACTIVE"
 	const val DORMANT = "DORMANT"
+	const val KEY_PREPAID_HOLD_AMOUNT = "KEY_PREPAID_HOLD_AMOUNT"
+}
+
+object CreditNoteReason {
+	const val PREPAID_ORDER = "PREPAID_ORDER"
 }

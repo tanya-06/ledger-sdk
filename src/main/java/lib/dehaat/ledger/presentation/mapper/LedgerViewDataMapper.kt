@@ -15,6 +15,7 @@ import lib.dehaat.ledger.entities.detail.creditnote.CreditNoteDetailEntity
 import lib.dehaat.ledger.entities.detail.creditnote.ProductEntity
 import lib.dehaat.ledger.entities.detail.creditnote.ProductsInfoEntity
 import lib.dehaat.ledger.entities.detail.creditnote.SummaryEntity
+import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.entities.detail.invoice.LoanEntity
 import lib.dehaat.ledger.entities.detail.invoice.OverdueInfoEntity
@@ -41,6 +42,7 @@ import lib.dehaat.ledger.presentation.model.detail.creditnote.CreditNoteDetailVi
 import lib.dehaat.ledger.presentation.model.detail.creditnote.ProductViewData
 import lib.dehaat.ledger.presentation.model.detail.creditnote.ProductsInfoViewData
 import lib.dehaat.ledger.presentation.model.detail.creditnote.SummaryViewData
+import lib.dehaat.ledger.presentation.model.detail.debit.LedgerDebitHoldDetailViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.InvoiceDetailDataViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.LoanViewData
 import lib.dehaat.ledger.presentation.model.detail.invoice.OverdueInfoViewData
@@ -86,7 +88,9 @@ class LedgerViewDataMapper @Inject constructor() {
 		TransactionSummaryViewData(
 			purchaseAmount = purchaseAmount,
 			paymentAmount = netPaymentAmount,
-			abs = toABSViewData(abs)
+			holdAmountViewData = toHoldAmountViewData(),
+			debitHoldAmount = debitHoldAmount.getAmountInRupees(),
+			releaseAmount = releasePaymentAmount.getAmountInRupees(),
 		)
 	}
 
@@ -466,7 +470,15 @@ class LedgerViewDataMapper @Inject constructor() {
 			interestDays = it.interestDays
 		)
 	}
-
+	fun toDebitHoldDetailViewData(data: LedgerDebitDetailEntity) = with(data) {
+		LedgerDebitHoldDetailViewData(
+			amount = amount,
+			creationReason = creationReason,
+			date = date,
+			name = name,
+			orderRequestId = orderRequestId,
+		)
+	}
 	private fun Double.isGreaterThanZero() = this > 0.0
 
 	private fun Double.isSmallerThanZero() = this < 0.0
