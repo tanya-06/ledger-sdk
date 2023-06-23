@@ -22,10 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource
-import lib.dehaat.ledger.initializer.themes.AIMSColors
-import lib.dehaat.ledger.initializer.themes.DBAColors
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.data.dummy.DummyDataSource
+import lib.dehaat.ledger.resources.themes.AIMSColors
+import lib.dehaat.ledger.resources.themes.DBAColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.InformationChip
 import lib.dehaat.ledger.presentation.model.creditsummary.CreditSummaryViewData

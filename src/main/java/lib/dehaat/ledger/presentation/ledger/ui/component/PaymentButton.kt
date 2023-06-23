@@ -27,9 +27,10 @@ private fun PaymentButtonPreviewDBA() {
 
 @Composable
 fun PaymentButton(
+    modifier: Modifier = Modifier,
     payNowClick: () -> Unit
 ) = Row(
-    modifier = Modifier
+    modifier = modifier
         .fillMaxWidth()
 ) {
     Text(

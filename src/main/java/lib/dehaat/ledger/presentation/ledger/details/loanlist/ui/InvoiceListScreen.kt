@@ -32,11 +32,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource
-import lib.dehaat.ledger.initializer.themes.AIMSColors
-import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.initializer.toDateMonthName
-import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.data.dummy.DummyDataSource
+import lib.dehaat.ledger.resources.themes.AIMSColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
+import lib.dehaat.ledger.util.toDateMonthName
+import lib.dehaat.ledger.util.toDateMonthYear
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer

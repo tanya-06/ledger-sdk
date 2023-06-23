@@ -16,10 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dehaat.androidbase.helper.isNotNull
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
@@ -35,13 +34,15 @@ import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.textButtonB2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
+import lib.dehaat.ledger.resources.themes.LedgerColors
+import lib.dehaat.ledger.util.toDateMonthYear
 
 @Composable
 fun RevampCreditNoteDetailsScreen(
-    viewModel: CreditNoteDetailsViewModel,
-    ledgerColors: LedgerColors,
-    onError: (Exception) -> Unit,
-    onBackPress: () -> Unit
+	viewModel: CreditNoteDetailsViewModel = hiltViewModel(),
+	ledgerColors: LedgerColors,
+	onError: (Exception) -> Unit,
+	onBackPress: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val summary = uiState.viewData?.summary

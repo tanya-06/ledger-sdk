@@ -9,46 +9,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 
-fun navigateToInvoiceDetailScreen(
-    navController: NavHostController,
-    args: Bundle
-) = navController.navigateTo(
-    route = LedgerRoutes.LedgerInvoiceDetailScreen.screen,
-    args = args
-)
-
-fun navigateToCreditNoteDetailScreen(
-    navController: NavHostController,
-    args: Bundle
-) = navController.navigateTo(
-    route = LedgerRoutes.LedgerCreditNoteDetailScreen.screen,
-    args = args
-)
-
-fun navigateToPaymentDetailScreen(
-    navController: NavHostController,
-    args: Bundle
-) = navController.navigateTo(
-    route = LedgerRoutes.LedgerPaymentDetailScreen.screen,
-    args = args
-)
-
-fun navigateToWalletLedger(
-    navController: NavHostController,
-    args: Bundle
-) = navController.navigateTo(
-    route = LedgerRoutes.WalletLedgerRoute.screen,
-    args = args
-)
-
-fun navigateToOutstandingDetailPage(
-    navController: NavHostController,
-    args: Bundle
-) = navController.navigateTo(
-    route = LedgerRoutes.TotalOutstandingDetailScreen.screen,
-    args = args
-)
-
 fun navigateToInvoiceListPage(
     navController: NavHostController,
     args: Bundle
@@ -57,11 +17,11 @@ fun navigateToInvoiceListPage(
     args = args
 )
 
-fun navigateToAvailableCreditLimitDetailPage(
+fun navigateToWalletLedger(
     navController: NavHostController,
     args: Bundle
 ) = navController.navigateTo(
-    LedgerRoutes.TotalAvailableCreditLimitScreen.screen,
+    route = LedgerRoutes.WalletLedgerRoute.screen,
     args = args
 )
 
@@ -86,14 +46,6 @@ fun navigateToRevampPaymentDetailPage(
     args: Bundle
 ) = navController.navigateTo(
     route = LedgerRoutes.RevampLedgerPaymentDetailScreen.screen,
-    args = args
-)
-
-fun navigateToRevampWeeklyInterestDetailPage(
-    navController: NavHostController,
-    args: Bundle
-) = navController.navigateTo(
-    route = LedgerRoutes.RevampLedgerWeeklyInterestDetailScreen.screen,
     args = args
 )
 

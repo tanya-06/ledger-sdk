@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.resources.textMedium14Sp
 
 @Composable

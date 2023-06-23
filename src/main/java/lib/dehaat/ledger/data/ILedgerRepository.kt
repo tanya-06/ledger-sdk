@@ -1,4 +1,4 @@
-package lib.dehaat.ledger.domain
+package lib.dehaat.ledger.data
 
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import lib.dehaat.ledger.entities.abs.ABSTransactionEntity

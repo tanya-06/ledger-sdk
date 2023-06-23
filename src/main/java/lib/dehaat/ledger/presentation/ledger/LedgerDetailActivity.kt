@@ -18,17 +18,17 @@ import java.util.Locale
 import javax.inject.Inject
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.navigation.LedgerNavigation
 import lib.dehaat.ledger.presentation.LedgerConstants
-import lib.dehaat.ledger.presentation.LedgerDetailViewModel
+import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.util.NotificationHandler
 
 @AndroidEntryPoint
 class LedgerDetailActivity : ComponentActivity() {
 
-	val viewModel: LedgerDetailViewModel by viewModels()
+	val viewModel: LedgerHomeScreenViewModel by viewModels()
 
 	private lateinit var args: Args
 
@@ -39,7 +39,7 @@ class LedgerDetailActivity : ComponentActivity() {
 		ActivityResultContracts.StartActivityForResult()
 	) {
 		if (it?.resultCode == Activity.RESULT_OK) {
-			viewModel.getLedgerData()
+			viewModel.getInitialData()
 		}
 	}
 
@@ -67,18 +67,18 @@ class LedgerDetailActivity : ComponentActivity() {
 
 		AWSMobileClient.getInstance().initialize(this).execute()
 
-		setContent {
-			LedgerTheme {
-				LedgerNavigation(
-					dcName = args.dcName,
-					partnerId = args.partnerId,
-					isDCFinanced = args.isDCFinanced,
-					ledgerColors = LedgerSDK.currentApp.ledgerColors,
-					resultLauncher = resultLauncher,
-					finishActivity = { finish() },
-					viewModel = viewModel,
-					ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack,
-					openOrderDetailFragment = LedgerSDK.openOrderDetailFragment,
+        setContent {
+            LedgerTheme {
+                LedgerNavigation(
+                    dcName = args.dcName,
+                    partnerId = args.partnerId,
+                    isDCFinanced = args.isDCFinanced,
+                    ledgerColors = LedgerSDK.currentApp.ledgerColors,
+                    resultLauncher = resultLauncher,
+                    finishActivity = { finish() },
+                    viewModel = viewModel,
+                    ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack,
+                    openOrderDetailFragment = LedgerSDK.openOrderDetailFragment,
 					onDownloadClick = {
 						val ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack
 						notificationHandler.notificationBuilder.setSmallIcon(LedgerSDK.appIcon)
@@ -146,23 +146,23 @@ class LedgerDetailActivity : ComponentActivity() {
 			dcName = intent.getStringExtra(LedgerConstants.KEY_DC_NAME) ?: "",
 			isDCFinanced = intent.getBooleanExtra(KEY_DC_FINANCED, false),
 			language = intent.getStringExtra(KEY_APP_LANGUAGE)
-		)
+        )
 
 		data class Args(
 			val partnerId: String,
 			val dcName: String,
 			val isDCFinanced: Boolean,
 			val language: String?
-		) {
-			fun build(context: Context) = Intent(
-				context,
-				LedgerDetailActivity::class.java
-			).apply {
-				putExtra(LedgerConstants.KEY_PARTNER_ID, partnerId)
-				putExtra(LedgerConstants.KEY_DC_NAME, dcName)
-				putExtra(KEY_DC_FINANCED, isDCFinanced)
-				putExtra(KEY_APP_LANGUAGE, language)
-			}
-		}
-	}
+        ) {
+            fun build(context: Context) = Intent(
+                context,
+                LedgerDetailActivity::class.java
+            ).apply {
+                putExtra(LedgerConstants.KEY_PARTNER_ID, partnerId)
+                putExtra(LedgerConstants.KEY_DC_NAME, dcName)
+                putExtra(KEY_DC_FINANCED, isDCFinanced)
+                putExtra(KEY_APP_LANGUAGE, language)
+            }
+        }
+    }
 }

@@ -18,19 +18,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.resources.TextBlack
 import lib.dehaat.ledger.resources.subTitleTextStyle
 
 @Composable
 fun CustomAppBar(
-    title: String,
-    ledgerColors: LedgerColors,
-    subtitle: String = "",
-    iconRight: Painter? = null,
-    onBackPress: () -> Unit,
-    onRightIconClick: (() -> Unit)? = null,
-    appBarElevation: Dp = 8.dp,
+	title: String,
+	ledgerColors: LedgerColors,
+	subtitle: String = "",
+	iconRight: Painter? = null,
+	onBackPress: () -> Unit,
+	onRightIconClick: (() -> Unit)? = null,
+	appBarElevation: Dp = 8.dp,
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),

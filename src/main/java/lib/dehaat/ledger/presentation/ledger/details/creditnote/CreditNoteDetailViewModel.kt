@@ -76,7 +76,7 @@ class CreditNoteDetailViewModel @Inject constructor(
     private fun sendShowSnackBarEvent(message: String) {
         updateAPIFailure()
         viewModelScope.launch {
-            _uiEvent.emit(UiEvent.ShowSnackbar(message))
+            _uiEvent.emit(UiEvent.ShowSnackBar(message))
         }
     }
 

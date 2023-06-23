@@ -1,6 +1,5 @@
 package lib.dehaat.ledger.presentation.ledger.details.debithold.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,17 +12,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.model.detail.debit.LedgerDebitHoldDetailViewData
 import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral90
@@ -31,6 +27,7 @@ import lib.dehaat.ledger.resources.TertiaryYellowP20
 import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.text14Sp
 import lib.dehaat.ledger.util.getAmountInRupees
+import lib.dehaat.ledger.util.toDateMonthYear
 
 @Composable
 fun HoldAmountDetailScreen(debitHoldDetail: LedgerDebitHoldDetailViewData) {

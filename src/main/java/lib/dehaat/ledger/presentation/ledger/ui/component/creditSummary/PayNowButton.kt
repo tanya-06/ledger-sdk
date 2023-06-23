@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.themes.AIMSColors
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.AIMSColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.resources.textMedium16Sp
 
 @Preview(
@@ -34,8 +34,8 @@ private fun PayNowButtonPreview() {
 
 @Composable
 fun PayNowButton(
-    ledgerColors: LedgerColors,
-    onPayNowClick: () -> Unit
+	ledgerColors: LedgerColors,
+	onPayNowClick: () -> Unit
 ) = Row(
     modifier = Modifier
         .padding(vertical = 12.dp)

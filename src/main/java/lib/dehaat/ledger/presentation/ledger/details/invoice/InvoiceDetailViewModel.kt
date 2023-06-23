@@ -7,6 +7,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
+import com.dehaat.androidbase.helper.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
 import javax.inject.Inject
@@ -23,6 +24,7 @@ import lib.dehaat.ledger.domain.usecases.InvoiceDownloadUseCase
 import lib.dehaat.ledger.entities.detail.invoice.InvoiceDetailDataEntity
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
+import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LMS_ACTIVATED
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_SOURCE
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -53,7 +55,9 @@ class InvoiceDetailViewModel @Inject constructor(
     val erpId by lazy { savedStateHandle.get<String>(KEY_ERP_ID) }
     val source by lazy { savedStateHandle.get<String>(KEY_SOURCE) ?: "" }
 
-    private var lmsActivated: Boolean? = null
+    private val lmsActivated: Boolean by lazy {
+        savedStateHandle.get<Boolean>(KEY_LMS_ACTIVATED).orFalse()
+    }
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> get() = _uiEvent
@@ -74,10 +78,6 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     fun isLmsActivated() = lmsActivated
-
-    fun setIsLmsActivated(activated: Boolean?) {
-        lmsActivated = activated
-    }
 
     private fun getInvoiceDetailFromServer() {
         callInViewModelScope {
@@ -100,7 +100,7 @@ class InvoiceDetailViewModel @Inject constructor(
     private fun sendShowSnackBarEvent(message: String) {
         updateAPIFailure()
         viewModelScope.launch {
-            _uiEvent.emit(UiEvent.ShowSnackbar(message))
+            _uiEvent.emit(UiEvent.ShowSnackBar(message))
         }
     }
 
@@ -197,10 +197,11 @@ class InvoiceDetailViewModel @Inject constructor(
 
     companion object {
         private const val KEY_ERP_ID = "KEY_ERP_ID"
-        fun getArgs(data: TransactionViewData) = Bundle().apply {
+        fun getArgs(data: TransactionViewData, isLMSActivated: Boolean) = Bundle().apply {
             putString(KEY_LEDGER_ID, data.ledgerId)
             putString(KEY_ERP_ID, data.erpId)
             putString(KEY_SOURCE, data.source)
+            putBoolean(KEY_LMS_ACTIVATED, isLMSActivated)
         }
     }
 }

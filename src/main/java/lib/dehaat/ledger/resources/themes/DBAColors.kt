@@ -1,4 +1,4 @@
-package lib.dehaat.ledger.initializer.themes
+package lib.dehaat.ledger.resources.themes
 
 import androidx.compose.ui.graphics.Color
 import lib.dehaat.ledger.resources.PrimaryGreen

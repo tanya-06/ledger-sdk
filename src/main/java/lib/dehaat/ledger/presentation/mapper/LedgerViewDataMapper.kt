@@ -28,8 +28,7 @@ import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.ABSEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.initializer.isSmallerThanOrEqualToCurrentDate
-import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.presentation.ledger.state.LedgerTransactions
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
 import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.abs.ABSTransactionViewData
@@ -55,6 +54,8 @@ import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewDat
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.presentation.model.transactionsummary.TransactionSummaryViewData
 import lib.dehaat.ledger.util.getAmountInRupees
+import lib.dehaat.ledger.util.isSmallerThanOrEqualToCurrentDate
+import lib.dehaat.ledger.util.toDateMonthYear
 import javax.inject.Inject
 
 typealias ViewDataPaymentDetailSummary = lib.dehaat.ledger.presentation.model.detail.payment.PaymentDetailSummaryViewData
@@ -65,6 +66,8 @@ typealias ViewDataInvoiceDetailProductsInfo = lib.dehaat.ledger.presentation.mod
 typealias EntityInvoiceDetailProductsInfo = lib.dehaat.ledger.entities.detail.invoice.ProductsInfoEntity
 typealias ViewDataInvoiceDetailProduct = lib.dehaat.ledger.presentation.model.detail.invoice.ProductViewData
 typealias EntityInvoiceDetailProduct = lib.dehaat.ledger.entities.detail.invoice.ProductEntity
+typealias LedgerTransactionType = lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
+typealias TransactionViewDataV3 = lib.dehaat.ledger.presentation.ledger.state.TransactionViewData
 
 class LedgerViewDataMapper @Inject constructor() {
 
@@ -143,6 +146,90 @@ class LedgerViewDataMapper @Inject constructor() {
 			creditAmount = it.creditAmount,
 			prepaidAmount = it.prepaidAmount,
 		)
+	}
+
+	fun toLedgerTransactions(data: List<TransactionEntityV2>) = data.mapNotNull {
+		val interestStartDate = when (it.type) {
+			TransactionType.Invoice().type -> if (it.isInterestSubVented.isTrue()) it.interestStartDate else null
+			TransactionType.CreditNote().type -> it.interestStartDate
+			TransactionType.Payment().type -> it.interestStartDate
+			TransactionType.Interest().type -> null
+			TransactionType.FinancingFee().type -> null
+			TransactionType.DebitNote().type -> it.interestStartDate
+			TransactionType.DebitEntry().type -> it.interestStartDate
+			TransactionType.DebitHold().type -> it.interestStartDate
+			else -> it.interestStartDate
+		}
+		val transactionViewData = TransactionViewDataV3(
+			amount = it.amount,
+			creditNoteReason = it.schemeName ?: it.creditNoteReason,
+			date = it.date,
+			erpId = it.erpId,
+			interestEndDate = it.interestEndDate,
+			interestStartDate = interestStartDate,
+			ledgerId = it.ledgerId,
+			locusId = it.locusId,
+			partnerId = it.partnerId,
+			paymentMode = it.paymentMode,
+			source = it.source,
+			sourceNo = it.sourceNo,
+			type = it.type,
+			unrealizedPayment = it.unrealizedPayment,
+			fromDate = it.fromDate?.toDateMonthYear(),
+			toDate = it.toDate?.toDateMonthYear(),
+			adjustmentAmount = it.adjustmentAmount,
+			schemeName = it.schemeName,
+			creditAmount = it.creditAmount,
+			prepaidAmount = it.prepaidAmount
+		)
+		when (it.type) {
+			LedgerTransactionType.INVOICE -> LedgerTransactions.Invoice(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.CREDIT_NOTE -> LedgerTransactions.CreditNote(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.PAYMENT -> LedgerTransactions.Payment(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.INTEREST -> LedgerTransactions.Interest(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.FINANCING_FEE -> LedgerTransactions.FinancingFee(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.DEBIT_NOTE -> LedgerTransactions.DebitNote(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.DEBIT_ENTRY -> LedgerTransactions.DebitEntry(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.DEBIT_HOLD -> LedgerTransactions.DebitHold(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			LedgerTransactionType.RELEASE_PAYMENT -> LedgerTransactions.ReleasePayment(
+				invoiceDate = it.date,
+				transactionsViewData = transactionViewData
+			)
+
+			else -> null
+		}
 	}
 
 	fun toCreditNoteDetailDataEntity(data: CreditNoteDetailEntity) = with(data) {
@@ -484,6 +571,7 @@ class LedgerViewDataMapper @Inject constructor() {
 			interestDays = it.interestDays
 		)
 	}
+
 	fun toDebitHoldDetailViewData(data: LedgerDebitDetailEntity) = with(data) {
 		LedgerDebitHoldDetailViewData(
 			amount = amount,
@@ -493,6 +581,7 @@ class LedgerViewDataMapper @Inject constructor() {
 			orderRequestId = orderRequestId,
 		)
 	}
+
 	private fun Double.isGreaterThanZero() = this > 0.0
 
 	private fun Double.isSmallerThanZero() = this < 0.0

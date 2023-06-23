@@ -6,19 +6,21 @@ import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.GetDebitDetailUseCase
 import lib.dehaat.ledger.entities.detail.debit.LedgerDebitDetailEntity
-import lib.dehaat.ledger.entities.detail.payment.PaymentDetailEntity
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LEDGER_ID
-import lib.dehaat.ledger.presentation.LedgerConstants.UNREALIZED_PAYMENT
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.details.debithold.state.DebitHoldDetailViewModelState
-import lib.dehaat.ledger.presentation.ledger.details.payments.state.PaymentDetailViewModelState
 import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
-import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 import javax.inject.Inject
 
@@ -76,7 +78,7 @@ class DebitHoldDetailViewModel @Inject constructor(
     private fun sendShowSnackBarEvent(message: String) {
         updateAPIFailure()
         viewModelScope.launch {
-            _uiEvent.emit(UiEvent.ShowSnackbar(message))
+            _uiEvent.emit(UiEvent.ShowSnackBar(message))
         }
     }
 

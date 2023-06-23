@@ -12,115 +12,51 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dehaat.wallet.presentation.ui.screens.WalletLedgerScreen
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
-import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.LedgerConstants
-import lib.dehaat.ledger.presentation.LedgerDetailViewModel
-import lib.dehaat.ledger.presentation.RevampLedgerViewModel
+import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
 import lib.dehaat.ledger.presentation.ledger.abs.ABSDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.AvailableCreditLimitScreenArgs
 import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.ui.AvailableCreditLimitDetailsScreen
-import lib.dehaat.ledger.presentation.ledger.details.creditnote.CreditNoteDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.creditnote.ui.CreditNoteDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.debithold.ui.DebitHoldDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.interest.InterestDetailScreenArgs
 import lib.dehaat.ledger.presentation.ledger.details.interest.ui.InterestDetailScreen
-import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.InvoiceDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.RevampInvoiceDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.InvoiceListViewModel
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.ui.InvoiceListScreen
-import lib.dehaat.ledger.presentation.ledger.details.payments.PaymentDetailViewModel
-import lib.dehaat.ledger.presentation.ledger.details.payments.ui.PaymentDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.payments.ui.RevampPaymentDetailScreen
-import lib.dehaat.ledger.presentation.ledger.details.totaloutstanding.TotalOutstandingScreenArgs
-import lib.dehaat.ledger.presentation.ledger.details.totaloutstanding.ui.TotalOutstandingScreen
-import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.CreditNoteDetailsViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.ui.RevampCreditNoteDetailsScreen
-import lib.dehaat.ledger.presentation.ledger.ui.LedgerDetailScreen2
-import lib.dehaat.ledger.presentation.ledger.ui.RevampLedgerScreen
+import lib.dehaat.ledger.presentation.ledger.ui.LedgerHomeScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.util.navBaseComposable
 
 @Composable
 fun LedgerNavigation(
-	dcName: String,
-	partnerId: String,
-	isDCFinanced: Boolean,
-	ledgerColors: LedgerColors,
-	ledgerCallbacks: LedgerCallBack,
-	resultLauncher: ActivityResultLauncher<Intent?>,
-	viewModel: LedgerDetailViewModel,
-	onDownloadClick: (InvoiceDownloadData) -> Unit,
-	finishActivity: () -> Unit,
+    dcName: String,
+    partnerId: String,
+    isDCFinanced: Boolean,
+    ledgerColors: LedgerColors,
+    ledgerCallbacks: LedgerCallBack,
+    resultLauncher: ActivityResultLauncher<Intent?>,
+    viewModel: LedgerHomeScreenViewModel,
+    onDownloadClick: (InvoiceDownloadData) -> Unit,
+    navController: NavHostController = rememberNavController(),
+    finishActivity: () -> Unit,
 	openOrderDetailFragment: (String) -> Unit,
 	getWalletFTUEStatus: (String) -> Boolean,
 	setWalletFTUEStatus: (String) -> Unit,
     getWalletHelpVideoId: () -> String
 ) {
-
-    val navController = rememberNavController()
-
     NavHost(
         navController = navController,
-        startDestination = if (isDCFinanced) {
-            LedgerRoutes.RevampLedgerScreen.screen
-        } else {
-            LedgerRoutes.LedgerDetailScreen.screen
-        }
+        startDestination = LedgerRoutes.LedgerHomeScreen.screen
     ) {
         navBaseComposable(
-            route = LedgerRoutes.LedgerDetailScreen.screen,
-            arguments = listOf(
-                navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                    type = NavType.StringType
-                    defaultValue = partnerId
-                }
-            ),
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            viewModel.dcName = dcName
-            LedgerDetailScreen2(
-                viewModel = viewModel,
-                ledgerColors = ledgerColors,
-                onBackPress = finishActivity,
-                detailPageNavigationCallback = provideDetailPageNavCallBacks(navController = navController),
-                isLmsActivated = {
-                    viewModel.isLMSActivated()
-                },
-                onPayNowClick = {
-                    ledgerCallbacks.onClickPayNow(viewModel.uiState.value.creditSummaryViewData)
-                },
-                onPaymentOptionsClick = {
-                    ledgerCallbacks.onPaymentOptionsClick(resultLauncher)
-                },
-                onError = { ledgerCallbacks.exceptionHandler(it) },
-                setWalletFTUEStatus = setWalletFTUEStatus,
-                getWalletFTUEStatus = getWalletFTUEStatus
-            )
-        }
-
-        navBaseComposable(
-			route = LedgerRoutes.WalletLedgerRoute.screen,
-			arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
-				type = NavType.StringType
-				defaultValue = partnerId
-			}),
-			logScreenName = ledgerCallbacks.firebaseScreenLogger
-		) {
-			WalletLedgerScreen(onClick = {
-				openOrderDetailFragment(it)
-			}, onBackPress = {
-				navController.popBackStack()
-			}, setWalletFTUEStatus = setWalletFTUEStatus,
-				getWalletFTUEStatus = getWalletFTUEStatus,
-                getWalletHelpVideoId = getWalletHelpVideoId
-			)
-		}
-
-        navBaseComposable(
-            route = LedgerRoutes.RevampLedgerScreen.screen,
+            route = LedgerRoutes.LedgerHomeScreen.screen,
             arguments = listOf(
                 navArgument(LedgerConstants.KEY_PARTNER_ID) {
                     type = NavType.StringType
@@ -129,35 +65,47 @@ fun LedgerNavigation(
                 navArgument(LedgerConstants.KEY_DC_NAME) {
                     type = NavType.StringType
                     defaultValue = dcName
+                },
+                navArgument(LedgerConstants.KEY_IS_FINANCED) {
+                    type = NavType.BoolType
+                    defaultValue = isDCFinanced
                 }
             ),
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
-            val revampLedgerViewModel = hiltViewModel<RevampLedgerViewModel>()
-            RevampLedgerScreen(
-                viewModel = revampLedgerViewModel,
+            LedgerHomeScreen(
+                viewModel = viewModel,
                 ledgerColors = ledgerColors,
                 onBackPress = finishActivity,
                 detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
-                onPayNowClick = { ledgerCallbacks.onRevampPayNowClick(resultLauncher) },
-                onOtherPaymentModeClick = { ledgerCallbacks.onRevampPayNowClick(resultLauncher) },
-                onError = { ledgerCallbacks.exceptionHandler(it) },
-                getWalletFTUEStatus = getWalletFTUEStatus,
-                setWalletFTUEStatus = setWalletFTUEStatus
+                onPayNowClick = {
+                    if (isDCFinanced) {
+                        ledgerCallbacks.onFinancedDCPayNowClick(resultLauncher)
+                    } else {
+                        ledgerCallbacks.onNonFinancedDCPayNowClick()
+                    }
+                },
+                setWalletFTUEStatus = setWalletFTUEStatus,
+                getWalletFTUEStatus = getWalletFTUEStatus
             )
         }
 
         navBaseComposable(
-            route = LedgerRoutes.TotalOutstandingDetailScreen.screen,
+            route = LedgerRoutes.WalletLedgerRoute.screen,
+            arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+                type = NavType.StringType
+                defaultValue = partnerId
+            }),
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
-            val outstandingArgs = it.arguments?.let { args -> TotalOutstandingScreenArgs(args) }
-            TotalOutstandingScreen(
-                uiState = outstandingArgs?.viewState,
-                ledgerColors = ledgerColors
-            ) {
+            WalletLedgerScreen(onClick = {
+                openOrderDetailFragment(it)
+            }, onBackPress = {
                 navController.popBackStack()
-            }
+            }, setWalletFTUEStatus = setWalletFTUEStatus,
+                getWalletFTUEStatus = getWalletFTUEStatus,
+                getWalletHelpVideoId = getWalletHelpVideoId
+            )
         }
 
         navBaseComposable(
@@ -192,11 +140,7 @@ fun LedgerNavigation(
             route = LedgerRoutes.LedgerInvoiceDetailScreen.screen,
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
-            val invoiceDetailViewModel = hiltViewModel<InvoiceDetailViewModel>()
-            invoiceDetailViewModel.setIsLmsActivated(viewModel.isLMSActivated())
-
             InvoiceDetailScreen(
-                viewModel = invoiceDetailViewModel,
                 ledgerColors = ledgerColors,
                 onBackPress = {
                     navController.popBackStack()
@@ -225,41 +169,20 @@ fun LedgerNavigation(
             route = LedgerRoutes.LedgerCreditNoteDetailScreen.screen,
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
-            val creditNoteDetailViewModel = hiltViewModel<CreditNoteDetailViewModel>()
-
             CreditNoteDetailScreen(
-                viewModel = creditNoteDetailViewModel,
                 ledgerColors = ledgerColors
             ) {
                 navController.popBackStack()
             }
-
         }
 
         navBaseComposable(
             route = LedgerRoutes.RevampLedgerCreditNoteDetailScreen.screen,
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
-            val creditNoteDetailsViewModel = hiltViewModel<CreditNoteDetailsViewModel>()
             RevampCreditNoteDetailsScreen(
-                viewModel = creditNoteDetailsViewModel,
                 ledgerColors = ledgerColors,
                 onError = { ledgerCallbacks.exceptionHandler(it) },
-            ) {
-                navController.popBackStack()
-            }
-        }
-
-        navBaseComposable(
-            route = LedgerRoutes.LedgerPaymentDetailScreen.screen,
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            val paymentDetailViewModel = hiltViewModel<PaymentDetailViewModel>()
-            paymentDetailViewModel.setIsLmsActivated(viewModel.isLMSActivated())
-
-            PaymentDetailScreen(
-                viewModel = paymentDetailViewModel,
-                ledgerColors = ledgerColors
             ) {
                 navController.popBackStack()
             }
@@ -269,9 +192,7 @@ fun LedgerNavigation(
             route = LedgerRoutes.RevampLedgerPaymentDetailScreen.screen,
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
-            val paymentDetailViewModel = hiltViewModel<PaymentDetailViewModel>()
             RevampPaymentDetailScreen(
-                viewModel = paymentDetailViewModel,
                 ledgerColors = ledgerColors,
                 onError = { ledgerCallbacks.exceptionHandler(it) }
             ) {
@@ -329,37 +250,8 @@ fun provideDetailPageNavCallBacks(
     navController: NavHostController
 ) = object : DetailPageNavigationCallback {
 
-    override fun navigateToInvoiceDetailPage(args: Bundle) {
-        navigateToInvoiceDetailScreen(
-            navController = navController,
-            args = args
-        )
-    }
-
-    override fun navigateToCreditNoteDetailPage(args: Bundle) {
-        navigateToCreditNoteDetailScreen(
-            navController = navController,
-            args = args
-        )
-    }
-
-    override fun navigateToPaymentDetailPage(args: Bundle) {
-        navigateToPaymentDetailScreen(
-            navController = navController,
-            args = args
-        )
-    }
-
-    override fun navigateToOutstandingDetailPage(args: Bundle) {
-        navigateToOutstandingDetailPage(navController, args)
-    }
-
     override fun navigateToInvoiceListPage(args: Bundle) {
         navigateToInvoiceListPage(navController, args)
-    }
-
-    override fun navigateToAvailableCreditLimitDetailPage(args: Bundle) {
-        navigateToAvailableCreditLimitDetailPage(navController, args)
     }
 
     override fun navigateToRevampInvoiceDetailPage(args: Bundle) {
@@ -372,10 +264,6 @@ fun provideDetailPageNavCallBacks(
 
     override fun navigateToRevampPaymentDetailPage(args: Bundle) {
         navigateToRevampPaymentDetailPage(navController, args)
-    }
-
-    override fun navigateToRevampWeeklyInterestDetailPage(args: Bundle) {
-        navigateToRevampWeeklyInterestDetailPage(navController, args)
     }
 
     override fun navigateToHoldAmountDetailPage(args: Bundle) {

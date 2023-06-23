@@ -29,11 +29,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dehaat.androidbase.helper.showToast
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
@@ -70,16 +69,18 @@ import lib.dehaat.ledger.resources.textParagraphT1Highlight
 import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.resources.textSubHeadingS3
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.util.DottedShape
 import lib.dehaat.ledger.util.GifImage
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.clickableWithCorners
 import lib.dehaat.ledger.util.getAmountInRupees
+import lib.dehaat.ledger.util.toDateMonthYear
 
 @Composable
 fun RevampInvoiceDetailScreen(
 	isDCFinanced: Boolean,
-	viewModel: RevampInvoiceDetailViewModel,
+	viewModel: RevampInvoiceDetailViewModel = hiltViewModel(),
 	ledgerColors: LedgerColors,
 	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit,
 	onError: (Exception) -> Unit,

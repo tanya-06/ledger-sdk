@@ -8,7 +8,7 @@ data class OutstandingCalculationUiState(
 	val totalCreditNoteAmount: String,
 	val outstandingInterestAmount: String,
 	val paidInterestAmount: String,
-	val creditNoteAmount: String,
+	val creditNoteAmount: String?,
 	val totalDebitNoteAmount: String,
 	val paidAmount: String,
 	val paidRefund: String,

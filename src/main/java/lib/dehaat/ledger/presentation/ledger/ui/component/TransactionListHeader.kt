@@ -14,7 +14,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,12 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.LibLedgerAnalytics
-import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.ledger.prepaid.HoldAmountWidget
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
+import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.resources.Neutral10
 import lib.dehaat.ledger.resources.Neutral60
 import lib.dehaat.ledger.resources.Neutral80
@@ -36,6 +34,7 @@ import lib.dehaat.ledger.resources.SeaGreen100
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.resources.textSemiBold12Sp
 import lib.dehaat.ledger.resources.textSubHeadingS3
+import lib.dehaat.ledger.util.toDateMonthYear
 
 @Composable
 fun TransactionListHeader(
@@ -68,19 +67,19 @@ fun TransactionListHeader(
 
 @Composable
 fun TransactionFilteringHeader(
-	ledgerViewModel: RevampLedgerViewModel,
-	onFilterClick: () -> Unit
+	filters: DaysToFilter,
+	onFilterClick: () -> Unit,
+	getSelectedDates: (DaysToFilter) -> Pair<Long, Long>?
 ) = Column(
 	modifier = Modifier
 		.fillMaxWidth()
 		.background(Color.White)
 ) {
-	val uiState = ledgerViewModel.uiState.collectAsState()
-	val filters = uiState.value.appliedFilter
+	Divider()
 
 	FilterHeader(filters, onFilterClick)
 
-	ledgerViewModel.getSelectedDates(filters)?.let {
+	getSelectedDates(filters)?.let {
 		SelectedFilters(
 			text = stringResource(
 				id = R.string.from_to,

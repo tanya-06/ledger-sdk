@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import lib.dehaat.ledger.domain.revamp.usecase.GetInvoiceListUseCase
+import lib.dehaat.ledger.domain.usecases.GetInvoiceListUseCase
 import lib.dehaat.ledger.entities.revamp.invoicelist.InvoiceListEntity
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.invoicelist.InvoiceListViewModelState

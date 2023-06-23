@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource
-import lib.dehaat.ledger.initializer.toDateMonthName
+import lib.dehaat.ledger.data.dummy.DummyDataSource
+import lib.dehaat.ledger.util.toDateMonthName
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral90

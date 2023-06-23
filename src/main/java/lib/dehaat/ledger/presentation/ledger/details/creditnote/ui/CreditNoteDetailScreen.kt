@@ -25,9 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.resources.themes.LedgerColors
+import lib.dehaat.ledger.util.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.ledger.components.CreditNoteKeyValue
@@ -44,9 +45,9 @@ import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun CreditNoteDetailScreen(
-    viewModel: CreditNoteDetailViewModel,
-    ledgerColors: LedgerColors,
-    onBackPress: () -> Unit
+	viewModel: CreditNoteDetailViewModel = hiltViewModel(),
+	ledgerColors: LedgerColors,
+	onBackPress: () -> Unit
 ) {
     HandleAPIErrors(viewModel.uiEvent)
     val uiState by viewModel.uiState.collectAsState()

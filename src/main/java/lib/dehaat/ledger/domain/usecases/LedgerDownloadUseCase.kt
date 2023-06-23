@@ -1,6 +1,6 @@
 package lib.dehaat.ledger.domain.usecases
 
-import lib.dehaat.ledger.domain.ILedgerRepository
+import lib.dehaat.ledger.data.ILedgerRepository
 import lib.dehaat.ledger.util.DownloadFileUtil
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 import javax.inject.Inject

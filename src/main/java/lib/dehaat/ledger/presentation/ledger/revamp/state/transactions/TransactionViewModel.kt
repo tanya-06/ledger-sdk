@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.update
 import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.framework.network.BasePagingSourceWithResponse
-import lib.dehaat.ledger.initializer.toMonthYearName
+import lib.dehaat.ledger.util.toMonthYearName
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
@@ -130,7 +130,7 @@ class TransactionViewModel @Inject constructor(
     }
 
     private fun sendFailureEvent(message: String) {
-        callInViewModelScope { _uiEvent.emit(UiEvent.ShowSnackbar(message)) }
+        callInViewModelScope { _uiEvent.emit(UiEvent.ShowSnackBar(message)) }
         Log.d("ERRORS", "sendFailureEvent: $message")
     }
 

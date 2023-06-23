@@ -194,7 +194,7 @@ class LedgerTransactionViewModel @Inject constructor(
 			it.copy(isLoading = false)
 		}
 		viewModelScope.launch {
-			_uiEvent.emit(UiEvent.ShowSnackbar(message))
+			_uiEvent.emit(UiEvent.ShowSnackBar(message))
 		}
 	}
 
@@ -233,7 +233,7 @@ class LedgerTransactionViewModel @Inject constructor(
 	private fun processDownloadLedgerResult(result: APIResultEntity<String?>) {
 		if (result is APIResultEntity.Failure) {
 			resetSnackBarType()
-			callInViewModelScope { _uiEvent.emit(UiEvent.ShowSnackbar(result.getFailureError())) }
+			callInViewModelScope { _uiEvent.emit(UiEvent.ShowSnackBar(result.getFailureError())) }
 		}
 	}
 

@@ -18,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,10 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource
-import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.data.dummy.DummyDataSource
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
+import lib.dehaat.ledger.resources.Color3985BF
+import lib.dehaat.ledger.resources.Color3BC6CA
 import lib.dehaat.ledger.resources.FrenchBlue120
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Neutral10
@@ -40,12 +42,14 @@ import lib.dehaat.ledger.resources.Pumpkin120
 import lib.dehaat.ledger.resources.SeaGreen110
 import lib.dehaat.ledger.resources.Secondary120
 import lib.dehaat.ledger.resources.Warning10
+import lib.dehaat.ledger.resources.mediumShape
 import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
 import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.veryLargeShape
 import lib.dehaat.ledger.util.getAmountInRupees
+import lib.dehaat.ledger.util.toDateMonthYear
 
 @Preview(
 	name = "TransactionCard Invoice Fully Paid Preview",
@@ -319,6 +323,29 @@ fun MonthlyDivider(month: String?) = if (month.isNullOrEmpty().not()) {
 		text = month.orEmpty(),
 		textAlign = TextAlign.Center,
 		style = textParagraphT2(Color.Black)
+	)
+} else Unit
+
+@Composable
+fun WeeklyInterestHeader(isVisible: Boolean) = if (isVisible) {
+	Text(
+		modifier = Modifier
+			.fillMaxWidth()
+			.background(Color.White)
+			.padding(horizontal = 20.dp, vertical = 12.dp)
+			.background(
+				brush = Brush.horizontalGradient(
+					colors = listOf(
+						Color3985BF,
+						Color3BC6CA
+					)
+				),
+				shape = mediumShape()
+			)
+			.padding(vertical = 8.dp),
+		text = stringResource(R.string.ledger_interest_amount_reduced),
+		textAlign = TextAlign.Center,
+		style = textParagraphT2(Color.White)
 	)
 } else Unit
 

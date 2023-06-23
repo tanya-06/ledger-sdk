@@ -19,10 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource
-import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.data.dummy.DummyDataSource
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
@@ -40,7 +39,9 @@ import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.textHeadingH3
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.util.getAmountInRupees
+import lib.dehaat.ledger.util.toDateMonthYear
 
 @Preview(
     showBackground = true,
@@ -53,7 +54,7 @@ private fun PaymentDetailsScreenPreview() = LedgerTheme {
 
 @Composable
 fun RevampPaymentDetailScreen(
-    viewModel: PaymentDetailViewModel,
+    viewModel: PaymentDetailViewModel = hiltViewModel(),
     ledgerColors: LedgerColors,
     onError: (Exception) -> Unit,
     onBackPress: () -> Unit

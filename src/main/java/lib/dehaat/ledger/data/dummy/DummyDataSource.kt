@@ -1,4 +1,4 @@
-package lib.dehaat.ledger.datasource
+package lib.dehaat.ledger.data.dummy
 
 import android.content.Context
 import lib.dehaat.ledger.R
@@ -248,8 +248,8 @@ object DummyDataSource {
     private val dbaApp by lazy {
         LedgerParentApp.DBA(
             ledgerCallBack = LedgerCallBack(
-                onClickPayNow = {},
-                onRevampPayNowClick = {},
+                onNonFinancedDCPayNowClick = {},
+                onFinancedDCPayNowClick = {},
                 onDownloadInvoiceSuccess = {},
                 onPaymentOptionsClick = {},
                 downloadInvoiceIntent = { _, _ -> null },

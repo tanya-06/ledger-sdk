@@ -3,19 +3,21 @@ package lib.dehaat.ledger.presentation.mapper
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.transactionsummary.ABSEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.initializer.formatDecimal
-import lib.dehaat.ledger.initializer.toDateMonthName
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.availablecreditlimit.AvailableCreditLimitViewState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.credits.outstandingcreditlimit.OutstandingCreditLimitViewState
 import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
+import lib.dehaat.ledger.presentation.ledger.state.LedgerTotalCalculation
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldABSViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.TransactionSummaryViewData
+import lib.dehaat.ledger.util.formatDecimal
 import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.getRoundedAmountInRupees
+import lib.dehaat.ledger.util.isNullOrZero
+import lib.dehaat.ledger.util.toDateMonthName
 import lib.dehaat.ledger.util.toDoubleOrZero
 import javax.inject.Inject
 
@@ -112,6 +114,7 @@ class ViewDataMapper @Inject constructor() {
 			totalOutstanding = "+ ${
 				(purchaseAmount.toDoubleOrZero() - netPaymentAmount.toDoubleOrZero()).toString()
 					.getRoundedAmountInRupees()
+
 			}",
 			totalPurchase = "+ ${purchaseAmount.getRoundedAmountInRupees()}",
 			totalPayment = netPaymentAmount.getRoundedAmountInRupees(),
@@ -119,7 +122,11 @@ class ViewDataMapper @Inject constructor() {
 			totalCreditNoteAmount = "- ${creditNoteAmount.getRoundedAmountInRupees()}",
 			outstandingInterestAmount = "+ ${interestOutstanding.getRoundedAmountInRupees()}",
 			paidInterestAmount = "+ ${interestPaid.getRoundedAmountInRupees()}",
-			creditNoteAmount = "- ${totalInterestRefundAmount.getRoundedAmountInRupees()}",
+			creditNoteAmount = if (totalInterestRefundAmount.isNullOrZero()) {
+				null
+			} else {
+				"- ${totalInterestRefundAmount.getRoundedAmountInRupees()}"
+			},
 			totalDebitNoteAmount = "+ ${debitNodeAmount.getRoundedAmountInRupees()}",
 			paidAmount = "+ ${paymentAmount.getRoundedAmountInRupees()}",
 			paidRefund = "+ ${debitEntryAmount.getRoundedAmountInRupees()}",
@@ -128,6 +135,24 @@ class ViewDataMapper @Inject constructor() {
 			paymentReleased = "- ${releasePaymentAmount.getAmountInRupees()}",
 		)
 	}
+
+	fun toLedgerTotalCalculation(response: TransactionSummaryEntity?) = response?.let {
+		LedgerTotalCalculation(
+			totalPurchase = it.purchaseAmount.getRoundedAmountInRupees(),
+			totalPayment = it.netPaymentAmount.getRoundedAmountInRupees(),
+		)
+	}
+
+	fun toAbsViewData(abs: ABSEntity?) = abs?.let { entity ->
+		ABSViewData(
+			entity.amount,
+			entity.lastMoveScheme,
+			entity.showBanner,
+			entity.lastMovedSchemeAmount?.let { it.getAmountInRupees() }
+		)
+	}
+
+	fun toHoldAmountViewData(data: TransactionSummaryEntity?) = data?.toHoldAmountViewData()
 }
 
 fun TransactionSummaryEntity.toHoldAmountViewData() = HoldAmountViewData(

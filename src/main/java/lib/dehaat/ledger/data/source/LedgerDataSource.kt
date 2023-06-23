@@ -1,4 +1,4 @@
-package lib.dehaat.ledger.framework.network
+package lib.dehaat.ledger.data.source
 
 import com.cleanarch.base.common.ApiExtraInfo
 import com.cleanarch.base.entity.result.api.APIResultEntity
@@ -7,6 +7,7 @@ import com.dehaat.androidbase.network.api.makeAPICall
 import lib.dehaat.ledger.data.source.ILedgerDataSource
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.framework.mapper.LedgerFrameworkMapper
+import lib.dehaat.ledger.framework.network.LedgerAPIService
 import lib.dehaat.ledger.presentation.LedgerConstants.API_REQUEST_TRACE_ID
 import lib.dehaat.ledger.presentation.LedgerConstants.IB_REQUEST_IDENTIFIER
 import retrofit2.Response

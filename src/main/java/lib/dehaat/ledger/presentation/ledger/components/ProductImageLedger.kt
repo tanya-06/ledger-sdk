@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skydoves.landscapist.glide.GlideImage
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.R
 
 @Composable

@@ -12,15 +12,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 
 @Composable
 fun FilterStrip(
-    modifier: Modifier = Modifier,
-    ledgerColors: LedgerColors,
-    onDaysToFilterIconClick: () -> Unit,
-    onDateRangeFilterIconClick: () -> Unit,
-    onLedgerDownloadClick: () -> Unit
+	modifier: Modifier = Modifier,
+	ledgerColors: LedgerColors,
+	onDaysToFilterIconClick: () -> Unit,
+	onDateRangeFilterIconClick: () -> Unit,
+	onLedgerDownloadClick: () -> Unit
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
         if (LedgerSDK.showLedgerDownloadCta) {

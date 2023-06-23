@@ -5,9 +5,9 @@ import lib.dehaat.ledger.initializer.callbacks.DownloadInvoiceSuccess
 import lib.dehaat.ledger.initializer.callbacks.ExceptionHandler
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
 import lib.dehaat.ledger.initializer.callbacks.FirebaseScreenLogger
-import lib.dehaat.ledger.initializer.themes.AIMSColors
-import lib.dehaat.ledger.initializer.themes.DBAColors
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.AIMSColors
+import lib.dehaat.ledger.resources.themes.DBAColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 
 sealed class LedgerParentApp(
     val ledgerCallBack: LedgerCallBack,
@@ -21,8 +21,8 @@ sealed class LedgerParentApp(
         ledgerColors: LedgerColors = AIMSColors()
     ) : LedgerParentApp(
         LedgerCallBack(
-            onClickPayNow = {},
-            onRevampPayNowClick = {},
+            onNonFinancedDCPayNowClick = {},
+            onFinancedDCPayNowClick = {},
             onDownloadInvoiceSuccess = downloadInvoiceClick,
             onPaymentOptionsClick = {},
             downloadInvoiceIntent = downloadInvoiceIntent,

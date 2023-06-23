@@ -84,7 +84,7 @@ class ABSDetailViewModel @Inject constructor(
             it.copy(isLoading = false)
         }
         viewModelScope.launch {
-            _uiEvent.emit(UiEvent.ShowSnackbar(message))
+            _uiEvent.emit(UiEvent.ShowSnackBar(message))
         }
     }
 

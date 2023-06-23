@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import lib.dehaat.ledger.initializer.themes.AIMSColors
-import lib.dehaat.ledger.initializer.themes.DBAColors
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.AIMSColors
+import lib.dehaat.ledger.resources.themes.DBAColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.resources.textMedium14Sp
 
 @Preview(

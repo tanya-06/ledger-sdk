@@ -24,11 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dehaat.androidbase.helper.showToast
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.initializer.themes.LedgerColors
-import lib.dehaat.ledger.initializer.toDateMonthYear
+import lib.dehaat.ledger.resources.themes.LedgerColors
+import lib.dehaat.ledger.util.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceSmall12
@@ -48,10 +49,10 @@ import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun InvoiceDetailScreen(
-    viewModel: InvoiceDetailViewModel,
-    ledgerColors: LedgerColors,
-    onBackPress: () -> Unit,
-    onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
+	viewModel: InvoiceDetailViewModel = hiltViewModel(),
+	ledgerColors: LedgerColors,
+	onBackPress: () -> Unit,
+	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
 ) {
     HandleAPIErrors(viewModel.uiEvent)
 

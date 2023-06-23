@@ -33,7 +33,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import kotlinx.coroutines.flow.SharedFlow
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
@@ -52,11 +52,10 @@ import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun ABSDetailScreen(
-    prepaidHoldAmount: Double,
-    ledgerColors: LedgerColors,
-    onBackPress: () -> Unit,
-    viewModel: ABSDetailViewModel = hiltViewModel(),
-    scaffoldState: ScaffoldState = rememberScaffoldState()
+	prepaidHoldAmount: Double,ledgerColors: LedgerColors,
+	onBackPress: () -> Unit,
+	viewModel: ABSDetailViewModel = hiltViewModel(),
+	scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val transactions = viewModel.transactions.collectAsLazyPagingItems()
@@ -165,7 +164,7 @@ private fun ShowSnackBar(uiEvent: SharedFlow<UiEvent>, scaffoldState: ScaffoldSt
     LaunchedEffect(Unit) {
         uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .collect { event ->
-                if (event is UiEvent.ShowSnackbar) {
+                if (event is UiEvent.ShowSnackBar) {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
                 }
             }

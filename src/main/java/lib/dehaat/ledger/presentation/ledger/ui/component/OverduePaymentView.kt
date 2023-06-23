@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource.summaryViewData
+import lib.dehaat.ledger.data.dummy.DummyDataSource.summaryViewData
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.annotations.AgeingBannerPriority
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer

@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.themes.DBAColors
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.DBAColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 
 @Preview(
     name = "Payment Options DBA",
@@ -32,8 +32,8 @@ private fun PaymentOptionsPreview() {
 
 @Composable
 fun PaymentOptionsButton(
-    ledgerColors: LedgerColors,
-    paymentOptionsButtonClick: () -> Unit
+	ledgerColors: LedgerColors,
+	paymentOptionsButtonClick: () -> Unit
 ) = Row(
     modifier = Modifier
         .fillMaxWidth()

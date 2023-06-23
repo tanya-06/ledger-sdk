@@ -13,12 +13,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 
 @Composable
 fun ShowProgress(
-    ledgerColors: LedgerColors,
-    showProgress: Boolean = true
+	ledgerColors: LedgerColors,
+	showProgress: Boolean = true
 ) {
     if (showProgress) {
         Box(
@@ -34,8 +34,8 @@ fun ShowProgress(
 
 @Composable
 fun ShowProgressDialog(
-    ledgerColors: LedgerColors,
-    onDismissRequest: () -> Unit
+	ledgerColors: LedgerColors,
+	onDismissRequest: () -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,

@@ -34,7 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.themes.LedgerColors
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
@@ -79,9 +79,9 @@ private fun AvailableCreditLimitDetailsScreenPreview() = LedgerTheme {
 
 @Composable
 fun AvailableCreditLimitDetailsScreen(
-    uiState: AvailableCreditLimitViewState?,
-    ledgerColors: LedgerColors,
-    onBackPress: () -> Unit
+	uiState: AvailableCreditLimitViewState?,
+	ledgerColors: LedgerColors,
+	onBackPress: () -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     CommonContainer(

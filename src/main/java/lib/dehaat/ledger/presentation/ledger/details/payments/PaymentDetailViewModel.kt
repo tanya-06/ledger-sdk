@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
+import com.dehaat.androidbase.helper.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import lib.dehaat.ledger.presentation.mapper.LedgerViewDataMapper
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 import javax.inject.Inject
+import lib.dehaat.ledger.presentation.LedgerConstants.KEY_LMS_ACTIVATED
 
 @HiltViewModel
 class PaymentDetailViewModel @Inject constructor(
@@ -37,7 +39,9 @@ class PaymentDetailViewModel @Inject constructor(
     val paymentMode by lazy { savedStateHandle.get<String>(KEY_PAYMENT_MODE) }
     val unrealizedPayment by lazy { savedStateHandle.get<Boolean>(UNREALIZED_PAYMENT) }
 
-    private var lmsActivated: Boolean? = null
+    private val lmsActivated: Boolean by lazy {
+        savedStateHandle.get<Boolean>(KEY_LMS_ACTIVATED).orFalse()
+    }
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> get() = _uiEvent
@@ -56,10 +60,6 @@ class PaymentDetailViewModel @Inject constructor(
     }
 
     fun isLmsActivated() = lmsActivated
-
-    fun setIsLmsActivated(activated: Boolean?) {
-        lmsActivated = activated
-    }
 
     private fun getPaymentDetailFromServer() {
         callInViewModelScope {
@@ -86,7 +86,7 @@ class PaymentDetailViewModel @Inject constructor(
     private fun sendShowSnackBarEvent(message: String) {
         updateAPIFailure()
         viewModelScope.launch {
-            _uiEvent.emit(UiEvent.ShowSnackbar(message))
+            _uiEvent.emit(UiEvent.ShowSnackBar(message))
         }
     }
 
@@ -103,15 +103,24 @@ class PaymentDetailViewModel @Inject constructor(
 
     companion object {
         private const val KEY_PAYMENT_MODE = "KEY_PAYMENT_MODE"
-        fun getArgs(data: TransactionViewData) = Bundle().apply {
+        fun getArgs(
+            data: TransactionViewData,
+            isLMSActivated: Boolean
+        ) = Bundle().apply {
             putString(KEY_LEDGER_ID, data.ledgerId)
             putString(KEY_PAYMENT_MODE, data.paymentMode)
             putBoolean(UNREALIZED_PAYMENT, data.unrealizedPayment ?: false)
+            putBoolean(KEY_LMS_ACTIVATED, isLMSActivated)
         }
 
-        fun getBundle(ledgerId: String, unrealizedPayment: Boolean?) = bundleOf(
+        fun getBundle(
+            ledgerId: String,
+            unrealizedPayment: Boolean?,
+            isLMSActivated: Boolean
+        ) = bundleOf(
             Pair(KEY_LEDGER_ID, ledgerId),
-            Pair(UNREALIZED_PAYMENT, unrealizedPayment)
+            Pair(UNREALIZED_PAYMENT, unrealizedPayment),
+            Pair(KEY_LMS_ACTIVATED, isLMSActivated)
         )
     }
 }

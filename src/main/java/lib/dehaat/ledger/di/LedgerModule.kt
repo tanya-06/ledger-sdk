@@ -7,9 +7,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import lib.dehaat.ledger.data.LedgerRepository
 import lib.dehaat.ledger.data.source.ILedgerDataSource
-import lib.dehaat.ledger.domain.ILedgerRepository
+import lib.dehaat.ledger.data.ILedgerRepository
 import lib.dehaat.ledger.framework.network.LedgerAPIService
-import lib.dehaat.ledger.framework.network.LedgerDataSource
+import lib.dehaat.ledger.data.source.LedgerDataSource
 import retrofit2.Retrofit
 
 @Module

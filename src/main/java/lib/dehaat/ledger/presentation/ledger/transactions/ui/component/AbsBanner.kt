@@ -44,7 +44,6 @@ fun AbsBanner(
 ) = AnimatedVisibility(visible = showAbsBanner) {
 	Column(
 		Modifier
-			.padding(bottom = 16.dp)
 			.background(BlueGreen10)
 			.padding(horizontal = 20.dp)
 			.padding(top = 8.dp, bottom = 12.dp)

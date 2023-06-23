@@ -24,20 +24,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.datasource.DummyDataSource
+import lib.dehaat.ledger.data.dummy.DummyDataSource
 import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.ledger.revamp.state.outstandingcalculation.OutstandingCalculationUiState
@@ -61,13 +57,17 @@ import lib.dehaat.ledger.util.DottedShape
 
 @Preview(showBackground = true)
 @Composable
-fun OutstandingCalculationPreview() = LedgerTheme {
-	OutstandingCalculationScreen(outstandingCalculationUiState = DummyDataSource.outstandingCalculationUiState) {}
+private fun OutstandingCalculationPreview() = LedgerTheme {
+	OutstandingCalculationScreen(
+		outstandingCalculationUiState = DummyDataSource.outstandingCalculationUiState,
+		isFinancedDc = true
+	) {}
 }
 
 @Composable
 fun OutstandingCalculationScreen(
 	outstandingCalculationUiState: OutstandingCalculationUiState,
+	isFinancedDc: Boolean,
 	showBottomSheet: () -> Unit
 ) = Column(
 	modifier = Modifier
@@ -76,25 +76,21 @@ fun OutstandingCalculationScreen(
 ) {
 	TotalOutstandingCalculation(outstandingCalculationUiState, showBottomSheet)
 	Divider(modifier = Modifier.height(8.dp), color = Neutral10)
-	TotalPurchasesCalculation(outstandingCalculationUiState)
+	TotalPurchasesCalculation(outstandingCalculationUiState, isFinancedDc)
 	Divider(modifier = Modifier.height(8.dp), color = Neutral10)
 	TotalPaymentCalculation(outstandingCalculationUiState)
 }
 
 @Composable
 fun OutstandingCalculationHeader(
-	outstandingCalculationUiState: OutstandingCalculationUiState,
-	peekHeight: (Dp) -> Unit,
-	density: Density = LocalDensity.current,
+	totalPurchase: String,
+	totalPayment: String,
 	showBottomSheet: () -> Unit
 ) {
 	Column(
 		modifier = Modifier
 			.clickable(onClick = showBottomSheet)
 			.fillMaxWidth()
-			.onGloballyPositioned { layoutCoordinates ->
-				peekHeight(with(density) { layoutCoordinates.size.height.toDp() })
-			}
 	) {
 		Row(
 			modifier = Modifier
@@ -111,7 +107,7 @@ fun OutstandingCalculationHeader(
 					style = textParagraphT2Highlight(Pumpkin120)
 				)
 				Text(
-					text = outstandingCalculationUiState.totalPurchase,
+					text = totalPurchase.orEmpty(),
 					style = textParagraphT1Highlight(Pumpkin120)
 				)
 			}
@@ -129,7 +125,7 @@ fun OutstandingCalculationHeader(
 					style = textParagraphT2Highlight(Primary110)
 				)
 				Text(
-					text = outstandingCalculationUiState.totalPayment,
+					text = totalPayment.orEmpty(),
 					style = textParagraphT1Highlight(Primary110)
 				)
 			}
@@ -264,7 +260,8 @@ private fun TotalOutstandingCalculation(
 
 @Composable
 private fun TotalPurchasesCalculation(
-	outstandingCalculationUiState: OutstandingCalculationUiState
+	outstandingCalculationUiState: OutstandingCalculationUiState,
+	isFinancedDc: Boolean
 ) {
 	Text(
 		modifier = Modifier.padding(start = 20.dp, top = 20.dp, bottom = 12.dp),
@@ -288,43 +285,47 @@ private fun TotalPurchasesCalculation(
 		Pumpkin120
 	)
 
-	VerticalSpacer(height = 12.dp)
-	CalculationKeyValuePair(
-		title = stringResource(R.string.ledger_outstanding_interest_amount),
-		value = outstandingCalculationUiState.outstandingInterestAmount,
-		Pumpkin120
-	)
+	if (isFinancedDc) {
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_outstanding_interest_amount),
+			value = outstandingCalculationUiState.outstandingInterestAmount,
+			Pumpkin120
+		)
+	}
 
-	VerticalSpacer(height = 12.dp)
-	CalculationKeyValuePair(
-		title = stringResource(R.string.ledger_paid_interest_amount),
-		value = outstandingCalculationUiState.paidInterestAmount,
-		Pumpkin120
-	)
+	if (isFinancedDc) {
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_paid_interest_amount),
+			value = outstandingCalculationUiState.paidInterestAmount,
+			Pumpkin120
+		)
+	}
 
-	VerticalSpacer(height = 12.dp)
+	outstandingCalculationUiState.creditNoteAmount?.let {
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_total_debit_hold_amount),
+			value = outstandingCalculationUiState.debitHold,
+			Pumpkin120
+		)
 
-	CalculationKeyValuePair(
-		title = stringResource(R.string.ledger_total_debit_hold_amount),
-		value = outstandingCalculationUiState.debitHold,
-		Pumpkin120
-	)
+		VerticalSpacer(height = 12.dp)
 
-	VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_payment_released),
+			value = outstandingCalculationUiState.paymentReleased,
+			Primary110
+		)
 
-	CalculationKeyValuePair(
-		title = stringResource(R.string.ledger_payment_released),
-		value = outstandingCalculationUiState.paymentReleased,
-		Primary110
-	)
-
-	VerticalSpacer(height = 12.dp)
-
-	CalculationKeyValuePair(
-		title = stringResource(R.string.ledger_credit_note_interst_returned_amount),
-		value = outstandingCalculationUiState.creditNoteAmount,
-		Primary110
-	)
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_credit_note_interst_returned_amount),
+			value = it,
+			Primary110
+		)
+	}
 
 	VerticalSpacer(height = 12.dp)
 	CalculationKeyValuePair(
