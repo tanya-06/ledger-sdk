@@ -21,9 +21,7 @@ import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.framework.model.outstanding.OutstandingData
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.LedgerConstants
-import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
-import lib.dehaat.ledger.presentation.ledger.creditlimit.AvailableCreditLimitNudgeScreen
 import lib.dehaat.ledger.presentation.model.revamp.SummaryViewData
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
@@ -32,7 +30,6 @@ import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textHeadingH3
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
 import lib.dehaat.ledger.util.getRoundedAmountInRupees
-import lib.dehaat.ledger.util.toDoubleOrZero
 
 @Preview(
     showBackground = true,
@@ -83,15 +80,6 @@ fun LedgerHeaderScreen(
     if (outstanding.showDialog) {
         outstandingPaymentValid()
         OutStandingPaymentView(outstanding)
-    }
-    summaryViewData?.let {
-        if (it.totalAvailableCreditLimit.toDoubleOrZero() < 0.0)
-            it.minimumRepaymentAmount?.let {
-                if (it.toDoubleOrZero() > 0.0) {
-                    AvailableCreditLimitNudgeScreen(it.getRoundedAmountInRupees())
-                    SpaceMedium()
-                }
-            }
     }
 
     summaryViewData?.let {
