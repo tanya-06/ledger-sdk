@@ -291,7 +291,7 @@ fun TransactionCard(
 							style = textCaptionCP1(Neutral70)
 						)
 				}
-				if (transactionType is TransactionType.Invoice && transaction.invoiceStatus != InvoiceStatus.INTEREST_START_DATE) {
+				if (transactionType is TransactionType.Invoice && transaction.invoiceStatus != InvoiceStatus.INTEREST_START_DATE && transaction.amount != transaction.prepaidAmount) {
 					InvoiceStatusView(
 						status = transaction.invoiceStatus,
 						statusVariable = transaction.statusVariable

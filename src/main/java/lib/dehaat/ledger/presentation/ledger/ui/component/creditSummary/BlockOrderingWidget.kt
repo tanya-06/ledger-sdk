@@ -46,19 +46,19 @@ fun BlockOrderingWidget(amount: Double, date: String, onClick: (Bundle) -> Unit)
 		modifier = Modifier
 			.background(Error100)
 			.height(IntrinsicSize.Min)
+			.clickable {
+				onClick(
+					WidgetInvoiceListVM.getArgs(
+						InvoiceListFlowType.OVERDUE,
+						amount, date, ILBottomBarType.ORDERING_BLOCKED
+					)
+				)
+			}
 	) {
 		val amountInRupees = remember(amount) { amount.toString().getAmountInRupees() }
 		Column(
 			Modifier
 				.weight(1f)
-				.clickable {
-					onClick(
-						WidgetInvoiceListVM.getArgs(
-							InvoiceListFlowType.OVERDUE,
-							amount, date, ILBottomBarType.ORDERING_BLOCKED
-						)
-					)
-				}
 				.padding(horizontal = 16.dp, vertical = 12.dp)) {
 			Text(
 				text = stringResource(R.string.ordering_blocked),

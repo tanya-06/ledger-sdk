@@ -33,7 +33,7 @@ import lib.dehaat.ledger.util.formatAmount
 fun InterestWidget(
 	amount: Double,
 	onClick: (Bundle) -> Unit,
-	date: String,
+	date: String?,
 	lineStart: MutableState<Float>
 ) = Column(modifier = Modifier.fillMaxWidth()) {
 	Column(Modifier.align(Alignment.End)) {
@@ -46,7 +46,7 @@ fun InterestWidget(
 				.clickable {
 					onClick(
 						WidgetInvoiceListVM.getArgs(
-							InvoiceListFlowType.INTEREST, amount, date,
+							InvoiceListFlowType.INTEREST, amount, date.orEmpty(),
 							ILBottomBarType.INTEREST_STARTED
 						)
 					)

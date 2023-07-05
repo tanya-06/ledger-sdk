@@ -58,11 +58,6 @@ class WidgetInvoiceListVM @Inject constructor(
 
 	init {
 		getInvoicesList()
-		initBottomBarData()
-	}
-
-	private fun initBottomBarData() {
-
 	}
 
 	private fun getInvoicesList() = callInViewModelScope {

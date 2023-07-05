@@ -57,7 +57,6 @@ import lib.dehaat.ledger.resources.ColorF6F6F6
 import lib.dehaat.ledger.resources.Error100
 import lib.dehaat.ledger.resources.Error5
 import lib.dehaat.ledger.resources.Error90
-import lib.dehaat.ledger.resources.Neutral30
 import lib.dehaat.ledger.resources.Neutral60
 import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Neutral90
@@ -76,9 +75,7 @@ import lib.dehaat.ledger.resources.textParagraphT2
 import lib.dehaat.ledger.resources.textParagraphT2Highlight
 import lib.dehaat.ledger.resources.textSemiBold12Sp
 import lib.dehaat.ledger.resources.textSemiBold14Sp
-import lib.dehaat.ledger.resources.textSubHeadingS3
 import lib.dehaat.ledger.resources.themes.LedgerColors
-import lib.dehaat.ledger.util.DottedShape
 import lib.dehaat.ledger.util.GifImage
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.clickableWithCorners
@@ -168,10 +165,16 @@ private fun InvoiceDetailScreen(
 	) {
 
 		VerticalSpacer(height = 24.dp)
-		InvoiceStatusView(
-			status = interestOverdueViewData?.invoiceStatus,
-			statusVariable = interestOverdueViewData?.statusVariable
-		)
+
+		if (showPrepaidTag(summary, prepaidAndCreditInfoViewDataV2)) {
+			FullyPaidTag(modifier = Modifier.padding(top = 22.dp))
+			Spacer(modifier = Modifier.padding(top = 10.dp))
+		} else {
+			InvoiceStatusView(
+				status = interestOverdueViewData?.invoiceStatus,
+				statusVariable = interestOverdueViewData?.statusVariable
+			)
+		}
 
 		VerticalSpacer(height = 12.dp)
 		RevampKeyValuePair(
@@ -193,7 +196,7 @@ private fun InvoiceDetailScreen(
 		VerticalSpacer(height = 12.dp)
 
 		summary.totalOutstandingAmount?.let {
-			if (summary.interestBeingCharged == true && summary.invoiceAmount != it && it.toDoubleOrNull() != 0.0) {
+			if (it.toDoubleOrNull() != 0.0) {
 				VerticalSpacer(height = 8.dp)
 				RevampKeyValuePair(
 					pair = Pair(
@@ -205,15 +208,10 @@ private fun InvoiceDetailScreen(
 						textButtonB2(Error100)
 					)
 				)
+				VerticalSpacer(height = 12.dp)
 			}
 		}
 
-		if (showPrepaidTag(summary, prepaidAndCreditInfoViewDataV2)) {
-			FullyPaidTag(modifier = Modifier.padding(top = 22.dp))
-			Spacer(modifier = Modifier.padding(top = 10.dp))
-		}
-
-		VerticalSpacer(height = 12.dp)
 		RevampKeyValuePair(
 			pair = Pair(
 				stringResource(id = R.string.invoice_amount),
@@ -334,128 +332,6 @@ private fun InvoiceDetailScreen(
 		VerticalSpacer(height = 8.dp)
 	}
 
-	if (summary.showInterestDetails) {
-
-		VerticalSpacer(height = 16.dp)
-		Column(
-			modifier = Modifier
-				.fillMaxWidth()
-				.background(Color.White)
-		) {
-			Row(
-				modifier = Modifier
-					.padding(horizontal = 20.dp)
-					.padding(top = 20.dp, bottom = 12.dp),
-				verticalAlignment = Alignment.CenterVertically
-			) {
-				Image(
-					painter = painterResource(id = R.drawable.ic_ledger_interest),
-					contentDescription = ""
-				)
-				HorizontalSpacer(8.dp)
-
-				Text(
-					text = stringResource(R.string.ledger_interest_details),
-					style = textSubHeadingS3(Neutral80)
-				)
-			}
-			Divider()
-
-			VerticalSpacer(height = 8.dp)
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.padding(horizontal = 20.dp),
-				verticalAlignment = Alignment.CenterVertically,
-				horizontalArrangement = Arrangement.SpaceBetween
-			) {
-				Text(
-					text = stringResource(R.string.ledger_interest_paid),
-					style = textParagraphT2(Neutral90)
-				)
-				Text(text = summary.totalInterestPaid, style = textParagraphT2Highlight(Neutral90))
-			}
-
-			VerticalSpacer(height = 8.dp)
-			Divider(
-				modifier = Modifier
-					.padding(horizontal = 20.dp)
-					.background(color = Neutral30, shape = DottedShape(8.dp))
-			)
-			VerticalSpacer(height = 8.dp)
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.padding(horizontal = 20.dp),
-				verticalAlignment = Alignment.CenterVertically,
-				horizontalArrangement = Arrangement.SpaceBetween
-			) {
-				Text(
-					text = stringResource(R.string.ledger_interest_outstanding),
-					style = textSubHeadingS3(Neutral90)
-				)
-				Text(text = summary.totalInterestOutstanding, style = textSubHeadingS3(Neutral90))
-			}
-
-			VerticalSpacer(height = 8.dp)
-			Divider(
-				modifier = Modifier
-					.padding(horizontal = 20.dp)
-					.background(color = Neutral30, shape = DottedShape(8.dp))
-			)
-
-			VerticalSpacer(height = 16.dp)
-		}
-
-	}
-
-	if (summary.showPaymentComplete) {
-		VerticalSpacer(height = 16.dp)
-		Column(
-			modifier = Modifier
-				.fillMaxWidth()
-				.background(Color.White)
-		) {
-			Row(
-				modifier = Modifier
-					.padding(horizontal = 20.dp)
-					.padding(top = 20.dp, bottom = 12.dp),
-				verticalAlignment = Alignment.CenterVertically
-			) {
-				Image(
-					painter = painterResource(id = R.drawable.ic_ledger_interest),
-					contentDescription = ""
-				)
-				HorizontalSpacer(8.dp)
-
-				Text(
-					text = stringResource(R.string.ledger_interest_details),
-					style = textSubHeadingS3(Neutral80)
-				)
-			}
-			Divider()
-
-			VerticalSpacer(height = 12.dp)
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.padding(horizontal = 20.dp),
-				verticalAlignment = Alignment.CenterVertically,
-				horizontalArrangement = Arrangement.SpaceBetween
-			) {
-				Text(
-					text = stringResource(R.string.ledger_total_interest_charged),
-					style = textParagraphT2(Neutral90)
-				)
-				Text(
-					text = summary.totalInterestCharged,
-					style = textParagraphT2Highlight(Neutral90)
-				)
-			}
-			VerticalSpacer(height = 16.dp)
-		}
-	}
-
 	if (interestOverdueViewData?.interestPerDay != null) {
 		Column(
 			Modifier
@@ -500,7 +376,7 @@ private fun InterestAmount(interestBeingCharged: String) {
 	) {
 		Column {
 			Text(
-				text = stringResource(R.string.interest_amount),
+				text = stringResource(R.string.ledger_interest_amount),
 				style = textParagraphT2Highlight(Neutral90)
 			)
 			Text(

@@ -255,7 +255,7 @@
     <string name="pay_today_unblock_ordering">आज ही भुगतान करें, ऑर्डरिंग पुनः शुरू करें</string>
     <string name="save_from_interest">ब्याज से बचें</string>
     <string name="save_interest_desc">%1$s तक %2$s का भुगतान करें</string>
-    <string name="interest_amount">ब्याज राशि</string>
+    <string name="ledger_interest_amount">ब्याज राशि</string>
     <string name="interest_summation">(बकाया ब्याज + चुकाया गया ब्याज)</string>
     <string name="overdue_date">ओवरड्यू तिथि</string>
     <string name="item_total">कुल आइटम</string>

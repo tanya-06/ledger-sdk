@@ -15,12 +15,15 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.dehaat.androidbase.helper.orZero
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.presentation.ledger.annotations.InvoiceStatus
-import lib.dehaat.ledger.resources.Color20CEF2AA
+import lib.dehaat.ledger.presentation.ledger.ui.component.FullyPaidTag
+import lib.dehaat.ledger.resources.BgLightGreen20
 import lib.dehaat.ledger.resources.Color20FFD9DC
 import lib.dehaat.ledger.resources.Color20FFDFB2
 import lib.dehaat.ledger.resources.Error10
@@ -29,7 +32,7 @@ import lib.dehaat.ledger.resources.Secondary10
 import lib.dehaat.ledger.resources.Secondary110
 import lib.dehaat.ledger.resources.Secondary120
 import lib.dehaat.ledger.resources.Success110
-import lib.dehaat.ledger.resources.Success20
+import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textSemiBold12Sp
 
 @Composable
@@ -38,22 +41,10 @@ fun InvoiceStatusView(status: String?, statusVariable: String?) = when (status) 
 	InvoiceStatus.INTEREST_START_DAYS -> InterestStartDays(statusVariable)
 	InvoiceStatus.OVERDUE_START_DAYS -> OverdueStartDays(statusVariable)
 	InvoiceStatus.OVERDUE -> OverdueView()
-	InvoiceStatus.PAID -> PaymentDoneView()
+	InvoiceStatus.PAID -> FullyPaidTag()
 	else -> {}
 
 }
-
-@Preview
-@Composable
-private fun PaymentDoneView() = Text(
-	text = stringResource(R.string.payment_done),
-	style = textSemiBold12Sp(Success110),
-	modifier = Modifier
-		.clip(RoundedCornerShape(6.dp))
-		.background(Color20CEF2AA)
-		.border(1.dp, Success20)
-		.padding(horizontal = 8.dp, vertical = 3.dp)
-)
 
 @Preview
 @Composable

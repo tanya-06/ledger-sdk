@@ -38,7 +38,7 @@ import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun InterestNotStartedWidget(
-	amount: Double, onClick: (Bundle) -> Unit, date: String,
+	amount: Double, onClick: (Bundle) -> Unit, date: String?,
 	lineStart: MutableState<Float>
 ) = Column(Modifier.fillMaxWidth()) {
 	Column(Modifier.align(Alignment.End)) {
@@ -52,7 +52,7 @@ fun InterestNotStartedWidget(
 				.clickable {
 					onClick(
 						WidgetInvoiceListVM.getArgs(
-							InvoiceListFlowType.INTEREST, amount, date,
+							InvoiceListFlowType.INTEREST, amount, date.orEmpty(),
 							ILBottomBarType.INTEREST_WILL_START
 						)
 					)
@@ -67,7 +67,7 @@ fun InterestNotStartedWidget(
 					style = textMedium14Sp(Secondary120)
 				)
 				Text(
-					text = getSaveInterestDesc(amountInRupees, date),
+					text = getSaveInterestDesc(amountInRupees, date.orEmpty()),
 					style = textMedium12Sp(Secondary120)
 				)
 			}

@@ -269,7 +269,7 @@
     <string name="pay_today_unblock_ordering">Pay today to resume ordering</string>
     <string name="save_from_interest">Avoid interest</string>
     <string name="save_interest_desc">Pay %2$s by %1$s</string>
-    <string name="interest_amount">Interest Amount</string>
+    <string name="ledger_interest_amount">Interest Amount</string>
     <string name="interest_summation">Outstanding Interest + Interest Paid</string>
     <string name="overdue_date">Overdue Date</string>
     <string name="item_total">Item Total</string>

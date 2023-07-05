@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -16,7 +14,6 @@ import com.dehaat.androidbase.helper.isTrue
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
-import lib.dehaat.ledger.presentation.ledger.ui.component.OutStandingPaymentView
 import lib.dehaat.ledger.presentation.ledger.ui.component.OverduePaymentView
 import lib.dehaat.ledger.presentation.ledger.ui.component.PaymentButton
 import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.BlockOrderingWidget
@@ -37,10 +34,6 @@ fun LedgerHeaderScreen(
 	onPayNowClick: () -> Unit,
 	onWidgetClicked: (Bundle) -> Unit
 ) = FillMaxWidthColumn {
-	val outstanding by LedgerSDK.outstandingDataFlow.collectAsState()
-	if (outstanding.showDialog) {
-		OutStandingPaymentView(outstanding)
-	}
 
 	val lineStart = remember { mutableStateOf(0f) }
 
