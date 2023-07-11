@@ -87,7 +87,8 @@ fun LedgerHeaderScreen(
             OverduePaymentView(
                 it.creditLineSubStatus,
                 it.agedOutstandingAmount,
-                it.repaymentUnblockAmount
+                it.repaymentUnblockAmount,
+                summaryViewData
             )
         }
     }
@@ -135,8 +136,7 @@ fun LedgerHeaderScreen(
         RepaymentScreen(
             summaryViewData = it,
             onPayNowClick = onPayNowClick,
-            onOtherPaymentModeClick = onOtherPaymentModeClick,
-            onShowInvoiceListDetailsClick = onShowInvoiceListDetailsClick
+            onOtherPaymentModeClick = onOtherPaymentModeClick
         )
     }
 }

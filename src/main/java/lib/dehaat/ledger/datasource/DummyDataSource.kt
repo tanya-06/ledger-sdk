@@ -77,7 +77,10 @@ object DummyDataSource {
         agedOutstandingAmount = "0.0",
         repaymentUnblockAmount = "0.0",
         isCreditLineOnHold = true,
-        holdAmount = "199.00"
+        holdAmount = "199.00",
+        ageingBannerPriority = null,
+        penaltyInterest = 0f,
+        agedOverdueAmount = null
     )
 
     val creditSummaryViewData by lazy {

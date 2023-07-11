@@ -147,7 +147,7 @@
     <string name="ledger_interest_being_charged">इस इन्वॉस के ऊपर ब्याज लग रहा है</string>
     <string name="ledger_to">%s से %s</string>
     <string name="weekly_interest_till_date_">%s तक</string>
-    <string name="your_ordering_is_blocked_ledger">आपकी ऑर्डरिंग ब्लॉक्ड है।</string>
+    <string name="your_ordering_is_blocked_ledger">आपकी ऑर्डरिंग ब्लॉक कर दी गयी है</string>
     <string name="minimum_repayment_amount">न्यूनतम भुगतान राशि</string>
     <string name="this_is_your_overdue_amount">यह राशि आपकी ओवरडयू राशि है। ऑर्डरिंग ब्लॉक होने से बचने के लिए जल्द भुगतान करें।</string>
     <string name="ordering_blocked_due_to_overdue">ओवरडयू लिमिट पार होने की वजह से ऑर्डरिंग ब्लॉक्ड है।</string>
@@ -172,13 +172,14 @@
     <string name="ledger_total_paid">कुल भुगतान</string>
     <string name="ledger_download">बहीखाता डाउनलोड करें</string>
     <string name="ledger_credit_line_status_miscellaneous">आपकी क्रेडिट लाइन होल्ड पर है।</string>
-    <string name="ledger_credit_line_status_aged_outstanding">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान ठीक समय पर नहीं किया है। कृपया तुरंत भुगतान करें।</string>>
+    <string name="ledger_credit_line_status_aged_outstanding">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान ठीक समय पर नहीं किया है। कृपया तुरंत भुगतान करें।</string>
+    >
     <string name="ledger_credit_line_status_repayment_frequency">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान नहीं किया है। कृपया तुरंत भुगतान करें</string>
     <string name="ledger_credit_line_status_onboarding_pod">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने अपने दस्तावेज़ जमा नहीं किए हैं। अधिक जानकारी के लिए कृपया अपने बिक्री कार्यकारी से संपर्क करें</string>
     <string name="your_ordering_is_blocked">आपकी ऑर्डरिंग बंद है</string>
     <string name="colon_value">: %s</string>
     <string name="external_storage_permission_required">स्टोरेज अनुमति आवश्यक है</string>
-    <string name="hold_amount_details">रुकी हुई राशि का विवरण</string>
+    -<string name="hold_amount_details">रुकी हुई राशि का विवरण</string>
     <string name="prepaid_order">तुरंत भुगतान वाले ऑर्डर की शेष राशि</string>
     <string name="this_amount_will_used_in_order">यह राशि तुरंत भुगतान वाले ऑर्डर %s के लिए रोकी हुई है, इन्वॉस बनने पे यह राशि जारी कर दी जाएगी</string>
     <string name="amount">राशि</string>
@@ -193,4 +194,12 @@
     <string name="hold_payment_released_prepaid">तुरंत भुगतान वाले ऑर्डर की राशि जारी कर दी गयी</string>
     <string name="dc_debit_hold_entry_title">तुरंत भुगतान वाले ऑर्डर की रुकी हुयी राशि</string>
     <string name="hold_balance_widget_info">एडवांस बुकिंग योजना और तुरंत भुगतान वाले ऑर्डर से संबंधित रुकी हुई शेष राशि यहां दिखाई जाएगी</string>
+    <string name="as_you_haved_cleared_outstanding_s_pay_immediately">क्यूँकि आपने अपना %s का बकाया चुकाया नहीं है। कृपया तुरंत भुगतान करें</string>
+    <string name="cibil_score_decreased">आपका सीबील स्कोर कम हो चुकी है</string>
+    <string name="cibil_score_will_decrease">आपका सीबील स्कोर कम हो जाएगा</string>
+    <string name="penalty_will_be_charged">आपको बकाया में जुर्माना जोड़ा जाएगा</string>
+    <string name="defaulted_bank_payments">आपने बैंक भुगतान में चूक कर दी है। कृपया तुरंत %s राशि का भुगतान करेके अपने सीबील पर अधिक नकारात्मक प्रभाव और जुर्माना लगने से बचिए</string>
+    <string name="pay_amount_to_avoid_negative_impact">कृपया तुरंत %s राशि का भुगतान करेके अपने सीबील पर नकारात्मक प्रभाव और जुर्माना लगने से बचिए</string>
+    <string name="ordering_blocked_pay_to_unlock">कृपया तुरंत %s राशि का भुगतान करेके ऑर्डरिंग को अनब्लॉक करिए और जुर्माने से बचिए</string>
+    <string name="pay_s_amount_to_immediately_unblock">कृपया %s का भुगतान तुरंत करके अपने ऑर्डरिंग को अनब्लॉक करिए</string>
 </resources>

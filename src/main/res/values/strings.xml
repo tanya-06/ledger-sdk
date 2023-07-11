@@ -181,7 +181,7 @@
     <string name="ledger_total_paid">Total Payment</string>
     <string name="ledger_download">Download Ledger</string>
     <string name="ledger_credit_line_status_miscellaneous">Your credit line is on-hold.</string>
-    <string name="ledger_credit_line_status_aged_outstanding">Your credit line is on-hold as you haven’t cleared your overdue outstanding of Rs. %s. Please pay immediately.</string>>
+    <string name="ledger_credit_line_status_aged_outstanding">Your credit line is on-hold as you haven’t cleared your overdue outstanding of Rs. %s. Please pay immediately.</string>
     <string name="ledger_credit_line_status_repayment_frequency">Your credit line is on-hold as payment of Rs. %s is pending. Please pay immediately</string>
     <string name="ledger_credit_line_status_onboarding_pod">Your credit line is on-hold as you haven’t submitted your onboarding documents. Please contact you sales executive for further details.</string>
     <string name="your_ordering_is_blocked">Your ordering is blocked</string>
@@ -202,4 +202,15 @@
     <string name="hold_payment_released_prepaid">Hold payment released for\nPay-now order</string>
     <string name="dc_debit_hold_entry_title">Hold balance for pay-now\norder</string>
     <string name="hold_balance_widget_info">All the payments that are on hold for Advance Booking Scheme and Pay Now Orders will be shown here</string>
+    <string name="account_is_blocked">Your account is blocked</string>
+    <string name="penalty_s_charged_daily">Penalty of %.2f%% is being charged daily</string>
+    <string name="cibil_score_reduced">Your CIBIL score will reduce</string>
+    <string name="as_you_haved_cleared_outstanding_s_pay_immediately">As you haven\'t cleared your outstanding of %s. Please pay immediately</string>
+    <string name="cibil_score_decreased">CIBIL Score has decreased</string>
+    <string name="cibil_score_will_decrease">CIBIL score will decrease</string>
+    <string name="penalty_will_be_charged">Penalty will be charged</string>
+    <string name="defaulted_bank_payments">You have defaulted bank payments. Please pay %s immediately to avoid incurring Penalty and further impact on your CIBIL.</string>
+    <string name="pay_amount_to_avoid_negative_impact">Please pay %s immediately to avoid negative impact on your CIBIL and incurring Penalty.</string>
+    <string name="ordering_blocked_pay_to_unlock">Your ordering has been blocked. Please pay %s immediately to unblock ordering and avoid Penalty.</string>
+    <string name="pay_s_amount_to_immediately_unblock">Please pay %s immediately to unblock your ordering</string>
 </resources>

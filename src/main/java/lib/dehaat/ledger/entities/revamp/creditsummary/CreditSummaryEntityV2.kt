@@ -28,4 +28,7 @@ data class CreditSummaryEntityV2(
 	val repaymentUnblockAmount: Double?,
 	val repaymentUnblockDays: Long?,
 	val holdAmount: String?,
+	val ageingBannerPriority: String?,
+	val penaltyInterest: Float?,
+	val agedOverdueAmount: Double?
 )

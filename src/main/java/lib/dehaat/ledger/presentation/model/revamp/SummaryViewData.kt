@@ -28,5 +28,8 @@ data class SummaryViewData(
     val agedOutstandingAmount: String,
     val repaymentUnblockAmount: String,
     val isCreditLineOnHold: Boolean,
-    val holdAmount: String?
+    val holdAmount: String?,
+    val ageingBannerPriority: String?,
+    val penaltyInterest: Float?,
+    val agedOverdueAmount: String?
 )

@@ -59,4 +59,6 @@ data class CreditV2(
     val repaymentUnblockDays: Long?,
     @Json(name = "hold_amount")
     val holdAmount: String?,
+    @Json(name = "ageing_banner_message")
+    val ageingBannerMessage: AgeingBannerMessage?
 )

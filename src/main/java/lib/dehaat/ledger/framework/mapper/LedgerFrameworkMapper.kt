@@ -107,7 +107,10 @@ class LedgerFrameworkMapper @Inject constructor() {
             agedOutstandingAmount = agedOutstandingAmount,
             repaymentUnblockAmount = repaymentUnblockAmount,
             repaymentUnblockDays = repaymentUnblockDays,
-            holdAmount = holdAmount
+            holdAmount = holdAmount,
+            ageingBannerPriority = ageingBannerMessage?.priority,
+            penaltyInterest = ageingBannerMessage?.penaltyInterest,
+            agedOverdueAmount = ageingBannerMessage?.agedOverdueAmount
         )
     }
 
