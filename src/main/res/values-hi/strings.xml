@@ -193,4 +193,5 @@
     <string name="ledger_payment_released">भुगतान जारी</string>
     <string name="related_order_id">सम्बंधित ऑर्डर ID</string>
     <string name="hold_payment_released">भुगतान : होल्ड का पैसा</string>
+    <string name="non_financed_dc_debit_hold_title">Balance on hold</string>
 </resources>

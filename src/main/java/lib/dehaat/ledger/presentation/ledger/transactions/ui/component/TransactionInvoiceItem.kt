@@ -92,7 +92,7 @@ fun TransactionInvoiceItem(
                 Text(
                     text = transactionType,
                     style = textMedium14Sp(
-                        textColor = if (data.type == TransactionType.PAYMENT) {
+                        textColor = if (data.type == TransactionType.PAYMENT || data.type == TransactionType.RELEASE_PAYMENT) {
                             SeaGreen110
                         } else {
                             ledgerColors.CtaDarkColor
@@ -126,6 +126,7 @@ fun getAmountColor(type: String, ledgerColors: LedgerColors) = when (type) {
     TransactionType.INVOICE -> ledgerColors.TransactionAmountColor
     TransactionType.DEBIT_NOTE -> Pumpkin120
     TransactionType.DEBIT_ENTRY -> Pumpkin120
+    TransactionType.DEBIT_HOLD -> Color.Black
     else -> ledgerColors.DownloadInvoiceColor
 }
 
@@ -139,6 +140,7 @@ private fun provideTransactionIcon(type: String) = when (type) {
     TransactionType.DEBIT_ENTRY -> R.drawable.ledger_debit_note
     TransactionType.INTEREST -> R.drawable.ic_ledger_revamp_interest
     TransactionType.FINANCING_FEE -> R.drawable.ic_ledger_revamp_invoice
+    TransactionType.DEBIT_HOLD -> R.drawable.ic_debit_hold
     else -> R.drawable.ic_ledger_revamp_invoice
 }
 
@@ -152,6 +154,7 @@ private fun provideTransactionLabel(type: String) = when (type) {
     TransactionType.DEBIT_ENTRY -> stringResource(id = R.string.debit_entry)
     TransactionType.INTEREST -> stringResource(id = R.string.interest_amount_ledger)
     TransactionType.FINANCING_FEE -> stringResource(id = R.string.financing_fee)
+    TransactionType.DEBIT_HOLD -> stringResource(id = R.string.non_financed_dc_debit_hold_title)
     else -> ""
 }
 

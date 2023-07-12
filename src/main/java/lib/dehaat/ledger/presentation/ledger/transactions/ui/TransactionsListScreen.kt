@@ -154,20 +154,14 @@ fun TransactionsListScreen(
 							transactionType = DebitEntry(),
 							transaction = it.toTransactionViewDataV2()
 						)
-						TransactionType.DEBIT_HOLD -> TransactionCard(
-							transactionType = DebitHold(),
-							transaction = it.toTransactionViewDataV2(),
-							modifier = Modifier.clickable {
-								detailPageNavigationCallback.navigateToDebitHoldPaymentDetailPage(
-									DebitHoldDetailViewModel.getDebitHoldArgs(it.ledgerId)
-								)
-							}
-						)
 						else -> TransactionInvoiceItem(
 							data = it,
 							ledgerColors = ledgerColors
 						) { transaction ->
 							when (transaction.type) {
+								TransactionType.DEBIT_HOLD -> detailPageNavigationCallback.navigateToDebitHoldPaymentDetailPage(
+									DebitHoldDetailViewModel.getDebitHoldArgs(it.ledgerId)
+								)
 								TransactionType.PAYMENT -> detailPageNavigationCallback.navigateToPaymentDetailPage(
 									PaymentDetailViewModel.getArgs(transaction)
 								)

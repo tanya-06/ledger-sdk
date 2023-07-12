@@ -202,4 +202,5 @@
     <string name="ledger_payment_released">Payment Released</string>
     <string name="related_order_id">Related Order ID</string>
     <string name="hold_payment_released">Release Payment</string>
+    <string name="non_financed_dc_debit_hold_title">Balance on hold</string>
 </resources>
