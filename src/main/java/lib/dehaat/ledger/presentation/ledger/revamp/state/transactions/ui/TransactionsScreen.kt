@@ -75,7 +75,7 @@ fun TransactionsScreen(
 	val viewModel = hiltViewModel<TransactionViewModel>()
 	val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
 	val transactionUIState by ledgerViewModel.transactionUIState.collectAsState()
-	val abs = transactionUIState.summaryViewData?.abs
+	val abs = transactionUIState.summaryViewData?.holdAmountViewData
 	val uiState by viewModel.uiState.collectAsState()
 	val firstVisibleIndex by remember { derivedStateOf { state.firstVisibleItemIndex } }
 	isTransactionListHeaderVisible(firstVisibleIndex == 0)
@@ -106,7 +106,7 @@ fun TransactionsScreen(
 
 		item {
 			AbsTransactionHeader(abs, ledgerViewModel.ledgerAnalytics) {
-				detailPageNavigationCallback.navigateToABSDetailPage(it)
+				detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
 			}
 		}
 
@@ -126,11 +126,9 @@ fun TransactionsScreen(
 						.background(
 							brush = Brush.horizontalGradient(
 								colors = listOf(
-									Color3985BF,
-									Color3BC6CA
+									Color3985BF, Color3BC6CA
 								)
-							),
-							shape = mediumShape()
+							), shape = mediumShape()
 						)
 						.padding(vertical = 8.dp),
 					text = stringResource(R.string.ledger_interest_amount_reduced),
@@ -216,6 +214,10 @@ fun TransactionsScreen(
                             )
                         }
                     )
+
+					TransactionType.ReleasePayment().paymentType -> TransactionCard(transactionType = TransactionType.ReleasePayment(),
+						transaction = transaction,
+						modifier = Modifier.clickable {})
 				}
 				if (showDivider(index, transactions)) {
 					Divider(

@@ -329,6 +329,13 @@ sealed class TransactionType(@StringRes val name: Int, val type: String) {
 		name = paymentName, type = paymentType
 	)
 
+	data class ReleasePayment(
+		val paymentName: Int = R.string.hold_payment_released,
+		val paymentType: String = "RELEASE_PAYMENT"
+	) : TransactionType(
+		name = paymentName, type = paymentType
+	)
+
 	data class DebitHold(
         val paymentName: Int = R.string.ledger_payment_debit_hold,
         val paymentType: String = "DEBIT_HOLD"
@@ -383,6 +390,7 @@ fun TransactionType.getIcon() = when (this) {
 	is TransactionType.DebitEntry -> R.drawable.ledger_debit_note
 	is TransactionType.MonthSeparator -> R.drawable.ledger_debit_note
     is TransactionType.DebitHold -> R.drawable.ic_debit_hold
+	is TransactionType.ReleasePayment -> R.drawable.ic_ledger_revamp_payment
 }
 
 fun TransactionType.amountColor() = when (this) {
@@ -395,6 +403,7 @@ fun TransactionType.amountColor() = when (this) {
 	is TransactionType.DebitEntry -> Pumpkin120
 	is TransactionType.MonthSeparator -> Pumpkin120
     is TransactionType.DebitHold -> Secondary120
+	is TransactionType.ReleasePayment -> SeaGreen110
 }
 
 private fun TransactionType.getAmount(amount: String) = when (this) {
@@ -407,4 +416,5 @@ private fun TransactionType.getAmount(amount: String) = when (this) {
 	is TransactionType.DebitEntry -> "+ $amount"
 	is TransactionType.MonthSeparator -> ""
     is TransactionType.DebitHold -> "+ $amount"
+	is TransactionType.ReleasePayment -> "- $amount"
 }

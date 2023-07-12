@@ -303,6 +303,23 @@ private fun TotalPurchasesCalculation(
 	)
 
 	VerticalSpacer(height = 12.dp)
+
+	CalculationKeyValuePair(
+		title = stringResource(R.string.ledger_total_debit_hold_amount),
+		value = outstandingCalculationUiState.debitHold,
+		Pumpkin120
+	)
+
+	VerticalSpacer(height = 12.dp)
+
+	CalculationKeyValuePair(
+		title = stringResource(R.string.ledger_payment_released),
+		value = outstandingCalculationUiState.paymentReleased,
+		Primary110
+	)
+
+	VerticalSpacer(height = 12.dp)
+
 	CalculationKeyValuePair(
 		title = stringResource(R.string.ledger_credit_note_interst_returned_amount),
 		value = outstandingCalculationUiState.creditNoteAmount,

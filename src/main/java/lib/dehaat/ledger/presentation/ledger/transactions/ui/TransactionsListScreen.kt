@@ -97,13 +97,6 @@ fun TransactionsListScreen(
 	)
 
 	Column {
-		AbsBanner(
-			showAbsBanner = abs?.showBanner.isTrue(),
-			abs = abs,
-			ledgerAnalytics = viewModel.ledgerAnalytics
-		) {
-			detailPageNavigationCallback.navigateToABSDetailPage(it)
-		}
 		holdAmountData?.let{
 			HoldAmountWidget(holdAmount = holdAmountData, viewModel.ledgerAnalytics) {
 				detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
