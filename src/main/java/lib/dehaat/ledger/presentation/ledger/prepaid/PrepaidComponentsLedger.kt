@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
@@ -36,6 +35,7 @@ import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.text14Sp
 import lib.dehaat.ledger.resources.text16Sp
 import lib.dehaat.ledger.resources.text18Sp
+import lib.dehaat.ledger.resources.textNoto12Sp
 import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
@@ -95,19 +95,12 @@ fun HoldAmountWidget(
 			)
 		}
 
-		Row(modifier = Modifier.padding(top = 16.dp)) {
-			Chip(
-				title = stringResource(
-					id = R.string.abs_amount,
-					holdAmount.absViewData.formattedAbsHoldBalance
-				)
-			)
-			Chip(
-				modifier = Modifier.padding(start = 12.dp),
-				title = stringResource(
-					id = R.string.pay_order_amount,
-					holdAmount.formattedPrepaidHoldAmount
-				)
+		Row(modifier = Modifier.padding(top = 12.dp)) {
+			Text(text = stringResource(R.string.hold_balance_widget_info),
+				style = textNoto12Sp(
+					textColor = Neutral90,
+					fontWeight = FontWeight.W400,
+					lineHeight = 16.sp)
 			)
 		}
 
@@ -158,7 +151,7 @@ fun HoldPrepaidAmountDetailWidget(amount: Double) {
 
 			Text(
 				text = stringResource(id = R.string.hold_money_release_info),
-				modifier = Modifier.padding(start = 6.dp),
+				modifier = Modifier.padding(start = 6.dp, top = 2.dp),
 				style = text14Sp(
 					lineHeight = 18.sp,
 					fontWeight = FontWeight.W400,
@@ -167,19 +160,4 @@ fun HoldPrepaidAmountDetailWidget(amount: Double) {
 			)
 		}
 	}
-}
-
-@Composable
-fun Chip(modifier: Modifier = Modifier, title: String) {
-	Text(
-		modifier = modifier
-			.background(shape = RoundedCornerShape(8.dp), color = Neutral10)
-			.padding(horizontal = 12.dp, vertical = 6.dp),
-		text = title,
-		style = text12Sp(
-			textColor = Neutral90,
-			fontWeight = FontWeight.W400,
-			lineHeight = 14.sp
-		)
-	)
 }

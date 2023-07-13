@@ -59,11 +59,9 @@ fun HoldAmountComponent(debitHoldDetail: LedgerDebitHoldDetailViewData) {
 			.fillMaxWidth()
 			.wrapContentHeight()
 	) {
-		Tag(stringResource(id = R.string.prepaid_order))
 
 		Row(
-			modifier = Modifier
-				.padding(top = 24.dp),
+			modifier = Modifier,
 			verticalAlignment = Alignment.CenterVertically
 		) {
 			Image(
