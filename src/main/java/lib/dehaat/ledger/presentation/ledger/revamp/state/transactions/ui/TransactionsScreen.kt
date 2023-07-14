@@ -94,6 +94,13 @@ fun TransactionsScreen(
 		}
 	)
 	LazyColumn(modifier = Modifier.fillMaxWidth(), state = state) {
+
+		item {
+			AbsTransactionHeader(abs, ledgerViewModel.ledgerAnalytics) {
+				detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
+			}
+		}
+
 		item {
 			TransactionListHeader {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -101,12 +108,6 @@ fun TransactionsScreen(
 				} else {
 					launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				}
-			}
-		}
-
-		item {
-			AbsTransactionHeader(abs, ledgerViewModel.ledgerAnalytics) {
-				detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
 			}
 		}
 

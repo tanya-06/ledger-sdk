@@ -51,7 +51,6 @@ fun TransactionListHeader(
 		.fillMaxWidth()
 		.background(Color.White)
 ) {
-	Divider()
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -70,6 +69,7 @@ fun TransactionListHeader(
 			LedgerDownloadButton(onLedgerDownloadClick)
 		}
 	}
+	Divider()
 }
 
 @Composable
@@ -152,5 +152,4 @@ fun AbsTransactionHeader(
 		Divider(modifier = Modifier.height(16.dp).background(color = Neutral10))
 	}
 
-	Spacer(modifier = Modifier.height(8.dp))
 }

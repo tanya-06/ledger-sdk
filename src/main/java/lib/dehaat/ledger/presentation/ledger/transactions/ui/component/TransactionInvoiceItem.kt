@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dehaat.androidbase.helper.isNotNull
@@ -134,7 +133,7 @@ fun getAmountColor(type: String, ledgerColors: LedgerColors) = when (type) {
 private fun provideTransactionIcon(type: String) = when (type) {
     TransactionType.INVOICE -> R.drawable.ic_ledger_revamp_invoice
     TransactionType.PAYMENT -> R.drawable.ic_ledger_revamp_payment
-    TransactionType.RELEASE_PAYMENT -> R.drawable.ic_ledger_revamp_payment
+    TransactionType.RELEASE_PAYMENT -> R.drawable.ic_hold_payment_release
     TransactionType.CREDIT_NOTE -> R.drawable.ic_ledger_revamp_credit_note
     TransactionType.DEBIT_NOTE -> R.drawable.ledger_debit_note
     TransactionType.DEBIT_ENTRY -> R.drawable.ledger_debit_note
@@ -148,13 +147,13 @@ private fun provideTransactionIcon(type: String) = when (type) {
 private fun provideTransactionLabel(type: String) = when (type) {
     TransactionType.INVOICE -> stringResource(id = R.string.invoice)
     TransactionType.PAYMENT -> stringResource(id = R.string.ledger_payment, "")
-    TransactionType.RELEASE_PAYMENT -> stringResource(R.string.hold_payment_released)
+    TransactionType.RELEASE_PAYMENT -> stringResource(R.string.hold_payment_released_prepaid)
     TransactionType.CREDIT_NOTE -> stringResource(id = R.string.ledger_credit_note)
     TransactionType.DEBIT_NOTE -> stringResource(id = R.string.debit_note)
     TransactionType.DEBIT_ENTRY -> stringResource(id = R.string.debit_entry)
     TransactionType.INTEREST -> stringResource(id = R.string.interest_amount_ledger)
     TransactionType.FINANCING_FEE -> stringResource(id = R.string.financing_fee)
-    TransactionType.DEBIT_HOLD -> stringResource(id = R.string.non_financed_dc_debit_hold_title)
+    TransactionType.DEBIT_HOLD -> stringResource(id = R.string.dc_debit_hold_entry_title)
     else -> ""
 }
 

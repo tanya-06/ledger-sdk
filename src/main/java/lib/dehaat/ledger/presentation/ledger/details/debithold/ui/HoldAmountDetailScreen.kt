@@ -25,8 +25,10 @@ import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.model.detail.debit.LedgerDebitHoldDetailViewData
+import lib.dehaat.ledger.resources.Neutral70
 import lib.dehaat.ledger.resources.Neutral90
 import lib.dehaat.ledger.resources.TertiaryYellowP20
+import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.text14Sp
 import lib.dehaat.ledger.util.getAmountInRupees
 
@@ -60,26 +62,8 @@ fun HoldAmountComponent(debitHoldDetail: LedgerDebitHoldDetailViewData) {
 			.wrapContentHeight()
 	) {
 
-		Row(
-			modifier = Modifier,
-			verticalAlignment = Alignment.CenterVertically
-		) {
-			Image(
-				painter = painterResource(id = R.drawable.ic_yellow_info),
-				contentDescription = "info"
-			)
-			Text(
-				text = stringResource(id = R.string.this_amount_will_used_in_order),
-				modifier = Modifier.padding(start = 4.dp),
-				style = text14Sp(
-					textColor = Neutral90,
-					lineHeight = 20.sp,
-					fontWeight = FontWeight.W500
-				)
-			)
-		}
 		PairText(
-			modifier = Modifier.padding(top = 20.dp),
+			modifier = Modifier,
 			key = stringResource(id = R.string.amount),
 			value = debitHoldDetail.amount.getAmountInRupees()
 		)
@@ -92,6 +76,16 @@ fun HoldAmountComponent(debitHoldDetail: LedgerDebitHoldDetailViewData) {
 			modifier = Modifier.padding(top = 12.dp),
 			key = stringResource(R.string.related_order_id),
 			value = debitHoldDetail.orderRequestId
+		)
+
+		Text(
+			text = stringResource(id = R.string.this_amount_will_used_in_order, debitHoldDetail.orderRequestId),
+			modifier = Modifier.padding(top = 20.dp),
+			style = text12Sp(
+				textColor = Neutral70,
+				lineHeight = 18.sp,
+				fontWeight = FontWeight.W400
+			)
 		)
 	}
 }

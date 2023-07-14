@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.toDateMonthYear
-import lib.dehaat.ledger.presentation.CreditNoteReason
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
 import lib.dehaat.ledger.resources.LedgerTheme
@@ -37,7 +36,6 @@ import lib.dehaat.ledger.resources.Neutral80
 import lib.dehaat.ledger.resources.Pumpkin120
 import lib.dehaat.ledger.resources.SeaGreen110
 import lib.dehaat.ledger.resources.Secondary120
-import lib.dehaat.ledger.resources.TertiaryYellowP20
 import lib.dehaat.ledger.resources.Warning10
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
@@ -233,21 +231,6 @@ fun TransactionCard(
 					style = textCaptionCP1(Neutral60)
 				)
 
-                transaction.creditNoteReason?.takeIf { it == CreditNoteReason.PREPAID_ORDER }?.let {
-                    Text(
-                        modifier = Modifier
-                            .background(
-                                color = TertiaryYellowP20,
-                                RoundedCornerShape(4.dp)
-                            )
-                            .padding(horizontal = 12.dp, vertical = 4.dp),
-                        text = stringResource(
-                            id = R.string.pay_immidiately_order
-                        ),
-                        style = textCaptionCP1(Neutral80)
-                    )
-                }
-
                 transaction.interestStartDate?.let {
 					Text(
 						modifier = Modifier
@@ -329,14 +312,14 @@ sealed class TransactionType(@StringRes val name: Int, val type: String) {
 	)
 
 	data class ReleasePayment(
-		val paymentName: Int = R.string.hold_payment_released,
+		val paymentName: Int = R.string.hold_payment_released_prepaid,
 		val paymentType: String = "RELEASE_PAYMENT"
 	) : TransactionType(
 		name = paymentName, type = paymentType
 	)
 
 	data class DebitHold(
-        val paymentName: Int = R.string.ledger_payment_debit_hold,
+        val paymentName: Int = R.string.dc_debit_hold_entry_title,
         val paymentType: String = "DEBIT_HOLD"
     ) : TransactionType(
         name = paymentName, type = paymentType
@@ -389,7 +372,7 @@ fun TransactionType.getIcon() = when (this) {
 	is TransactionType.DebitEntry -> R.drawable.ledger_debit_note
 	is TransactionType.MonthSeparator -> R.drawable.ledger_debit_note
     is TransactionType.DebitHold -> R.drawable.ic_debit_hold
-	is TransactionType.ReleasePayment -> R.drawable.ic_ledger_revamp_payment
+	is TransactionType.ReleasePayment -> R.drawable.ic_hold_payment_release
 }
 
 fun TransactionType.amountColor() = when (this) {
