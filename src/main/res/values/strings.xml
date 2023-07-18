@@ -143,8 +143,8 @@
     <string name="see_details">See details</string>
     <string name="advanced_payment_blocked_till_s">Advanced payment is blocked till %s</string>
     <string name="advanced_balance_details">Advanced balance details</string>
-    <string name="advance_balance">Advance balance</string>
-    <string name="advance_bal_note">Advance balance will be kept blocked until ordering opens.\nIt will be adjusted with outstanding once ordering window will open.</string>
+    <string name="advance_balance">ABS Order Balance</string>
+    <string name="advance_bal_note">Advance Booking Order balance will be kept blocked until ordering opens.\nIt will be adjusted with outstanding once ordering window will open.</string>
     <string name="amount_is_blocked">Advance amount is blocked until ordering for scheme opens</string>
     <string name="ledger_interest_amount_reduced">Interest amount has been reduced based on your payments</string>
     <string name="ledger_interest_details">Interest Details</string>
@@ -187,8 +187,8 @@
     <string name="your_ordering_is_blocked">Your ordering is blocked</string>
     <string name="colon_value">: %s</string>
     <string name="external_storage_permission_required">Storage Permission Required</string>
-    <string name="hold_amount_details">Amount on hold detail</string>
-    <string name="prepaid_order">Pay-now orders</string>
+    <string name="hold_amount_details">Hold Amount Details</string>
+    <string name="prepaid_order">Pay-now Order Balance</string>
     <string name="this_amount_will_used_in_order">This amount is on hold for order %s, it will be released once invoice is created for this order</string>
     <string name="amount">Amount</string>
     <string name="date">Date</string>
