@@ -190,7 +190,7 @@
     <string name="ledger_total_debit_hold_amount">कुल रुकी हुई राशि</string>
     <string name="ledger_payment_released">भुगतान जारी कर दिया</string>
     <string name="related_order_id">ऑर्डर संबंधित आईडी</string>
-    <string name="hold_payment_released_prepaid">तुरंत भुगतान वाले ऑर्डर की राशि जारी\nकर दी गयी</string>
-    <string name="dc_debit_hold_entry_title">तुरंत भुगतान वाले ऑर्डर की रुकी\nहुयी राशि</string>
+    <string name="hold_payment_released_prepaid">तुरंत भुगतान वाले ऑर्डर की राशि जारी कर दी गयी</string>
+    <string name="dc_debit_hold_entry_title">तुरंत भुगतान वाले ऑर्डर की रुकी हुयी राशि</string>
     <string name="hold_balance_widget_info">एडवांस बुकिंग योजना और प्रीपेड ऑर्डर से संबंधित रुकी हयी शेष राशि यहां दिखाए जाएंगे</string>
 </resources>
