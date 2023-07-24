@@ -50,6 +50,7 @@ val SeaGreen100 = Color(0xFF0F8040)
 val SeaGreen110 = Color(0XFF00662C)
 
 val Secondary10 = Color(0XFFFFEEE5)
+val Secondary20 = Color(0XFFFCCCB1)
 val Secondary120 = Color(0XFFBF4B0A)
 
 val Success10 = Color(0XFFE6FFCC)

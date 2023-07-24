@@ -33,6 +33,14 @@ fun navigateToPaymentDetailScreen(
     args = args
 )
 
+fun navigateToWalletLedger(
+    navController: NavHostController,
+    args: Bundle
+) = navController.navigateTo(
+    route = LedgerRoutes.WalletLedgerRoute.screen,
+    args = args
+)
+
 fun navigateToOutstandingDetailPage(
     navController: NavHostController,
     args: Bundle

@@ -9,7 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -27,6 +29,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -37,10 +40,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.dehaat.androidbase.helper.showToast
 import kotlinx.coroutines.launch
+import com.dehaat.wallet.presentation.ui.components.EntryPointButtonContent
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
+import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
@@ -56,11 +61,17 @@ import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionCard
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionFilteringHeader
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionListHeader
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
+import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
+import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
 import lib.dehaat.ledger.resources.Color3985BF
 import lib.dehaat.ledger.resources.Color3BC6CA
+import lib.dehaat.ledger.resources.Neutral10
+import lib.dehaat.ledger.resources.Secondary10
+import lib.dehaat.ledger.resources.Secondary20
 import lib.dehaat.ledger.resources.mediumShape
 import lib.dehaat.ledger.resources.textParagraphT2
+import lib.dehaat.ledger.util.getAmountInRupees
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -82,6 +93,8 @@ fun TransactionsScreen(
 	val transactionUIState by ledgerViewModel.transactionUIState.collectAsState()
 	val abs = transactionUIState.summaryViewData?.holdAmountViewData
 	val uiState by viewModel.uiState.collectAsState()
+	val ledgerUiState by ledgerViewModel.uiState.collectAsState()
+	val walletBalance = ledgerUiState.walletBalance
 	val firstVisibleIndex by remember { derivedStateOf { state.firstVisibleItemIndex } }
 	isTransactionListHeaderVisible(firstVisibleIndex == 0)
 	val launcher = rememberLauncherForActivityResult(
@@ -101,9 +114,17 @@ fun TransactionsScreen(
 	LazyColumn(modifier = Modifier.fillMaxWidth(), state = state) {
 
 		item {
-			AbsTransactionHeader(abs, ledgerViewModel.ledgerAnalytics) {
-				detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
-			}
+			if (!LedgerSDK.isWalletActive)
+				AbsTransactionHeader(abs, ledgerViewModel.ledgerAnalytics) {
+					detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
+				}
+			else
+				HoldAndWalletBalanceContent(
+					abs,
+					detailPageNavigationCallback,
+					ledgerViewModel,
+					walletBalance
+				)
 		}
 
 		item {
@@ -277,6 +298,52 @@ fun TransactionsScreen(
 			viewModel.updateSelectedFilter(event)
 		}
 	}
+}
+
+@Composable
+private fun HoldAndWalletBalanceContent(
+	abs: HoldAmountViewData?,
+	detailPageNavigationCallback: DetailPageNavigationCallback,
+	ledgerViewModel: RevampLedgerViewModel,
+	walletBalance: Double
+) {
+	Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
+	Row(
+		modifier = Modifier
+			.fillMaxWidth(1f)
+			.background(Color.White)
+			.padding(16.dp)
+	) {
+		abs?.let {
+			EntryPointButtonContent(modifier = Modifier
+				.weight(.5f)
+				.padding(start = 8.dp, end = 8.dp),
+				headingText = stringResource(id = R.string.hold_balance),
+				valueText = it.formattedTotalHoldBalance,
+				drawableIcon = R.drawable.ic_lock_orange_bg,
+				bgColor = Secondary10,
+				outlineColor = Secondary20,
+				onClick = {
+					detailPageNavigationCallback.navigateToHoldAmountDetailPage(
+						bundleOf(
+							LedgerConstants.ABS_AMOUNT to it.absViewData.absHoldBalance.orZero(),
+							LedgerConstants.KEY_PREPAID_HOLD_AMOUNT to it.prepaidHoldAmount.orZero(),
+						)
+					)
+				})
+			LaunchedEffect(Unit) {
+				ledgerViewModel.ledgerAnalytics.onHoldAmountWidgetViewed()
+			}
+		}
+		EntryPointButtonContent(modifier = Modifier
+			.weight(.5f)
+			.padding(start = 8.dp, end = 8.dp),
+			valueText = walletBalance.getAmountInRupees(),
+			onClick = {
+				detailPageNavigationCallback.navigateToWalletLedger(bundleOf())
+			})
+	}
+	Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
 }
 
 private fun showDivider(

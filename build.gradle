@@ -46,6 +46,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':wallet:presentation')
+    implementation project(path: ':wallet:domain')
 
     // Unit Testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")

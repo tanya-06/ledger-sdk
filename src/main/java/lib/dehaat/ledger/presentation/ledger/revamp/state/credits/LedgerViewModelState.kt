@@ -18,7 +18,8 @@ data class LedgerViewModelState(
 	val errorMessage: String = "",
 	val isLoading: Boolean = false,
 	val isSuccess: Boolean = false,
-	val snackbarType: SnackBarType? = null
+	val snackbarType: SnackBarType? = null,
+    val walletBalance: Double = 0.0
 ) {
 	fun toUIState() = LedgerUIState(
 		summaryViewData = summaryViewData,
@@ -30,8 +31,9 @@ data class LedgerViewModelState(
 			isLoading -> UIState.LOADING
 			else -> UIState.SUCCESS
 		},
-		snackbarType = snackbarType
-	)
+		snackbarType = snackbarType,
+        walletBalance = walletBalance
+    )
 }
 
 data class LedgerUIState(
@@ -39,7 +41,8 @@ data class LedgerUIState(
 	val showFilterSheet: Boolean,
 	val appliedFilter: DaysToFilter,
 	val state: UIState,
-	val snackbarType: SnackBarType?
+	val snackbarType: SnackBarType?,
+    val walletBalance: Double
 )
 
 data class TransactionViewModelState(

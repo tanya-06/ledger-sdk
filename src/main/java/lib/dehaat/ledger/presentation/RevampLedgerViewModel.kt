@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
+import com.dehaat.wallet.domain.usecase.GetWalletTotalAmountUseCase
+import com.dehaat.wallet.presentation.extensions.getApiFailureError
 import com.dehaat.androidbase.helper.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -48,8 +50,9 @@ class RevampLedgerViewModel @Inject constructor(
 	private val getCreditSummaryUseCase: GetCreditSummaryUseCase,
 	private val getTransactionSummaryUseCase: GetTransactionSummaryUseCase,
 	private val ledgerDownloadUseCase: LedgerDownloadUseCase,
-	val ledgerAnalytics: LibLedgerAnalytics,
-	private val mapper: ViewDataMapper
+	private val getWalletTotalAmount: GetWalletTotalAmountUseCase,
+    val ledgerAnalytics: LibLedgerAnalytics,
+    private val mapper: ViewDataMapper
 ) : BaseViewModel() {
 
 	var downloadFormat: String = DownloadLedgerFormat.PDF
@@ -85,10 +88,11 @@ class RevampLedgerViewModel @Inject constructor(
 	private val _uiEvent = MutableSharedFlow<UiEvent>()
 	val uiEvent: SharedFlow<UiEvent> get() = _uiEvent
 
-	init {
-		getCreditSummaryFromServer()
-		getTransactionSummaryFromServer()
-	}
+    init {
+        getCreditSummaryFromServer()
+        getTransactionSummaryFromServer()
+        getTotalWalletAmountFromServer()
+    }
 
 	fun showFilterBottomSheet() = viewModelState.update {
 		it.copy(showFilterSheet = true)
@@ -121,6 +125,34 @@ class RevampLedgerViewModel @Inject constructor(
 			)
 		}
 	}
+    private fun getTotalWalletAmountFromServer() = callInViewModelScope {
+        callingAPI()
+        when (val response = getWalletTotalAmount()) {
+            is APIResultEntity.Success -> {
+                viewModelState.update {
+                    it.copy(walletBalance = response.data?.totalWalletBalance ?: 0.0)
+                }
+            }
+            is APIResultEntity.Failure -> {
+                sendFailureEvent(response.getApiFailureError())
+            }
+        }
+        callingAPI()
+    }
+
+    private fun processTransactionSummaryResponse(
+        result: APIResultEntity<TransactionSummaryEntity?>
+    ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { entity ->
+        val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
+        val outstandingCalculationUiState = mapper.toOutstandingCalculationViewData(entity)
+        transactionsViewModelState.update { ledgerDetailViewModelState ->
+            ledgerDetailViewModelState.copy(
+                isLoading = false,
+                summary = transactionSummaryViewData,
+                outstandingCalculationUiState = outstandingCalculationUiState
+            )
+        }
+    }
 
 	private fun getCreditSummaryFromServer() {
 		callInViewModelScope {

@@ -39,4 +39,7 @@ sealed class LedgerRoutes(val screen: String) {
 
     object DebitHoldDetailScreen :
         LedgerRoutes("debit_hold_detail_screen")
+
+	object WalletLedgerRoute :
+		LedgerRoutes("wallet_ledger_history")
 }

@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.dehaat.androidbase.helper.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
@@ -78,6 +78,7 @@ class LedgerDetailActivity : ComponentActivity() {
                     finishActivity = { finish() },
                     viewModel = viewModel,
                     ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack,
+                    openOrderDetailFragment = LedgerSDK.openOrderDetailFragment,
                     onDownloadClick = {
                         val ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack
                         notificationHandler.notificationBuilder.setSmallIcon(LedgerSDK.appIcon)

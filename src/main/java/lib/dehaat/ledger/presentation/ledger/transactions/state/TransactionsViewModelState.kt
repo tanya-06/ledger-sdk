@@ -13,7 +13,8 @@ data class TransactionsViewModelState(
 	val downloadLedgerState: DownloadLedgerState = DownloadLedgerState(
 		false, DownloadLedgerFilter.YEARLY, getEndYearRange(), null, null, false
 	),
-	val snackbarType: SnackBarType? = null
+	val snackbarType: SnackBarType? = null,
+	val walletBalance: Double = 0.0
 ) {
 	fun toUiState() = LedgerDetailUIState(
 		isLoading = isLoading,
@@ -21,8 +22,9 @@ data class TransactionsViewModelState(
 		downloadLedgerState = downloadLedgerState.copy(
 			enableDownloadBtn = shouldEnableDownloadBtn(downloadLedgerState)
 		),
-		snackbarType = snackbarType
-	)
+		snackbarType = snackbarType,
+        walletBalance = walletBalance
+    )
 
 	private fun shouldEnableDownloadBtn(downloadLedgerState: DownloadLedgerState): Boolean =
 		with(downloadLedgerState) {
@@ -38,4 +40,5 @@ data class LedgerDetailUIState(
 	val onlyPenaltyInvoices: Boolean,
 	val downloadLedgerState: DownloadLedgerState,
 	val snackbarType: SnackBarType?,
+    val walletBalance: Double
 )

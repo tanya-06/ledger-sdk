@@ -27,4 +27,5 @@ interface DetailPageNavigationCallback {
 
     fun navigateToDebitHoldPaymentDetailPage(args: Bundle)
 
+    fun navigateToWalletLedger(args: Bundle)
 }

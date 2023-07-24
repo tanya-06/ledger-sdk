@@ -94,8 +94,9 @@ fun LedgerDetailScreen2(
 	val scaffoldState = rememberScaffoldState()
 	val scope = rememberCoroutineScope()
 	val sheetState = rememberModalBottomSheetState(
-		initialValue = ModalBottomSheetValue.Hidden
-	)
+		initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
 
 	var bottomBarVisibility by rememberSaveable { mutableStateOf(true) }
 
@@ -213,7 +214,7 @@ fun LedgerDetailScreen2(
 									viewModel.updateSelectedFilter(daysToFilter)
 									viewModel.getTransactionSummaryFromServer(daysToFilter)
 									scope.launch {
-										sheetState.animateTo(ModalBottomSheetValue.Hidden)
+										sheetState.hide()
 									}
 								}
 							)

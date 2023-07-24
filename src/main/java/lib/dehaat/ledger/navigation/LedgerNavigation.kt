@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.dehaat.wallet.presentation.ui.screens.WalletLedgerScreen
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.LedgerConstants
@@ -52,7 +53,8 @@ fun LedgerNavigation(
     resultLauncher: ActivityResultLauncher<Intent?>,
     viewModel: LedgerDetailViewModel,
     onDownloadClick: (InvoiceDownloadData) -> Unit,
-    finishActivity: () -> Unit
+    finishActivity: () -> Unit,
+    openOrderDetailFragment: (String, String) -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -92,6 +94,21 @@ fun LedgerNavigation(
                 },
                 onError = { ledgerCallbacks.exceptionHandler(it) }
             )
+        }
+
+        navBaseComposable(
+            route = LedgerRoutes.WalletLedgerRoute.screen,
+            arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+                type = NavType.StringType
+                defaultValue = partnerId
+            }),
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
+            WalletLedgerScreen(onClick = {
+	            openOrderDetailFragment(it, it)
+            }, onBackPress = {
+                navController.popBackStack()
+            })
         }
 
         navBaseComposable(
@@ -323,7 +340,6 @@ fun provideDetailPageNavCallBacks(
         )
     }
 
-
     override fun navigateToOutstandingDetailPage(args: Bundle) {
         navigateToOutstandingDetailPage(navController, args)
     }
@@ -359,4 +375,10 @@ fun provideDetailPageNavCallBacks(
     override fun navigateToDebitHoldPaymentDetailPage(args: Bundle) {
         navigateToDebitHoldPaymentDetailPage(navController, args)
     }
+
+	override fun navigateToWalletLedger(args: Bundle) {
+		navigateToWalletLedger(
+			navController = navController, args = args
+		)
+	}
 }

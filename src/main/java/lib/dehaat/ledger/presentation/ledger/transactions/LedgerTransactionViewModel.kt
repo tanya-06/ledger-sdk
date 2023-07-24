@@ -8,8 +8,11 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
+import com.dehaat.wallet.domain.usecase.GetWalletTotalAmountUseCase
+import com.dehaat.wallet.presentation.extensions.getApiFailureError
 import com.dehaat.androidbase.helper.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,6 +49,7 @@ import javax.inject.Inject
 class LedgerTransactionViewModel @Inject constructor(
 	private val getTransactionsUseCase: GetTransactionsUseCase,
 	private val ledgerDownloadUseCase: LedgerDownloadUseCase,
+	private val getWalletTotalAmount: GetWalletTotalAmountUseCase,
 	private val mapper: LedgerViewDataMapper,
 	val ledgerAnalytics: LibLedgerAnalytics,
 	savedStateHandle: SavedStateHandle
@@ -78,6 +82,7 @@ class LedgerTransactionViewModel @Inject constructor(
 
 	init {
 		transactionsList = getTransactionPaging()
+		getTotalWalletAmountFromServer()
 	}
 
 	fun applyOnlyPenaltyInvoicesFilter(onlyPenaltyInvoices: Boolean) {
@@ -85,6 +90,19 @@ class LedgerTransactionViewModel @Inject constructor(
 			it.copy(onlyPenaltyInvoices = onlyPenaltyInvoices)
 		}
 		refresh()
+	}
+
+	private fun getTotalWalletAmountFromServer() = callInViewModelScope {
+		when (val response = getWalletTotalAmount()) {
+			is APIResultEntity.Success -> {
+				viewModelState.update {
+					it.copy(walletBalance = response.data?.totalWalletBalance ?: 0.0)
+				}
+			}
+			is APIResultEntity.Failure -> {
+				sendShowSnackBarEvent(response.getApiFailureError())
+			}
+		}
 	}
 
 	fun applyDaysFilter(dayFilter: DaysToFilter) {

@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Environment
 import androidx.annotation.DrawableRes
 import com.dehaat.androidbase.components.SingleEventLiveData
+import java.io.File
+import java.math.BigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import lib.dehaat.ledger.framework.model.outstanding.OutstandingData
 import lib.dehaat.ledger.presentation.ledger.LedgerDetailActivity
@@ -22,6 +24,8 @@ object LedgerSDK {
 		private set
 	internal var showOutstandingTooltip = false
 	internal var showLedgerDownloadCta = false
+    internal var isWalletActive = false
+    internal var openOrderDetailFragment:(String, String) -> Unit = {_,_ ->}
 
 	fun init(
 		context: Context,
@@ -46,9 +50,13 @@ object LedgerSDK {
 		isDCFinanced: Boolean,
 		language: String? = null,
 		showOutstandingTooltip: Boolean,
-		showLedgerDownload: Boolean
-	) = if (isCurrentAppAvailable()) {
-		this.showLedgerDownloadCta = showLedgerDownload
+		showLedgerDownload: Boolean,
+        isWalletActive: Boolean,
+        openOrderDetailFragment: (String, String) -> Unit
+    ) = if (isCurrentAppAvailable()) {
+        this.showLedgerDownloadCta = showLedgerDownload
+        this.openOrderDetailFragment = openOrderDetailFragment
+        this.isWalletActive = isWalletActive
 		LedgerDetailActivity.Companion.Args(
 			partnerId = partnerId,
 			dcName = dcName,
