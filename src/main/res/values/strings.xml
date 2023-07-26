@@ -240,4 +240,5 @@
     <string name="try_again">Try Again</string>
     <string name="download_completed">Download Successful</string>
     <string name="view_statement">View Statement</string>
+    <string name="fully_paid">Fully paid</string>
 </resources>

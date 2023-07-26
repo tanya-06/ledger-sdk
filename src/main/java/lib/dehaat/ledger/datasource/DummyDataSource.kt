@@ -146,7 +146,9 @@ object DummyDataSource {
             toDate = null,
             adjustmentAmount = null,
             schemeName = null,
-            paymentModeWithScheme = "paymentMode"
+            paymentModeWithScheme = "paymentMode",
+            creditAmount = null,
+            prepaidAmount = null,
         )
     }
 
@@ -168,7 +170,32 @@ object DummyDataSource {
         fromDate = "45/Dec/2022",
         toDate = "46/Dec/2022",
         adjustmentAmount = 400.00,
-        schemeName = null
+        schemeName = null,
+        creditAmount = null,
+        prepaidAmount = null,
+    )
+
+    val invoiceTransactionFullyPaid = TransactionViewDataV2(
+        amount = "100",
+        creditNoteReason = CreditNoteReason.PREPAID_ORDER,
+        date = 1658214762,
+        erpId = "2022$$0090000169",
+        interestEndDate = 1658214762,
+        interestStartDate = 1658214762,
+        ledgerId = "95",
+        locusId = 4,
+        partnerId = "0010000654",
+        paymentMode = "CASH",
+        source = "SAP",
+        sourceNo = "sourceNo",
+        type = "INVOICE",
+        unrealizedPayment = false,
+        fromDate = "45/Dec/2022",
+        toDate = "46/Dec/2022",
+        adjustmentAmount = 400.00,
+        schemeName = "schemeName",
+        creditAmount = "101",
+        prepaidAmount = "100",
     )
 
     val debitHoldTransaction = TransactionViewDataV2(
@@ -189,7 +216,9 @@ object DummyDataSource {
         fromDate = "45/Dec/2022",
         toDate = "46/Dec/2022",
         adjustmentAmount = 4009999999.10,
-        schemeName = null
+        schemeName = null,
+        creditAmount = null,
+        prepaidAmount = null,
     )
 
     val paymentDetailSummaryViewData = PaymentDetailSummaryViewData(

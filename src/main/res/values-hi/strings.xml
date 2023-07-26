@@ -173,7 +173,6 @@
     <string name="ledger_download">डाउनलोड स्टेट्मेंट</string>
     <string name="ledger_credit_line_status_miscellaneous">आपकी क्रेडिट लाइन होल्ड पर है।</string>
     <string name="ledger_credit_line_status_aged_outstanding">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान ठीक समय पर नहीं किया है। कृपया तुरंत भुगतान करें।</string>
-    >
     <string name="ledger_credit_line_status_repayment_frequency">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान नहीं किया है। कृपया तुरंत भुगतान करें</string>
     <string name="ledger_credit_line_status_onboarding_pod">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने अपने दस्तावेज़ जमा नहीं किए हैं। अधिक जानकारी के लिए कृपया अपने बिक्री कार्यकारी से संपर्क करें</string>
     <string name="your_ordering_is_blocked">आपकी ऑर्डरिंग बंद है</string>
@@ -227,5 +226,5 @@
     <string name="from_cannot_be_greater">कब से का दिनांक कब तक के दिनांक से बड़ा नहीं हो सकता</string>
     <string name="to_cannot_be_lesser">कब तक का दिनांक कब से के दिनांक से छोटा नहीं हो सकता</string>
     <string name="ledger_current_year_msg">PDF लेजर %s से %s तक डाउनलोड किया जा सकेगा</string>
-
+    <string name="fully_paid">पूर्ण भुगतान हो चुका है</string>
 </resources>

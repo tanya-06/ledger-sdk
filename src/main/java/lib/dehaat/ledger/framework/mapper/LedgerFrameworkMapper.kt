@@ -177,9 +177,11 @@ class LedgerFrameworkMapper @Inject constructor() {
 			fromDate = it.fromDate,
 			toDate = it.toDate,
 			adjustmentAmount = it.adjustmentAmount,
-			schemeName = it.schemeName
-		)
-	}
+			schemeName = it.schemeName,
+            creditAmount = it.creditAmount,
+            prepaidAmount = it.prepaidAmount,
+        )
+    }
 
 	fun toCreditNoteDetailDataEntity(data: CreditNoteDetailData) = with(data) {
 		CreditNoteDetailEntity(
@@ -412,9 +414,11 @@ class LedgerFrameworkMapper @Inject constructor() {
 			fromDate = fromDate,
 			toDate = toDate,
 			adjustmentAmount = adjustmentAmount,
-			schemeName = schemeName
-		)
-	}
+			schemeName = schemeName,
+            creditAmount = creditAmount,
+            prepaidAmount = prepaidAmount,
+        )
+    }
 
 	private fun toCreditLineEntity(data: CreditLine) = with(data) {
 		CreditLineEntity(

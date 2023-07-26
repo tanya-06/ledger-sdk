@@ -20,4 +20,6 @@ data class TransactionEntityV2(
 	val toDate: Long?,
 	val adjustmentAmount: Double?,
 	val schemeName: String?,
+	val creditAmount: String?,
+	val prepaidAmount: String?,
 )

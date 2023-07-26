@@ -256,6 +256,8 @@ private fun TransactionViewData.toTransactionViewDataV2() = with(this) {
 		fromDate = fromDate,
 		toDate = toDate,
 		adjustmentAmount = adjustmentAmount,
-		schemeName = schemeName
+		schemeName = schemeName,
+		creditAmount = creditAmount,
+		prepaidAmount = prepaidAmount,
 	)
 }

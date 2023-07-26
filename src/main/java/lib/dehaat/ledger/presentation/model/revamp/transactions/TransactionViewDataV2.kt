@@ -21,6 +21,8 @@ data class TransactionViewDataV2(
 	val toDate: String?,
 	val adjustmentAmount: Double?,
 	val schemeName: String?,
+	val creditAmount: String?,
+	val prepaidAmount: String?,
 ) {
 
 	companion object {
@@ -42,7 +44,9 @@ data class TransactionViewDataV2(
 			fromDate = month,
 			toDate = null,
 			adjustmentAmount = null,
-			schemeName = null
+			schemeName = null,
+			creditAmount = null,
+			prepaidAmount = null,
 		)
 	}
 }

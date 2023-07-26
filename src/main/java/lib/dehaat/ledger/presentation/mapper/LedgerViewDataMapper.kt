@@ -139,7 +139,9 @@ class LedgerViewDataMapper @Inject constructor() {
 			fromDate = it.fromDate?.toDateMonthYear(),
 			toDate = it.toDate?.toDateMonthYear(),
 			adjustmentAmount = it.adjustmentAmount,
-			schemeName = it.schemeName
+			schemeName = it.schemeName,
+			creditAmount = it.creditAmount,
+			prepaidAmount = it.prepaidAmount,
 		)
 	}
 
@@ -396,7 +398,9 @@ class LedgerViewDataMapper @Inject constructor() {
 			toDate = toDate.toDateMonthYear(),
 			adjustmentAmount = adjustmentAmount,
 			schemeName = schemeName,
-			paymentModeWithScheme = schemeName?.let { "$paymentMode; $it" } ?: paymentMode
+			paymentModeWithScheme = schemeName?.let { "$paymentMode; $it" } ?: paymentMode,
+			creditAmount = creditAmount,
+			prepaidAmount = prepaidAmount,
 		)
 	}
 

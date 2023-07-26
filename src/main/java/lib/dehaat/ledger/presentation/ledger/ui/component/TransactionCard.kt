@@ -44,6 +44,17 @@ import lib.dehaat.ledger.resources.veryLargeShape
 import lib.dehaat.ledger.util.getAmountInRupees
 
 @Preview(
+	name = "TransactionCard Invoice Fully Paid Preview",
+	showBackground = true
+)
+@Composable
+private fun TransactionCardInvoiceFullyPaidPreview() = LedgerTheme {
+	TransactionCard(
+		transactionType = TransactionType.Invoice(),
+		transaction = DummyDataSource.invoiceTransactionFullyPaid
+	)
+}
+@Preview(
 	name = "TransactionCard Invoice Preview",
 	showBackground = true
 )
@@ -231,18 +242,16 @@ fun TransactionCard(
 					style = textCaptionCP1(Neutral60)
 				)
 
-                transaction.interestStartDate?.let {
-					Text(
-						modifier = Modifier
-							.background(color = Warning10, RoundedCornerShape(8.dp))
-							.padding(horizontal = 8.dp, vertical = 4.dp),
-						text = stringResource(
-							id = R.string.interest_start_dates,
-							it.toDateMonthYear()
-						),
-						style = textCaptionCP1(Neutral80)
-					)
+				if (transactionType is TransactionType.Invoice) {
+					if (transaction.amount == transaction.prepaidAmount) {
+						FullyPaidTag(modifier = Modifier)
+					} else {
+						TagInterestDateStart(transaction)
+					}
+				} else {
+					TagInterestDateStart(transaction)
 				}
+
 				transaction.unrealizedPayment?.let {
 					if (it)
 						Text(
@@ -257,6 +266,22 @@ fun TransactionCard(
 		}
 	}
 	VerticalSpacer(height = 16.dp)
+}
+
+@Composable
+private fun TagInterestDateStart(transaction: TransactionViewDataV2) {
+	transaction.interestStartDate?.let {
+		Text(
+			modifier = Modifier
+				.background(color = Warning10, RoundedCornerShape(8.dp))
+				.padding(horizontal = 8.dp, vertical = 4.dp),
+			text = stringResource(
+				id = R.string.interest_start_dates,
+				it.toDateMonthYear()
+			),
+			style = textCaptionCP1(Neutral80)
+		)
+	}
 }
 
 @Composable

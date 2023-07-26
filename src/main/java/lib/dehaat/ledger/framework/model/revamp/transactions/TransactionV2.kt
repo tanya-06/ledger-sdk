@@ -43,5 +43,9 @@ data class TransactionV2(
     @Json(name = "adjustment_amount")
     val adjustmentAmount: Double?,
     @Json(name = "scheme_name")
-    val schemeName: String?
+    val schemeName: String?,
+    @Json(name = "credit_amount")
+    val creditAmount: String?,
+    @Json(name = "prepaid_amount")
+    val prepaidAmount: String?,
 )

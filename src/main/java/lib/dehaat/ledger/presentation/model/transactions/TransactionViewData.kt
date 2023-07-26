@@ -19,5 +19,7 @@ data class TransactionViewData(
 	val toDate: String?,
 	val adjustmentAmount: Double?,
 	val schemeName: String?,
-	val paymentModeWithScheme: String?
+	val paymentModeWithScheme: String?,
+	val creditAmount: String?,
+	val prepaidAmount: String?,
 )

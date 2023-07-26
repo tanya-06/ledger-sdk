@@ -40,4 +40,5 @@
     <string name="hold_payment_released_prepaid">तुरंत भुगतान वाले ऑर्डर की राशि रिलीज़्ड</string>
     <string name="dc_debit_hold_entry_title">Hold balance for pay-now\norder</string>
     <string name="hold_balance_widget_info">All the payments that are on hold for Advance Booking Scheme and Pay Now Orders will be shown here</string>
+    <string name="fully_paid">Fully paid</string>
 </resources>
