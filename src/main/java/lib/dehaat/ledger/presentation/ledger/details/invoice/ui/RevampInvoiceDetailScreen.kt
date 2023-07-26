@@ -41,10 +41,12 @@ import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
+import lib.dehaat.ledger.presentation.ledger.ui.component.FullyPaidTag
 import lib.dehaat.ledger.presentation.ledger.ui.component.ProductDetailsScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.RevampKeyValuePair
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.revamp.invoice.CreditNoteViewData
+import lib.dehaat.ledger.presentation.model.revamp.invoice.PrepaidAndCreditInfoViewDataV2
 import lib.dehaat.ledger.presentation.model.revamp.invoice.ProductsInfoViewDataV2
 import lib.dehaat.ledger.presentation.model.revamp.invoice.SummaryViewDataV2
 import lib.dehaat.ledger.resources.Background
@@ -76,6 +78,7 @@ import lib.dehaat.ledger.util.getAmountInRupees
 
 @Composable
 fun RevampInvoiceDetailScreen(
+	isDCFinanced: Boolean,
 	viewModel: RevampInvoiceDetailViewModel,
 	ledgerColors: LedgerColors,
 	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit,
@@ -98,9 +101,11 @@ fun RevampInvoiceDetailScreen(
 			UIState.SUCCESS -> {
 				uiState.invoiceDetailsViewData?.let {
 					InvoiceDetailScreen(
+						isDCFinanced = isDCFinanced,
+						it.prepaidAndCreditInfoViewDataV2,
 						it.summary,
 						it.creditNotes,
-						it.productsInfo
+						it.productsInfo,
 					) {
 						LedgerSDK.getFile(context)?.let { file ->
 							viewModel.downloadInvoice(
@@ -130,6 +135,8 @@ fun RevampInvoiceDetailScreen(
 
 @Composable
 private fun InvoiceDetailScreen(
+	isDCFinanced: Boolean,
+	prepaidAndCreditInfoViewDataV2: PrepaidAndCreditInfoViewDataV2?,
 	summary: SummaryViewDataV2,
 	creditNotes: List<CreditNoteViewData>,
 	productsInfo: ProductsInfoViewDataV2,
@@ -180,6 +187,11 @@ private fun InvoiceDetailScreen(
 					)
 				)
 			}
+		}
+
+		if (isDCFinanced && showPrepaidTag(summary, prepaidAndCreditInfoViewDataV2)) {
+			FullyPaidTag(modifier = Modifier.padding(top = 22.dp))
+			Spacer(modifier = Modifier.padding(top = 10.dp))
 		}
 
 		VerticalSpacer(height = 12.dp)
@@ -561,4 +573,12 @@ fun DownloadInvoiceButton(
 	}
 
 	VerticalSpacer(height = 16.dp)
+}
+
+fun showPrepaidTag(
+	summary: SummaryViewDataV2,
+	prepaidAndCreditInfo: PrepaidAndCreditInfoViewDataV2?
+): Boolean {
+	val invoiceAmount = summary.invoiceAmount
+	return invoiceAmount != null && invoiceAmount == prepaidAndCreditInfo?.prepaidAmount
 }

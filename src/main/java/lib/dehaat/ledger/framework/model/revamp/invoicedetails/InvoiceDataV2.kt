@@ -10,5 +10,15 @@ data class InvoiceDataV2(
     @Json(name = "products_info")
     val productsInfo: ProductsInfo,
     @Json(name = "summary")
-    val summary: Summary
+    val summary: Summary,
+    @Json(name = "prepaid_and_credit_info")
+    val prepaidAndCreditInfo: PrepaidAndCreditInfo?,
+)
+
+@JsonClass(generateAdapter = true)
+data class PrepaidAndCreditInfo(
+    @Json(name = "prepaid_amount")
+    val prepaidAmount: String?,
+    @Json(name = "credit_amount")
+    val creditAmount: String?,
 )

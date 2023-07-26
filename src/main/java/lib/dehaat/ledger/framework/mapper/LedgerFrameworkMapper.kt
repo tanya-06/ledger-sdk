@@ -50,6 +50,7 @@ import lib.dehaat.ledger.framework.model.revamp.creditnote.CreditNoteDetailsData
 import lib.dehaat.ledger.framework.model.revamp.creditsummary.CreditV2
 import lib.dehaat.ledger.framework.model.revamp.download.ResponseLedgerDownload
 import lib.dehaat.ledger.framework.model.revamp.invoicedetails.InvoiceDataV2
+import lib.dehaat.ledger.framework.model.revamp.invoicedetails.PrepaidAndCreditInfo
 import lib.dehaat.ledger.framework.model.revamp.invoicelist.InterestInvoice
 import lib.dehaat.ledger.framework.model.revamp.transactions.TransactionData
 import lib.dehaat.ledger.framework.model.transactions.Transaction
@@ -248,9 +249,18 @@ class LedgerFrameworkMapper @Inject constructor() {
 					invoiceAge = invoiceAge,
 					isInterestSubVented = isInterestSubVented
 				)
-			}
-		)
-	}
+			},
+            prepaidAndCreditInfo =  prepaidAndCreditInfoEntity(prepaidAndCreditInfo)
+        )
+    }
+
+    private fun prepaidAndCreditInfoEntity(prepaidAndCreditInfo: PrepaidAndCreditInfo?) =
+        prepaidAndCreditInfo?.let {
+            InvoiceDataEntity.PrepaidAndCreditInfoEntity(
+                creditAmount = it.creditAmount,
+                prepaidAmount = it.prepaidAmount
+            )
+        }
 
 	private fun getProductInfoEntityV2(
 		data: ProductsInfoV2

@@ -184,6 +184,7 @@ fun LedgerNavigation(
         ) {
             val invoiceDetailViewModel = hiltViewModel<RevampInvoiceDetailViewModel>()
             RevampInvoiceDetailScreen(
+                isDCFinanced = isDCFinanced,
                 viewModel = invoiceDetailViewModel,
                 ledgerColors = ledgerColors,
                 onDownloadInvoiceClick = onDownloadClick,

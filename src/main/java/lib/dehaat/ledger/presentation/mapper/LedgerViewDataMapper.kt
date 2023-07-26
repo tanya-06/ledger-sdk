@@ -253,7 +253,15 @@ class LedgerViewDataMapper @Inject constructor() {
 				)
 			},
 			productsInfo = getProductInfoViewData(productsInfo),
-			summary = getSummaryViewData(summary)
+			summary = getSummaryViewData(summary),
+			prepaidAndCreditInfoViewDataV2 = getPrepaidAndCreditInfoViewDataV2(prepaidAndCreditInfo),
+		)
+	}
+
+	private fun getPrepaidAndCreditInfoViewDataV2(prepaidAndCreditInfo: InvoiceDataEntity.PrepaidAndCreditInfoEntity?) = prepaidAndCreditInfo?.let {
+		PrepaidAndCreditInfoViewDataV2(
+			it.prepaidAmount,
+			it.creditAmount
 		)
 	}
 
