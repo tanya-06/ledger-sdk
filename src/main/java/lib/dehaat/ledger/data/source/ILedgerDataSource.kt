@@ -19,87 +19,87 @@ import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 
 interface ILedgerDataSource {
 
-    suspend fun getCreditSummary(partnerId: String): APIResultEntity<CreditSummaryEntity?>
+	suspend fun getCreditSummary(partnerId: String): APIResultEntity<CreditSummaryEntity?>
 
-    suspend fun getCreditSummaryV2(partnerId: String): APIResultEntity<CreditSummaryEntityV2?>
+	suspend fun getCreditSummaryV2(partnerId: String): APIResultEntity<CreditSummaryEntityV2?>
 
-    suspend fun getTransactionSummary(
-        partnerId: String,
-        fromDate: Long?,
-        toDate: Long?
-    ): APIResultEntity<TransactionSummaryEntity?>
+	suspend fun getTransactionSummary(
+		partnerId: String,
+		fromDate: Long?,
+		toDate: Long?
+	): APIResultEntity<TransactionSummaryEntity?>
 
-    suspend fun getTransactionSummaryV2(
-        partnerId: String,
-        fromDate: Long?,
-        toDate: Long?
-    ): APIResultEntity<TransactionSummaryEntity?>
+	suspend fun getTransactionSummaryV2(
+		partnerId: String,
+		fromDate: Long?,
+		toDate: Long?
+	): APIResultEntity<TransactionSummaryEntity?>
 
-    suspend fun getTransactions(
-        partnerId: String,
-        limit: Int,
-        offset: Int,
-        onlyPenaltyInvoices: Boolean,
-        fromDate: Long?,
-        toDate: Long?,
-    ): APIResultEntity<List<TransactionEntity>>
+	suspend fun getTransactions(
+		partnerId: String,
+		limit: Int,
+		offset: Int,
+		onlyPenaltyInvoices: Boolean,
+		fromDate: Long?,
+		toDate: Long?,
+	): APIResultEntity<List<TransactionEntity>>
 
-    suspend fun getTransactionsV2(
-        partnerId: String,
-        limit: Int,
-        offset: Int,
-        fromDate: Long?,
-        toDate: Long?,
-    ): APIResultEntity<List<TransactionEntityV2>>
+	suspend fun getTransactionsV2(
+		partnerId: String,
+		limit: Int,
+		offset: Int,
+		fromDate: Long?,
+		toDate: Long?,
+	): APIResultEntity<List<TransactionEntityV2>>
 
-    suspend fun getCreditLines(
-        partnerId: String
-    ): APIResultEntity<List<CreditLineEntity>>
+	suspend fun getCreditLines(
+		partnerId: String
+	): APIResultEntity<List<CreditLineEntity>>
 
-    suspend fun getInvoiceDetail(
-        ledgerId: String
-    ): APIResultEntity<InvoiceDetailDataEntity?>
+	suspend fun getInvoiceDetail(
+		ledgerId: String
+	): APIResultEntity<InvoiceDetailDataEntity?>
 
-    suspend fun getInvoiceDetails(
-        ledgerId: String
-    ): APIResultEntity<InvoiceDataEntity?>
+	suspend fun getInvoiceDetails(
+		ledgerId: String
+	): APIResultEntity<InvoiceDataEntity?>
 
-    suspend fun getInvoiceDownload(
-        identityId: String,
-        source: String
-    ): APIResultEntity<InvoiceDownloadDataEntity?>
+	suspend fun getInvoiceDownload(
+		identityId: String,
+		source: String
+	): APIResultEntity<InvoiceDownloadDataEntity?>
 
-    suspend fun getPaymentDetail(
-        ledgerId: String
-    ): APIResultEntity<PaymentDetailEntity?>
+	suspend fun getPaymentDetail(
+		ledgerId: String
+	): APIResultEntity<PaymentDetailEntity?>
 
-    suspend fun getCreditNoteDetail(
-        ledgerId: String
-    ): APIResultEntity<CreditNoteDetailEntity?>
+	suspend fun getCreditNoteDetail(
+		ledgerId: String
+	): APIResultEntity<CreditNoteDetailEntity?>
 
-    suspend fun getCreditNoteDetailV2(
-        ledgerId: String
-    ): APIResultEntity<CreditNoteDetailsEntity?>
+	suspend fun getCreditNoteDetailV2(
+		ledgerId: String
+	): APIResultEntity<CreditNoteDetailsEntity?>
 
-    suspend fun getInvoices(
-        partnerId: String,
-        limit: Int,
-        offset: Int,
-        isInterestApproached: Boolean
-    ): APIResultEntity<List<InvoiceListEntity>?>
+	suspend fun getInvoices(
+		partnerId: String,
+		limit: Int,
+		offset: Int,
+		isInterestApproached: Boolean
+	): APIResultEntity<List<InvoiceListEntity>?>
 
-    suspend fun getABSTransactions(
-        partnerId: String,
-        limit: Int,
-        offset: Int
-    ): APIResultEntity<List<ABSTransactionEntity>?>
+	suspend fun getABSTransactions(
+		partnerId: String,
+		limit: Int,
+		offset: Int
+	): APIResultEntity<List<ABSTransactionEntity>?>
 
-    suspend fun downloadLedger(
-        partnerId: String
-    ): APIResultEntity<String?>
+	suspend fun downloadLedger(
+		partnerId: String, fromDate: Long?, toDate: Long?, format: String
+	): APIResultEntity<String?>
 
-    suspend fun getDebitRecordDetails(
-        ledgerId: String
-    ): APIResultEntity<LedgerDebitDetailEntity?>
+	suspend fun getDebitRecordDetails(
+		ledgerId: String
+	): APIResultEntity<LedgerDebitDetailEntity?>
 
 }

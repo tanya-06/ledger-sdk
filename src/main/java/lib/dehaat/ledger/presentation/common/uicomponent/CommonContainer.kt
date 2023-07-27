@@ -3,6 +3,10 @@ package lib.dehaat.ledger.presentation.common.uicomponent
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarData
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,11 +22,19 @@ fun CommonContainer(
 	scaffoldState: ScaffoldState = rememberScaffoldState(),
 	backgroundColor: Color = Color.White,
 	bottomBar: @Composable () -> Unit = {},
+	snackbarHostContent: @Composable (SnackbarData) -> Unit = { Text(it.message) },
 	content: @Composable (PaddingValues) -> Unit
 ) {
 	Scaffold(
 		modifier = modifier,
 		scaffoldState = scaffoldState,
+		snackbarHost = {
+			SnackbarHost(it) { snackbarData ->
+				Snackbar(content = {
+					snackbarHostContent(snackbarData)
+				})
+			}
+		},
 		topBar = {
 			CustomAppBar(
 				title,

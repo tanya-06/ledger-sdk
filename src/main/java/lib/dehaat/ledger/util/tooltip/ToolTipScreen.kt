@@ -60,7 +60,7 @@ fun ToolTipScreen(
 		Icon(
 			modifier = Modifier
 				.clickable(onClick = onClick),
-			painter = painterResource(id = R.drawable.ic_cancel),
+			painter = painterResource(id = R.drawable.ledger_ic_cancel),
 			tint = Color.White,
 			contentDescription = ""
 		)

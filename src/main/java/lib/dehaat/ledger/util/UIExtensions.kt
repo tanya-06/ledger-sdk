@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -38,11 +39,13 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.dehaat.androidbase.helper.showToast
-import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.FirebaseScreenLogger
 import lib.dehaat.ledger.presentation.common.UiEvent
+import kotlin.math.roundToInt
 
 @Composable
 fun HandleAPIErrors(
@@ -140,4 +143,12 @@ fun GifImage(
 		contentDescription = contentDescription,
 		modifier = modifier.fillMaxWidth(),
 	)
+}
+
+internal fun ModalBottomSheetState.openSheet(scope: CoroutineScope) {
+	scope.launch { this@openSheet.show() }
+}
+
+internal fun ModalBottomSheetState.closeSheet(scope: CoroutineScope) {
+	scope.launch { this@closeSheet.hide() }
 }

@@ -38,7 +38,9 @@ object DummyDataSource {
         InfoViewData(
             totalPurchaseAmount = "000008",
             totalPaymentAmount = "000009",
-            undeliveredInvoiceAmount = "000010"
+            undeliveredInvoiceAmount = "000010",
+            firstLedgerEntryDate = null,
+            ledgerEndDate = null
         )
     }
     private val overdueViewData by lazy {
@@ -80,7 +82,9 @@ object DummyDataSource {
         holdAmount = "199.00",
         ageingBannerPriority = null,
         penaltyInterest = 0f,
-        agedOverdueAmount = null
+        agedOverdueAmount = null,
+        firstLedgerEntryDate = null,
+        ledgerEndDate = null
     )
 
     val creditSummaryViewData by lazy {

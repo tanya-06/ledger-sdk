@@ -20,6 +20,16 @@ object LedgerConstants {
 	const val ACTIVE = "ACTIVE"
 	const val DORMANT = "DORMANT"
 	const val KEY_PREPAID_HOLD_AMOUNT = "KEY_PREPAID_HOLD_AMOUNT"
+	const val MMM = "MMM"
+	const val VALUE_1 = 1
+	const val MAX_MONTHS = 12
+	const val START_MONTH = 3
+	const val START_MONTH_FOR_LIST = 0
+	const val END_MONTH = 11
+	const val MM_YYYY = "MMM''yy"
+	const val UTC_TIMEZONE = "UTC"
+	const val FINANCIAL_YEAR = "FY"
+	const val CUSTOM = "Custom"
 }
 
 object CreditNoteReason {

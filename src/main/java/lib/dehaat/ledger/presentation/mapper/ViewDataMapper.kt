@@ -57,10 +57,12 @@ class ViewDataMapper @Inject constructor() {
 			agedOutstandingAmount = formatDecimal(agedOutstandingAmount, 0),
 			repaymentUnblockAmount = formatDecimal(repaymentUnblockAmount, 0),
 			isCreditLineOnHold = isCreditLineOnHold,
-            holdAmount = holdAmount,
+			holdAmount = holdAmount,
 			ageingBannerPriority = ageingBannerPriority,
 			penaltyInterest = penaltyInterest,
-			agedOverdueAmount = agedOverdueAmount?.toString().getAmountInRupees()
+			agedOverdueAmount = agedOverdueAmount?.toString().getAmountInRupees(),
+			firstLedgerEntryDate = firstLedgerEntryDate,
+			ledgerEndDate = ledgerEndDate
 		)
 	}
 
@@ -122,8 +124,9 @@ class ViewDataMapper @Inject constructor() {
 			paidAmount = "+ ${paymentAmount.getRoundedAmountInRupees()}",
 			paidRefund = "+ ${debitEntryAmount.getRoundedAmountInRupees()}",
 			totalPaid = "- ${netPaymentAmount.getRoundedAmountInRupees()}",
-		debitHold = "+ ${debitHoldAmount.getAmountInRupees()}",
-            paymentReleased = "- ${releasePaymentAmount.getAmountInRupees()}",)
+			debitHold = "+ ${debitHoldAmount.getAmountInRupees()}",
+			paymentReleased = "- ${releasePaymentAmount.getAmountInRupees()}",
+		)
 	}
 }
 
@@ -131,7 +134,7 @@ fun TransactionSummaryEntity.toHoldAmountViewData() = HoldAmountViewData(
 	formattedTotalHoldBalance = getTotalHoldBalance(this).getAmountInRupees(),
 	formattedPrepaidHoldAmount = this.prepaidHoldAmount.getAmountInRupees(),
 	absViewData = toHoldABSViewData(abs),
-    prepaidHoldAmount = this.prepaidHoldAmount
+	prepaidHoldAmount = this.prepaidHoldAmount
 )
 
 private fun getTotalHoldBalance(entity: TransactionSummaryEntity) =
@@ -141,5 +144,5 @@ private fun toHoldABSViewData(abs: ABSEntity?) = HoldABSViewData(
 	formattedAbsHoldBalance = abs?.amount.getAmountInRupees(),
 	formattedLastMovedSchemeAmount = abs?.lastMovedSchemeAmount.getAmountInRupees(),
 	showBanner = true == abs?.showBanner,
-    absHoldBalance = abs?.amount
+	absHoldBalance = abs?.amount
 )

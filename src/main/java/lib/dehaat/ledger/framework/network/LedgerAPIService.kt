@@ -23,107 +23,110 @@ import retrofit2.http.Query
 
 interface LedgerAPIService {
 
-    @GET("/finance/accounting/credit-summary")
-    suspend fun getCreditSummary(
-        @Query("partner_id") partnerId: String
-    ): Response<ResponseCreditSummary>
+	@GET("/finance/accounting/credit-summary")
+	suspend fun getCreditSummary(
+		@Query("partner_id") partnerId: String
+	): Response<ResponseCreditSummary>
 
-    @GET("/finance/accounting/credit-summary/v2")
-    suspend fun getV2CreditSummary(
-        @Query("partner_id") partnerId: String
-    ): Response<ResponseCreditSummaryV2>
+	@GET("/finance/accounting/credit-summary/v2")
+	suspend fun getV2CreditSummary(
+		@Query("partner_id") partnerId: String
+	): Response<ResponseCreditSummaryV2>
 
-    @GET("/finance/accounting/ledger/v1/download/{partner_id}")
-    suspend fun downloadLedger(
-        @Path("partner_id") partnerId: String
-    ): Response<ResponseLedgerDownload>
+	@GET("/finance/accounting/ledger/v1/download/{partner_id}")
+	suspend fun downloadLedger(
+		@Path("partner_id") partnerId: String,
+		@Query("from_date") fromDate: Long?,
+		@Query("to_date") toDate: Long?,
+		@Query("file_type") format: String
+	): Response<ResponseLedgerDownload>
 
-    @GET("/finance/accounting/transactions-summary")
-    suspend fun getTransactionSummary(
-        @Query("partner_id") partnerId: String,
-        @Query("from_date") fromDate: Long?,
-        @Query("to_date") toDate: Long?
-    ): Response<ResponseTransactionSummary>
+	@GET("/finance/accounting/transactions-summary")
+	suspend fun getTransactionSummary(
+		@Query("partner_id") partnerId: String,
+		@Query("from_date") fromDate: Long?,
+		@Query("to_date") toDate: Long?
+	): Response<ResponseTransactionSummary>
 
-    @GET("/finance/accounting/transactions-summary/v2")
-    suspend fun getTransactionSummaryV2(
-        @Query("partner_id") partnerId: String,
-        @Query("from_date") fromDate: Long?,
-        @Query("to_date") toDate: Long?
-    ): Response<ResponseTransactionSummary>
+	@GET("/finance/accounting/transactions-summary/v2")
+	suspend fun getTransactionSummaryV2(
+		@Query("partner_id") partnerId: String,
+		@Query("from_date") fromDate: Long?,
+		@Query("to_date") toDate: Long?
+	): Response<ResponseTransactionSummary>
 
-    @GET("/finance/accounting/transactions")
-    suspend fun getTransactions(
-        @Query("partner_id") partnerId: String,
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int,
-        @Query("only_penalty_invoices") onlyPenaltyInvoices: Boolean,
-        @Query("from_date") fromDate: Long?,
-        @Query("to_date") toDate: Long?,
-    ): Response<ResponseTransactions>
+	@GET("/finance/accounting/transactions")
+	suspend fun getTransactions(
+		@Query("partner_id") partnerId: String,
+		@Query("limit") limit: Int,
+		@Query("offset") offset: Int,
+		@Query("only_penalty_invoices") onlyPenaltyInvoices: Boolean,
+		@Query("from_date") fromDate: Long?,
+		@Query("to_date") toDate: Long?,
+	): Response<ResponseTransactions>
 
-    @GET("/finance/accounting/transactions/v2")
-    suspend fun getTransactionsV2(
-        @Query("partner_id") partnerId: String,
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int,
-        @Query("from_date") fromDate: Long?,
-        @Query("to_date") toDate: Long?,
-    ): Response<ResponseTransaction>
+	@GET("/finance/accounting/transactions/v2")
+	suspend fun getTransactionsV2(
+		@Query("partner_id") partnerId: String,
+		@Query("limit") limit: Int,
+		@Query("offset") offset: Int,
+		@Query("from_date") fromDate: Long?,
+		@Query("to_date") toDate: Long?,
+	): Response<ResponseTransaction>
 
-    @GET("/finance/accounting/credit-lines")
-    suspend fun getCreditLines(
-        @Query("partner_id") partnerId: String
-    ): Response<ResponseCreditLines>
+	@GET("/finance/accounting/credit-lines")
+	suspend fun getCreditLines(
+		@Query("partner_id") partnerId: String
+	): Response<ResponseCreditLines>
 
-    @GET("/finance/invoice")
-    suspend fun getInvoiceDetail(
-        @Query("ledger_id") ledgerId: String
-    ): Response<ResponseInvoiceDetail>
+	@GET("/finance/invoice")
+	suspend fun getInvoiceDetail(
+		@Query("ledger_id") ledgerId: String
+	): Response<ResponseInvoiceDetail>
 
-    @GET("/finance/invoice/v2")
-    suspend fun getInvoiceDetails(
-        @Query("ledger_id") ledgerId: String
-    ): Response<ResponseInvoiceDetails>
+	@GET("/finance/invoice/v2")
+	suspend fun getInvoiceDetails(
+		@Query("ledger_id") ledgerId: String
+	): Response<ResponseInvoiceDetails>
 
-    @GET("/finance/payment")
-    suspend fun getPaymentDetail(
-        @Query("ledger_id") ledgerId: String
-    ): Response<ResponsePaymentDetail>
+	@GET("/finance/payment")
+	suspend fun getPaymentDetail(
+		@Query("ledger_id") ledgerId: String
+	): Response<ResponsePaymentDetail>
 
-    @GET("/finance/credit-note")
-    suspend fun getCreditNoteDetail(
-        @Query("ledger_id") ledgerId: String
-    ): Response<ResponseCreditNoteDetail>
+	@GET("/finance/credit-note")
+	suspend fun getCreditNoteDetail(
+		@Query("ledger_id") ledgerId: String
+	): Response<ResponseCreditNoteDetail>
 
-    @GET("/finance/credit-note/v2")
-    suspend fun getCreditNoteDetailV2(
-        @Query("ledger_id") ledgerId: String
-    ): Response<ResponseCreditNoteDetails>
+	@GET("/finance/credit-note/v2")
+	suspend fun getCreditNoteDetailV2(
+		@Query("ledger_id") ledgerId: String
+	): Response<ResponseCreditNoteDetails>
 
-    @GET("/stock-management/v1/invoice-download")
-    suspend fun downloadInvoice(
-        @Query("invoice_id") identityId: String,
-        @Query("source") source: String
-    ): Response<ResponseDownloadInvoice>
+	@GET("/stock-management/v1/invoice-download")
+	suspend fun downloadInvoice(
+		@Query("invoice_id") identityId: String,
+		@Query("source") source: String
+	): Response<ResponseDownloadInvoice>
 
-    @GET("/finance/invoice/v2")
-    suspend fun getInvoiceList(
-        @Query("partner_id") partnerId: String,
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int,
-        @Query("filter") filter: String
-    ): Response<ResponseInvoiceList>
+	@GET("/finance/invoice/v2")
+	suspend fun getInvoiceList(
+		@Query("partner_id") partnerId: String,
+		@Query("limit") limit: Int,
+		@Query("offset") offset: Int,
+		@Query("filter") filter: String
+	): Response<ResponseInvoiceList>
 
-    @GET("/finance/accounting/abs-transactions")
-    suspend fun getABSTransactions(
-        @Query("partner_id") partnerId: String,
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int
-    ): Response<ResponseABSTransactions>
+	@GET("/finance/accounting/abs-transactions")
+	suspend fun getABSTransactions(
+		@Query("partner_id") partnerId: String,
+		@Query("limit") limit: Int,
+		@Query("offset") offset: Int
+	): Response<ResponseABSTransactions>
 
-    @GET("/finance/debit-record")
-    suspend fun getDebitRecordDetails(
-        @Query("ledger_id") ledgerId: String,
-    ): Response<ResponseLedgerDebitDetail>
+	@GET("/finance/debit-record")
+	suspend fun getDebitRecordDetails(
+		@Query("ledger_id") ledgerId: String,
+	): Response<ResponseLedgerDebitDetail>
 }

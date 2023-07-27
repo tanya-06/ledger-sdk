@@ -179,9 +179,10 @@
     <string name="ledger_total_payment_made_by_you">Payment Till Date</string>
     <string name="ledger_paid_refund">Payment Refunded to you</string>
     <string name="ledger_total_paid">Total Payment</string>
-    <string name="ledger_download">Download Ledger</string>
+    <string name="ledger_download">Download Statement</string>
     <string name="ledger_credit_line_status_miscellaneous">Your credit line is on-hold.</string>
     <string name="ledger_credit_line_status_aged_outstanding">Your credit line is on-hold as you haven’t cleared your overdue outstanding of Rs. %s. Please pay immediately.</string>
+
     <string name="ledger_credit_line_status_repayment_frequency">Your credit line is on-hold as payment of Rs. %s is pending. Please pay immediately</string>
     <string name="ledger_credit_line_status_onboarding_pod">Your credit line is on-hold as you haven’t submitted your onboarding documents. Please contact you sales executive for further details.</string>
     <string name="your_ordering_is_blocked">Your ordering is blocked</string>
@@ -213,4 +214,30 @@
     <string name="pay_amount_to_avoid_negative_impact">Please pay %s immediately to avoid negative impact on your CIBIL and incurring Penalty.</string>
     <string name="ordering_blocked_pay_to_unlock">Your ordering has been blocked. Please pay %s immediately to unblock ordering and avoid Penalty.</string>
     <string name="pay_s_amount_to_immediately_unblock">Please pay %s immediately to unblock your ordering</string>
+    <string name="app_not_found">No matching apps found to view this file</string>
+    <string name="file_not_found">File not found at original location</string>
+    <string name="dash" translatable="false">-</string>
+    <string name="from_cannot_be_greater">From Date cannot be greater than To Date</string>
+    <string name="to_cannot_be_lesser">To Date cannot be less than from date</string>
+    <string name="ledger_current_year_msg">PDF Ledger will be downloaded from %s to %s</string>
+    <string name="previous_year_statement">Previous Year Statement</string>
+    <string name="enter_custom_date">"Enter Custom Date</string>
+    <string name="fy_s">Financial Year %s</string>
+    <string name="from_date">From</string>
+    <string name="to_date">To</string>
+    <string name="download_now">Download(PDF)</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="statement_date_colon_from">Statement Date: From</string>
+    <string name="statement_date_colon_to">Statement Date: To</string>
+    <string name="from_s">From %s</string>
+    <string name="to_s">To %s</string>
+    <string name="download_pdf">"Download PDF</string>
+    <string name="download_excel">"Download EXCEL</string>
+    <string name="download_in_progress">Download In Progress</string>
+    <string name="statement_download_soon">Statement will be downloaded shortly</string>
+    <string name="download_failed">Download Failed</string>
+    <string name="try_again">Try Again</string>
+    <string name="download_completed">Download Successful</string>
+    <string name="view_statement">View Statement</string>
 </resources>

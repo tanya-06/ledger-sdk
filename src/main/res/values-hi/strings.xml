@@ -170,7 +170,7 @@
     <string name="ledger_total_payment_made_by_you">आपके द्वारा किया गया कुल भुगतान</string>
     <string name="ledger_paid_refund">भुगतान रीफ़ंड</string>
     <string name="ledger_total_paid">कुल भुगतान</string>
-    <string name="ledger_download">बहीखाता डाउनलोड करें</string>
+    <string name="ledger_download">डाउनलोड स्टेट्मेंट</string>
     <string name="ledger_credit_line_status_miscellaneous">आपकी क्रेडिट लाइन होल्ड पर है।</string>
     <string name="ledger_credit_line_status_aged_outstanding">आपकी क्रेडिट लाइन होल्ड पर है क्योंकि आपने %s रुपये की राशि का भुगतान ठीक समय पर नहीं किया है। कृपया तुरंत भुगतान करें।</string>
     >
@@ -202,4 +202,30 @@
     <string name="pay_amount_to_avoid_negative_impact">कृपया तुरंत %s राशि का भुगतान करेके अपने सीबील पर नकारात्मक प्रभाव और जुर्माना लगने से बचिए</string>
     <string name="ordering_blocked_pay_to_unlock">कृपया तुरंत %s राशि का भुगतान करेके ऑर्डरिंग को अनब्लॉक करिए और जुर्माने से बचिए</string>
     <string name="pay_s_amount_to_immediately_unblock">कृपया %s का भुगतान तुरंत करके अपने ऑर्डरिंग को अनब्लॉक करिए</string>
+    <string name="previous_year_statement">पूर्ण वर्ष का स्टेट्मेंट</string>
+    <string name="enter_custom_date">कस्टम तारीख़ डालें</string>
+    <string name="fy_s">वित्तीय वर्ष %s</string>
+    <string name="from_date">कब से</string>
+    <string name="to_date">कब तक</string>
+    <string name="download_now">डाउनलोड करें(PDF)</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="confirm">लागू करें</string>
+    <string name="statement_date_colon_from">स्टेट्मेंट तारीख़ : कब से</string>
+    <string name="statement_date_colon_to">स्टेट्मेंट तारीख़ : कब तक</string>
+    <string name="from_s">%s से</string>
+    <string name="to_s">%s तक</string>
+    <string name="download_pdf">PDF डाउनलोड करें</string>
+    <string name="download_excel">EXCEL डाउनलोड करें</string>
+    <string name="download_in_progress">डाउनलोड हो रहा है…</string>
+    <string name="statement_download_soon">आपका स्टेट्मेंट जल्द ही डाउनलोड हो जाएगा</string>
+    <string name="download_failed">डाउनलोड विफल</string>
+    <string name="try_again">पुनः प्रयास करें</string>
+    <string name="download_completed">डाउनलोड हो गया है</string>
+    <string name="view_statement">स्टेट्मेंट देखें</string>
+    <string name="app_not_found">इस फ़ाइल को देखने के लिए कोई ऐप नहीं मिला</string>
+    <string name="file_not_found">फ़ाइल स्थान पर नहीं मिली</string>
+    <string name="from_cannot_be_greater">कब से का दिनांक कब तक के दिनांक से बड़ा नहीं हो सकता</string>
+    <string name="to_cannot_be_lesser">कब तक का दिनांक कब से के दिनांक से छोटा नहीं हो सकता</string>
+    <string name="ledger_current_year_msg">PDF लेजर %s से %s तक डाउनलोड किया जा सकेगा</string>
+
 </resources>

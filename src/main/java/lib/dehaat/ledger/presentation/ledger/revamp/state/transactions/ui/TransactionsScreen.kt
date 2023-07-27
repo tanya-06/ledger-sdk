@@ -15,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -34,6 +36,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.dehaat.androidbase.helper.showToast
+import kotlinx.coroutines.launch
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
@@ -65,6 +68,7 @@ fun TransactionsScreen(
 	ledgerViewModel: RevampLedgerViewModel,
 	ledgerColors: LedgerColors,
 	onError: (Exception) -> Unit,
+	downloadLedgerSheet: ModalBottomSheetState,
 	detailPageNavigationCallback: DetailPageNavigationCallback,
 	showFilterSheet: () -> Unit,
 	lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
@@ -72,6 +76,7 @@ fun TransactionsScreen(
 	state: LazyListState = rememberLazyListState(),
 	isTransactionListHeaderVisible: (Boolean) -> Unit
 ) {
+	val scope = rememberCoroutineScope()
 	val viewModel = hiltViewModel<TransactionViewModel>()
 	val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
 	val transactionUIState by ledgerViewModel.transactionUIState.collectAsState()
@@ -83,7 +88,7 @@ fun TransactionsScreen(
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = { granted ->
 			if (granted) {
-				ledgerViewModel.downloadLedger()
+				scope.launch { downloadLedgerSheet.animateTo(ModalBottomSheetValue.Expanded) }
 			} else {
 				Toast.makeText(
 					context,
@@ -104,7 +109,7 @@ fun TransactionsScreen(
 		item {
 			TransactionListHeader {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-					ledgerViewModel.downloadLedger()
+					scope.launch { downloadLedgerSheet.animateTo(ModalBottomSheetValue.Expanded) }
 				} else {
 					launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				}
@@ -206,17 +211,18 @@ fun TransactionsScreen(
 						MonthlyDivider(transaction.fromDate)
 					}
 
-                    TransactionType.DebitHold().type -> TransactionCard(
-                        transactionType = TransactionType.DebitHold(),
-                        transaction = transaction,
-                        modifier = Modifier.clickable {
-                            detailPageNavigationCallback.navigateToDebitHoldPaymentDetailPage(
-                                DebitHoldDetailViewModel.getDebitHoldArgs(transaction.ledgerId)
-                            )
-                        }
-                    )
+					TransactionType.DebitHold().type -> TransactionCard(
+						transactionType = TransactionType.DebitHold(),
+						transaction = transaction,
+						modifier = Modifier.clickable {
+							detailPageNavigationCallback.navigateToDebitHoldPaymentDetailPage(
+								DebitHoldDetailViewModel.getDebitHoldArgs(transaction.ledgerId)
+							)
+						}
+					)
 
-					TransactionType.ReleasePayment().paymentType -> TransactionCard(transactionType = TransactionType.ReleasePayment(),
+					TransactionType.ReleasePayment().paymentType -> TransactionCard(
+						transactionType = TransactionType.ReleasePayment(),
 						transaction = transaction,
 						modifier = Modifier.clickable {})
 				}

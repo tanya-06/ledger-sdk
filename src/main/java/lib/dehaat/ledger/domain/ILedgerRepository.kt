@@ -16,9 +16,6 @@ import lib.dehaat.ledger.entities.revamp.invoicelist.InvoiceListEntity
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
-import lib.dehaat.ledger.framework.model.detail.debit.ResponseLedgerDebitDetail
-import retrofit2.Response
-import retrofit2.http.Query
 
 interface ILedgerRepository {
 
@@ -98,7 +95,10 @@ interface ILedgerRepository {
     ): APIResultEntity<List<ABSTransactionEntity>?>
 
     suspend fun downloadLedger(
-        partnerId: String
+	    partnerId: String,
+	    fromDate: Long?,
+	    toDate: Long?,
+	    format: String
     ): APIResultEntity<String?>
 
     suspend fun getDebitRecordDetails(

@@ -53,7 +53,7 @@ fun InformationDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Icon(
-                        painterResource(id = R.drawable.ic_cancel),
+                        painterResource(id = R.drawable.ledger_ic_cancel),
                         contentDescription = "",
                         tint = Color.Black,
                         modifier = Modifier.clickable {

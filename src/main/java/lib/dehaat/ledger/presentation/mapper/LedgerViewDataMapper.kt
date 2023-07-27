@@ -419,7 +419,9 @@ class LedgerViewDataMapper @Inject constructor() {
 		InfoViewData(
 			totalPurchaseAmount = totalPurchaseAmount,
 			totalPaymentAmount = totalPaymentAmount,
-			undeliveredInvoiceAmount = undeliveredInvoiceAmount
+			undeliveredInvoiceAmount = undeliveredInvoiceAmount,
+			firstLedgerEntryDate = firstLedgerEntryDate,
+			ledgerEndDate = ledgerEndDate
 		)
 	}
 
