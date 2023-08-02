@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice
 
+import android.app.DownloadManager
 import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,7 @@ import lib.dehaat.ledger.presentation.model.invoicedownload.DownloadSource
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.invoicedownload.ProgressData
 import lib.dehaat.ledger.util.DownloadFileUtil
+import lib.dehaat.ledger.util.DownloadStatus
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
@@ -128,44 +130,20 @@ class RevampInvoiceDetailViewModel @Inject constructor(
     }
 
     private fun downloadFile(
-        identityId: String,
-        file: File,
+        url: String,
+        fName: String?,
         invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
         updateProgressDialog(true)
-        downloadFileUtil.downloadFile(
-            File(file, "$identityId.pdf"),
-            identityId,
-            LedgerSDK.bucket
-        )?.setTransferListener(
-            object : TransferListener {
-                override fun onStateChanged(id: Int, state: TransferState?) {
-                    if (state == TransferState.COMPLETED) {
-                        updateProgressDialog(false)
-                        updateDownloadPathAndProgress(file, identityId)
-                        invoiceDownloadStatus(invoiceDownloadData)
-                    }
-                }
 
-                override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                    invoiceDownloadData.progressData =
-                        ProgressData(bytesCurrent.toInt(), bytesTotal.toInt())
-                    invoiceDownloadStatus(invoiceDownloadData)
-                }
+        var fileName = fName ?: url.substring(url.lastIndexOf('/') + 1)
+        fileName = fileName.replaceFirstChar { it.uppercase() }
 
-                override fun onError(id: Int, ex: Exception?) {
-                    ex?.printStackTrace()
-                    invoiceDownloadData.isFailed = true
-                    updateDownloadPathAndProgress(file, identityId)
-                    invoiceDownloadStatus(invoiceDownloadData)
-                    updateProgressDialog(false)
-                }
-            }
-        )
+        downloadFileUtil.downloadPDF(url, fileName, invoiceDownloadStatus, ::updateDownloadStatus)
     }
 
-    private fun updateDownloadPathAndProgress(file: File, id: String) = invoiceDownloadData.apply {
-        filePath = "${file.path}/${id.substringAfterLast('$')}.pdf"
+    private fun updateDownloadPathAndProgress(file: File?, id: String) = invoiceDownloadData.apply {
+        filePath = file?.let { "${file.path}/${id.substringAfterLast('$')}.pdf" } ?: ""
         progressData = ProgressData()
         invoiceId = id.substringAfterLast('$')
     }
@@ -182,6 +160,34 @@ class RevampInvoiceDetailViewModel @Inject constructor(
             isError = true,
             isLoading = false
         )
+    }
+
+    private fun updateDownloadStatus(
+        fileName: String,
+        downloadStatus: DownloadStatus,
+        invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
+    ) {
+        when (downloadStatus.status) {
+            DownloadManager.STATUS_FAILED -> {
+                updateProgressDialog(false)
+                invoiceDownloadData.isFailed = true
+                updateDownloadPathAndProgress(null, fileName)
+                invoiceDownloadData.filePath = downloadStatus.filePath
+                invoiceDownloadStatus(invoiceDownloadData)
+            }
+
+            DownloadManager.STATUS_RUNNING -> {
+                invoiceDownloadData.progressData = downloadStatus.progressData
+                invoiceDownloadStatus(invoiceDownloadData)
+            }
+
+            DownloadManager.STATUS_SUCCESSFUL -> {
+                updateProgressDialog(false)
+                updateDownloadPathAndProgress(null, fileName)
+                invoiceDownloadData.filePath = downloadStatus.filePath
+                invoiceDownloadStatus(invoiceDownloadData)
+            }
+        }
     }
 
     companion object {

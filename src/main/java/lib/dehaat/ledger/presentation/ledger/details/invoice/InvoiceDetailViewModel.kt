@@ -1,6 +1,10 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice
 
+import android.app.DownloadManager
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -8,6 +12,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,15 +38,16 @@ import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.presentation.model.invoicedownload.ProgressData
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
 import lib.dehaat.ledger.util.DownloadFileUtil
+import lib.dehaat.ledger.util.DownloadStatus
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
 
 @HiltViewModel
 class InvoiceDetailViewModel @Inject constructor(
-	private val getInvoiceDetailUseCase: GetInvoiceDetailUseCase,
-	private val invoiceDownloadUseCase: InvoiceDownloadUseCase,
-	private val mapper: LedgerViewDataMapper,
+    private val getInvoiceDetailUseCase: GetInvoiceDetailUseCase,
+    private val invoiceDownloadUseCase: InvoiceDownloadUseCase,
+    private val mapper: LedgerViewDataMapper,
     private val downloadFileUtil: DownloadFileUtil,
-	savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val ledgerId by lazy {
@@ -122,17 +128,17 @@ class InvoiceDetailViewModel @Inject constructor(
             else -> null
         }
         identityId?.let {
-	        invoiceDownloadUseCase.getDownloadInvoice(
-		        it,
-		        source,
-		        file,
-		        invoiceDownloadData,
-		        invoiceDownloadStatus,
-		        ::updateProgressDialog,
-		        ::sendShowSnackBarEvent,
-		        ::updateDownloadPathAndProgress,
+            invoiceDownloadUseCase.getDownloadInvoice(
+                it,
+                source,
+                file,
+                invoiceDownloadData,
+                invoiceDownloadStatus,
+                ::updateProgressDialog,
+                ::sendShowSnackBarEvent,
+                ::updateDownloadPathAndProgress,
                 ::downloadFile
-	        )
+            )
         }
     }
 
@@ -141,40 +147,44 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     private fun downloadFile(
-        identityId: String,
-        file: File,
+        url: String,
+        fName: String?,
         invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
     ) = callInViewModelScope {
         updateProgressDialog(true)
-        downloadFileUtil.downloadFile(
-            File(file, "$identityId.pdf"),
-            identityId,
-            LedgerSDK.bucket
-        )?.setTransferListener(
-            object : TransferListener {
-                override fun onStateChanged(id: Int, state: TransferState?) {
-                    if (state == TransferState.COMPLETED) {
-                        updateProgressDialog(false)
-                        updateDownloadPathAndProgress(file, identityId)
-                        invoiceDownloadStatus(invoiceDownloadData)
-                    }
-                }
 
-                override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                    invoiceDownloadData.progressData =
-                        ProgressData(bytesCurrent.toInt(), bytesTotal.toInt())
-                    invoiceDownloadStatus(invoiceDownloadData)
-                }
+        var fileName = fName ?: url.substring(url.lastIndexOf('/') + 1)
+        fileName = fileName.replaceFirstChar { it.uppercase() }
 
-                override fun onError(id: Int, ex: Exception?) {
-                    ex?.printStackTrace()
-                    invoiceDownloadData.isFailed = true
-                    updateDownloadPathAndProgress(file, identityId)
-                    invoiceDownloadStatus(invoiceDownloadData)
-                    updateProgressDialog(false)
-                }
+        downloadFileUtil.downloadPDF(url, fileName, invoiceDownloadStatus, ::updateDownloadStatus)
+    }
+
+    private fun updateDownloadStatus(
+        fileName: String,
+        downloadStatus: DownloadStatus,
+        invoiceDownloadStatus: (InvoiceDownloadData) -> Unit
+    ) {
+        when (downloadStatus.status) {
+            DownloadManager.STATUS_FAILED -> {
+                updateProgressDialog(false)
+                invoiceDownloadData.isFailed = true
+                updateDownloadPathAndProgress(null, fileName)
+                invoiceDownloadData.filePath = downloadStatus.filePath
+                invoiceDownloadStatus(invoiceDownloadData)
             }
-        )
+
+            DownloadManager.STATUS_RUNNING -> {
+                invoiceDownloadData.progressData = downloadStatus.progressData
+                invoiceDownloadStatus(invoiceDownloadData)
+            }
+
+            DownloadManager.STATUS_SUCCESSFUL -> {
+                updateProgressDialog(false)
+                updateDownloadPathAndProgress(null, fileName)
+                invoiceDownloadData.filePath = downloadStatus.filePath
+                invoiceDownloadStatus(invoiceDownloadData)
+            }
+        }
     }
 
     private fun calledAPI() {
@@ -189,8 +199,8 @@ class InvoiceDetailViewModel @Inject constructor(
         }
     }
 
-    private fun updateDownloadPathAndProgress(file: File, id: String) = invoiceDownloadData.apply {
-        filePath = "${file.path}/${id.substringAfterLast('$')}.pdf"
+    private fun updateDownloadPathAndProgress(file: File?, id: String) = invoiceDownloadData.apply {
+        filePath = file?.let { "${file.path}/${id.substringAfterLast('$')}.pdf" } ?: ""
         progressData = ProgressData()
         invoiceId = id.substringAfterLast('$')
     }

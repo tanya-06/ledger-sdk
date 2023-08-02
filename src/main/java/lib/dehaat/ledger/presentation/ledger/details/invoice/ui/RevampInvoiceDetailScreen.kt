@@ -1,5 +1,11 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice.ui
 
+import android.Manifest
+import android.content.Context
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +45,7 @@ import lib.dehaat.ledger.presentation.common.uicomponent.HorizontalSpacer
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgressDialog
+import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.revamp.state.UIState
 import lib.dehaat.ledger.presentation.ledger.ui.component.FullyPaidTag
@@ -75,6 +82,7 @@ import lib.dehaat.ledger.util.GifImage
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.clickableWithCorners
 import lib.dehaat.ledger.util.getAmountInRupees
+import java.io.File
 
 @Composable
 fun RevampInvoiceDetailScreen(
@@ -88,6 +96,22 @@ fun RevampInvoiceDetailScreen(
 	HandleAPIErrors(viewModel.uiEvent)
 	val uiState by viewModel.uiState.collectAsState()
 	val context = LocalContext.current
+
+	val launcher = rememberLauncherForActivityResult(
+		contract = ActivityResultContracts.RequestPermission(),
+		onResult = { granted ->
+			if (granted) {
+				downloadInvoice(context, viewModel::downloadInvoice, onDownloadInvoiceClick)
+			} else {
+				Toast.makeText(
+					context,
+					context.getString(R.string.external_storage_permission_required),
+					Toast.LENGTH_LONG
+				).show()
+			}
+		}
+	)
+
 	CommonContainer(
 		title = stringResource(id = R.string.invoice_details),
 		onBackPress = onBackPress,
@@ -107,16 +131,10 @@ fun RevampInvoiceDetailScreen(
 						it.creditNotes,
 						it.productsInfo,
 					) {
-						LedgerSDK.getFile(context)?.let { file ->
-							viewModel.downloadInvoice(
-								file,
-								onDownloadInvoiceClick
-							)
-						} ?: run {
-							context.showToast(R.string.tech_problem)
-							LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
-								Exception("Unable to create file")
-							)
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+							downloadInvoice(context, viewModel::downloadInvoice, onDownloadInvoiceClick)
+						} else {
+							launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 						}
 					}
 				} ?: NoDataFound((uiState.state as? UIState.ERROR)?.message, onError)
@@ -581,4 +599,24 @@ fun showPrepaidTag(
 ): Boolean {
 	val invoiceAmount = summary.invoiceAmount
 	return invoiceAmount != null && invoiceAmount == prepaidAndCreditInfo?.prepaidAmount
+}
+
+private fun downloadInvoice(
+	context: Context,
+	downloadFile: (File, (InvoiceDownloadData) -> Unit) -> Unit,
+	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
+) {
+	LedgerSDK
+		.getFile(context)
+		?.let {
+			downloadFile(
+				it,
+				onDownloadInvoiceClick
+			)
+		} ?: run {
+		context.showToast(R.string.tech_problem)
+		LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
+			Exception("Unable to create file")
+		)
+	}
 }

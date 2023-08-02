@@ -20,7 +20,7 @@ class InvoiceDownloadUseCase @Inject constructor(
 		updateProgressDialog: (Boolean) -> Unit,
 		sendShowSnackBarEvent: (String) -> Unit,
 		updateDownloadPathAndProgress: (File, String) -> Unit,
-		downloadFile: (String, File, (InvoiceDownloadData) -> Unit) -> Unit
+		downloadFile: (String, String?, (InvoiceDownloadData) -> Unit) -> Unit
 	) {
 		updateProgressDialog(true)
 		val result = getInvoiceDownloadUseCase.invoke(identityId, source)
@@ -47,10 +47,10 @@ class InvoiceDownloadUseCase @Inject constructor(
 				}
 				DownloadSource.ODOO -> {
 					updateProgressDialog(false)
-					invoiceDownloadDataEntity.fileName?.let {
+					invoiceDownloadDataEntity.url?.let {
 						downloadFile(
 							it,
-							file,
+							identityId,
 							invoiceDownloadStatus
 						)
 					} ?: kotlin.run {

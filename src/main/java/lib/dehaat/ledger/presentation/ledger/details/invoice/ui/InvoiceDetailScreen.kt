@@ -1,5 +1,11 @@
 package lib.dehaat.ledger.presentation.ledger.details.invoice.ui
 
+import android.Manifest
+import android.content.Context
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -45,6 +51,7 @@ import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.getAmountInRupees
+import java.io.File
 
 @Composable
 fun InvoiceDetailScreen(
@@ -60,6 +67,21 @@ fun InvoiceDetailScreen(
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted ->
+            if (granted) {
+                downloadInvoice(context, viewModel::downloadInvoice, onDownloadInvoiceClick)
+            } else {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.external_storage_permission_required),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    )
+
     CommonContainer(
         title = "Invoice Detail",
         onBackPress = onBackPress,
@@ -71,9 +93,11 @@ fun InvoiceDetailScreen(
                     viewModel.updateProgressDialog(false)
                 }
             }
+
             uiState.isError -> {
-                NoDataFound{}
+                NoDataFound {}
             }
+
             else -> {
                 Column(
                     modifier = Modifier
@@ -374,18 +398,10 @@ fun InvoiceDetailScreen(
                         Text(
                             modifier = Modifier
                                 .clickable {
-                                    LedgerSDK
-                                        .getFile(context)
-                                        ?.let {
-                                            viewModel.downloadInvoice(
-                                                it,
-                                                onDownloadInvoiceClick
-                                            )
-                                        } ?: kotlin.run {
-                                        context.showToast(R.string.tech_problem)
-                                        LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
-                                            Exception("Unable to create file")
-                                        )
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                        downloadInvoice(context, viewModel::downloadInvoice, onDownloadInvoiceClick)
+                                    } else {
+                                        launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                     }
                                 }
                                 .padding(top = 16.dp)
@@ -404,5 +420,25 @@ fun InvoiceDetailScreen(
                 }
             }
         }
+    }
+}
+
+private fun downloadInvoice(
+    context: Context,
+    downloadFile: (File, (InvoiceDownloadData) -> Unit) -> Unit,
+    onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
+) {
+    LedgerSDK
+        .getFile(context)
+        ?.let {
+            downloadFile(
+                it,
+                onDownloadInvoiceClick
+            )
+        } ?: run {
+        context.showToast(R.string.tech_problem)
+        LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
+            Exception("Unable to create file")
+        )
     }
 }
