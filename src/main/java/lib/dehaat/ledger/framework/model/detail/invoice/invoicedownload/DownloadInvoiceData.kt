@@ -12,5 +12,7 @@ data class DownloadInvoiceData(
     @Json(name = "store_fname")
     val fileName: String?,
     @Json(name = "doctype")
-    val docType: String?
+    val docType: String?,
+    @Json(name = "url")
+    val url: String?
 )

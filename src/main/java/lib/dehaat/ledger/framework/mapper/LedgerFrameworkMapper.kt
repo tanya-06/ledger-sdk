@@ -322,7 +322,8 @@ class LedgerFrameworkMapper @Inject constructor() {
 			source = source,
 			pdf = pdf,
 			fileName = fileName,
-			docType = docType
+			docType = docType,
+			url = url
 		)
 	}
 
