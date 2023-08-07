@@ -45,16 +45,19 @@ import lib.dehaat.ledger.util.navBaseComposable
 
 @Composable
 fun LedgerNavigation(
-    dcName: String,
-    partnerId: String,
-    isDCFinanced: Boolean,
-    ledgerColors: LedgerColors,
-    ledgerCallbacks: LedgerCallBack,
-    resultLauncher: ActivityResultLauncher<Intent?>,
-    viewModel: LedgerDetailViewModel,
-    onDownloadClick: (InvoiceDownloadData) -> Unit,
-    finishActivity: () -> Unit,
-    openOrderDetailFragment: (String, String) -> Unit
+	dcName: String,
+	partnerId: String,
+	isDCFinanced: Boolean,
+	ledgerColors: LedgerColors,
+	ledgerCallbacks: LedgerCallBack,
+	resultLauncher: ActivityResultLauncher<Intent?>,
+	viewModel: LedgerDetailViewModel,
+	onDownloadClick: (InvoiceDownloadData) -> Unit,
+	finishActivity: () -> Unit,
+	openOrderDetailFragment: (String) -> Unit,
+	getWalletFTUEStatus: (String) -> Boolean,
+	setWalletFTUEStatus: (String) -> Unit,
+    getWalletHelpVideoId: () -> String
 ) {
 
     val navController = rememberNavController()
@@ -92,24 +95,29 @@ fun LedgerNavigation(
                 onPaymentOptionsClick = {
                     ledgerCallbacks.onPaymentOptionsClick(resultLauncher)
                 },
-                onError = { ledgerCallbacks.exceptionHandler(it) }
+                onError = { ledgerCallbacks.exceptionHandler(it) },
+                setWalletFTUEStatus = setWalletFTUEStatus,
+                getWalletFTUEStatus = getWalletFTUEStatus
             )
         }
 
         navBaseComposable(
-            route = LedgerRoutes.WalletLedgerRoute.screen,
-            arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                type = NavType.StringType
-                defaultValue = partnerId
-            }),
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            WalletLedgerScreen(onClick = {
-	            openOrderDetailFragment(it, it)
-            }, onBackPress = {
-                navController.popBackStack()
-            })
-        }
+			route = LedgerRoutes.WalletLedgerRoute.screen,
+			arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+				type = NavType.StringType
+				defaultValue = partnerId
+			}),
+			logScreenName = ledgerCallbacks.firebaseScreenLogger
+		) {
+			WalletLedgerScreen(onClick = {
+				openOrderDetailFragment(it)
+			}, onBackPress = {
+				navController.popBackStack()
+			}, setWalletFTUEStatus = setWalletFTUEStatus,
+				getWalletFTUEStatus = getWalletFTUEStatus,
+                getWalletHelpVideoId = getWalletHelpVideoId
+			)
+		}
 
         navBaseComposable(
             route = LedgerRoutes.RevampLedgerScreen.screen,
@@ -133,7 +141,9 @@ fun LedgerNavigation(
                 detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
                 onPayNowClick = { ledgerCallbacks.onRevampPayNowClick(resultLauncher) },
                 onOtherPaymentModeClick = { ledgerCallbacks.onRevampPayNowClick(resultLauncher) },
-                onError = { ledgerCallbacks.exceptionHandler(it) }
+                onError = { ledgerCallbacks.exceptionHandler(it) },
+                getWalletFTUEStatus = getWalletFTUEStatus,
+                setWalletFTUEStatus = setWalletFTUEStatus
             )
         }
 

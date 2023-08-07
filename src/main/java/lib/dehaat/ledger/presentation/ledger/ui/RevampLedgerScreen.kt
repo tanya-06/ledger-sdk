@@ -26,18 +26,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.dehaat.androidbase.helper.isFalse
 import com.dehaat.androidbase.helper.showToast
+import com.dehaat.wallet.presentation.ui.components.ftue.WalletActivationBottomSheetComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.initializer.LedgerSDK
+import lib.dehaat.ledger.initializer.LedgerSDK.getWalletFTUEStatus
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
+import lib.dehaat.ledger.presentation.LedgerConstants.IS_WALLET_LEDGER_VIEWED
 import lib.dehaat.ledger.presentation.RevampLedgerViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -78,6 +83,8 @@ fun RevampLedgerScreen(
 	onOtherPaymentModeClick: () -> Unit,
 	onError: (Exception) -> Unit,
 	onBackPress: () -> Unit,
+	getWalletFTUEStatus: (String) -> Boolean,
+	setWalletFTUEStatus: (String) -> Unit,
 	lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 	scaffoldState: ScaffoldState = rememberScaffoldState(),
 	scope: CoroutineScope = rememberCoroutineScope(),
@@ -260,6 +267,20 @@ fun RevampLedgerScreen(
 			}
 		}
 	}
+	if (!getWalletFTUEStatus(IS_WALLET_LEDGER_VIEWED)) {
+		LaunchedEffect(Unit){
+			delay(2000)
+			viewModel.showWalletFTUEBottomSheet()
+		}
+		WalletFirstTimeDialog(
+			uiState,
+			setWalletFTUEStatus,
+			getWalletFTUEStatus,
+			detailPageNavigationCallback,
+			viewModel::hideWalletFTUEBottomSheet,
+			viewModel::dismissWalletFTUEBottomSheet
+		)
+	}
 }
 
 @Composable
@@ -355,6 +376,47 @@ private fun FilterBottomSheetDialog(
 					hideBottomSheet(null)
 				}
 			}
+		}
+	}
+}
+
+@Composable
+private fun WalletFirstTimeDialog(
+	uiState: LedgerUIState,
+	setWalletFTUEStatus: (String) -> Unit,
+	getWalletFTUEStatus: (String) -> Boolean,
+	detailPageNavigationCallback: DetailPageNavigationCallback,
+	hideWalletFTUEBottomSheet: () -> Unit,
+	dismissWalletFTUEBottomSheet: () -> Unit
+) = AnimatedVisibility(
+	visible = !getWalletFTUEStatus(IS_WALLET_LEDGER_VIEWED) && uiState.showFirstTimeFTUEDialog && !uiState.dismissFirstTimeFTUEDialog,
+	enter = expandVertically(animationSpec = tween(500)),
+	exit = shrinkVertically(animationSpec = tween(500))
+) {
+	fun dismissWallet(){
+		hideWalletFTUEBottomSheet()
+		setWalletFTUEStatus(IS_WALLET_LEDGER_VIEWED)
+		dismissWalletFTUEBottomSheet()
+	}
+	Dialog(
+		onDismissRequest = {
+			hideWalletFTUEBottomSheet()
+		},
+		properties = DialogProperties(
+			usePlatformDefaultWidth = false,
+		)
+	) {
+		Box(
+			contentAlignment = Alignment.BottomCenter,
+			modifier = Modifier
+				.fillMaxSize()
+		) {
+			WalletActivationBottomSheetComponent({
+				dismissWallet()
+				detailPageNavigationCallback.navigateToWalletLedger(bundleOf())
+			}, {
+				dismissWallet()
+			})
 		}
 	}
 }

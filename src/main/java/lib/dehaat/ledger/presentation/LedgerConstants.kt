@@ -30,6 +30,7 @@ object LedgerConstants {
 	const val UTC_TIMEZONE = "UTC"
 	const val FINANCIAL_YEAR = "FY"
 	const val CUSTOM = "Custom"
+	const val IS_WALLET_LEDGER_VIEWED = "isWalletLedgerViewed"
 }
 
 object CreditNoteReason {

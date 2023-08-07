@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,11 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
+import lib.dehaat.ledger.resources.FrenchBlue120
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.Neutral10
 import lib.dehaat.ledger.resources.Neutral60
@@ -37,6 +40,7 @@ import lib.dehaat.ledger.resources.Pumpkin120
 import lib.dehaat.ledger.resources.SeaGreen110
 import lib.dehaat.ledger.resources.Secondary120
 import lib.dehaat.ledger.resources.Warning10
+import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textCaptionCP1
 import lib.dehaat.ledger.resources.textParagraphT1Highlight
 import lib.dehaat.ledger.resources.textParagraphT2
@@ -134,6 +138,7 @@ private fun TransactionCardDebitHoldPreview() = LedgerTheme {
         transaction = DummyDataSource.debitHoldTransaction
     )
 }
+
 @Composable
 fun TransactionCard(
 	transactionType: TransactionType,
@@ -161,7 +166,7 @@ fun TransactionCard(
 			contentDescription = stringResource(id = R.string.accessibility_icon)
 		)
 		Spacer(modifier = Modifier.width(8.dp))
-		Column (Modifier.weight(1f)){
+		Column(Modifier.weight(1f)) {
 			Row(
 				modifier = Modifier.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceBetween
@@ -250,6 +255,23 @@ fun TransactionCard(
 					}
 				} else {
 					TagInterestDateStart(transaction)
+				}
+
+				if (transaction.paymentMode == "Wallet") {
+					Row {
+						Text(
+							text = stringResource(R.string.pay_from_wallet),
+							style = text12Sp(Neutral60, lineHeight = 14.sp),
+							modifier = Modifier
+								.padding(vertical = 2.dp, horizontal = 4.dp)
+						)
+						Icon(
+							painter = painterResource(id = R.drawable.ic_wallet_ledger_item),
+							tint = FrenchBlue120,
+							modifier = Modifier.padding(vertical = 2.dp),
+							contentDescription = "Left Icon"
+						)
+					}
 				}
 
 				transaction.unrealizedPayment?.let {

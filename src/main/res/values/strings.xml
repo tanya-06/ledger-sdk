@@ -241,4 +241,5 @@
     <string name="download_completed">Download Successful</string>
     <string name="view_statement">View Statement</string>
     <string name="fully_paid">Fully paid</string>
+    <string name="pay_from_wallet">Pay from wallet</string>
 </resources>

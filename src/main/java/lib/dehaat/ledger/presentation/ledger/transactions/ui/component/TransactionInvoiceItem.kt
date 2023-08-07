@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.dehaat.androidbase.helper.isNotNull
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.datasource.DummyDataSource
@@ -27,8 +29,11 @@ import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.initializer.toDateMonthYear
 import lib.dehaat.ledger.presentation.ledger.transactions.constants.TransactionType
 import lib.dehaat.ledger.presentation.model.transactions.TransactionViewData
+import lib.dehaat.ledger.resources.FrenchBlue120
+import lib.dehaat.ledger.resources.Neutral60
 import lib.dehaat.ledger.resources.Pumpkin120
 import lib.dehaat.ledger.resources.SeaGreen110
+import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
 import lib.dehaat.ledger.util.getAmountInRupees
@@ -106,12 +111,29 @@ fun TransactionInvoiceItem(
                 text = data.date.toDateMonthYear(),
             )
         }
-
-        Text(
-            modifier = Modifier.padding(horizontal = 12.dp),
-            text = data.amount.getAmountInRupees(),
-            style = textBold14Sp(textColor = getAmountColor(data.type, ledgerColors = ledgerColors))
-        )
+        Column {
+            Text(
+                modifier = Modifier.padding(horizontal = 12.dp).align(Alignment.End),
+                text = data.amount.getAmountInRupees(),
+                style = textBold14Sp(textColor = getAmountColor(data.type, ledgerColors = ledgerColors))
+            )
+            if (data.paymentMode == "Wallet") {
+                Row(modifier = Modifier.padding(top = 16.dp, end = 8.dp)) {
+                    Text(
+                        text = stringResource(R.string.pay_from_wallet),
+                        style = text12Sp(Neutral60, lineHeight = 14.sp),
+                        modifier = Modifier
+                            .padding(vertical = 2.dp, horizontal = 4.dp)
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_wallet_ledger_item),
+                        tint = FrenchBlue120,
+                        modifier = Modifier.padding(vertical = 2.dp),
+                        contentDescription = "Left Icon"
+                    )
+                }
+            }
+    }
 
         if (data.type != TransactionType.RELEASE_PAYMENT)
             Image(

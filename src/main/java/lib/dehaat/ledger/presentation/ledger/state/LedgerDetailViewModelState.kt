@@ -35,7 +35,8 @@ data class LedgerDetailViewModelState(
     val transactionSummaryViewData: TransactionSummaryViewData? = null,
     val showFilterRangeDialog: Boolean = false,
     val showOutstandingDialog: Boolean = false,
-	val walletBalance: Double? = null,
+	val showFirstTimeFTUEDialog: Boolean = false,
+	val dismissFirstTimeFTUEDialog: Boolean = false,
 ) {
     fun toUiState() = LedgerDetailUIState(
         creditSummaryViewData = creditSummaryViewData,
@@ -46,7 +47,8 @@ data class LedgerDetailViewModelState(
         isFilteringWithRange = showFilterRangeDialog,
         showOutstandingDialog = showOutstandingDialog,
         selectedDaysFilter = selectedDaysFilter,
-		walletBalance = walletBalance
+        showFirstTimeFTUEDialog = showFirstTimeFTUEDialog,
+        dismissFirstTimeFTUEDialog = dismissFirstTimeFTUEDialog
     )
 }
 
@@ -59,7 +61,8 @@ data class LedgerDetailUIState(
     val isFilteringWithRange: Boolean,
     val showOutstandingDialog: Boolean,
     val selectedDaysFilter: DaysToFilter?,
-	val walletBalance: Double?
+    val showFirstTimeFTUEDialog: Boolean,
+    val dismissFirstTimeFTUEDialog: Boolean,
 )
 
 sealed class BottomSheetType {

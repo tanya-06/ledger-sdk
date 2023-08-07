@@ -227,4 +227,5 @@
     <string name="to_cannot_be_lesser">कब तक का दिनांक कब से के दिनांक से छोटा नहीं हो सकता</string>
     <string name="ledger_current_year_msg">PDF लेजर %s से %s तक डाउनलोड किया जा सकेगा</string>
     <string name="fully_paid">पूर्ण भुगतान हो चुका है</string>
+    <string name="pay_from_wallet">वॉलेट से भुगतान</string>
 </resources>

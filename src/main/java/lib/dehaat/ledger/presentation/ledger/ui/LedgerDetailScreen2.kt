@@ -3,10 +3,13 @@
 package lib.dehaat.ledger.presentation.ledger.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -26,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -37,17 +41,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dehaat.androidbase.helper.isFalse
+import com.dehaat.wallet.presentation.ui.components.ftue.WalletActivationBottomSheetComponent
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
+import lib.dehaat.ledger.presentation.LedgerConstants.IS_WALLET_LEDGER_VIEWED
 import lib.dehaat.ledger.presentation.LedgerDetailViewModel
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.ledger.bottomsheets.DaysToFilterContent
@@ -62,8 +72,9 @@ import lib.dehaat.ledger.presentation.ledger.downloadledger.ui.SnackbarHostConte
 import lib.dehaat.ledger.presentation.ledger.downloadledger.ui.registerDownloadReceiver
 import lib.dehaat.ledger.presentation.ledger.downloadledger.ui.unRegisterDownloadReceiver
 import lib.dehaat.ledger.presentation.ledger.state.BottomSheetType
+import lib.dehaat.ledger.presentation.ledger.state.LedgerDetailUIState
 import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewModel
-import lib.dehaat.ledger.presentation.ledger.transactions.state.LedgerDetailUIState
+import lib.dehaat.ledger.presentation.ledger.transactions.state.TransactionsLedgerDetailUIState
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.TransactionsListScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.Header
 import lib.dehaat.ledger.presentation.ledger.ui.component.Tabs
@@ -87,7 +98,9 @@ fun LedgerDetailScreen2(
 	isLmsActivated: () -> Boolean?,
 	onPayNowClick: () -> Unit,
 	onError: (Exception) -> Unit,
-	onPaymentOptionsClick: () -> Unit
+	onPaymentOptionsClick: () -> Unit,
+    getWalletFTUEStatus: (String) -> Boolean,
+    setWalletFTUEStatus: (String) -> Unit
 ) {
 	HandleAPIErrors(viewModel.uiEvent)
 	val uiState by viewModel.uiState.collectAsState()
@@ -99,6 +112,7 @@ fun LedgerDetailScreen2(
     )
 
 	var bottomBarVisibility by rememberSaveable { mutableStateOf(true) }
+    val isWalletLedgerViewed by remember { mutableStateOf(getWalletFTUEStatus(IS_WALLET_LEDGER_VIEWED)) }
 
 	val context = LocalContext.current
 	val transactionVM: LedgerTransactionViewModel = hiltViewModel()
@@ -241,7 +255,7 @@ fun LedgerDetailScreen2(
 												viewModel.openOutstandingDialog()
 											} else {
 												viewModel.openAllOutstandingModal()
-												sheetState.animateTo(ModalBottomSheetValue.Expanded)
+												sheetState.show()
 											}
 										}
 									},
@@ -278,9 +292,7 @@ fun LedgerDetailScreen2(
 										) {
 											viewModel.showLenderOutstandingModal(it)
 											scope.launch {
-												sheetState.animateTo(
-													ModalBottomSheetValue.Expanded
-												)
+												sheetState.show()
 											}
 										}
 
@@ -291,9 +303,7 @@ fun LedgerDetailScreen2(
 											openDaysFilter = {
 												viewModel.showDaysFilterBottomSheet()
 												scope.launch {
-													sheetState.animateTo(
-														ModalBottomSheetValue.Expanded
-													)
+													sheetState.show()
 												}
 											},
 											openRangeFilter = {
@@ -312,12 +322,26 @@ fun LedgerDetailScreen2(
 			}
 		}
 	}
+    if (!isWalletLedgerViewed) {
+        LaunchedEffect(Unit){
+            delay(2000)
+            viewModel.showWalletFTUEBottomSheet()
+        }
+        WalletFirstTimeDialog(
+            uiState,
+            setWalletFTUEStatus,
+            isWalletLedgerViewed,
+            detailPageNavigationCallback,
+            viewModel::hideWalletFTUEBottomSheet,
+            viewModel::dismissWalletFTUEBottomSheet
+        )
+    }
 }
 
 @Composable
 private fun DownloadLedgerSnackbarHost(
 	snackbarHostState: SnackbarHostState,
-	transactionUiState: LedgerDetailUIState,
+	transactionUiState: TransactionsLedgerDetailUIState,
 	scaffoldState: ScaffoldState,
 	transactionVM: LedgerTransactionViewModel
 ) = SnackbarHost(snackbarHostState) {
@@ -367,4 +391,42 @@ private fun ObserveLedgerDownloadState(
 			}
 		}
 	}
+}
+
+@Composable
+private fun WalletFirstTimeDialog(
+    uiState: LedgerDetailUIState,
+    setWalletFTUEStatus: (String) -> Unit,
+    isLedgerWalletViewed: Boolean,
+    detailPageNavigationCallback: DetailPageNavigationCallback,
+    hideWalletFTUEBottomSheet: () -> Unit,
+    dismissWalletFTUEBottomSheet: () -> Unit
+) = AnimatedVisibility(
+    visible = !isLedgerWalletViewed && uiState.showFirstTimeFTUEDialog && !uiState.dismissFirstTimeFTUEDialog,
+    enter = expandVertically(animationSpec = tween(500)),
+    exit = shrinkVertically(animationSpec = tween(500))
+) {
+    Dialog(
+        onDismissRequest = {
+            hideWalletFTUEBottomSheet()
+        },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+        )
+    ) {
+        Box(
+            contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            WalletActivationBottomSheetComponent({
+                hideWalletFTUEBottomSheet()
+                setWalletFTUEStatus(IS_WALLET_LEDGER_VIEWED)
+                dismissWalletFTUEBottomSheet()
+                detailPageNavigationCallback.navigateToWalletLedger(bundleOf())
+            }, {
+                hideWalletFTUEBottomSheet()
+            })
+        }
+    }
 }

@@ -8,9 +8,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
-import com.dehaat.wallet.domain.usecase.GetWalletTotalAmountUseCase
-import com.dehaat.wallet.presentation.extensions.getApiFailureError
 import com.dehaat.androidbase.helper.orZero
+import com.dehaat.wallet.domain.usecase.GetWalletTotalAmountUseCase
+import com.dehaat.wallet.presentation.extensions.getAmtInRupees
+import com.dehaat.wallet.presentation.extensions.getApiFailureError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +44,6 @@ import lib.dehaat.ledger.util.getEndYearRange
 import lib.dehaat.ledger.util.getFailureError
 import lib.dehaat.ledger.util.getMonthYear
 import lib.dehaat.ledger.util.getTimeFromMonthYear
-import javax.inject.Inject
 
 @HiltViewModel
 class LedgerTransactionViewModel @Inject constructor(
@@ -96,7 +96,7 @@ class LedgerTransactionViewModel @Inject constructor(
 		when (val response = getWalletTotalAmount()) {
 			is APIResultEntity.Success -> {
 				viewModelState.update {
-					it.copy(walletBalance = response.data?.totalWalletBalance ?: 0.0)
+					it.copy(walletBalance = response.data?.totalWalletBalance.toString().getAmtInRupees())
 				}
 			}
 			is APIResultEntity.Failure -> {

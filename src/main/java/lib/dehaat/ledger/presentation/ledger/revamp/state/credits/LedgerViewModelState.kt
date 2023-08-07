@@ -19,7 +19,9 @@ data class LedgerViewModelState(
 	val isLoading: Boolean = false,
 	val isSuccess: Boolean = false,
 	val snackbarType: SnackBarType? = null,
-    val walletBalance: Double = 0.0
+    val walletBalance: String = "0.0",
+    val showFirstTimeFTUEDialog: Boolean = false,
+    val dismissFirstTimeFTUEDialog: Boolean = false
 ) {
 	fun toUIState() = LedgerUIState(
 		summaryViewData = summaryViewData,
@@ -32,7 +34,9 @@ data class LedgerViewModelState(
 			else -> UIState.SUCCESS
 		},
 		snackbarType = snackbarType,
-        walletBalance = walletBalance
+        walletBalance = walletBalance,
+        showFirstTimeFTUEDialog = showFirstTimeFTUEDialog,
+        dismissFirstTimeFTUEDialog = dismissFirstTimeFTUEDialog
     )
 }
 
@@ -42,7 +46,9 @@ data class LedgerUIState(
 	val appliedFilter: DaysToFilter,
 	val state: UIState,
 	val snackbarType: SnackBarType?,
-    val walletBalance: Double
+    val walletBalance: String,
+    val showFirstTimeFTUEDialog: Boolean,
+    val dismissFirstTimeFTUEDialog: Boolean
 )
 
 data class TransactionViewModelState(

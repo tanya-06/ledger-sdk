@@ -4,10 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
+import com.dehaat.androidbase.helper.orZero
 import com.dehaat.wallet.domain.usecase.GetWalletTotalAmountUseCase
 import com.dehaat.wallet.presentation.extensions.getApiFailureError
-import com.dehaat.androidbase.helper.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,12 +38,12 @@ import lib.dehaat.ledger.presentation.model.downloadledger.DownloadLedgerData
 import lib.dehaat.ledger.presentation.model.downloadledger.SnackBarType
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.presentation.model.transactions.toStartAndEndDates
+import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.getEndYearRange
 import lib.dehaat.ledger.util.getFailureError
 import lib.dehaat.ledger.util.getMonthYear
 import lib.dehaat.ledger.util.getTimeFromMonthYear
 import lib.dehaat.ledger.util.processAPIResponseWithFailureSnackBar
-import javax.inject.Inject
 
 @HiltViewModel
 class RevampLedgerViewModel @Inject constructor(
@@ -102,15 +103,26 @@ class RevampLedgerViewModel @Inject constructor(
 		it.copy(showFilterSheet = false)
 	}
 
-	fun getTransactionSummaryFromServer(daysToFilter: DaysToFilter? = null) = callInViewModelScope {
-		callingAPI()
-		val dates = daysToFilter?.toStartAndEndDates()
-		val response = getTransactionSummaryUseCase.getTransactionSummaryV2(
-			partnerId, dates?.first, dates?.second
-		)
-		calledAPI()
-		processTransactionSummaryResponse(response)
-	}
+	fun showWalletFTUEBottomSheet() = viewModelState.update {
+        it.copy(showFirstTimeFTUEDialog = true)
+    }
+
+    fun dismissWalletFTUEBottomSheet() = viewModelState.update {
+        it.copy(dismissFirstTimeFTUEDialog = true)
+    }
+
+    fun hideWalletFTUEBottomSheet() = viewModelState.update {
+        it.copy(showFirstTimeFTUEDialog = false)
+    }
+    fun getTransactionSummaryFromServer(daysToFilter: DaysToFilter? = null) = callInViewModelScope {
+        callingAPI()
+        val dates = daysToFilter?.toStartAndEndDates()
+        val response = getTransactionSummaryUseCase.getTransactionSummaryV2(
+            partnerId, dates?.first, dates?.second
+        )
+        calledAPI()
+        processTransactionSummaryResponse(response)
+    }
 
 	private fun processTransactionSummaryResponse(
 		result: APIResultEntity<TransactionSummaryEntity?>
@@ -125,12 +137,13 @@ class RevampLedgerViewModel @Inject constructor(
 			)
 		}
 	}
+
     private fun getTotalWalletAmountFromServer() = callInViewModelScope {
         callingAPI()
         when (val response = getWalletTotalAmount()) {
             is APIResultEntity.Success -> {
                 viewModelState.update {
-                    it.copy(walletBalance = response.data?.totalWalletBalance ?: 0.0)
+                    it.copy(walletBalance = response.data?.totalWalletBalance.toString().getAmountInRupees())
                 }
             }
             is APIResultEntity.Failure -> {
@@ -138,20 +151,6 @@ class RevampLedgerViewModel @Inject constructor(
             }
         }
         callingAPI()
-    }
-
-    private fun processTransactionSummaryResponse(
-        result: APIResultEntity<TransactionSummaryEntity?>
-    ) = result.processAPIResponseWithFailureSnackBar(::sendFailureEvent) { entity ->
-        val transactionSummaryViewData = mapper.toTransactionSummaryViewData(entity)
-        val outstandingCalculationUiState = mapper.toOutstandingCalculationViewData(entity)
-        transactionsViewModelState.update { ledgerDetailViewModelState ->
-            ledgerDetailViewModelState.copy(
-                isLoading = false,
-                summary = transactionSummaryViewData,
-                outstandingCalculationUiState = outstandingCalculationUiState
-            )
-        }
     }
 
 	private fun getCreditSummaryFromServer() {

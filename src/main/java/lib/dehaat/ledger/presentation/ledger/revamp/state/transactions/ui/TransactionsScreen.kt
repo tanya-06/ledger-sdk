@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -39,8 +38,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.dehaat.androidbase.helper.showToast
-import kotlinx.coroutines.launch
 import com.dehaat.wallet.presentation.ui.components.EntryPointButtonContent
+import kotlinx.coroutines.launch
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
@@ -101,7 +100,7 @@ fun TransactionsScreen(
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = { granted ->
 			if (granted) {
-				scope.launch { downloadLedgerSheet.animateTo(ModalBottomSheetValue.Expanded) }
+				scope.launch { downloadLedgerSheet.show() }
 			} else {
 				Toast.makeText(
 					context,
@@ -130,7 +129,7 @@ fun TransactionsScreen(
 		item {
 			TransactionListHeader {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-					scope.launch { downloadLedgerSheet.animateTo(ModalBottomSheetValue.Expanded) }
+					scope.launch { downloadLedgerSheet.show() }
 				} else {
 					launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				}
@@ -305,7 +304,7 @@ private fun HoldAndWalletBalanceContent(
 	abs: HoldAmountViewData?,
 	detailPageNavigationCallback: DetailPageNavigationCallback,
 	ledgerViewModel: RevampLedgerViewModel,
-	walletBalance: Double
+	walletBalance: String
 ) {
 	Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
 	Row(
@@ -317,10 +316,10 @@ private fun HoldAndWalletBalanceContent(
 		abs?.let {
 			EntryPointButtonContent(modifier = Modifier
 				.weight(.5f)
-				.padding(start = 8.dp, end = 8.dp),
+				.padding(start = 8.dp, end = 4.dp),
 				headingText = stringResource(id = R.string.hold_balance),
 				valueText = it.formattedTotalHoldBalance,
-				drawableIcon = R.drawable.ic_lock_orange_bg,
+				drawableIcon = R.drawable.ic_lock_white_bg,
 				bgColor = Secondary10,
 				outlineColor = Secondary20,
 				onClick = {
@@ -337,7 +336,7 @@ private fun HoldAndWalletBalanceContent(
 		}
 		EntryPointButtonContent(modifier = Modifier
 			.weight(.5f)
-			.padding(start = 8.dp, end = 8.dp),
+			.padding(start = 8.dp, end = 4.dp),
 			valueText = walletBalance.getAmountInRupees(),
 			onClick = {
 				detailPageNavigationCallback.navigateToWalletLedger(bundleOf())
