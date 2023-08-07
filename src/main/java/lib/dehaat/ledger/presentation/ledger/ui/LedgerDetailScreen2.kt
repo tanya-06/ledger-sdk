@@ -12,7 +12,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
@@ -29,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -59,12 +63,15 @@ import lib.dehaat.ledger.presentation.ledger.downloadledger.ui.registerDownloadR
 import lib.dehaat.ledger.presentation.ledger.downloadledger.ui.unRegisterDownloadReceiver
 import lib.dehaat.ledger.presentation.ledger.state.BottomSheetType
 import lib.dehaat.ledger.presentation.ledger.transactions.LedgerTransactionViewModel
+import lib.dehaat.ledger.presentation.ledger.transactions.state.LedgerDetailUIState
 import lib.dehaat.ledger.presentation.ledger.transactions.ui.TransactionsListScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.Header
 import lib.dehaat.ledger.presentation.ledger.ui.component.Tabs
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionSummary
 import lib.dehaat.ledger.presentation.model.downloadledger.SnackBarType
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
+import lib.dehaat.ledger.resources.Neutral90
+import lib.dehaat.ledger.resources.mediumShape
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.closeSheet
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
@@ -164,11 +171,8 @@ fun LedgerDetailScreen2(
 			onBackPress = onBackPress,
 			scaffoldState = scaffoldState,
 			ledgerColors = ledgerColors,
-			snackbarHostContent = {
-				SnackbarHostContent(
-					transactionUiState.snackbarType,
-					it, scaffoldState, transactionVM::downloadLedger
-				)
+			snackbarHost = {
+				DownloadLedgerSnackbarHost(it, transactionUiState, scaffoldState, transactionVM)
 			},
 			bottomBar = {
 				if (uiState.creditSummaryViewData?.credit?.externalFinancierSupported == false) {
@@ -307,6 +311,27 @@ fun LedgerDetailScreen2(
 			}
 		}
 	}
+}
+
+@Composable
+private fun DownloadLedgerSnackbarHost(
+	snackbarHostState: SnackbarHostState,
+	transactionUiState: LedgerDetailUIState,
+	scaffoldState: ScaffoldState,
+	transactionVM: LedgerTransactionViewModel
+) = SnackbarHost(snackbarHostState) {
+	Snackbar(
+		content = {
+			SnackbarHostContent(
+				transactionUiState.snackbarType,
+				it, scaffoldState, transactionVM::downloadLedger
+			)
+		},
+		backgroundColor = Neutral90,
+		modifier = Modifier
+			.clip(mediumShape())
+			.padding(horizontal = 8.dp, vertical = 8.dp)
+	)
 }
 
 @Composable

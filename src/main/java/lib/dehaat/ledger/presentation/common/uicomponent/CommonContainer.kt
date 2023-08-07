@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarData
 import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -22,19 +22,19 @@ fun CommonContainer(
 	scaffoldState: ScaffoldState = rememberScaffoldState(),
 	backgroundColor: Color = Color.White,
 	bottomBar: @Composable () -> Unit = {},
-	snackbarHostContent: @Composable (SnackbarData) -> Unit = { Text(it.message) },
+	snackbarHost: @Composable (SnackbarHostState) -> Unit = {
+		SnackbarHost(it) {
+			Snackbar(content = {
+				Text(it.message)
+			})
+		}
+	},
 	content: @Composable (PaddingValues) -> Unit
 ) {
 	Scaffold(
 		modifier = modifier,
 		scaffoldState = scaffoldState,
-		snackbarHost = {
-			SnackbarHost(it) { snackbarData ->
-				Snackbar(content = {
-					snackbarHostContent(snackbarData)
-				})
-			}
-		},
+		snackbarHost = snackbarHost,
 		topBar = {
 			CustomAppBar(
 				title,

@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -59,6 +60,8 @@ import lib.dehaat.ledger.presentation.model.downloadledger.SnackBarType
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
 import lib.dehaat.ledger.presentation.model.transactions.getNumberOfDays
 import lib.dehaat.ledger.resources.Background
+import lib.dehaat.ledger.resources.Neutral90
+import lib.dehaat.ledger.resources.mediumShape
 import lib.dehaat.ledger.util.closeSheet
 import moe.tlaster.nestedscrollview.NestedScrollViewState
 import moe.tlaster.nestedscrollview.VerticalNestedScrollView
@@ -179,10 +182,8 @@ fun RevampLedgerScreen(
 				scaffoldState = scaffoldState,
 				backgroundColor = Background,
 				ledgerColors = ledgerColors,
-				snackbarHostContent = {
-					SnackbarHostContent(
-						uiState.snackbarType, it, scaffoldState, viewModel::downloadLedger
-					)
+				snackbarHost = {
+					DownloadLedgerSnackbarHost(it, uiState, scaffoldState, viewModel)
 				},
 				bottomBar = {
 					Surface(elevation = 8.dp) {
@@ -262,9 +263,28 @@ fun RevampLedgerScreen(
 }
 
 @Composable
+private fun DownloadLedgerSnackbarHost(
+	snackbarHostState: SnackbarHostState,
+	uiState: LedgerUIState,
+	scaffoldState: ScaffoldState,
+	viewModel: RevampLedgerViewModel
+) = SnackbarHost(snackbarHostState) {
+	Snackbar(
+		content = {
+			SnackbarHostContent(
+				uiState.snackbarType, it, scaffoldState, viewModel::downloadLedger
+			)
+		},
+		backgroundColor = Neutral90,
+		modifier = Modifier
+			.clip(mediumShape())
+			.padding(horizontal = 8.dp, vertical = 8.dp)
+	)
+}
+
+@Composable
 private fun ObserveLedgerDownloadState(
-	viewModel: RevampLedgerViewModel,
-	snackbarHostState: SnackbarHostState
+	viewModel: RevampLedgerViewModel, snackbarHostState: SnackbarHostState
 ) {
 	val scope = rememberCoroutineScope()
 	val downloadState by LedgerSDK.downloadStatusLiveData.observeAsState()
@@ -278,8 +298,7 @@ private fun ObserveLedgerDownloadState(
 				)
 				scope.launch {
 					snackbarHostState.showSnackbar(
-						DownloadLedgerState.SUCCESS,
-						duration = SnackbarDuration.Indefinite
+						DownloadLedgerState.SUCCESS, duration = SnackbarDuration.Indefinite
 					)
 				}
 			}

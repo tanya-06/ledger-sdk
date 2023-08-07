@@ -50,7 +50,7 @@ data class TransactionViewModelState(
 	val isLoading: Boolean = false,
 	val isSuccess: Boolean = false,
 	val downloadLedgerState: DownloadLedgerState = DownloadLedgerState(
-		false, DownloadLedgerFilter.YEARLY, getEndYearRange(), null, null
+		false, DownloadLedgerFilter.YEARLY, getEndYearRange(), null, null, true
 	)
 ) {
 	fun toUIState() = TransactionUIState(
@@ -62,8 +62,18 @@ data class TransactionViewModelState(
 			isLoading -> UIState.LOADING
 			else -> UIState.SUCCESS
 		},
-		downloadLedgerState = downloadLedgerState
+		downloadLedgerState = downloadLedgerState.copy(
+			enableDownloadBtn = shouldEnableDownloadBtn(downloadLedgerState)
+		)
 	)
+
+	private fun shouldEnableDownloadBtn(downloadLedgerState: DownloadLedgerState): Boolean =
+		with(downloadLedgerState) {
+			if ((selectedDownloadFilter == DownloadLedgerFilter.CUSTOM) && (fromDate == null || toDate == null)) {
+				return@with false
+			}
+			return@with !isLoading
+		}
 }
 
 data class TransactionUIState(
@@ -78,5 +88,6 @@ data class DownloadLedgerState(
 	val selectedDownloadFilter: Int,
 	val selectedDateRange: DateRange,
 	val fromDate: Pair<Int, Int>?,
-	val toDate: Pair<Int, Int>?
+	val toDate: Pair<Int, Int>?,
+	val enableDownloadBtn: Boolean
 )

@@ -11,16 +11,26 @@ data class TransactionsViewModelState(
 	val onlyPenaltyInvoices: Boolean = false,
 	val daysToFilter: DaysToFilter = DaysToFilter.All,
 	val downloadLedgerState: DownloadLedgerState = DownloadLedgerState(
-		false, DownloadLedgerFilter.YEARLY, getEndYearRange(), null, null
+		false, DownloadLedgerFilter.YEARLY, getEndYearRange(), null, null, false
 	),
-	val snackbarType:SnackBarType? = null
+	val snackbarType: SnackBarType? = null
 ) {
 	fun toUiState() = LedgerDetailUIState(
 		isLoading = isLoading,
 		onlyPenaltyInvoices = onlyPenaltyInvoices,
-		downloadLedgerState = downloadLedgerState,
+		downloadLedgerState = downloadLedgerState.copy(
+			enableDownloadBtn = shouldEnableDownloadBtn(downloadLedgerState)
+		),
 		snackbarType = snackbarType
 	)
+
+	private fun shouldEnableDownloadBtn(downloadLedgerState: DownloadLedgerState): Boolean =
+		with(downloadLedgerState) {
+			if ((selectedDownloadFilter == DownloadLedgerFilter.CUSTOM) && (fromDate == null || toDate == null)) {
+				return@with false
+			}
+			return@with !isLoading
+		}
 }
 
 data class LedgerDetailUIState(

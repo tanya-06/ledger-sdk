@@ -109,7 +109,7 @@ private fun DownloadLedgerBSContent(
 		updateDateRange(dateRange)
 	}
 	CustomDateFilter(viewModel, downloadLedgerState, uiState, updateSelectedFilter)
-	DownloadButtons(onDownloadLedgerClick)
+	DownloadButtons(downloadLedgerState.enableDownloadBtn, onDownloadLedgerClick)
 	LaunchedEffect(Unit) {
 		updateLedgerStartDateFlow.collectLatest {
 			updateEndDate(it.ledgerEndDate)
@@ -119,7 +119,10 @@ private fun DownloadLedgerBSContent(
 }
 
 @Composable
-private fun DownloadButtons(onDownloadLedgerClick: (String) -> Unit) {
+private fun DownloadButtons(
+	enableDownloadBtn: Boolean,
+	onDownloadLedgerClick: (String) -> Unit
+) {
 	if (LedgerSDK.isAIMS) {
 		Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
 			OutlinedButton(
@@ -129,7 +132,8 @@ private fun DownloadButtons(onDownloadLedgerClick: (String) -> Unit) {
 				onClick = { onDownloadLedgerClick(DownloadLedgerFormat.EXCEL) },
 				shape = mediumShape(),
 				colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-				border = BorderStroke(1.dp, ColorB3B3B3)
+				border = BorderStroke(1.dp, if (enableDownloadBtn) Primary100 else ColorB3B3B3),
+				enabled = enableDownloadBtn
 			) {
 				Text(
 					modifier = Modifier.padding(vertical = 8.dp),
@@ -143,7 +147,8 @@ private fun DownloadButtons(onDownloadLedgerClick: (String) -> Unit) {
 					.weight(1f),
 				onClick = { onDownloadLedgerClick(DownloadLedgerFormat.PDF) },
 				shape = mediumShape(),
-				colors = ButtonDefaults.buttonColors(backgroundColor = Primary100)
+				colors = ButtonDefaults.buttonColors(backgroundColor = if (enableDownloadBtn) Primary100 else ColorB3B3B3),
+				enabled = enableDownloadBtn
 			) {
 				Text(
 					modifier = Modifier.padding(vertical = 8.dp),
@@ -159,7 +164,8 @@ private fun DownloadButtons(onDownloadLedgerClick: (String) -> Unit) {
 				.fillMaxWidth(),
 			onClick = { onDownloadLedgerClick(DownloadLedgerFormat.PDF) },
 			shape = mediumShape(),
-			colors = ButtonDefaults.buttonColors(backgroundColor = Primary100)
+			colors = ButtonDefaults.buttonColors(backgroundColor = if (enableDownloadBtn) Primary100 else ColorB3B3B3),
+			enabled = enableDownloadBtn
 		) {
 			Text(
 				modifier = Modifier.padding(vertical = 8.dp),
