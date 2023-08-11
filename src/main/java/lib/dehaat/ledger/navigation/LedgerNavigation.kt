@@ -156,19 +156,22 @@ fun LedgerNavigation(
 			}
 		}
 
-		navBaseComposable(
-			route = LedgerRoutes.RevampLedgerInvoiceDetailScreen.screen,
-			logScreenName = ledgerCallbacks.firebaseScreenLogger
-		) {
-			val invoiceDetailViewModel = hiltViewModel<RevampInvoiceDetailViewModel>()
-			RevampInvoiceDetailScreen(isDCFinanced = isDCFinanced,
-				viewModel = invoiceDetailViewModel,
-				ledgerColors = ledgerColors,
-				onDownloadInvoiceClick = onDownloadClick,
-				onError = { ledgerCallbacks.exceptionHandler(it) }) {
-				navController.popBackStack()
-			}
-		}
+        navBaseComposable(
+            route = LedgerRoutes.RevampLedgerInvoiceDetailScreen.screen,
+            logScreenName = ledgerCallbacks.firebaseScreenLogger
+        ) {
+            val invoiceDetailViewModel = hiltViewModel<RevampInvoiceDetailViewModel>()
+            RevampInvoiceDetailScreen(
+                isDCFinanced = isDCFinanced,
+                viewModel = invoiceDetailViewModel,
+                ledgerColors = ledgerColors,
+                onDownloadInvoiceClick = onDownloadClick,
+                onError = { ledgerCallbacks.exceptionHandler(it) },
+                onBackPress =  {
+                    navController.popBackStack()
+                }
+            )
+        }
 
 
 

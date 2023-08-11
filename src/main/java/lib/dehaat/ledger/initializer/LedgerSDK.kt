@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.os.Environment
 import androidx.annotation.DrawableRes
 import com.dehaat.androidbase.components.SingleEventLiveData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.withContext
 import lib.dehaat.ledger.framework.model.outstanding.OutstandingData
 import lib.dehaat.ledger.presentation.ledger.LedgerDetailActivity
 import lib.dehaat.ledger.presentation.model.downloadledger.DownloadStatusData
@@ -85,13 +87,15 @@ object LedgerSDK {
 		throw Exception("Ledger not initialised Exception")
 	}
 
-	fun getFile(context: Context): File? = try {
-		File(
-			context.getExternalFilesDir(
-				Environment.DIRECTORY_DOWNLOADS
-			),
-			"DeHaat"
-		).apply { mkdir() }
+	suspend fun getFile(context: Context): File? = try {
+		withContext(Dispatchers.IO) {
+			File(
+				context.getExternalFilesDir(
+					Environment.DIRECTORY_DOWNLOADS
+				),
+				"DeHaat"
+			).apply { mkdir() }
+		}
 	} catch (e: Exception) {
 		if (::currentApp.isInitialized) {
 			currentApp.ledgerCallBack.exceptionHandler(e)

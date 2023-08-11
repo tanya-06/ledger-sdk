@@ -22,6 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dehaat.androidbase.helper.showToast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -89,7 +92,8 @@ fun RevampInvoiceDetailScreen(
 	ledgerColors: LedgerColors,
 	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit,
 	onError: (Exception) -> Unit,
-	onBackPress: () -> Unit
+	onBackPress: () -> Unit,
+	coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
 	HandleAPIErrors(viewModel.
 	uiEvent)
@@ -115,16 +119,18 @@ fun RevampInvoiceDetailScreen(
 						it.productsInfo,
 						it.interestOverdueViewData
 					) {
-						LedgerSDK.getFile(context)?.let { file ->
-							viewModel.downloadInvoice(
-								file,
-								onDownloadInvoiceClick
-							)
-						} ?: run {
-							context.showToast(R.string.tech_problem)
-							LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
-								Exception("Unable to create file")
-							)
+						coroutineScope.launch {
+							LedgerSDK.getFile(context)?.let { file ->
+								viewModel.downloadInvoice(
+									file,
+									onDownloadInvoiceClick
+								)
+							} ?: run {
+								context.showToast(R.string.tech_problem)
+								LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
+									Exception("Unable to create file")
+								)
+							}
 						}
 					}
 				} ?: NoDataFound((uiState.state as? UIState.ERROR)?.message, onError)

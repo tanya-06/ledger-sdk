@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dehaat.androidbase.helper.showToast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -61,7 +64,8 @@ fun InvoiceDetailScreen(
 	viewModel: InvoiceDetailViewModel = hiltViewModel(),
 	ledgerColors: LedgerColors,
 	onBackPress: () -> Unit,
-	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit
+	onDownloadInvoiceClick: (InvoiceDownloadData) -> Unit,
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
 	HandleAPIErrors(viewModel.uiEvent)
 
@@ -413,18 +417,20 @@ fun InvoiceDetailScreen(
 						Text(
 							modifier = Modifier
 								.clickable {
-									LedgerSDK
-										.getFile(context)
-										?.let {
-											viewModel.downloadInvoice(
-												it,
-												onDownloadInvoiceClick
-											)
-										} ?: kotlin.run {
-										context.showToast(R.string.tech_problem)
-										LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
-											Exception("Unable to create file")
-										)
+									coroutineScope.launch {
+                                        LedgerSDK
+                                            .getFile(context)
+                                            ?.let {
+                                                viewModel.downloadInvoice(
+                                                    it,
+                                                    onDownloadInvoiceClick
+                                                )
+                                            } ?: kotlin.run {
+                                            context.showToast(R.string.tech_problem)
+                                            LedgerSDK.currentApp.ledgerCallBack.exceptionHandler(
+                                                Exception("Unable to create file")
+                                            )
+										}
 									}
 								}
 								.padding(top = 16.dp)
