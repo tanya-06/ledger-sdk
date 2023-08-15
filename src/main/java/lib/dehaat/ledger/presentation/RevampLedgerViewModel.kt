@@ -23,6 +23,7 @@ import lib.dehaat.ledger.domain.usecases.GetTransactionSummaryUseCase
 import lib.dehaat.ledger.domain.usecases.LedgerDownloadUseCase
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.common.BaseViewModel
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.downloadledger.annotations.DownloadLedgerFilter
@@ -139,18 +140,23 @@ class RevampLedgerViewModel @Inject constructor(
 	}
 
     private fun getTotalWalletAmountFromServer() = callInViewModelScope {
-        callingAPI()
-        when (val response = getWalletTotalAmount()) {
-            is APIResultEntity.Success -> {
-                viewModelState.update {
-                    it.copy(walletBalance = response.data?.totalWalletBalance.toString().getAmountInRupees())
-                }
-            }
-            is APIResultEntity.Failure -> {
-                sendFailureEvent(response.getApiFailureError())
-            }
-        }
-        callingAPI()
+	    if(LedgerSDK.isWalletActive) {
+		    callingAPI()
+		    when (val response = getWalletTotalAmount()) {
+			    is APIResultEntity.Success -> {
+				    viewModelState.update {
+					    it.copy(
+						    walletBalance = response.data?.totalWalletBalance.toString()
+							    .getAmountInRupees()
+					    )
+				    }
+			    }
+			    is APIResultEntity.Failure -> {
+				    sendFailureEvent(response.getApiFailureError())
+			    }
+		    }
+		    callingAPI()
+	    }
     }
 
 	private fun getCreditSummaryFromServer() {

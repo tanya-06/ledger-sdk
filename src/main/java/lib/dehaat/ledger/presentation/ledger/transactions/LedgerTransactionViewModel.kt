@@ -27,6 +27,7 @@ import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.domain.usecases.LedgerDownloadUseCase
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.framework.network.BasePagingSourceWithResponse
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.LedgerConstants.KEY_PARTNER_ID
 import lib.dehaat.ledger.presentation.LibLedgerAnalytics
 import lib.dehaat.ledger.presentation.common.BaseViewModel
@@ -93,14 +94,19 @@ class LedgerTransactionViewModel @Inject constructor(
 	}
 
 	private fun getTotalWalletAmountFromServer() = callInViewModelScope {
-		when (val response = getWalletTotalAmount()) {
-			is APIResultEntity.Success -> {
-				viewModelState.update {
-					it.copy(walletBalance = response.data?.totalWalletBalance.toString().getAmtInRupees())
+		if (LedgerSDK.isWalletActive) {
+			when (val response = getWalletTotalAmount()) {
+				is APIResultEntity.Success -> {
+					viewModelState.update {
+						it.copy(
+							walletBalance = response.data?.totalWalletBalance.toString()
+								.getAmtInRupees()
+						)
+					}
 				}
-			}
-			is APIResultEntity.Failure -> {
-				sendShowSnackBarEvent(response.getApiFailureError())
+				is APIResultEntity.Failure -> {
+					sendShowSnackBarEvent(response.getApiFailureError())
+				}
 			}
 		}
 	}
