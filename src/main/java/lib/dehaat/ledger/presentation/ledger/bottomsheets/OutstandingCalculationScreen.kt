@@ -262,7 +262,7 @@ private fun TotalOutstandingCalculation(
 private fun TotalPurchasesCalculation(
 	outstandingCalculationUiState: OutstandingCalculationUiState,
 	isFinancedDc: Boolean
-) {
+) = with(outstandingCalculationUiState) {
 	Text(
 		modifier = Modifier.padding(start = 20.dp, top = 20.dp, bottom = 12.dp),
 		text = stringResource(R.string.ledger_total_calculation),
@@ -274,51 +274,53 @@ private fun TotalPurchasesCalculation(
 	VerticalSpacer(height = 12.dp)
 	CalculationKeyValuePair(
 		title = stringResource(R.string.ledger_total_invoice_amount),
-		value = outstandingCalculationUiState.totalInvoiceAmount,
+		value = totalInvoiceAmount,
+		Pumpkin120
+	)
+
+	if (showDebitNodeAmount) {
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_total_debit_note_amount),
+			value = totalDebitNoteAmount,
+			Pumpkin120
+		)
+	}
+
+	if (isFinancedDc || showOutstandingInterestAmount) {
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_outstanding_interest_amount),
+			value = outstandingInterestAmount,
+			Pumpkin120
+		)
+	}
+
+	if (isFinancedDc || showPaidInterestAmount) {
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_paid_interest_amount),
+			value = paidInterestAmount,
+			Pumpkin120
+		)
+	}
+
+	VerticalSpacer(height = 12.dp)
+	CalculationKeyValuePair(
+		title = stringResource(R.string.ledger_total_debit_hold_amount),
+		value = debitHold,
 		Pumpkin120
 	)
 
 	VerticalSpacer(height = 12.dp)
+
 	CalculationKeyValuePair(
-		title = stringResource(R.string.ledger_total_debit_note_amount),
-		value = outstandingCalculationUiState.totalDebitNoteAmount,
-		Pumpkin120
+		title = stringResource(R.string.ledger_payment_released),
+		value = paymentReleased,
+		Primary110
 	)
 
-	if (isFinancedDc) {
-		VerticalSpacer(height = 12.dp)
-		CalculationKeyValuePair(
-			title = stringResource(R.string.ledger_outstanding_interest_amount),
-			value = outstandingCalculationUiState.outstandingInterestAmount,
-			Pumpkin120
-		)
-	}
-
-	if (isFinancedDc) {
-		VerticalSpacer(height = 12.dp)
-		CalculationKeyValuePair(
-			title = stringResource(R.string.ledger_paid_interest_amount),
-			value = outstandingCalculationUiState.paidInterestAmount,
-			Pumpkin120
-		)
-	}
-
 	outstandingCalculationUiState.creditNoteAmount?.let {
-		VerticalSpacer(height = 12.dp)
-		CalculationKeyValuePair(
-			title = stringResource(R.string.ledger_total_debit_hold_amount),
-			value = outstandingCalculationUiState.debitHold,
-			Pumpkin120
-		)
-
-		VerticalSpacer(height = 12.dp)
-
-		CalculationKeyValuePair(
-			title = stringResource(R.string.ledger_payment_released),
-			value = outstandingCalculationUiState.paymentReleased,
-			Primary110
-		)
-
 		VerticalSpacer(height = 12.dp)
 		CalculationKeyValuePair(
 			title = stringResource(R.string.ledger_credit_note_interst_returned_amount),
@@ -327,12 +329,14 @@ private fun TotalPurchasesCalculation(
 		)
 	}
 
-	VerticalSpacer(height = 12.dp)
-	CalculationKeyValuePair(
-		title = stringResource(R.string.ledger_credit_note_amount),
-		value = outstandingCalculationUiState.totalCreditNoteAmount,
-		Primary110
-	)
+	if (showCreditNodeAmount) {
+		VerticalSpacer(height = 12.dp)
+		CalculationKeyValuePair(
+			title = stringResource(R.string.ledger_credit_note_amount),
+			value = totalCreditNoteAmount,
+			Primary110
+		)
+	}
 
 	VerticalSpacer(height = 12.dp)
 
@@ -359,7 +363,7 @@ private fun TotalPurchasesCalculation(
 		)
 
 		Text(
-			text = outstandingCalculationUiState.totalPurchase,
+			text = totalPurchase,
 			style = textSubHeadingS3(Neutral90)
 		)
 	}

@@ -12,6 +12,9 @@ import com.cleanarch.base.entity.result.api.APIResultEntity
 import com.dehaat.androidbase.helper.callInViewModelScope
 import com.dehaat.androidbase.helper.orFalse
 import com.dehaat.androidbase.helper.orZero
+import com.dehaat.wallet.domain.usecase.GetWalletTotalAmountUseCase
+import com.dehaat.wallet.presentation.extensions.getAmtInRupees
+import com.dehaat.wallet.presentation.extensions.getApiFailureError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,12 +24,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import lib.dehaat.ledger.domain.usecases.DaysToFilterUseCase
 import lib.dehaat.ledger.domain.usecases.GetTransactionsUseCase
 import lib.dehaat.ledger.domain.usecases.LedgerDownloadUseCase
 import lib.dehaat.ledger.entities.revamp.transaction.TransactionEntityV2
 import lib.dehaat.ledger.entities.transactions.TransactionEntity
 import lib.dehaat.ledger.framework.network.BasePagingSourceWithResponse
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.common.UiEvent
 import lib.dehaat.ledger.presentation.ledger.downloadledger.annotations.DownloadLedgerFormat
 import lib.dehaat.ledger.presentation.ledger.downloadledger.annotations.SelectDateType
@@ -51,6 +56,7 @@ class LedgerTransactionsViewModel @Inject constructor(
 	private val getTransactionsUseCase: GetTransactionsUseCase,
 	private val daysToFilterUseCase: DaysToFilterUseCase,
 	private val ledgerDownloadUseCase: LedgerDownloadUseCase,
+	private val getWalletTotalAmount: GetWalletTotalAmountUseCase,
 	private val mapper: LedgerViewDataMapper
 ) : ViewModel() {
 
@@ -85,6 +91,35 @@ class LedgerTransactionsViewModel @Inject constructor(
 
 	init {
 		transactionsList = getTransactionPaging()
+		getTotalWalletAmountFromServer()
+	}
+
+	private fun getTotalWalletAmountFromServer() = callInViewModelScope {
+		if (LedgerSDK.isWalletActive) {
+			when (val response = getWalletTotalAmount()) {
+				is APIResultEntity.Success -> {
+					viewModelState.update {
+						it.copy(
+							walletBalance = response.data?.totalWalletBalance.toString()
+								.getAmtInRupees()
+						)
+					}
+				}
+				is APIResultEntity.Failure -> {
+					sendShowSnackBarEvent(response.getApiFailureError())
+				}
+			}
+		}
+	}
+
+	private fun sendShowSnackBarEvent(message: String) {
+		resetSnackBarType()
+		viewModelState.update {
+			it.copy(isLoading = false)
+		}
+		viewModelScope.launch {
+			_uiEvent.emit(UiEvent.ShowSnackBar(message))
+		}
 	}
 
 	fun downloadLedger() = callInViewModelScope {

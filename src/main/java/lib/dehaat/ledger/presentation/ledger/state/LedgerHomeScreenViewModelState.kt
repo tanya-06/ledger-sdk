@@ -16,7 +16,9 @@ data class LedgerHomeScreenViewModelState(
 	val ledgerTotalCalculation: LedgerTotalCalculation? = null,
 	val outstandingCalculationUiState: OutstandingCalculationUiState? = null,
 	val holdAmountViewData: HoldAmountViewData? = null,
-	val isLMSActivated: Boolean = false
+	val isLMSActivated: Boolean = false,
+	val showFirstTimeFTUEDialog: Boolean = false,
+	val dismissFirstTimeFTUEDialog: Boolean = false
 ) {
 	fun toUiState() = HomeScreenUiState(
 		state = when {
@@ -27,7 +29,9 @@ data class LedgerHomeScreenViewModelState(
 		outstandingAmount = outstandingAmount,
 		ledgerTotalCalculation = ledgerTotalCalculation,
 		outstandingCalculationUiState = outstandingCalculationUiState,
-		holdAmountViewData = holdAmountViewData
+		holdAmountViewData = holdAmountViewData,
+		showFirstTimeFTUEDialog = showFirstTimeFTUEDialog,
+		dismissFirstTimeFTUEDialog = dismissFirstTimeFTUEDialog
 	)
 }
 
@@ -36,7 +40,9 @@ data class HomeScreenUiState(
 	val outstandingAmount: String,
 	val ledgerTotalCalculation: LedgerTotalCalculation?,
 	val outstandingCalculationUiState: OutstandingCalculationUiState?,
-	val holdAmountViewData: HoldAmountViewData?
+	val holdAmountViewData: HoldAmountViewData?,
+	val showFirstTimeFTUEDialog: Boolean,
+	val dismissFirstTimeFTUEDialog: Boolean
 )
 
 data class LedgerTotalCalculation(

@@ -34,12 +34,11 @@ fun LedgerHeaderScreen(
 		onClick = onTotalOutstandingClick
 	)
 
-	VerticalSpacer(height = 16.dp)
-
-	PaymentButton(modifier = Modifier.padding(horizontal = 20.dp), payNowClick = onPayNowClick)
-
-	VerticalSpacer(height = 16.dp)
-
-	Divider(modifier = Modifier.height(16.dp), color = Neutral10)
+	if (LedgerSDK.isDBA) {
+		VerticalSpacer(height = 16.dp)
+		PaymentButton(modifier = Modifier.padding(horizontal = 20.dp), payNowClick = onPayNowClick)
+		VerticalSpacer(height = 16.dp)
+		Divider(modifier = Modifier.height(16.dp), color = Neutral10)
+	}
 
 }

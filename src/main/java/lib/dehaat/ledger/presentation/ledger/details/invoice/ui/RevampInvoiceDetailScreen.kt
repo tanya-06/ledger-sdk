@@ -190,7 +190,7 @@ private fun InvoiceDetailScreen(
 			}
 		}
 
-		if (isDCFinanced && showPrepaidTag(summary, prepaidAndCreditInfoViewDataV2)) {
+		if (showPrepaidTag(summary, prepaidAndCreditInfoViewDataV2)) {
 			FullyPaidTag(modifier = Modifier.padding(top = 22.dp))
 			Spacer(modifier = Modifier.padding(top = 10.dp))
 		}

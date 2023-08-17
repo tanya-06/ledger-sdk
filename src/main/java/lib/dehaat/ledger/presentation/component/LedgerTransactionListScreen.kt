@@ -10,14 +10,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,7 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -36,10 +39,13 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.dehaat.wallet.presentation.ui.components.EntryPointButtonContent
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import lib.dehaat.ledger.R
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
+import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.LedgerTransactionsViewModel
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
@@ -57,12 +63,17 @@ import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionListHeader
 import lib.dehaat.ledger.presentation.ledger.ui.component.TransactionType
 import lib.dehaat.ledger.presentation.ledger.ui.component.WeeklyInterestHeader
 import lib.dehaat.ledger.presentation.ledger.ui.component.onClickType
+import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.revamp.transactions.TransactionViewDataV2
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
 import lib.dehaat.ledger.presentation.model.transactions.DaysToFilter
+import lib.dehaat.ledger.resources.Neutral10
+import lib.dehaat.ledger.resources.Secondary10
+import lib.dehaat.ledger.resources.Secondary20
 import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.util.FillMaxWidthColumn
 import lib.dehaat.ledger.util.clickableWithCorners
+import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.showToast
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -83,11 +94,13 @@ fun LedgerTransactionListScreen(
 	val scope = rememberCoroutineScope()
 	val transactions = viewModel.transactionsList.collectAsLazyPagingItems()
 	val filtersUiState by viewModel.filterUiState.collectAsState()
+	val uiState by viewModel.uiState.collectAsState()
+	val walletBalance = uiState.walletBalance
 	val launcher = rememberLauncherForActivityResult(
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = { granted ->
 			if (granted) {
-				scope.launch { downloadLedgerSheet.animateTo(ModalBottomSheetValue.Expanded) }
+				scope.launch { downloadLedgerSheet.show() }
 			} else {
 				showToast(context, R.string.external_storage_permission_required)
 			}
@@ -96,15 +109,24 @@ fun LedgerTransactionListScreen(
 	LazyColumn(modifier = Modifier.fillMaxWidth(), state = state) {
 
 		item {
-			AbsTransactionHeader(holdAmountViewData, viewModel.ledgerAnalytics) {
-				detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
+			if (!LedgerSDK.isWalletActive) {
+				AbsTransactionHeader(holdAmountViewData, viewModel.ledgerAnalytics) {
+					detailPageNavigationCallback.navigateToHoldAmountDetailPage(it)
+				}
+			} else {
+				HoldAndWalletBalanceContent(
+					holdAmountViewData,
+					detailPageNavigationCallback,
+					viewModel,
+					walletBalance
+				)
 			}
 		}
 
 		item {
 			TransactionListHeader {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-					scope.launch { downloadLedgerSheet.animateTo(ModalBottomSheetValue.Expanded) }
+					scope.launch { downloadLedgerSheet.show() }
 				} else {
 					launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				}
@@ -245,6 +267,51 @@ fun LedgerTransactionListScreen(
 
 }
 
+@Composable
+private fun HoldAndWalletBalanceContent(
+	abs: HoldAmountViewData?,
+	detailPageNavigationCallback: DetailPageNavigationCallback,
+	ledgerViewModel: LedgerTransactionsViewModel,
+	walletBalance: String
+) {
+	Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
+	Row(
+		modifier = Modifier
+			.fillMaxWidth(1f)
+			.background(Color.White)
+			.padding(16.dp)
+	) {
+		abs?.let {
+			EntryPointButtonContent(modifier = Modifier
+				.weight(.5f)
+				.padding(start = 8.dp, end = 4.dp),
+				headingText = stringResource(id = R.string.hold_balance),
+				valueText = it.formattedTotalHoldBalance,
+				drawableIcon = R.drawable.ic_lock_white_bg,
+				bgColor = Secondary10,
+				outlineColor = Secondary20,
+				onClick = {
+					detailPageNavigationCallback.navigateToHoldAmountDetailPage(
+						bundleOf(
+							LedgerConstants.ABS_AMOUNT to it.absViewData.absHoldBalance.orZero(),
+							LedgerConstants.KEY_PREPAID_HOLD_AMOUNT to it.prepaidHoldAmount.orZero(),
+						)
+					)
+				})
+			LaunchedEffect(Unit) {
+				ledgerViewModel.ledgerAnalytics.onHoldAmountWidgetViewed()
+			}
+		}
+		EntryPointButtonContent(modifier = Modifier
+			.weight(.5f)
+			.padding(start = 8.dp, end = 4.dp),
+			valueText = walletBalance.getAmountInRupees(),
+			onClick = {
+				detailPageNavigationCallback.navigateToWalletLedger(bundleOf())
+			})
+	}
+	Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
+}
 
 private fun showDivider(
 	index: Int,

@@ -17,12 +17,10 @@ import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
 import lib.dehaat.ledger.presentation.ledger.abs.ABSDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.AvailableCreditLimitScreenArgs
 import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.ui.AvailableCreditLimitDetailsScreen
-import lib.dehaat.ledger.presentation.ledger.details.creditnote.ui.CreditNoteDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.debithold.ui.DebitHoldDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.interest.InterestDetailScreenArgs
 import lib.dehaat.ledger.presentation.ledger.details.interest.ui.InterestDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
-import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.InvoiceDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.RevampInvoiceDetailScreen
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.InvoiceListViewModel
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.ui.InvoiceListScreen
@@ -137,19 +135,6 @@ fun LedgerNavigation(
         }
 
         navBaseComposable(
-            route = LedgerRoutes.LedgerInvoiceDetailScreen.screen,
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            InvoiceDetailScreen(
-                ledgerColors = ledgerColors,
-                onBackPress = {
-                    navController.popBackStack()
-                },
-                onDownloadInvoiceClick = onDownloadClick
-            )
-        }
-
-        navBaseComposable(
             route = LedgerRoutes.RevampLedgerInvoiceDetailScreen.screen,
             logScreenName = ledgerCallbacks.firebaseScreenLogger
         ) {
@@ -160,17 +145,6 @@ fun LedgerNavigation(
                 ledgerColors = ledgerColors,
                 onDownloadInvoiceClick = onDownloadClick,
                 onError = { ledgerCallbacks.exceptionHandler(it) }
-            ) {
-                navController.popBackStack()
-            }
-        }
-
-        navBaseComposable(
-            route = LedgerRoutes.LedgerCreditNoteDetailScreen.screen,
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            CreditNoteDetailScreen(
-                ledgerColors = ledgerColors
             ) {
                 navController.popBackStack()
             }

@@ -4,12 +4,6 @@ sealed class LedgerRoutes(val screen: String) {
 
     object LedgerHomeScreen: LedgerRoutes("ledger_home_screen")
 
-    object LedgerInvoiceDetailScreen :
-        LedgerRoutes("ledger_invoice_detail_screen")
-
-    object LedgerCreditNoteDetailScreen :
-        LedgerRoutes("ledger_credit_note_detail_screen")
-
     object InvoiceListScreen: LedgerRoutes("invoice_list_screen")
 
     object TotalAvailableCreditLimitScreen :

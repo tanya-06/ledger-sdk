@@ -249,4 +249,16 @@ class LedgerHomeScreenViewModel @Inject constructor(
 		daysToFilter
 	)
 
+	fun showWalletFTUEBottomSheet() = viewModelState.update {
+		it.copy(showFirstTimeFTUEDialog = true)
+	}
+
+	fun hideWalletFTUEBottomSheet() = viewModelState.update {
+		it.copy(showFirstTimeFTUEDialog = false)
+	}
+
+	fun dismissWalletFTUEBottomSheet() = viewModelState.update {
+		it.copy(dismissFirstTimeFTUEDialog = true)
+	}
+
 }

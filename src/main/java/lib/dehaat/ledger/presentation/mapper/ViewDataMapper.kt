@@ -13,6 +13,7 @@ import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.ABSViewDat
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldABSViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.HoldAmountViewData
 import lib.dehaat.ledger.presentation.model.revamp.transactionsummary.TransactionSummaryViewData
+import lib.dehaat.ledger.util.appendSignIfRequired
 import lib.dehaat.ledger.util.formatDecimal
 import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.getRoundedAmountInRupees
@@ -111,28 +112,34 @@ class ViewDataMapper @Inject constructor() {
 
 	fun toOutstandingCalculationViewData(entity: TransactionSummaryEntity) = with(entity) {
 		OutstandingCalculationUiState(
-			totalOutstanding = "+ ${
-				(purchaseAmount.toDoubleOrZero() - netPaymentAmount.toDoubleOrZero()).toString()
-					.getRoundedAmountInRupees()
-
-			}",
-			totalPurchase = "+ ${purchaseAmount.getRoundedAmountInRupees()}",
-			totalPayment = netPaymentAmount.getRoundedAmountInRupees(),
-			totalInvoiceAmount = "+ ${totalInvoiceAmount.getRoundedAmountInRupees()}",
-			totalCreditNoteAmount = "- ${creditNoteAmount.getRoundedAmountInRupees()}",
-			outstandingInterestAmount = "+ ${interestOutstanding.getRoundedAmountInRupees()}",
-			paidInterestAmount = "+ ${interestPaid.getRoundedAmountInRupees()}",
+			totalOutstanding =
+			(purchaseAmount.toDoubleOrZero() - netPaymentAmount.toDoubleOrZero()).toString()
+				.getAmountInRupees().appendSignIfRequired("+"),
+			totalPurchase = purchaseAmount.getAmountInRupees().appendSignIfRequired("+"),
+			totalPayment = netPaymentAmount.getAmountInRupees().appendSignIfRequired("-"),
+			totalInvoiceAmount = totalInvoiceAmount.getAmountInRupees()
+				.appendSignIfRequired("+"),
+			totalCreditNoteAmount = creditNoteAmount.getAmountInRupees()
+				.appendSignIfRequired("-"),
+			showCreditNodeAmount = !creditNoteAmount.isNullOrZero(),
+			outstandingInterestAmount = interestOutstanding.getAmountInRupees()
+				.appendSignIfRequired("+"),
+			showOutstandingInterestAmount = !interestOutstanding.isNullOrZero(),
+			paidInterestAmount = interestPaid.getAmountInRupees().appendSignIfRequired("+"),
+			showPaidInterestAmount = !interestPaid.isNullOrZero(),
 			creditNoteAmount = if (totalInterestRefundAmount.isNullOrZero()) {
 				null
 			} else {
-				"- ${totalInterestRefundAmount.getRoundedAmountInRupees()}"
+				totalInterestRefundAmount.getAmountInRupees().appendSignIfRequired("-")
 			},
-			totalDebitNoteAmount = "+ ${debitNodeAmount.getRoundedAmountInRupees()}",
-			paidAmount = "+ ${paymentAmount.getRoundedAmountInRupees()}",
-			paidRefund = "+ ${debitEntryAmount.getRoundedAmountInRupees()}",
-			totalPaid = "- ${netPaymentAmount.getRoundedAmountInRupees()}",
-			debitHold = "+ ${debitHoldAmount.getAmountInRupees()}",
-			paymentReleased = "- ${releasePaymentAmount.getAmountInRupees()}",
+			totalDebitNoteAmount = debitNodeAmount.getAmountInRupees()
+				.appendSignIfRequired("+"),
+			showDebitNodeAmount = !debitNodeAmount.isNullOrZero(),
+			paidAmount = paymentAmount.getAmountInRupees().appendSignIfRequired("-"),
+			paidRefund = debitEntryAmount.getAmountInRupees().appendSignIfRequired("+"),
+			totalPaid = netPaymentAmount.getAmountInRupees().appendSignIfRequired("-"),
+			debitHold = debitHoldAmount.getAmountInRupees().appendSignIfRequired("+"),
+			paymentReleased = releasePaymentAmount.getAmountInRupees().appendSignIfRequired("-")
 		)
 	}
 
