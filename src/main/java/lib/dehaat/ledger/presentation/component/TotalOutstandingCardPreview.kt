@@ -6,8 +6,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,20 +32,25 @@ import lib.dehaat.ledger.util.toDoubleOrZero
 @Preview(showBackground = true)
 @Composable
 private fun TotalOutstandingCardPreview() = LedgerTheme {
-	TotalOutstandingCard(totalOutstanding = "100"){}
+	TotalOutstandingCard(totalOutstanding = "100", {}, remember {
+		mutableStateOf(0f)
+	})
 }
 
 
 @Preview(showBackground = true)
 @Composable
 private fun TotalOutstandingCard1Preview() = LedgerTheme {
-	TotalOutstandingCard(totalOutstanding = "-100"){}
+	TotalOutstandingCard(totalOutstanding = "-100", {}, remember {
+		mutableStateOf(0f)
+	})
 }
 
 @Composable
 fun TotalOutstandingCard(
 	totalOutstanding: String,
-	onClick: onClickType
+	onClick: onClickType,
+	lineStart: MutableState<Float>
 ) = Row(
 	modifier = Modifier
 		.padding(horizontal = 20.dp)
@@ -59,7 +69,10 @@ fun TotalOutstandingCard(
 		text = totalOutstanding.getRoundedAmountInRupees(),
 		style = textHeadingH3(
 			textColor = if (totalOutstanding.toDoubleOrZero() < 0) SeaGreen110 else Neutral80
-		)
+		),
+		modifier = Modifier.onGloballyPositioned {
+			lineStart.value = it.positionInWindow().x + 4.25f
+		}
 	)
 
 	HorizontalSpacer(width = 8.dp)

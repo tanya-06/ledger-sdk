@@ -95,7 +95,7 @@
     <string name="total_amount">Total Amount</string>
     <string name="invoice_amount">Invoice Amount</string>
     <string name="invoice_id">Invoice ID</string>
-    <string name="invoice_date">Invoice Date</string>
+    <string name="ledger_invoice_date">Invoice Date</string>
     <string name="interest_start_date">Interest Start Date</string>
     <string name="interest_start_dates">Interest Start Date: %s</string>
     <string name="outstanding_amount">Outstanding Amount</string>
@@ -262,7 +262,7 @@
     <string name="interest_rate_s_per_day">Interest rate: %s%% per day</string>
     <string name="remaining_amount">Outstanding %s</string>
     <string name="s_days_ordering_blocked">Your ordering will be blocked in %s days, make payment asap</string>
-    <string name="amount_paid">Payable Amount %s</string>
+    <string name="ledger_amount_paid">Payable Amount %s</string>
     <string name="pay_today_to_save_interest">Pay today and avoid paying additional interest</string>
     <string name="pay_before_s_to_save_interest">Pay by %s, avoid paying interest</string>
     <string name="pay_before_s_avoid_block_ordering">Pay by %s to avoid your ordering from getting blocked</string>

@@ -39,6 +39,7 @@ object LedgerConstants {
 	const val DATE = "date"
 	const val BOTTOM_BAR_TYPE = "bottom_bar_type"
 	const val FLOW_TYPE_DATA = "flow_type_data"
+	const val REFRESH_HOME_SCREEN = "refresh_home_screen"
 }
 
 object CreditNoteReason {

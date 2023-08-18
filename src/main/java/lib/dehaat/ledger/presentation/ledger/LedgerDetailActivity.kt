@@ -1,14 +1,11 @@
 package lib.dehaat.ledger.presentation.ledger
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsControllerCompat
@@ -23,7 +20,6 @@ import lib.dehaat.ledger.navigation.LedgerNavigation
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.LedgerConstants.FLOW_TYPE
 import lib.dehaat.ledger.presentation.LedgerConstants.FLOW_TYPE_DATA
-import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
 import lib.dehaat.ledger.presentation.common.NavDoubleType
 import lib.dehaat.ledger.resources.LedgerTheme
 import lib.dehaat.ledger.resources.themes.LedgerColors
@@ -34,20 +30,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LedgerDetailActivity : ComponentActivity() {
 
-	val viewModel: LedgerHomeScreenViewModel by viewModels()
-
 	private lateinit var args: Args
 
 	@Inject
 	lateinit var notificationHandler: NotificationHandler
-
-	private var resultLauncher = registerForActivityResult(
-		ActivityResultContracts.StartActivityForResult()
-	) {
-		if (it?.resultCode == Activity.RESULT_OK) {
-			viewModel.getInitialData()
-		}
-	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -80,9 +66,7 @@ class LedgerDetailActivity : ComponentActivity() {
 					partnerId = args.partnerId,
 					isDCFinanced = args.isDCFinanced,
 					ledgerColors = LedgerSDK.currentApp.ledgerColors,
-					resultLauncher = resultLauncher,
 					finishActivity = { finish() },
-					viewModel = viewModel,
 					ledgerCallbacks = LedgerSDK.currentApp.ledgerCallBack,
                     flowType = args.flowType,
                     flowTypeData = getFlowTypeData(args.flowTypeData ?: bundleOf()),

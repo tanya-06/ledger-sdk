@@ -39,11 +39,10 @@ fun LedgerHeaderScreen(
 
 	WidgetsView(widgetsViewData, lineStart, onWidgetClicked)
 
-	VerticalSpacer(height = 16.dp)
-
 	TotalOutstandingCard(
 		totalOutstanding = totalOutstandingAmount,
-		onClick = onTotalOutstandingClick
+		onClick = onTotalOutstandingClick,
+		lineStart = lineStart
 	)
 
 	if (LedgerSDK.isDBA) {
@@ -64,7 +63,10 @@ fun WidgetsView(
 	widgetsViewData?.also {
 		when {
 			it.creditLineStatus == LedgerConstants.ON_HOLD -> OverduePaymentView(
-				it.creditLineSubStatus, it.agedOutstandingAmount, it.repaymentUnblockAmount, it.ageingBannerPriority
+				it.creditLineSubStatus,
+				it.agedOutstandingAmount,
+				it.repaymentUnblockAmount,
+				it.ageingBannerPriority
 			)
 
 			it.showOrderingBlockedWidget.isTrue() -> BlockOrderingWidget(

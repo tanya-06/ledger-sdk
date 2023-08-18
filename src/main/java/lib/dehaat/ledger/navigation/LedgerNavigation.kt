@@ -1,8 +1,9 @@
 package lib.dehaat.ledger.navigation
 
-import android.content.Intent
+import android.app.Activity
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NamedNavArgument
@@ -14,6 +15,7 @@ import androidx.navigation.navArgument
 import com.dehaat.wallet.presentation.ui.screens.WalletLedgerScreen
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
 import lib.dehaat.ledger.presentation.LedgerConstants
+import lib.dehaat.ledger.presentation.LedgerConstants.REFRESH_HOME_SCREEN
 import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
 import lib.dehaat.ledger.presentation.ledger.abs.ABSDetailScreen
 import lib.dehaat.ledger.presentation.ledger.annotations.LedgerFlowType
@@ -33,91 +35,93 @@ import lib.dehaat.ledger.presentation.ledger.ui.LedgerHomeScreen
 import lib.dehaat.ledger.presentation.ledger.ui.component.orZero
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 import lib.dehaat.ledger.resources.themes.LedgerColors
+import lib.dehaat.ledger.util.SetComposeResultListener
 import lib.dehaat.ledger.util.navBaseComposable
+import lib.dehaat.ledger.util.setComposeResult
 
 @Composable
 fun LedgerNavigation(
-    dcName: String,
-    partnerId: String,
-    isDCFinanced: Boolean,
-    ledgerColors: LedgerColors,
-    ledgerCallbacks: LedgerCallBack,
-    flowType: String?,
+	dcName: String,
+	partnerId: String,
+	isDCFinanced: Boolean,
+	ledgerColors: LedgerColors,
+	ledgerCallbacks: LedgerCallBack,
+	flowType: String?,
 	flowTypeData: List<NamedNavArgument>,
-	resultLauncher: ActivityResultLauncher<Intent?>,
-	viewModel: LedgerHomeScreenViewModel,
-    onDownloadClick: (InvoiceDownloadData) -> Unit,
-    navController: NavHostController = rememberNavController(),
-    finishActivity: () -> Unit,
+	onDownloadClick: (InvoiceDownloadData) -> Unit,
+	finishActivity: () -> Unit,
 	openOrderDetailFragment: (String) -> Unit,
 	getWalletFTUEStatus: (String) -> Boolean,
 	setWalletFTUEStatus: (String) -> Unit,
-    getWalletHelpVideoId: () -> String
+	getWalletHelpVideoId: () -> String
 ) {
 
 	val navController = rememberNavController()
 
-    val startDestination = when {
-        flowType == LedgerFlowType.INVOICE_LIST -> LedgerRoutes.WidgetInvoiceListScreen.screen
-        else -> LedgerRoutes.LedgerHomeScreen.screen
-    }
+	val startDestination = when {
+		flowType == LedgerFlowType.INVOICE_LIST -> LedgerRoutes.WidgetInvoiceListScreen.screen
+		else -> LedgerRoutes.LedgerHomeScreen.screen
+	}
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination
-    ) {
-        navBaseComposable(
-            route = LedgerRoutes.LedgerHomeScreen.screen,
-            arguments = listOf(
-                navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                    type = NavType.StringType
-                    defaultValue = partnerId
-                },
-                navArgument(LedgerConstants.KEY_DC_NAME) {
-                    type = NavType.StringType
-                    defaultValue = dcName
-                },
-                navArgument(LedgerConstants.KEY_IS_FINANCED) {
-                    type = NavType.BoolType
-                    defaultValue = isDCFinanced
-                }
-            ),
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            LedgerHomeScreen(
-                viewModel = viewModel,
-                ledgerColors = ledgerColors,
-                onBackPress = finishActivity,
-                detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
-                onPayNowClick = {
-                    if (isDCFinanced) {
-                        ledgerCallbacks.onFinancedDCPayNowClick(resultLauncher)
-                    } else {
-                        ledgerCallbacks.onNonFinancedDCPayNowClick()
-                    }
-                },
-                setWalletFTUEStatus = setWalletFTUEStatus,
-                getWalletFTUEStatus = getWalletFTUEStatus
-            )
-        }
+	NavHost(
+		navController = navController, startDestination = startDestination
+	) {
+		navBaseComposable(
+			route = LedgerRoutes.LedgerHomeScreen.screen,
+			arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+				type = NavType.StringType
+				defaultValue = partnerId
+			}, navArgument(LedgerConstants.KEY_DC_NAME) {
+				type = NavType.StringType
+				defaultValue = dcName
+			}, navArgument(LedgerConstants.KEY_IS_FINANCED) {
+				type = NavType.BoolType
+				defaultValue = isDCFinanced
+			}),
+			logScreenName = ledgerCallbacks.firebaseScreenLogger
+		) {
+			val viewModel = hiltViewModel<LedgerHomeScreenViewModel>()
+			val launcher = getResultLauncher { viewModel.getInitialData() }
+			navController.SetComposeResultListener<Boolean>(REFRESH_HOME_SCREEN) {
+				viewModel.getInitialData()
+			}
+			LedgerHomeScreen(
+				viewModel = viewModel,
+				ledgerColors = ledgerColors,
+				onBackPress = finishActivity,
+				detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
+				onPayNowClick = {
+					if (isDCFinanced) {
+						ledgerCallbacks.onFinancedDCPayNowClick(launcher)
+					} else {
+						ledgerCallbacks.onNonFinancedDCPayNowClick()
+					}
+				},
+				setWalletFTUEStatus = setWalletFTUEStatus,
+				getWalletFTUEStatus = getWalletFTUEStatus
+			)
+		}
 
-        navBaseComposable(
-            route = LedgerRoutes.WalletLedgerRoute.screen,
-            arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                type = NavType.StringType
-                defaultValue = partnerId
-            }),
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            WalletLedgerScreen(onClick = {
-                openOrderDetailFragment(it)
-            }, onBackPress = {
-                navController.popBackStack()
-            }, setWalletFTUEStatus = setWalletFTUEStatus,
-                getWalletFTUEStatus = getWalletFTUEStatus,
-                getWalletHelpVideoId = getWalletHelpVideoId
-            )
-        }
+		navBaseComposable(
+			route = LedgerRoutes.WalletLedgerRoute.screen,
+			arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+				type = NavType.StringType
+				defaultValue = partnerId
+			}),
+			logScreenName = ledgerCallbacks.firebaseScreenLogger
+		) {
+			WalletLedgerScreen(
+				onClick = {
+					openOrderDetailFragment(it)
+				},
+				onBackPress = {
+					navController.popBackStack()
+				},
+				setWalletFTUEStatus = setWalletFTUEStatus,
+				getWalletFTUEStatus = getWalletFTUEStatus,
+				getWalletHelpVideoId = getWalletHelpVideoId
+			)
+		}
 
 
 
@@ -146,14 +150,13 @@ fun LedgerNavigation(
 			}
 		}
 
-
-
 		navBaseComposable(
 			route = LedgerRoutes.RevampLedgerInvoiceDetailScreen.screen,
 			logScreenName = ledgerCallbacks.firebaseScreenLogger
 		) {
 			val invoiceDetailViewModel = hiltViewModel<RevampInvoiceDetailViewModel>()
-			RevampInvoiceDetailScreen(isDCFinanced = isDCFinanced,viewModel = invoiceDetailViewModel,
+			RevampInvoiceDetailScreen(isDCFinanced = isDCFinanced,
+				viewModel = invoiceDetailViewModel,
 				ledgerColors = ledgerColors,
 				onDownloadInvoiceClick = onDownloadClick,
 				onError = { ledgerCallbacks.exceptionHandler(it) }) {
@@ -203,72 +206,81 @@ fun LedgerNavigation(
 			}
 		}
 
-        navBaseComposable(
-            route = LedgerRoutes.ABSDetailScreen.screen,
-            arguments = listOf(
-                navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                    type = NavType.StringType
-                    defaultValue = partnerId
-                }
-            ),
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            val prepaidHoldAmount = it.arguments?.getDouble(LedgerConstants.KEY_PREPAID_HOLD_AMOUNT, 0.0).orZero()
-            ABSDetailScreen(prepaidHoldAmount, ledgerColors = ledgerColors, onBackPress = {
-                navController.popBackStack()
-            })
-        }
+		navBaseComposable(
+			route = LedgerRoutes.ABSDetailScreen.screen,
+			arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+				type = NavType.StringType
+				defaultValue = partnerId
+			}),
+			logScreenName = ledgerCallbacks.firebaseScreenLogger
+		) {
+			val prepaidHoldAmount =
+				it.arguments?.getDouble(LedgerConstants.KEY_PREPAID_HOLD_AMOUNT, 0.0).orZero()
+			ABSDetailScreen(prepaidHoldAmount, ledgerColors = ledgerColors, onBackPress = {
+				navController.popBackStack()
+			})
+		}
 
-        navBaseComposable(
-            route = LedgerRoutes.DebitHoldDetailScreen.screen,
-            arguments = listOf(
-                navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                    type = NavType.StringType
-                    defaultValue = partnerId
-                }
-            ),
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            DebitHoldDetailScreen(ledgerColors = ledgerColors, onBackPress = {
-                navController.popBackStack()
-            })
-        }
+		navBaseComposable(
+			route = LedgerRoutes.DebitHoldDetailScreen.screen,
+			arguments = listOf(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+				type = NavType.StringType
+				defaultValue = partnerId
+			}),
+			logScreenName = ledgerCallbacks.firebaseScreenLogger
+		) {
+			DebitHoldDetailScreen(ledgerColors = ledgerColors, onBackPress = {
+				navController.popBackStack()
+			})
+		}
 
-        navBaseComposable(
-            route = LedgerRoutes.WidgetInvoiceListScreen.screen,
-            arguments = flowTypeData.toMutableList().apply {
-                add(navArgument(LedgerConstants.KEY_PARTNER_ID) {
-                    type = NavType.StringType
-                    defaultValue = partnerId
-                })
-            },
-            logScreenName = ledgerCallbacks.firebaseScreenLogger
-        ) {
-            WidgetInvoiceListScreen(ledgerColors = ledgerColors,
-                isDCFinanced = isDCFinanced,
-                detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
-                onPayNowClick = { ledgerCallbacks.onPaymentOptionsClick(resultLauncher) }) {
-                if (flowType == LedgerFlowType.INVOICE_LIST) {
-                    finishActivity()
-                } else {
-                    navController.popBackStack()
-                }
-            }
-        }
-    }
+		navBaseComposable(
+			route = LedgerRoutes.WidgetInvoiceListScreen.screen,
+			arguments = flowTypeData.toMutableList().apply {
+				add(navArgument(LedgerConstants.KEY_PARTNER_ID) {
+					type = NavType.StringType
+					defaultValue = partnerId
+				})
+			},
+			logScreenName = ledgerCallbacks.firebaseScreenLogger
+		) {
+			val launcher = getResultLauncher {
+				navController.setComposeResult(REFRESH_HOME_SCREEN, true)
+			}
+			WidgetInvoiceListScreen(ledgerColors = ledgerColors,
+				isDCFinanced = isDCFinanced,
+				detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
+				onPayNowClick = { ledgerCallbacks.onPaymentOptionsClick(launcher) }) {
+				if (flowType == LedgerFlowType.INVOICE_LIST) {
+					finishActivity()
+				} else {
+					navController.popBackStack()
+				}
+			}
+		}
+	}
 
 }
+
+@Composable
+private fun getResultLauncher(
+	onActivityResult: () -> Unit
+) = rememberLauncherForActivityResult(
+	contract = ActivityResultContracts.StartActivityForResult(),
+	onResult = {
+		if (it.resultCode == Activity.RESULT_OK) {
+			onActivityResult()
+		}
+	})
 
 fun provideDetailPageNavCallBacks(
 	navController: NavHostController
 ) = object : DetailPageNavigationCallback {
 
 
-
 	override fun navigateToInvoiceListPage(args: Bundle) {
 		navigateToInvoiceListPage(navController, args)
 	}
-
 
 
 	override fun navigateToRevampInvoiceDetailPage(args: Bundle) {
@@ -284,14 +296,13 @@ fun provideDetailPageNavCallBacks(
 	}
 
 
-
 	override fun navigateToHoldAmountDetailPage(args: Bundle) {
 		navigateToHoldAmountDetailPage(navController, args)
-    }
+	}
 
-    override fun navigateToDebitHoldPaymentDetailPage(args: Bundle) {
-        navigateToDebitHoldPaymentDetailPage(navController, args)
-    }
+	override fun navigateToDebitHoldPaymentDetailPage(args: Bundle) {
+		navigateToDebitHoldPaymentDetailPage(navController, args)
+	}
 
 	override fun navigateToWalletLedger(args: Bundle) {
 		navigateToWalletLedger(

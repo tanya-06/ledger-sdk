@@ -75,7 +75,7 @@
     <string name="total_amount">कुल राशि</string>
     <string name="invoice_amount">इनवॉइस राशि</string>
     <string name="invoice_id">इन्वॉस आईडी</string>
-    <string name="invoice_date">इनवॉइस तिथि</string>
+    <string name="ledger_invoice_date">इनवॉइस तिथि</string>
     <string name="interest_start_date">ब्याज शुरू तिथि</string>
     <string name="interest_start_dates">ब्याज शुरू तिथि: %s</string>
     <string name="outstanding_amount">बकाया राशि</string>
@@ -248,7 +248,7 @@
     <string name="interest_rate_s_per_day">ब्याज दर: %s%% प्रति दिन</string>
     <string name="remaining_amount">बकाया %s</string>
     <string name="s_days_ordering_blocked">%s दिन में आपकी ऑर्डरिंग ब्लॉक हो जाएगी, जल्द भुगतान करें !</string>
-    <string name="amount_paid">भुगतान राशि %s</string>
+    <string name="ledger_amount_paid">भुगतान राशि %s</string>
     <string name="pay_today_to_save_interest">आज भुगतान करें, अतिरिक्त ब्याज से बचें</string>
     <string name="pay_before_s_to_save_interest">%s तक भुगतान करें, ब्याज से बचें</string>
     <string name="pay_before_s_avoid_block_ordering">%s तक भुगतान करें, ऑर्डरिंग ब्लॉक होने से बचें</string>

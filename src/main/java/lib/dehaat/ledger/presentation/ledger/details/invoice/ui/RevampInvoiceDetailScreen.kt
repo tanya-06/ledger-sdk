@@ -212,17 +212,6 @@ private fun InvoiceDetailScreen(
 			}
 		}
 
-		RevampKeyValuePair(
-			pair = Pair(
-				stringResource(id = R.string.invoice_amount),
-				summary.invoiceAmount.getAmountInRupees()
-			),
-			style = Pair(
-				textParagraphT2Highlight(Neutral90),
-				textButtonB2(Neutral90)
-			)
-		)
-
 		VerticalSpacer(height = 12.dp)
 		RevampKeyValuePair(
 			pair = Pair(
@@ -238,7 +227,7 @@ private fun InvoiceDetailScreen(
 		VerticalSpacer(height = 12.dp)
 		RevampKeyValuePair(
 			pair = Pair(
-				stringResource(id = R.string.invoice_date),
+				stringResource(id = R.string.ledger_invoice_date),
 				summary.invoiceDate.toDateMonthYear()
 			),
 			style = Pair(

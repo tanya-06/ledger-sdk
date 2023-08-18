@@ -25,6 +25,7 @@ import lib.dehaat.ledger.util.getRoundedAmountInRupees
 import lib.dehaat.ledger.util.isNullOrZero
 import lib.dehaat.ledger.util.toDateMonthName
 import lib.dehaat.ledger.util.toDoubleOrZero
+import java.util.Locale
 import javax.inject.Inject
 
 class ViewDataMapper @Inject constructor() {
@@ -75,12 +76,15 @@ class ViewDataMapper @Inject constructor() {
 			showOrderingBlockedWidget = ledgerOverdueAmount != null && overdueStatus != null,
 			ledgerOverdueAmount = ledgerOverdueAmount.orZero(),
 			ledgerEarliestOverdueDate = DateUtils.getDateInFormat(
-				LedgerConstants.dd_MMM, ledgerEarliestOverdueDate?.toFloat().orZero()
+				LedgerConstants.dd_MMM,
+				ledgerEarliestOverdueDate?.toFloat().orZero(),
+				Locale.getDefault()
 			),
 			showInterestWidget = ledgerInterestAmount != null && interestStatus != null,
 			ledgerInterestAmount = ledgerInterestAmount.orZero(),
 			ledgerEarliestInterestDate = DateUtils.getDateInFormat(
-				LedgerConstants.dd_MMM, ledgerEarliestInterestDate?.toFloat().orZero()
+				LedgerConstants.dd_MMM, ledgerEarliestInterestDate?.toFloat().orZero(),
+				Locale.getDefault()
 			),
 			showInterestNotStartedWidget = ledgerInterestAmount != null && interestStatus == null
 		)
@@ -188,12 +192,15 @@ class ViewDataMapper @Inject constructor() {
 			showOrderingBlockedWidget = ledgerOverdueAmount != null && overdueStatus != null,
 			ledgerOverdueAmount = ledgerOverdueAmount.orZero(),
 			ledgerEarliestOverdueDate = DateUtils.getDateInFormat(
-				LedgerConstants.dd_MMM, ledgerEarliestOverdueDate?.toFloat().orZero()
+				LedgerConstants.dd_MMM,
+				ledgerEarliestOverdueDate?.toFloat().orZero(),
+				Locale.getDefault()
 			),
 			showInterestWidget = ledgerInterestAmount != null && interestStatus != null,
 			ledgerInterestAmount = ledgerInterestAmount.orZero(),
 			ledgerEarliestInterestDate = DateUtils.getDateInFormat(
-				LedgerConstants.dd_MMM, ledgerEarliestInterestDate?.toFloat().orZero()
+				LedgerConstants.dd_MMM, ledgerEarliestInterestDate?.toFloat().orZero(),
+				Locale.getDefault()
 			),
 			showInterestNotStartedWidget = ledgerInterestAmount != null && interestStatus == null
 		)
@@ -214,7 +221,9 @@ class ViewDataMapper @Inject constructor() {
 			ledgerEarliestInterestDate = "",
 			showInterestNotStartedWidget = false,
 			ledgerEarliestOverdueDate = DateUtils.getDateInFormat(
-				LedgerConstants.dd_MMM, info.ledgerEarliestOverdueDate?.toFloat().orZero()
+				LedgerConstants.dd_MMM,
+				info.ledgerEarliestOverdueDate?.toFloat().orZero(),
+				Locale.getDefault()
 			)
 		)
 	}

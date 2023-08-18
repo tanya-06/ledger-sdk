@@ -34,7 +34,7 @@ fun WidgetILBottomBar(bottomBarData: BottomBarData?, onPayNowClick: () -> Unit) 
 			}
 			Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 16.dp)) {
 				Text(
-					text = stringResource(R.string.amount_paid, amountInRupees),
+					text = stringResource(R.string.ledger_amount_paid, amountInRupees),
 					style = textSemiBold16Sp(Neutral90)
 				)
 				Text(text = getBottomBarDesc(bottomBarData), style = textMedium14Sp(Neutral80))

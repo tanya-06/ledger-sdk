@@ -41,7 +41,7 @@ fun OverdueWidget(
 		Column(
 			Modifier
 				.padding(end = 16.dp, top = 14.dp)
-				.fillMaxWidth(0.7f)
+				.fillMaxWidth(0.8f)
 				.clip(mediumShape())
 				.background(Error110)
 				.clickable {

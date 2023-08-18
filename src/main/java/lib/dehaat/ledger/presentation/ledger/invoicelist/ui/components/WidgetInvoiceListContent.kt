@@ -70,6 +70,7 @@ fun WidgetInvoiceListContent(
 		Text(
 			text = stringResource(R.string.s_days_ordering_blocked, uiState.orderBlockingDays),
 			modifier = Modifier
+				.fillMaxWidth()
 				.background(Error90)
 				.padding(horizontal = 20.dp, vertical = 12.dp),
 			style = textSemiBold14Sp(Color.White)

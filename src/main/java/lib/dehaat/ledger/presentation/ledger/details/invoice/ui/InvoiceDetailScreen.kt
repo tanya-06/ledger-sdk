@@ -31,8 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.dehaat.androidbase.helper.showToast
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.initializer.LedgerSDK
-import lib.dehaat.ledger.resources.themes.LedgerColors
-import lib.dehaat.ledger.util.toDateMonthYear
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceMedium
 import lib.dehaat.ledger.presentation.common.uicomponent.SpaceSmall12
@@ -53,8 +51,10 @@ import lib.dehaat.ledger.resources.text18Sp
 import lib.dehaat.ledger.resources.textBold14Sp
 import lib.dehaat.ledger.resources.textMedium14Sp
 import lib.dehaat.ledger.resources.textSemiBold12Sp
+import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.util.HandleAPIErrors
 import lib.dehaat.ledger.util.getAmountInRupees
+import lib.dehaat.ledger.util.toDateMonthYear
 
 @Composable
 fun InvoiceDetailScreen(
@@ -149,7 +149,7 @@ fun InvoiceDetailScreen(
 								SpaceSmall12()
 
 								CreditNoteKeyValue(
-									key = stringResource(R.string.invoice_date),
+									key = stringResource(R.string.ledger_invoice_date),
 									value = summary.timestamp.toDateMonthYear(),
 									keyTextStyle = text18Sp(
 										textColor = ledgerColors.CtaDarkColor
@@ -276,7 +276,7 @@ fun InvoiceDetailScreen(
 					}*/
 
 					invoiceData?.overdueInfo?.overdueDate?.let {
-						if (viewModel.isLmsActivated() == false) {
+						if (!viewModel.isLmsActivated()) {
 							SpaceMedium()
 
 							Card(

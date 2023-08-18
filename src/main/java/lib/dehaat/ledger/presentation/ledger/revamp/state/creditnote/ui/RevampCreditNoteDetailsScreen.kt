@@ -125,7 +125,7 @@ fun RevampCreditNoteDetailsScreen(
                         if (summary?.invoiceDate.isNotNull()) {
                             RevampKeyValuePair(
                                 pair = Pair(
-                                    stringResource(id = R.string.invoice_date),
+                                    stringResource(id = R.string.ledger_invoice_date),
                                     summary?.invoiceDate.toDateMonthYear()
                                 ),
                                 style = Pair(

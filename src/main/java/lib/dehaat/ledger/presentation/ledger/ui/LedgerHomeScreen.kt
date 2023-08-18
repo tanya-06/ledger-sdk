@@ -104,9 +104,7 @@ fun LedgerHomeScreen(
 		)
 	val isWalletLedgerViewed by remember {
 		mutableStateOf(
-			getWalletFTUEStatus(
-				IS_WALLET_LEDGER_VIEWED
-			)
+			getWalletFTUEStatus(IS_WALLET_LEDGER_VIEWED)
 		)
 	}
 
