@@ -110,6 +110,9 @@ class DownloadFileUtil @Inject constructor(
 	) {
 		val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
 		var fileName = fName ?: url.substring(url.lastIndexOf('/') + 1)
+		if (fileName.startsWith("/") && fileName.length > 1) {
+			fileName = fileName.substring(1)
+		}
 		fileName = fileName.substring(0, 1).uppercase() + fileName.substring(1)
 		val request = DownloadManager.Request(Uri.parse(url))
 			.setMimeType(getMimeType(format))
