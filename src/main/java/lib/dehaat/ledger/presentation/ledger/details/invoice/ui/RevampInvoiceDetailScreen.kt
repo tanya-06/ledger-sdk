@@ -188,7 +188,7 @@ private fun InvoiceDetailScreen(
 			)
 		)
 
-		if (interestOverdueViewData?.invoiceStatus != InvoiceStatus.INTEREST_START_DATE) {
+		if (interestOverdueViewData?.invoiceStatus != InvoiceStatus.INTEREST_START_DATE && (isDCFinanced || summary.showTotalInterestCharged)) {
 			VerticalSpacer(height = 12.dp)
 			InterestAmount(summary.totalInterestCharged)
 		}

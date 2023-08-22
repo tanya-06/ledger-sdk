@@ -367,12 +367,13 @@ class LedgerViewDataMapper @Inject constructor() {
 		)
 	}
 
-	private fun getPrepaidAndCreditInfoViewDataV2(prepaidAndCreditInfo: InvoiceDataEntity.PrepaidAndCreditInfoEntity?) = prepaidAndCreditInfo?.let {
-		PrepaidAndCreditInfoViewDataV2(
-			it.prepaidAmount,
-			it.creditAmount
-		)
-	}
+	private fun getPrepaidAndCreditInfoViewDataV2(prepaidAndCreditInfo: InvoiceDataEntity.PrepaidAndCreditInfoEntity?) =
+		prepaidAndCreditInfo?.let {
+			PrepaidAndCreditInfoViewDataV2(
+				it.prepaidAmount,
+				it.creditAmount
+			)
+		}
 
 	private fun getInterestOverdueViewData(interestOverdueEntity: InterestOverdueEntity?) =
 		interestOverdueEntity?.run {
@@ -414,7 +415,8 @@ class LedgerViewDataMapper @Inject constructor() {
 					totalInterestOutstanding.orZero() > 0,
 			showPaymentComplete = isInterestSubVented.isTrue() &&
 					totalInterestCharged.orZero() > 0 &&
-					totalInterestOutstanding.orZero() <= 0.0
+					totalInterestOutstanding.orZero() <= 0.0,
+			showTotalInterestCharged = totalInterestCharged != 0.0
 		)
 	}
 

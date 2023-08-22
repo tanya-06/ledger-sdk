@@ -17,5 +17,6 @@ data class SummaryViewDataV2(
 	val invoiceAge: Long,
 	val showProcessingLabel: Boolean,
 	val showInterestDetails: Boolean,
-	val showPaymentComplete: Boolean
+	val showPaymentComplete: Boolean,
+	val showTotalInterestCharged: Boolean
 )

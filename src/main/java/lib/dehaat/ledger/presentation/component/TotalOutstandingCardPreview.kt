@@ -79,6 +79,7 @@ fun TotalOutstandingCard(
 
 	Icon(
 		painter = painterResource(id = R.drawable.ic_transaction_arrow_right),
-		contentDescription = ""
+		contentDescription = "",
+		modifier = Modifier.padding(top = 6.dp)
 	)
 }

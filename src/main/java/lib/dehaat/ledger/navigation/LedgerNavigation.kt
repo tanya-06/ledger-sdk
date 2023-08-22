@@ -250,7 +250,13 @@ fun LedgerNavigation(
 			WidgetInvoiceListScreen(ledgerColors = ledgerColors,
 				isDCFinanced = isDCFinanced,
 				detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
-				onPayNowClick = { ledgerCallbacks.onPaymentOptionsClick(launcher) }) {
+				onPayNowClick = {
+					if (isDCFinanced) {
+						ledgerCallbacks.onFinancedDCPayNowClick(launcher)
+					} else {
+						ledgerCallbacks.onNonFinancedDCPayNowClick()
+					}
+				}) {
 				if (flowType == LedgerFlowType.INVOICE_LIST) {
 					finishActivity()
 				} else {
