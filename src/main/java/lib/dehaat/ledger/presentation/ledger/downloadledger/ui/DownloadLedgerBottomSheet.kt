@@ -32,7 +32,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import lib.dehaat.ledger.R
-import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.themes.LedgerColors
 import lib.dehaat.ledger.presentation.common.uicomponent.BaseBottomSheet
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
@@ -123,45 +122,27 @@ private fun DownloadButtons(
 	enableDownloadBtn: Boolean,
 	onDownloadLedgerClick: (String) -> Unit
 ) {
-	if (LedgerSDK.isAIMS) {
-		Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-			OutlinedButton(
-				modifier = Modifier
-					.padding(top = 36.dp)
-					.weight(1f),
-				onClick = { onDownloadLedgerClick(DownloadLedgerFormat.EXCEL) },
-				shape = mediumShape(),
-				colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-				border = BorderStroke(1.dp, if (enableDownloadBtn) Primary100 else ColorB3B3B3),
-				enabled = enableDownloadBtn
-			) {
-				Text(
-					modifier = Modifier.padding(vertical = 8.dp),
-					text = stringResource(id = R.string.download_excel),
-					style = textMedium16Sp(Neutral70)
-				)
-			}
-			OutlinedButton(
-				modifier = Modifier
-					.padding(top = 36.dp)
-					.weight(1f),
-				onClick = { onDownloadLedgerClick(DownloadLedgerFormat.PDF) },
-				shape = mediumShape(),
-				colors = ButtonDefaults.buttonColors(backgroundColor = if (enableDownloadBtn) Primary100 else ColorB3B3B3),
-				enabled = enableDownloadBtn
-			) {
-				Text(
-					modifier = Modifier.padding(vertical = 8.dp),
-					text = stringResource(id = R.string.download_pdf),
-					style = textMedium16Sp(Color.White)
-				)
-			}
-		}
-	} else {
+	Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
 		OutlinedButton(
 			modifier = Modifier
-				.padding(top = 36.dp, start = 16.dp)
-				.fillMaxWidth(),
+				.padding(top = 36.dp)
+				.weight(1f),
+			onClick = { onDownloadLedgerClick(DownloadLedgerFormat.EXCEL) },
+			shape = mediumShape(),
+			colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+			border = BorderStroke(1.dp, if (enableDownloadBtn) Primary100 else ColorB3B3B3),
+			enabled = enableDownloadBtn
+		) {
+			Text(
+				modifier = Modifier.padding(vertical = 8.dp),
+				text = stringResource(id = R.string.download_excel),
+				style = textMedium16Sp(Neutral70)
+			)
+		}
+		OutlinedButton(
+			modifier = Modifier
+				.padding(top = 36.dp)
+				.weight(1f),
 			onClick = { onDownloadLedgerClick(DownloadLedgerFormat.PDF) },
 			shape = mediumShape(),
 			colors = ButtonDefaults.buttonColors(backgroundColor = if (enableDownloadBtn) Primary100 else ColorB3B3B3),
@@ -169,7 +150,7 @@ private fun DownloadButtons(
 		) {
 			Text(
 				modifier = Modifier.padding(vertical = 8.dp),
-				text = stringResource(id = R.string.download_now),
+				text = stringResource(id = R.string.download_pdf),
 				style = textMedium16Sp(Color.White)
 			)
 		}
