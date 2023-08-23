@@ -2,7 +2,13 @@ package lib.dehaat.ledger.presentation.ledger.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -15,9 +21,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import lib.dehaat.ledger.resources.Error90
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.framework.model.outstanding.OutstandingData
+import lib.dehaat.ledger.resources.Error90
 import lib.dehaat.ledger.resources.Neutral10
 import lib.dehaat.ledger.resources.text12Sp
 import lib.dehaat.ledger.resources.textSemiBold14Sp
@@ -28,7 +34,7 @@ fun OutStandingPaymentView(outstandingData: OutstandingData) {
     Row(
         Modifier
             .fillMaxWidth()
-            .aspectRatio(4.86f)
+            .height(IntrinsicSize.Min)
             .background(Error90)
     ) {
         OutStandingText(

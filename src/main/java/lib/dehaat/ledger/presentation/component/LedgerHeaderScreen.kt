@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.dehaat.androidbase.helper.isFalse
 import com.dehaat.androidbase.helper.isTrue
 import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.common.uicomponent.VerticalSpacer
+import lib.dehaat.ledger.presentation.ledger.ui.component.OutStandingPaymentView
 import lib.dehaat.ledger.presentation.ledger.ui.component.OverduePaymentView
 import lib.dehaat.ledger.presentation.ledger.ui.component.PaymentButton
 import lib.dehaat.ledger.presentation.ledger.ui.component.creditSummary.BlockOrderingWidget
@@ -60,8 +64,12 @@ fun WidgetsView(
 	lineStart: MutableState<Float>,
 	onWidgetClicked: (Bundle) -> Unit
 ) {
+	val outstanding by LedgerSDK.outstandingDataFlow.collectAsState()
 	widgetsViewData?.also {
 		when {
+			outstanding.showDialog && it.showOrderingBlockedWidget.isFalse() ->
+				OutStandingPaymentView(outstanding)
+
 			it.creditLineStatus == LedgerConstants.ON_HOLD -> OverduePaymentView(
 				it.creditLineSubStatus,
 				it.agedOutstandingAmount,
