@@ -10,7 +10,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -73,7 +75,6 @@ import lib.dehaat.ledger.resources.Secondary20
 import lib.dehaat.ledger.resources.themes.LedgerColors
 import lib.dehaat.ledger.util.FillMaxWidthColumn
 import lib.dehaat.ledger.util.clickableWithCorners
-import lib.dehaat.ledger.util.getAmountInRupees
 import lib.dehaat.ledger.util.showToast
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -279,10 +280,11 @@ private fun HoldAndWalletBalanceContent(
 		modifier = Modifier
 			.fillMaxWidth(1f)
 			.background(Color.White)
+			.height(IntrinsicSize.Min)
 			.padding(16.dp)
 	) {
 		abs?.let {
-			EntryPointButtonContent(modifier = Modifier
+			EntryPointButtonContent(modifier = Modifier.fillMaxHeight()
 				.weight(.5f)
 				.padding(start = 8.dp, end = 4.dp),
 				headingText = stringResource(id = R.string.hold_balance),
@@ -302,10 +304,10 @@ private fun HoldAndWalletBalanceContent(
 				ledgerViewModel.ledgerAnalytics.onHoldAmountWidgetViewed()
 			}
 		}
-		EntryPointButtonContent(modifier = Modifier
+		EntryPointButtonContent(modifier = Modifier.fillMaxHeight()
 			.weight(.5f)
 			.padding(start = 8.dp, end = 4.dp),
-			valueText = walletBalance.getAmountInRupees(),
+			valueText = walletBalance,
 			onClick = {
 				detailPageNavigationCallback.navigateToWalletLedger(bundleOf())
 			})
