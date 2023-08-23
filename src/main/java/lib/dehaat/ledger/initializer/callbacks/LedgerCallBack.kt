@@ -7,7 +7,7 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import lib.dehaat.ledger.presentation.model.invoicedownload.InvoiceDownloadData
 
-typealias PayNowClick = () -> Unit
+typealias PayNowClick = (String) -> Unit
 typealias DownloadInvoiceIntent = (Context, String) -> PendingIntent?
 typealias DownloadInvoiceSuccess = (invoiceDownloadData: InvoiceDownloadData) -> Unit
 typealias ExceptionHandler = (ex: Exception) -> Unit

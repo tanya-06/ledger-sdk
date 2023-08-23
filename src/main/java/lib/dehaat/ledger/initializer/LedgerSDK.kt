@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.os.Environment
 import androidx.annotation.DrawableRes
 import com.dehaat.androidbase.components.SingleEventLiveData
-import java.io.File
-import java.math.BigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import lib.dehaat.ledger.framework.model.outstanding.OutstandingData
 import lib.dehaat.ledger.presentation.ledger.LedgerDetailActivity
 import lib.dehaat.ledger.presentation.model.downloadledger.DownloadStatusData
+import java.io.File
+import java.math.BigDecimal
 
 object LedgerSDK {
 
@@ -21,13 +21,15 @@ object LedgerSDK {
 	internal var locale: String = "en"
 	internal var appIcon: Int = 0
 		private set
+
+	var payNowClickScreenType: String? = null
 	internal var showOutstandingTooltip = false
 	internal var showLedgerDownloadCta = false
-    internal var isWalletActive = false
-    internal var openOrderDetailFragment:(String) -> Unit = {_ ->}
-    internal var getWalletFTUEStatus: (String) -> Boolean = {_ -> false}
-    internal var setWalletFTUEStatus: (String) -> Unit = { }
-    internal var getWalletHelpVideoId: () -> String = { "" }
+	internal var isWalletActive = false
+	internal var openOrderDetailFragment: (String) -> Unit = { _ -> }
+	internal var getWalletFTUEStatus: (String) -> Boolean = { _ -> false }
+	internal var setWalletFTUEStatus: (String) -> Unit = { }
+	internal var getWalletHelpVideoId: () -> String = { "" }
 
 	fun init(
 		context: Context,
@@ -53,35 +55,35 @@ object LedgerSDK {
 		language: String? = null,
 		showOutstandingTooltip: Boolean,
 		showLedgerDownload: Boolean,
-        isWalletActive: Boolean,
-        openOrderDetailFragment: (String) -> Unit,
-        getWalletFTUEStatus: (String) -> Boolean,
-        setWalletFTUEStatus: (String) -> Unit,
-        getWalletHelpVideoId: () -> String,
+		isWalletActive: Boolean,
+		openOrderDetailFragment: (String) -> Unit,
+		getWalletFTUEStatus: (String) -> Boolean,
+		setWalletFTUEStatus: (String) -> Unit,
+		getWalletHelpVideoId: () -> String,
 		flowType: String? = null,
 		flowTypeData: Bundle? = null
-    ) = if (isCurrentAppAvailable()) {
-        this.showLedgerDownloadCta = showLedgerDownload
-        this.openOrderDetailFragment = openOrderDetailFragment
+	) = if (isCurrentAppAvailable()) {
+		this.showLedgerDownloadCta = showLedgerDownload
+		this.openOrderDetailFragment = openOrderDetailFragment
 		this.isWalletActive = isWalletActive
 		this.getWalletFTUEStatus = getWalletFTUEStatus
-        this.setWalletFTUEStatus = setWalletFTUEStatus
-        this.getWalletHelpVideoId = getWalletHelpVideoId
-        LedgerDetailActivity.Companion.Args(
-            partnerId = partnerId,
-            dcName = dcName,
-            isDCFinanced = isDCFinanced,
-            language = language,
-	        flowType = flowType,
-	        flowTypeData = flowTypeData
-        ).also {
-            language?.let { lang -> locale = lang }
-            context.startActivity(it.build(context))
-            this.showOutstandingTooltip = showOutstandingTooltip
-        }
-    } else {
-        throw Exception("Ledger not initialised Exception")
-    }
+		this.setWalletFTUEStatus = setWalletFTUEStatus
+		this.getWalletHelpVideoId = getWalletHelpVideoId
+		LedgerDetailActivity.Companion.Args(
+			partnerId = partnerId,
+			dcName = dcName,
+			isDCFinanced = isDCFinanced,
+			language = language,
+			flowType = flowType,
+			flowTypeData = flowTypeData
+		).also {
+			language?.let { lang -> locale = lang }
+			context.startActivity(it.build(context))
+			this.showOutstandingTooltip = showOutstandingTooltip
+		}
+	} else {
+		throw Exception("Ledger not initialised Exception")
+	}
 
 	fun getFile(context: Context): File? = try {
 		File(

@@ -91,7 +91,8 @@ fun RevampInvoiceDetailScreen(
 	onError: (Exception) -> Unit,
 	onBackPress: () -> Unit
 ) {
-	HandleAPIErrors(viewModel.uiEvent)
+	HandleAPIErrors(viewModel.
+	uiEvent)
 	val uiState by viewModel.uiState.collectAsState()
 	val context = LocalContext.current
 	CommonContainer(

@@ -9,5 +9,6 @@ data class WidgetInvoiceListUIState(
 	val orderBlockingDays: Int?,
 	val showBlockOrdering: Boolean,
 	val ledgerOverdueAmount: String?,
-	val bottomBarData: BottomBarData?
+	val bottomBarData: BottomBarData?,
+	val widgetType: String?
 )

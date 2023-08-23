@@ -211,6 +211,7 @@ fun LedgerHomeScreen(
 										},
 										onPayNowClick = onPayNowClick,
 										onWidgetClicked = { bundle ->
+											viewModel.onWidgetClicked(bundle)
 											detailPageNavigationCallback.navigateToWidgetInvoiceListScreen(
 												bundle.apply {
 													putString(

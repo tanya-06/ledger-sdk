@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
+import lib.dehaat.ledger.presentation.ledger.annotations.InvoiceDetailScreenType
+import lib.dehaat.ledger.presentation.ledger.annotations.InvoiceListFlowType
 import lib.dehaat.ledger.presentation.ledger.annotations.InvoiceStatus
 import lib.dehaat.ledger.presentation.ledger.details.invoice.InvoiceDetailViewModel
 import lib.dehaat.ledger.presentation.ledger.details.invoice.RevampInvoiceDetailViewModel
@@ -76,7 +78,13 @@ fun WidgetInvoiceListContent(
 			style = textSemiBold14Sp(Color.White)
 		)
 	}
-	WidgetInvoiceList(uiState.invoiceList, ledgerColors, isDCFinanced, detailPageNavigationCallback)
+	WidgetInvoiceList(
+		uiState.invoiceList,
+		ledgerColors,
+		isDCFinanced,
+		detailPageNavigationCallback,
+		uiState.widgetType
+	)
 }
 
 @Composable
@@ -117,7 +125,8 @@ private fun WidgetInvoiceList(
 	invoiceList: List<WidgetInvoiceViewData>,
 	ledgerColors: LedgerColors,
 	isDCFinanced: Boolean,
-	detailPageNavigationCallback: DetailPageNavigationCallback
+	detailPageNavigationCallback: DetailPageNavigationCallback,
+	widgetType: String?
 ) = LazyColumn {
 	items(invoiceList) {
 		WidgetInvoiceItem(
@@ -126,7 +135,10 @@ private fun WidgetInvoiceList(
 			if (isDCFinanced) {
 				detailPageNavigationCallback.navigateToRevampInvoiceDetailPage(
 					RevampInvoiceDetailViewModel.getBundle(
-						ledgerId = invoice.ledgerId, source = invoice.source, erpId = invoice.erpId
+						ledgerId = invoice.ledgerId,
+						source = invoice.source,
+						erpId = invoice.erpId,
+						screenType = if (widgetType == InvoiceListFlowType.OVERDUE) InvoiceDetailScreenType.OVERDUE_WIDGET else InvoiceDetailScreenType.INTEREST_WIDGET
 					)
 				)
 			} else {
@@ -165,7 +177,9 @@ private fun WidgetInvoiceItem(
 				Text(
 					text = stringResource(R.string.remaining_amount, data.totalRemainingAmount),
 					style = textMedium14Sp(textColor = ledgerColors.CtaDarkColor),
-					modifier = Modifier.padding(end = 4.dp).weight(1f)
+					modifier = Modifier
+						.padding(end = 4.dp)
+						.weight(1f)
 				)
 				InvoiceStatusView(data.invoiceStatus, data.invoiceStatusVariable)
 				HandleInterestStartDate(data.invoiceStatus, data.invoiceStatusVariable)

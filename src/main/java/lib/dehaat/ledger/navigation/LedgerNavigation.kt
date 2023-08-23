@@ -13,12 +13,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dehaat.wallet.presentation.ui.screens.WalletLedgerScreen
+import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.initializer.callbacks.LedgerCallBack
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.LedgerConstants.REFRESH_HOME_SCREEN
 import lib.dehaat.ledger.presentation.LedgerHomeScreenViewModel
 import lib.dehaat.ledger.presentation.ledger.abs.ABSDetailScreen
+import lib.dehaat.ledger.presentation.ledger.annotations.InvoiceListFlowType
 import lib.dehaat.ledger.presentation.ledger.annotations.LedgerFlowType
+import lib.dehaat.ledger.presentation.ledger.annotations.PayNowScreenType
 import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.AvailableCreditLimitScreenArgs
 import lib.dehaat.ledger.presentation.ledger.details.availablecreditlimit.ui.AvailableCreditLimitDetailsScreen
 import lib.dehaat.ledger.presentation.ledger.details.debithold.ui.DebitHoldDetailScreen
@@ -29,6 +32,7 @@ import lib.dehaat.ledger.presentation.ledger.details.invoice.ui.RevampInvoiceDet
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.InvoiceListViewModel
 import lib.dehaat.ledger.presentation.ledger.details.loanlist.ui.InvoiceListScreen
 import lib.dehaat.ledger.presentation.ledger.details.payments.ui.RevampPaymentDetailScreen
+import lib.dehaat.ledger.presentation.ledger.invoicelist.WidgetInvoiceListVM
 import lib.dehaat.ledger.presentation.ledger.invoicelist.ui.WidgetInvoiceListScreen
 import lib.dehaat.ledger.presentation.ledger.revamp.state.creditnote.ui.RevampCreditNoteDetailsScreen
 import lib.dehaat.ledger.presentation.ledger.ui.LedgerHomeScreen
@@ -91,10 +95,12 @@ fun LedgerNavigation(
 				onBackPress = finishActivity,
 				detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
 				onPayNowClick = {
+					viewModel.onPayNowClicked()
 					if (isDCFinanced) {
+						LedgerSDK.payNowClickScreenType = PayNowScreenType.LEDGER
 						ledgerCallbacks.onFinancedDCPayNowClick(launcher)
 					} else {
-						ledgerCallbacks.onNonFinancedDCPayNowClick()
+						ledgerCallbacks.onNonFinancedDCPayNowClick(PayNowScreenType.LEDGER)
 					}
 				},
 				setWalletFTUEStatus = setWalletFTUEStatus,
@@ -187,8 +193,7 @@ fun LedgerNavigation(
 			logScreenName = ledgerCallbacks.firebaseScreenLogger
 		) {
 
-			RevampPaymentDetailScreen(
-				ledgerColors = ledgerColors,
+			RevampPaymentDetailScreen(ledgerColors = ledgerColors,
 				onError = { ledgerCallbacks.exceptionHandler(it) }) {
 				navController.popBackStack()
 			}
@@ -241,20 +246,30 @@ fun LedgerNavigation(
 					type = NavType.StringType
 					defaultValue = partnerId
 				})
+				add(navArgument(LedgerConstants.KEY_IS_FINANCED) {
+					type = NavType.BoolType
+					defaultValue = isDCFinanced
+				})
 			},
 			logScreenName = ledgerCallbacks.firebaseScreenLogger
 		) {
 			val launcher = getResultLauncher {
 				navController.setComposeResult(REFRESH_HOME_SCREEN, true)
 			}
-			WidgetInvoiceListScreen(ledgerColors = ledgerColors,
+			val viewModel = hiltViewModel<WidgetInvoiceListVM>()
+			WidgetInvoiceListScreen(viewModel = viewModel,
+				ledgerColors = ledgerColors,
 				isDCFinanced = isDCFinanced,
 				detailPageNavigationCallback = provideDetailPageNavCallBacks(navController),
 				onPayNowClick = {
+					viewModel.onPayNowClicked()
+					val screenType =
+						if (it == InvoiceListFlowType.OVERDUE) PayNowScreenType.OVERDUE_WIDGET else PayNowScreenType.INTEREST_WIDGET
 					if (isDCFinanced) {
+						LedgerSDK.payNowClickScreenType = screenType
 						ledgerCallbacks.onFinancedDCPayNowClick(launcher)
 					} else {
-						ledgerCallbacks.onNonFinancedDCPayNowClick()
+						ledgerCallbacks.onNonFinancedDCPayNowClick(screenType)
 					}
 				}) {
 				if (flowType == LedgerFlowType.INVOICE_LIST) {
@@ -271,8 +286,7 @@ fun LedgerNavigation(
 @Composable
 private fun getResultLauncher(
 	onActivityResult: () -> Unit
-) = rememberLauncherForActivityResult(
-	contract = ActivityResultContracts.StartActivityForResult(),
+) = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult(),
 	onResult = {
 		if (it.resultCode == Activity.RESULT_OK) {
 			onActivityResult()

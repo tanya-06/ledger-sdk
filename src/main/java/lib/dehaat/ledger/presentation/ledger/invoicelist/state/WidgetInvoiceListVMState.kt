@@ -9,7 +9,8 @@ data class WidgetInvoiceListVMState(
 	val orderBlockingDays: Int? = null,
 	val showBlockOrdering: Boolean = false,
 	val ledgerOverdueAmount: String? = null,
-	val bottomBarData: BottomBarData? = null
+	val bottomBarData: BottomBarData? = null,
+	val widgetType: String? = null
 ) {
 
 	fun toUiState() =
@@ -20,7 +21,8 @@ data class WidgetInvoiceListVMState(
 			orderBlockingDays,
 			showBlockOrdering,
 			ledgerOverdueAmount,
-			bottomBarData
+			bottomBarData,
+			widgetType
 		)
 }
 

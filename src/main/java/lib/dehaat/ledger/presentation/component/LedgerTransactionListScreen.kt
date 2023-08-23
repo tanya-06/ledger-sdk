@@ -49,6 +49,7 @@ import lib.dehaat.ledger.initializer.LedgerSDK
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.LedgerConstants
 import lib.dehaat.ledger.presentation.LedgerTransactionsViewModel
+import lib.dehaat.ledger.presentation.ledger.annotations.InvoiceDetailScreenType
 import lib.dehaat.ledger.presentation.ledger.components.NoDataFound
 import lib.dehaat.ledger.presentation.ledger.components.ShowProgress
 import lib.dehaat.ledger.presentation.ledger.details.debithold.DebitHoldDetailViewModel
@@ -159,7 +160,8 @@ fun LedgerTransactionListScreen(
 								RevampInvoiceDetailViewModel.getBundle(
 									ledgerId = transaction.transactionsViewData.ledgerId,
 									source = transaction.transactionsViewData.source,
-									erpId = erpId
+									erpId = erpId,
+									screenType = InvoiceDetailScreenType.LEDGER
 								)
 							)
 						}
@@ -275,7 +277,9 @@ private fun HoldAndWalletBalanceContent(
 	ledgerViewModel: LedgerTransactionsViewModel,
 	walletBalance: String
 ) {
-	Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
+	Divider(modifier = Modifier
+		.background(color = Neutral10)
+		.height(16.dp))
 	Row(
 		modifier = Modifier
 			.fillMaxWidth(1f)
@@ -312,7 +316,9 @@ private fun HoldAndWalletBalanceContent(
 				detailPageNavigationCallback.navigateToWalletLedger(bundleOf())
 			})
 	}
-	Divider(modifier = Modifier.background(color = Neutral10).height(16.dp))
+	Divider(modifier = Modifier
+		.background(color = Neutral10)
+		.height(16.dp))
 }
 
 private fun showDivider(

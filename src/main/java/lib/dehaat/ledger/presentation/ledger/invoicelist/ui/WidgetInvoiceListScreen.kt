@@ -8,7 +8,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import lib.dehaat.ledger.R
 import lib.dehaat.ledger.navigation.DetailPageNavigationCallback
 import lib.dehaat.ledger.presentation.common.uicomponent.CommonContainer
@@ -22,21 +21,21 @@ import lib.dehaat.ledger.util.HandleAPIErrors
 
 @Composable
 fun WidgetInvoiceListScreen(
+	viewModel: WidgetInvoiceListVM,
 	ledgerColors: LedgerColors,
 	isDCFinanced: Boolean,
 	detailPageNavigationCallback: DetailPageNavigationCallback,
-	onPayNowClick: () -> Unit,
+	onPayNowClick: (String?) -> Unit,
 	onBackPress: () -> Unit
 ) {
 	val scaffoldState = rememberScaffoldState()
-	val viewModel = hiltViewModel<WidgetInvoiceListVM>()
 	val uiState by viewModel.uiState.collectAsState()
 	CommonContainer(title = stringResource(R.string.invoice_list),
 		onBackPress = onBackPress,
 		ledgerColors = ledgerColors,
 		scaffoldState = scaffoldState,
 		backgroundColor = Background,
-		bottomBar = { WidgetILBottomBar(uiState.bottomBarData, onPayNowClick) }) {
+		bottomBar = { WidgetILBottomBar(uiState.bottomBarData) { onPayNowClick(uiState.widgetType) } }) {
 		Box(Modifier.padding(it)) {
 			WidgetInvoiceListContent(
 				uiState, ledgerColors, isDCFinanced, detailPageNavigationCallback

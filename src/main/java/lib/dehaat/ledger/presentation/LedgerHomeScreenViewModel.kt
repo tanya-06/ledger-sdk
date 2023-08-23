@@ -1,5 +1,6 @@
 package lib.dehaat.ledger.presentation
 
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,8 @@ import lib.dehaat.ledger.entities.creditsummary.CreditSummaryEntity
 import lib.dehaat.ledger.entities.revamp.creditsummary.CreditSummaryEntityV2
 import lib.dehaat.ledger.entities.transactionsummary.TransactionSummaryEntity
 import lib.dehaat.ledger.presentation.common.UiEvent
+import lib.dehaat.ledger.presentation.ledger.annotations.ILBottomBarType
+import lib.dehaat.ledger.presentation.ledger.annotations.PayNowScreenType
 import lib.dehaat.ledger.presentation.ledger.state.LedgerFilterViewModelState
 import lib.dehaat.ledger.presentation.ledger.state.LedgerHomeScreenViewModelState
 import lib.dehaat.ledger.presentation.mapper.ViewDataMapper
@@ -40,7 +43,8 @@ class LedgerHomeScreenViewModel @Inject constructor(
 	private val getCreditSummaryUseCase: GetCreditSummaryUseCase,
 	private val getTransactionSummaryUseCase: GetTransactionSummaryUseCase,
 	private val daysToFilterUseCase: DaysToFilterUseCase,
-	private val mapper: ViewDataMapper
+	private val mapper: ViewDataMapper,
+	private val analytics: LibLedgerAnalytics
 ) : ViewModel() {
 
 	private val _updateLedgerStartDate = MutableSharedFlow<DownloadLedgerData>()
@@ -261,6 +265,32 @@ class LedgerHomeScreenViewModel @Inject constructor(
 
 	fun dismissWalletFTUEBottomSheet() = viewModelState.update {
 		it.copy(dismissFirstTimeFTUEDialog = true)
+	}
+
+	fun onWidgetClicked(bundle: Bundle) {
+		val amount = bundle.getDouble(LedgerConstants.AMOUNT)
+		val date = bundle.getString(LedgerConstants.DATE)
+		when (bundle.getString(LedgerConstants.BOTTOM_BAR_TYPE)) {
+			ILBottomBarType.ORDERING_BLOCKED -> {
+				analytics.onOverdueClicked(false, false, amount, date)
+			}
+
+			ILBottomBarType.ORDERING_WILL_BLOCKED -> {
+				analytics.onOverdueClicked(true, false, amount, date)
+			}
+
+			ILBottomBarType.INTEREST_WILL_START -> {
+				analytics.onInterestClicked(false, false, amount, date, isFinancedDc)
+			}
+
+			ILBottomBarType.INTEREST_STARTED -> {
+				analytics.onInterestClicked(true, false, amount, date, isFinancedDc)
+			}
+		}
+	}
+
+	fun onPayNowClicked() {
+		analytics.onPayNowClicked(PayNowScreenType.LEDGER)
 	}
 
 }
